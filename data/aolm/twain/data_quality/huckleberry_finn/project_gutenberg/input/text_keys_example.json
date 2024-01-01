@@ -1,0 +1,25 @@
+{
+	"keys": {
+
+		"header": {
+			"startline": "The Project Gutenberg eBook of Adventures of Huckleberry Finn, by Mark Twain (Samuel Clemens)",
+			"endline": "*** START OF THE PROJECT GUTENBERG EBOOK HUCKLEBERRY FINN ***"
+		},
+
+		"frontmatter": {
+			"startline": "ADVENTURES",
+			"endline": "Scene: The Mississippi Valley Time: Forty to fifty years ago"
+		},
+
+		"body": {
+			"component_input_prefix": "CHAPTER",
+			"component_output_prefix": "HUCKLEBERRYFINN_BODY_",
+			"endline": "*** END OF THE PROJECT GUTENBERG EBOOK HUCKLEBERRY FINN ***"
+		},
+		
+		"footer": {
+				"startline": "*** END OF THE PROJECT GUTENBERG EBOOK HUCKLEBERRY FINN ***",
+				"endline": "subscribe to our email newsletter to hear about new eBooks."
+		}
+	}
+}

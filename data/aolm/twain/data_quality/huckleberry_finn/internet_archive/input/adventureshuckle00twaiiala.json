@@ -1,0 +1,36 @@
+{
+    "keys": {
+        "input": {
+            "header": {
+                "startline": "L",
+                "endline": "7^U9"
+            },
+            "frontmatter": {
+                "startline": "PADVENTUKES",
+                "endline": ". 366"
+            },
+            "body": {
+                "startline": "don't know about me, without you",
+                "endline": "END. YOUBS TBULT, HOCK FINN.",
+                "subcomponents": "True",
+                "subcomponent_input_prefix": "CHAPTER"
+            },
+            "footer": {
+                "startline": "End of the Project Gutenberg EBook of Adventures of Huckleberry Finn,",
+                "endline": "subscribe to our email newsletter to hear about new eBooks."
+            }
+        },
+        "output": {
+            "header": "GUTENBERG_HEADER",
+            "frontmatter": "HUCKLEBERRYFINN_FRONTMATTER",
+            "body": "HUCKLEBERRYFINN_BODY_",
+            "footer": "GUTENBERG_FOOTER"
+        },
+        "order": [
+            "header",
+            "frontmatter",
+            "body",
+            "footer"
+        ]
+    }
+}

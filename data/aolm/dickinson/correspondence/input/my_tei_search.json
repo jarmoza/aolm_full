@@ -1,0 +1,12 @@
+{
+	"tag": {
+		"name": "resp",
+		"attributes": [],
+		"contents": "Machine-readable text created by"
+	},
+	"sub_tag": {
+		"name": "name",
+		"attributes": ["reg"],
+		"contents": ""
+	}
+}

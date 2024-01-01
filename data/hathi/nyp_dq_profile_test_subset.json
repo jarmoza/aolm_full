@@ -1,0 +1,203 @@
+{
+    "accessProfile": {
+        "google": 10
+    },
+    "bibliographicFormat": {
+        "BK": 1
+    },
+    "classification": [
+        "lcc",
+        "lcc"
+    ],
+    "dateCreated": {
+        "2016-06-18T08:31:23.6193127Z": 1,
+        "2016-06-18T08:31:23.8293127Z": 1,
+        "2016-06-18T08:31:23.9433127Z": 1,
+        "2016-06-18T08:31:23.9833127Z": 1,
+        "2016-06-18T08:31:24.1033127Z": 1,
+        "2016-06-18T08:31:55.5223127Z": 1,
+        "2016-06-18T08:32:59.3613127Z": 1,
+        "2016-06-18T08:33:01.7053127Z": 1,
+        "2016-06-18T08:33:22.5693127Z": 1,
+        "2016-06-18T08:45:00.2393127Z": 1
+    },
+    "enumerationChronology": {
+        " ": 8,
+        "v. 2": 1,
+        "v. 3": 1
+    },
+    "genre": [
+        "not fiction",
+        "not fiction",
+        "not fiction",
+        "fiction",
+        "fiction",
+        "Historical fiction.",
+        "not fiction",
+        "not fiction",
+        "not fiction",
+        "bibliography",
+        "not fiction",
+        "not fiction"
+    ],
+    "governmentDocument": {
+        "False": 10
+    },
+    "handleUrl": {
+        "http://hdl.handle.net/2027/nyp.33433000005417": 1,
+        "http://hdl.handle.net/2027/nyp.33433000006316": 1,
+        "http://hdl.handle.net/2027/nyp.33433000006555": 1,
+        "http://hdl.handle.net/2027/nyp.33433000010540": 1,
+        "http://hdl.handle.net/2027/nyp.33433000031835": 1,
+        "http://hdl.handle.net/2027/nyp.33433000031975": 1,
+        "http://hdl.handle.net/2027/nyp.33433000031983": 1,
+        "http://hdl.handle.net/2027/nyp.33433000032106": 1,
+        "http://hdl.handle.net/2027/nyp.33433000032163": 1,
+        "http://hdl.handle.net/2027/nyp.33433000032205": 1
+    },
+    "hathitrustRecordNumber": {
+        "8588809": 1,
+        "8588812": 1,
+        "8588814": 1,
+        "8588815": 1,
+        "8588817": 1,
+        "8589395": 1,
+        "8590211": 1,
+        "8590254": 1,
+        "8590559": 1,
+        "8601913": 1
+    },
+    "htBibUrl": {
+        "http://catalog.hathitrust.org/api/volumes/full/htid/nyp.33433000005417.json": 1,
+        "http://catalog.hathitrust.org/api/volumes/full/htid/nyp.33433000006316.json": 1,
+        "http://catalog.hathitrust.org/api/volumes/full/htid/nyp.33433000006555.json": 1,
+        "http://catalog.hathitrust.org/api/volumes/full/htid/nyp.33433000010540.json": 1,
+        "http://catalog.hathitrust.org/api/volumes/full/htid/nyp.33433000031835.json": 1,
+        "http://catalog.hathitrust.org/api/volumes/full/htid/nyp.33433000031975.json": 1,
+        "http://catalog.hathitrust.org/api/volumes/full/htid/nyp.33433000031983.json": 1,
+        "http://catalog.hathitrust.org/api/volumes/full/htid/nyp.33433000032106.json": 1,
+        "http://catalog.hathitrust.org/api/volumes/full/htid/nyp.33433000032163.json": 1,
+        "http://catalog.hathitrust.org/api/volumes/full/htid/nyp.33433000032205.json": 1
+    },
+    "imprint": {
+        "1872.": 1,
+        "1887.": 1,
+        "A.S. Barnes & Burr, 1864, c1855.": 1,
+        "C. Scribner & Co., 1870.": 1,
+        "D. Appleton and Company, 1894.": 1,
+        "H. Cowperthwait & co., 1864.": 1,
+        "Harper & Brothers, 1845, c1844.": 1,
+        "Sundhedsvennens Forlagsforening, 1890, c1889.": 1,
+        "University Press Co., c1896.": 1,
+        "W. Gowans, 1851.": 1
+    },
+    "isbn": [],
+    "issn": [],
+    "issuance": {
+        "monographic": 10
+    },
+    "language": {
+        "eng": 8,
+        "fre": 1,
+        "nor": 1
+    },
+    "lastUpdateDate": {
+        "2010-09-26 20:35:31": 1,
+        "2010-10-01 19:30:03": 1,
+        "2010-10-01 19:30:04": 1,
+        "2010-10-01 19:30:05": 1,
+        "2010-10-01 20:30:05": 1,
+        "2010-10-01 20:31:03": 2,
+        "2010-10-01 20:31:58": 1,
+        "2010-10-02 20:32:15": 1,
+        "2013-04-04 19:25:34": 1
+    },
+    "lccn": [
+        "03017450",
+        "05028545"
+    ],
+    "names": [
+        "McNally, Francis. ",
+        "Gazzoletti, Antonio 1813-1866 ",
+        "Morse, Sidney E. (Sidney Edwards) 1794-1871 ",
+        "Testut, Charles 1819-1892 ",
+        "Dumas, Alexandre 1802-1870 ",
+        "Huyot, J. egr ",
+        "Robson, William. ",
+        "Leloir, Maurice 1853-1940 ",
+        "Colange, Leo de b. 1819 ",
+        "Guyot, A. (Arnold) 1807-1884 ",
+        "Warren, David M. ",
+        "Sumner, Arthur. ",
+        "La Rochefoucauld, Franc\u0327ois duc de 1613-1680 ",
+        "Oyen, A. B. trl "
+    ],
+    "oclc": [
+        "14362106",
+        "37708775",
+        "14267307",
+        "5771631",
+        "28872669",
+        "36906130",
+        "5939407",
+        "9452642",
+        "19256164"
+    ],
+    "pubDate": {
+        "1844": 1,
+        "1851": 1,
+        "1855": 1,
+        "1864": 1,
+        "1870": 1,
+        "1872": 1,
+        "1887": 1,
+        "1890": 1,
+        "1894": 1,
+        "1896": 1
+    },
+    "schemaVersion": {
+        "1.3": 10
+    },
+    "sourceInstitution": {
+        "NYP": 10
+    },
+    "sourceInstitutionRecordNumber": {
+        ".b11080854x": 1,
+        ".b13031691x": 1,
+        ".b130317718": 1,
+        ".b130317779": 1,
+        ".b130318048": 1,
+        ".b130665034": 1,
+        ".b132777101": 1,
+        ".b132796260": 1,
+        ".b133456869": 1,
+        ".b137066302": 1
+    },
+    "title": {
+        "\"La patria dell'Italians\": The Italian's fatherland, translated from the Italian by H. Phillipo, Jr.": 1,
+        "A Tour of the world its famous cities and strange peoples, their histories, religions, and ethnology / edited by Leo de Colange ; introduction by Nathan Haskell Dole ... .": 1,
+        "A system of geography for the use of schools : illustrated with more than fifty cerographic maps and numerous wood-cut engravings / by Sidney E. Morse.": 1,
+        "An improved system of geography : designed for schools, academies and seminars / by Francis McNally.": 1,
+        "Intermediate geography.": 1,
+        "Le vieux Salomon; ou, Une famille d'esclaves au xix siecle, par Charles Testut..": 1,
+        "Moral reflections, sentences and maxims of Francis, duc de la Rochefoucauld / Newly translated from the French.  With an introduction and notes.  To which are added Moral sentences and maxims of Stanislaus, King of Poland.": 1,
+        "Solskin i hjemmet : illustreret l\u00e6sning for ung og gammel : et afvexlende udvalg af naturhistorie, biografi, bibelhistorie, o.s.v. ...": 1,
+        "The common-school geography ... By D. M. Warren ...": 1,
+        "The three musketeers / Alexandre Dumas ; translated by William Robson ; with a letter from Alexandre Dumas fils ; and 250 illustrations by Maurice Leloir engraved on wood by J. Huyot.": 1
+    },
+    "typeOfResource": {
+        "text": 10
+    },
+    "volumeIdentifier": {
+        "nyp.33433000005417": 1,
+        "nyp.33433000006316": 1,
+        "nyp.33433000006555": 1,
+        "nyp.33433000010540": 1,
+        "nyp.33433000031835": 1,
+        "nyp.33433000031975": 1,
+        "nyp.33433000031983": 1,
+        "nyp.33433000032106": 1,
+        "nyp.33433000032163": 1,
+        "nyp.33433000032205": 1
+    }
+}

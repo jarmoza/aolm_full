@@ -1,0 +1,68 @@
+['\n    Guide to the Textual Apparatus\n    ', <lb></lb>, 'GUIDE TO THE TEXTUAL APPARATUS\n    ', <p rend="noindent">Note: this guide and all commentaries are also available as one <ref corresp="#null" target="MTDP20003.xml" type="pdf">PDF file</ref> (ca. 2 MB). They are not included in UC Press’s printed or electronic formats.</p>, '\n', <lb></lb>, '\n', <p rend="noindent">The general editorial policy of this critical edition is discussed in detail in the <ref corresp="#bm0017" type="chapterref">Note on the Text</ref>. This edition aims to present a text that reflects the author’s original inscription or
+     dictation, altered by all subsequent authorial revisions that were not intended to shorten, soften, or otherwise adapt the text for
+     magazine publication in the <hi rend="italic">North American Review</hi> (NAR) or other journals. All revisions that Clemens did not
+     initiate, but made at the prompting of his editors, are likewise rejected. The individual Textual Commentaries supplement the general
+     policy: they provide detailed descriptions of the source documents, report all the textual variants among them, and record the readings
+     supplied by the editors. In addition, the Commentaries report all of Clemens’s revisions on manuscripts, as well as all
+     corrections and revisions that he inscribed on typescripts and on galley proofs of NAR installments. The marks of Clemens’s
+     contemporary collaborators on the source documents are likewise quoted in full (with the exceptions noted below), whereas the markings
+     that Paine and DeVoto wrote on the typescripts after Clemens’s death are not transcribed.</p>, '\n', <p rend="text-indent:2">• <hi rend="italic">Source documents.</hi> All source documents are listed, including documents that were
+     in the line of transmission of the texts but are now lost. <hi rend="italic">Unless otherwise noted, all original source documents are
+     in the Mark Twain Papers (<ref corresp="bib10074" type="dbquery">CU-MARK</ref>).</hi> The typescripts of the 1906–9
+     Autobiographical Dictations (<ref corresp="bib32977" type="dbquery">TS1</ref>, <ref corresp="bib32978" type="dbquery">TS2</ref>, <ref corresp="bib32979" type="dbquery">TS3</ref>, and <ref corresp="bib32980" type="dbquery">TS4</ref>) are described fully in the <ref corresp="#fr0011" type="chapterref">Introduction</ref> and, more concisely, in the <ref corresp="#bm0017" type="chapterref">Note on the
+     Text</ref>; these descriptions are not repeated in the individual commentaries. The extent of each witness is defined by a reference to
+     the edited text, consisting of cues with opening and closing words and their associated page-and-line numbering. If no text cue is
+     listed, the witness encompasses the entire dictation. Following the list of source documents is a discussion of pertinent information
+     about each piece—its history of composition, transmission, and revision, and, in some cases, preparation for magazine
+     publication. In these discussions, the apparatus entries mentioned can be located by searching within the pop-up window in which the
+     Textual Commentaries are displayed. For example, to find Clemens’s revisions on TS3, search “TS3-SLC.” If one or
+     more of the source documents was revised for publication in the NAR, the marginal notes made by Clemens, Paine, Harvey, and Munro are
+     reported in tabular form. Notes on the NAR printer’s copy such as <hi rend="smallcaps">“Mark Twain”</hi> and
+     “<hi rend="italic">(To be Continued)</hi>”—which appeared at the end of nearly every installment—and
+     miscellaneous notes made on the typescript versos are not listed in the table.</p>, '\n', <p rend="text-indent:2">• <hi rend="italic">Revisions, variants adopted or rejected, and textual notes.</hi></p>, '\n', <p rend="text-indent:2">Each entry on this list consists of the reading of the present text, separated by a bullet from the readings of
+     the source document or documents on the right, each of which is identified by its sigil, as defined in <hi rend="italic">Source
+     documents.</hi> All of the revisions on the source documents are reported, except for those that Paine and DeVoto made after
+     Clemens’s death, when preparing their editions of the autobiography. Revisions are shown in plain text: inserted letters or
+     words are surrounded with carets (<add>like this</add>); deleted words are represented by horizontal strike-out lines
+     (<del>like
+ this</del>); and deleted letters are indicated by vertical slashes (like this<del>s</del>). (This system of transcription
+     is described in full in the <ref target="letters/MTDP00005.xml" type="crossref">Guide to Editorial Practice</ref>.) All revisions on
+     manuscripts are Clemens’s, unless otherwise noted. The revisions on the typescripts are identified by Clemens’s initials,
+     or the name of the reviser: “TS1-Harvey,” “TS2-SLC,” and “TS3-Munro,” for example, identify
+     marks by George Harvey on TS1, Clemens on TS2, and David Munro on TS3. The entry associated with a reading is highlighted in the pop-up
+     Textual Apparatus window.</p>, '\n', <lb></lb>, '\n', <table rend="form">
+<row>
+<cell> <p rend="noindent">hunky,   •   <del>classes,</del> <add>hunky,</add> (MS)</p> <p rend="noindent">joyous and   •   joyous, (TS4); joyous<del>,</del> <add>and</add> (TS2-SLC); joyous and (NAR 12pf, NAR
+       12)</p> <p rend="noindent">Ex-President Cleveland.   •   Ex-President Cleveland. (TS1); Ex-President
+       Cleveland<del>.</del> <add>upon his sixty-ninth birthday:</add> (TS2-Harvey); ex-President Cleveland upon his sixty-ninth birthday:
+       (NAR 7pf, NAR 7)</p> </cell>
+</row>
+</table>, '\n', <lb></lb>, '\n', <p rend="text-indent:2">All variants in the source documents are reported, both of substantives (words) and of accidentals (punctuation,
+     spelling, and other formal features), with the exception of those listed below by category in <hi rend="italic">Silent
+     emendations</hi>. It is necessary to review the list of variants to determine the source of the reading adopted in the text. If this
+     reading is not among the variants listed, it has been supplied by the editors of this edition. The readings of the source documents are
+     usually given in the order of historical occurrence—that is, a manuscript reading (if any) is listed first, followed by each
+     subsequent text in the line of transmission. When feasible, the readings of the document that Clemens revised to serve as
+     printer’s copy for the NAR are listed immediately before the readings in the NAR. Whenever an authoritative typescript is extant
+     (such as TS1, TS2, and TS3), its variants are listed. The variants in TS4, which has less authority, are listed only if one of the
+     other typescripts is missing or incomplete. Unless otherwise noted, Clemens used ink for his revisions and his collaborators used
+     pencil. The medium of inscription, together with historical evidence, has often been the key to identifying the handwriting on the
+     documents.</p>, '\n', <p rend="text-indent:2">Textual notes explain editorial decisions and provide pertinent information about unusual features of the source
+     documents. There are two types: 1) notes that comprise the entire entry and provide information about a single source document; 2)
+     notes combined with a list of variants that supplements or explains one of the listed readings or gives information about editorial
+     decisions.</p>, '\n', <lb></lb>, '\n', <table rend="form">
+<row>
+<cell> <p rend="noindent">flutter   •   [<hi rend="italic">textual note:</hi> On the verso of MS page 17,
+       which ends with this word, SLC wrote and deleted ‘Mrs.’]</p> <p rend="noindent"><hi rend="italic">served</hi>
+         •   <hi rend="italic">served</hi> [‘served’ <hi rend="italic">underscored</hi>] (TS1-SLC);
+       <hi rend="italic">served</hi> (TS2)</p> <p rend="noindent">long . . . suspecting   •   long
+       . . . suspecting (MS); [<hi rend="italic">the typist of the missing TS erroneously omitted one MS line of text, probably
+       because of an eye-skip</hi>]; suspecting (TS2, TS4, H)</p> </cell>
+</row>
+</table>, '\n', <lb></lb>, '\n', <p rend="text-indent:2">• <hi rend="italic">Silent emendations</hi>. The following features have been corrected by the editors
+     without being reported:</p>, '\n', <p rend="text-indent:2">1) Ampersands are expanded to “and” in the texts and related apparatus entries, including
+     ampersands in readings quoted from manuscript sources.</p>, '\n', <p rend="text-indent:2">2) The titles, datelines, and summary paragraphs (in the Autobiographical Dictations) have been styled for
+     consistency and may not reflect the typography and layout of the source documents; in addition, the punctuation of the summary
+     paragraphs has been altered, where necessary, to accord with Hobby’s prevalent style.</p>, '\n', <p rend="text-indent:2">3) The paragraphs in inserted letters are rendered consistently with standard indentations and do not
+     necessarily represent the appearance of the original manuscripts.</p>, '\n', <p rend="text-indent:2">4) Many of the typographical rules in the typescripts have been omitted from the text (the omission of rules
+     from manuscript sources is reported).</p>, '\n']

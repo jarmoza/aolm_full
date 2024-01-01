@@ -1,0 +1,30 @@
+{
+    "keys": {
+        "input": {
+            "header": {
+                "startline": "I ~^~. ",
+                "endline": "/^^ I-/ "
+            },
+            "frontmatter": {
+                "startline": "THE ADVENTURES",
+                "endline": ". 366"
+            },
+            "body": {
+                "startline": "CHAPTER I.",
+                "endline": "END. YOUBS TBULT, HOCK FINN.",
+                "subcomponents": "True",
+                "subcomponent_input_prefix": "CHAPTER"
+            }
+        },
+        "output": {
+            "frontmatter": "HUCKLEBERRYFINN_FRONTMATTER",
+            "body": "HUCKLEBERRYFINN_BODY_"
+        },
+        "order": [
+            "header",
+            "frontmatter",
+            "body"
+        ]
+    },
+    "components": {}
+}

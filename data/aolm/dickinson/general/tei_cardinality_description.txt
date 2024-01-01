@@ -1,0 +1,67 @@
+============================================================
+TEI Collection from Emily Dickinson Archive
+============================================================
+
+------------------------------------------------------------
+Collection Description
+------------------------------------------------------------
+
+Publications (6):
+
+(1) Poems by Emily Dickinson, Todd and Higginson, 1890
+(2) Poems by Emily Dickinson: Second Series, Higginson and Todd, 1891
+(3) Poems by Emily Dickinson: Third Series, Todd, 1896
+(4) The Single Hound,  Bianchi, 1914
+(5) The Poems of Emily Dickinson, Johnson, 1955
+(6) The Poems of Emily Dickinson, Variorum Edition, Franklin, 1998
+
+Tags (27)
+
+add, app, body, date, del, div, em, fileDesc, l, lb, lem, lg, p, pages,
+pb, publication, publicationStmt, published, rdg, sourceDesc, TEI,
+teiHeader, text, title, titleStmt, u, variant
+
+============================================================
+Data set Profiling Descriptions
+============================================================
+
+------------------------------------------------------------
+Total Cardinality
+------------------------------------------------------------
+
+Commonly repeated tags 
+
+l - lines (51728)
+lem - internal to every app (12809)
+app - critical apparatus from original editors (12809)
+lg - stanzas (12031)
+lb - line breaks (10083) - internal to many lem
+
+TEI header tags
+
+p - paragraphs (9648 = 2 x 4824) - internal to every publicationStmt and sourceDesc
+text
+title
+body
+sourceDesc
+div
+publicationStmt
+TEI
+fileDesc
+teiHeader
+titleStmt
+
+rdg - internal to app (1909)
+add
+pb
+em
+
+
+del
+published
+pages
+variant
+publication
+date
+u
+============================================================
