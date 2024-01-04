@@ -1,0 +1,10 @@
+1. Flesh out ideas on formalism at some point
+2. Literary text as data is the overall problematic that the work will be dealing with
+3. via news reporting a comprehensive dq framework has not been developed
+    A. An explanation for this claim would be good (a few sentences or a paragraph)
+        - "Had this piece of data journalism done with higher quality data..."
+4. Define 'computational text analysis' for audiences that may not be familiar with the term
+5. Literature as 'high quality' parallels liteture as data in high quality
+6. What is literature when it becomes digital data? And what is "literary"?
+7. Primary focus should be getting to the middle of the chapter and fleshing out can come later
+8. Check out CESTA position post from Tom

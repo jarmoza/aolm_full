@@ -1,0 +1,12 @@
+DQ
+
+How does DQ accrue over text time
+- distribution of words as frequency increases
+- animated visualization
+
+Second order measure is comparing how that change occurs over time between
+works, between versions of works, etc.
+
+Similar idea can be performed for DQ metrics
+
+Task one is to list all DQ metrics

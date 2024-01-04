@@ -1,0 +1,10 @@
+- By year/time period
+- By page count
+- All volumes with multiple copies/editions - comparison for data quality, other fields
+- metadata comparison - looking for differences trends (by pub institution, by metadata scheme version number)
+- Source institution
+- Word trends from hydrated editions
+
+- Applying modeling to metadata vectors
+
+New York Public Library

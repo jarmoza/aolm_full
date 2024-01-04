@@ -1,0 +1,16 @@
+1. Newest Project Gutenberg edition of Huck Finn
+    a. Description of cleaning/non-cleaning methods, how text will be divided and stored
+    b. Word frequencies
+    c. Word frequencies as they change over chapters
+    d. Amount of recognized English words
+        i. Discussion of what this might mean (OCR, nlp-algorithm-related, dialect, etc.)
+    e. Demonstration of other non-comparative word frequency/dq metrics
+    f. Discussion of how these metrics depict the data quality of this individual work
+        i. Intra-data quality
+        ii. Usage of categories/dimensions from Sebastian-Coleman source
+2. Now use the same metrics across multiple editions from Project Gutenberg and Internet Archive
+    a. One point is that these sources be easily and freely available - speaks to one category of accessibility data quality
+    b. Performance of all metrics above across multiple editions
+    c. Comparison of metric values
+    d. Consideration of other categories and dimensions that these comparisons/values speak to
+3. Move into the discussion and implementation of data quality framework

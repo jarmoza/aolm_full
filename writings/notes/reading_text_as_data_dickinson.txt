@@ -1,0 +1,12 @@
+do title comparison
+
+reading text as data
+
+ - find close matches
+   - to csv
+ - select and investigate close matches
+   - compare poems themselves
+ - select highly mismatched poems for close reading
+   - take a few examples and highlight linguistic areas of mismatch
+     - locate patterns within the linguistic mismatch
+     - expand outward to entire collection to look for that pattern first located at small scale

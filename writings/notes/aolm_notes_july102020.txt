@@ -1,0 +1,6 @@
+=========
+"We can see also in those conference proceedings,6 and in the journals of the period, a tendency for researchers in history to adopt whatever computational solutions the market was throwing up, without much effort to truly appropriate it to their perspective." (Lou Burnard, 107, How modeling standards evolve in Jannidis/Flanders)
+
+As Burnard indicates, history repeats itself. Instead of examining the array of all methods (and perhaps they were narrow, he references Denley and Hopkin, 1987, or Denley et al., 1989.), and appropriating the methods best suited for the research aim and research content, early-DHers/stylometrists/corpus linguists let the market/"fashion" decide the methods/forms to be used for their work, "uncritically" (107).
+
+This indicates the need to understand exactly what may be appropriate for a particular humanities project, and what methods themselves may have inappropriate models (see for instance, Jannidis/Flanders' critique on the opaqueness of word embedding vectors)

@@ -1,0 +1,22 @@
+
+Split
+
+160
+8211
+8216
+
+Clean out
+
+8221
+9671
+91
+
+Words to ignore with char in it
+
+9674
+
+Replace with
+
+8214 -> '-'
+124 -> '-'
+8201 -> '-'

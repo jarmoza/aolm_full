@@ -1,0 +1,19 @@
+riddle of literary quality - hyguens
+the stability of reception
+
+questions of data quality
+
+ryan heuser - work on 18th century (dirty data)
+
+questions of how much does n trend change across different repos/data sets
+  - ground truth vs cases when not
+
+canonicity measure - is actually external, reviews/syllabi
+Ted has a dataset
+Stanford Litlab also
+
+but could be measured as internal - how many copies
+
+Recommendations
+
+A lot of process/status documentation

@@ -1,0 +1,7 @@
+This is a key point I'll be going into in the writing. I think there's a cognitive transformation concerning the substitution of pieces of writing (far more complex) with simple graphical forms that are meant to represent them. Most likely scholars of visualization/psychology have writing on this topic – further research needed. I'm wondering how that substitution changes how viewers navigate the language vs how they navigate the graphical forms.
+
+(Will clarify the language here.)
+
+Some possible language for this are the opposing terms downsampling/upsampling from signal processing. Downsampling (the reduction of the number of inputs being processed from a stream of data) in the case of words to simple graphical forms (e.g. rectangles, circles). In the very least those terms can be applied when thinking about shifting scales of text analysis.
+
+To be more precise, what I'm referring to here is the illusion of downsampling

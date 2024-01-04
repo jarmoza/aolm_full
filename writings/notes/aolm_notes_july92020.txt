@@ -1,0 +1,57 @@
+Reading through Flanders/Jannidis "A gentle introduction to data modeling"
+
+At the site of modeling decisions are made based on personal or collective expectation
+
+Jannidis/Flanders makes this distinction as "research-driven" and "curation-driven" (of course these terms may be extended or broadened)
+
+The important thing to remember when it comes to modeling though is that we are not building a permanent house.
+In fact, it may be most important to remember that (within the formal/assigned rules and expectations of a model) there can be a constant re-shifting of perspective, of tweaking the model's parameters to get a different view of the data. This distinction is imperative because it allows us the understanding that a model is not a static thing, nor is modeling a static act. Both object and action can constantly be re-adjusted.
+
+What brings static-ness to a model is analysis and interpretation from a particular perspective/form of the model.
+The model, after all, is not the original thing but rather a selective lens with which to view that thing.
+
+NOTE on AOLM for 2020-2021
+
+AOLM will be a research-driven from here on out. The subject of each chapter will drive the chapters rather than the theoretical discussion of modeling. In this way, there will be both dynamism to the text and subject matter which will drive the theoretical discussion. Theory cannot and should not be discussed in a void. (This is a failing of the Flanders/Jannidis work despite the text being very thoughtful and informative. Like a model, an academic writing's success should be driven by how much it captures 'user expectations' and one of those is to have captivating writing. Period.)
+
+=====
+
+Look for case studies of robustness
+
+Areas outside of DH to look for "fuller understanding" of data modeling:
+
+1. W3C
+2. Computer Science
+3. a steady stream of new problems for data modeling created by new perspectives on our research objects
+(Jannidis/Flanders 92)
+
+===
+Forces/processes that can help give us a fuller understanding of data modeling
+
+"These three perspectives — the research on an integrated view on data modeling, the theoretically driven research on new options in data modeling, and the research driven by new needs in handling digital objects — will create new insights into the field of data modeling." (92)
+
+====
+On why algorithmic feature mining is ultimately flawed, especially of the model's relationships remain opaque to human understanding
+
+"For a long time data modeling was done by humans who formalized expert knowledge. But with huge amounts of data available, and more and more sophisticated methods of mining them for structures by using machine learning techniques, algorithmic approaches to modeling offer better and cheaper results and scale more efficiently. However, although some of these models solve specific tasks very reliably, the kinds of data on which they operate are quite difficult to align with our human understanding of the data. For instance, in word embeddings, vectors in n-dimensional space represent words, and their proximity to one another expresses similarity, but it is not clear what the vectors themselves “mean,” apart from the purely comparative analysis they yield. Furthermore, the resulting modeled data doesn’t yield a higher-level understanding of the data (for instance, at the documentary level) that can be applied to the analysis of other problems. These approaches thus withdraw the data model from human analysis in a way that poses a challenge to data modeling as an intellectual (as opposed to computational) field." (92)
+
+This has forced a shift in user requirements - which were typically set by domain experts (93)
+
+word embeddings - "the data representation is still meaningless to humans" (93)
+
+But now it would seem the understanding that domain expertise is required may end up shifting it backward or providing a reasoning for a more balanced approached to model requirement formation (see DeepMind researcher tweet from week of July 6)
+
+
+======
+On functions of a datum and their partial role in a model
+
+" Some argue (as Stephen Ramsay does later in this volume) that the semantics of an element in a data model are constituted by the processes attached to this element. But only few would say that the semantics, let us say, of the concept of a “name” are really described by the ability to search for it in the contacts list in our phone and then press “dial.” Processes using data models foreground the functions of individual data ele- ments, but functions are not full descriptions of the use of a term, let alone its full range of possible use." (93)
+
+
+=====
+
+A massive conclusive note
+
+"So one of the main cornerstones of data modeling from its very beginning would be threatened by these developments: until very recently, data modeling was understood as a matter of course to be an activity which produces formal descriptions usable by machines and humans. But now we start to see models which are more efficient for machines and incomprehensible to humans. How we handle this challenge will be the basis for most work done in the realm of data modeling in the future." (93)
+
+The challenge is now enforcing models understandable to both human and machine. This transparency is key for fuller understanding of (digital) humanities modeling in the future as well as the ethics of using those models to make interpretations and predictions from them.

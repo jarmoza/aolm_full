@@ -1,0 +1,43 @@
+GENERAL HELPFUL LINKS
+
+Enlight, open-source ML and Web dev tutorial site: https://enlight.nyc/
+
+
+MODELS
+
+Topic models
+
+Nonnegative Matrix Factorization
+
+Support Vector Machines
+ - implementation: scikit-learn, https://scikit-learn.org/stable/modules/svm.html
+ - tutorial: https://scikit-learn.org/stable/tutorial/basic/tutorial.html
+
+Neural network
+
+Markov model
+
+Regression on features
+
+PCA (Principal Component Analysis)
+
+MCA
+
+Reinforcement learning
+
+GANs
+
+NLTK
+https://medium.com/parrot-prediction/dive-into-wordnet-with-nltk-b313c480e788
+
+KNN - K-Nearest Neighbor
+
+Random Forests
+ - conceptual explanation: https://medium.com/@williamkoehrsen/random-forest-simple-explanation-377895a60d2d
+ - raw implementation: https://towardsdatascience.com/an-implementation-and-explanation-of-the-random-forest-in-python-77bf308a9b76
+ - implementation in scikit-learn: https://towardsdatascience.com/random-forest-in-python-24d0893d51c0
+
+
+ IDEAS
+
+ - optimizing code with random forest testing

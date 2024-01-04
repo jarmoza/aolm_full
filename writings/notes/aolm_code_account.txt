@@ -1,0 +1,47 @@
+Script categories
+
+Measurements
+Text Processing
+Object-related
+Data Quality Metrics
+Dataset-related
+Emily Dickinson
+
+===============================================================================
+Measurements
+
+1. data_quality/core/count_words_and_plot.py - Takes an input text file, tokenizes it, counts its unique words and plots their usage frequencies in a bar graph
+
+===============================================================================
+Text Processing
+
+1. data_quality/core/dq_cleaner.py
+2. data_quality/core/stylometry_methods.py
+3. data_quality/core/title_underscores.py
+
+===============================================================================
+Object-related
+
+1. data_quality/core/dq_metric.py (DataQualityMetric)
+2. data_quality/core/stylometry_methods.py (Text, TextCollection)
+
+===============================================================================
+Data Quality Metrics
+
+1. data_quality/dickinson/assessment/dickinson_consistency.py (AOLM_DQ_Dickinson_Consistency)
+2. data_quality/dickinson/assessment/dickinson_integrity.py (AOLM_DQ_Dickinson_Integrity)
+
+===============================================================================
+Dataset-related
+
+1. data_quality/dickinson/bingham/bingham_bolts.py
+2. data_quality/dickinson/bingham/ed_bolts_reader.py (BoltsReader)
+3. data_quality/dickinson/bingham/ed_bolts_reader2.py (BoltsReader - ???)
+4. data_quality/dickinson/bingham/separate_bolts_poems.py
+
+===============================================================================
+
+Dickinson
+
+1. data_quality/dickinson/core/dickinson_poem.py (several versions that need to be reconciled)
+2. data_quality/dickinson/core/dickinson_collection.py (several versions that need to be reconciled)

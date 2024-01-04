@@ -1,0 +1,26 @@
+Coleridge's view of alphabetization similar to representation of literature as word frequencies
+  - pieces of a shattered mirror on the floor
+
+listing of sites of access to digital texts by "accessibility" data quality
+  - free sites (i.e. Project Gutenberg, or from individual data providers/researchers) are of highest accessibility dq
+  - sites that require login (i.e. public libraries, HathiTrust, etc.) are of slightly lesser accessibility dq
+  - institutional sites that require membership to many texts (i.e. university libraries) are of even lesser accessibility dq
+  - paywalled sites like publishers are of the lowest accessibility dq
+  - even lower still of accessibility data quality are books that are either only available to one or a set of scholars (because of copyright or other reason for proprietary access)
+    which would require special requests
+  - with the lowest possible data quality being books that are not digitally available or whose physical copies are out of print/scarce
+
+
+Four categories of data quality, Richard Wang and Diane Strong (as interpreted for literary studies):
+
+1) Intrinsic
+	- "the extent to which data values are in conformance with the actual or true values" (Appendix B, 1)
+	- "Intrinsically good data is accurate, correct, and objective, and comes from a reputable source." (ibid)
+	- Dimensions:
+		- accuracy
+		- objectivity
+		- believability
+		- reputation
+2) Contextual
+3) Representational
+4) Accessibility

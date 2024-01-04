@@ -1,0 +1,26 @@
+"Artisanal DH"
+
+https://conferences.oreilly.com/jupyter/jup-ny-2017/public/schedule/detail/59878
+
+Chapters
+
+Evidence
+Method
+Visuals
+Output
+
+The dissertation will look at the boundaries that are continually approached, traversed (and often transgressed – more on that qualification later) when transforming and analyzing cultural objects for Digital Humanities/Cultural Analytics research. Another way this has been spoken about are moves made back and forth between qualitative and quantitative means of representing those objects. 
+
+The dissertation will have an original research project or several mini-projects – the subject and method of which remains to be determined – but its four chapters will each pay close attention to the choices made when shaping data, constructing and interpreting models, and communicating those findings within the context of digital humanities research. Each chapter will take a look at prominent and less than prominent projects, their choices and compromises made during the phase of the project related to the topic of the current chapter. Those topics are evidence (accumulating/processing data), method (constructing/analyzing models), visualization (transforming findings into accurate and expressive forms) and last but not least, outputs (how that research is given to its audience(s) in a compelling and productive form). The piece of original research which will be a large-scale computational text analysis project will be taking lessons from each chapter and employing them.
+
+I would stress that the point of this not necessarily a navel-gazing look back and then forward for digital humanities research.
+
+
+I want to look at four aspects of our research which have overlaps, but need to be regarded as fundamental to the success of a project itself. (These are core aspects that we think of as being apart from institutional and other socio-political factors that affect those works – but of course are really not). 
+
+
+
+There are many subtle compromises made in approaching and transforming cultural objects into objects for study. Sometimes a compromise might be made for practical purposes. 'What features can one make observations about, quantify, and draw reasonable inferences from after that transformation has occurred?' Other times the compromise is interpretative and personal, almost subconscious unless one were willing to document the choice having been made. Slightly altered, the question becomes, 'What features do I want to make observations about, quantify, and draw reasonable inferences from, etc.' There is some overlap between the two questions, but when moving between scales of information the characteristic that they share is that of having to move across boundaries.
+
+Instead of compromise it's helpful to think of the choices made over the course of the project as shaping, something done by hand, the choices made of shaping an object - poem, artwork, craft - educated choices made by experience of dealing with the problems at hand.
+
