@@ -17,6 +17,12 @@ import os
 # Numpy arrays
 import numpy
 
+# Classifier for differentiating between Dickinson text types
+from sklearn.linear_model import LogisticRegression
+
+# Splitting up training and test data sets
+from sklearn.model_selection import train_test_split
+
 # Progress bar for print output
 from tqdm import tqdm
 
@@ -158,6 +164,36 @@ def main():
 
 	# 8. Make predictions on held out text set
 	holdout_prediction_scores = logistic_regression.holdout_score(True)
+
+    # Sklearn version
+    
+    # # 5. Create training and validation data
+    # print("Splitting up training and validation data sets...")
+    # text_data = numpy.array([text.bow_vector for text in all_texts])
+    # text_labels = numpy.array([text.editor_assigned_type for text in all_texts])
+    # training_data, validation_data, training_labels, validation_labels = train_test_split(text_data, text_labels, test_size=0.25, random_state=0)
+
+    # # 6. Train logistic regression model based on train/test split
+    # print("Training model...")
+    # logistic_regression = LogisticRegression(solver="lbfgs", multi_class="auto", max_iter=500)
+    # logistic_regression.fit(training_data, training_labels)
+
+    # # 7. Determine model validation score
+    # score = logistic_regression.score(validation_data, validation_labels)
+    # print("Validation score: {0}".format(score))
+
+    # # 8. Make predictions on held out poem set
+    # holdout_prediction_scores = { text_type: 0 for text_type in corr_type_map }
+    # for text in holdouts:
+    #     prediction = logistic_regression.predict([text.bow_vector])
+    #     text_type = text.editor_assigned_type
+    #     # print("{0} - Label: {1} Prediction: {2}".format(text.title, text_type, prediction))
+    #     if prediction == text_type:
+    #         holdout_prediction_scores[text_type] += 1
+    # for text_type in holdout_prediction_scores:
+    #     holdout_prediction_scores[text_type] /= float(holdout_counts[text_type])
+    #     print("{0} Holdout prediction accuracy: {1}%%".format(text_type,
+    #         holdout_prediction_scores[text_type] * 100))    
 
 if "__main__" == __name__:
 	main()
