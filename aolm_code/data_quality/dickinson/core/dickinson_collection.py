@@ -23,13 +23,11 @@ debug = logging.debug
 # logging.disable(logging.DEBUG) # Comment out to enable debug messages
 
 
-# Objects
-
 class DickinsonCollection:
 
-	# Constructor
+    # Constructor
 
-	def __init__(self, p_corpus_name, p_texts_path="",  p_file_extension="tei", p_text_collection=None):
+    def __init__(self, p_corpus_name, p_texts_path="",  p_file_extension="tei", p_text_collection=None):
 
 		# 0. Save parameters
 
@@ -75,9 +73,9 @@ class DickinsonCollection:
 	# static DickinsonCollection.collections dictionary
 	@classmethod
 	def from_corpus_name(cls, p_corpus_name, p_file_extension="tei"):
-		return cls(p_corpus_name, p_texts_path="", p_file_extension=p_file_extension)
+		return cls(p_corpus_name, p_texts_path="", p_file_extension=p_file_extension)          
 
-	# Private methods
+    # Private methods
 
 	def __build_lexicon(self):
 
@@ -86,14 +84,14 @@ class DickinsonCollection:
 
 		# 2. De-duplicate and sort collection lexicon
 		self.m_lexicon = list(set(self.m_lexicon))
-		self.m_lexicon.sort()
+		self.m_lexicon.sort()    
 
 	def __ingest(self, p_text_collection):
 
 		# 1. Get DickinsonPoem objects from all files (presumably tei files)
 		#    Or save collection reference if passed in.
 		if None == p_text_collection:
-			debug("Reading poems into memory from {0}....".format(self.m_texts_path))
+			debug("Reading poems into memory....")
 			self.m_texts = [DickinsonPoem(text_filepath) for text_filepath in \
 							glob.glob(self.m_texts_path + "*.{0}".format(self.m_file_extension))]
 		else:
@@ -120,7 +118,8 @@ class DickinsonCollection:
 			if manuscript_id not in temp_id_list:
 				temp_id_list.append(manuscript_id)
 			else:
-				self.m_duplicate_ids.append(manuscript_id)
+				self.m_duplicate_ids.append(manuscript_id)        
+
 
 	# Operator overloads
 
@@ -139,7 +138,7 @@ class DickinsonCollection:
 	def corpus_name(self):
 		return self.m_corpus_name
 	@property
-	def dict(self):
+	def collection_dict(self):
 		return self.m_id_dict
 	@property
 	def duplicate_ids(self):
@@ -148,7 +147,7 @@ class DickinsonCollection:
 	def ids(self):
 		return self.m_id_dict.keys()
 	@property
-	def list(self):
+	def collection_list(self):
 		return self.m_texts
 	@property
 	def lexicon(self):
@@ -158,7 +157,7 @@ class DickinsonCollection:
 	@property
 	def publication_order(self):
 		return self.m_publication_order
-	
+
 	# Static methods and variables
 
 	@staticmethod
@@ -193,7 +192,6 @@ class DickinsonCollection:
 	metadata = ""
 
 DickinsonCollection.metadata = DickinsonCollection.data_folder + "dickinson_poem_list.csv"
-
 
 # Command line script (testing)
 
