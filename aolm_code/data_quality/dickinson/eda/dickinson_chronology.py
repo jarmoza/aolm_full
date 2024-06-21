@@ -59,8 +59,8 @@ def main():
 	DickinsonPoem.compare_collection_titles(tei_folder, "F", "J")
 
 	# Create txt files of all 1998 Variorum poems
-	# DickinsonPoem.gather_poems(tei_folder, txt_folder,
-	# 						   p_publication_date="1998", p_collection_id="FA", p_similarity_comparison=False)
+	DickinsonPoem.gather_poems(tei_folder, txt_folder,
+							   p_publication_date="1998", p_collection_id="FA", p_similarity_comparison=False)
 
 	# nlp = spacy.load('en_core_web_sm')
 	# doc = nlp(u'Apple is looking at buying U.K. startup for $1 billion')
