@@ -56,7 +56,7 @@ from utilities import aolm_paths
 from utilities.aolm_utilities import clean_string
 from utilities.aolm_utilities import debug_separator
 
-from data_quality.dickinson.core.dickinson_poem_final import EDAPoem
+from data_quality.dickinson.core.dickinson_poem_final import DickinsonPoem
 
 # Setup code and data paths
 aolm_paths.setup_paths()
@@ -96,7 +96,7 @@ class WordFrequencyTracker:
 			self.process(
 				p_cleaning_function=clean_string,
 				p_tokenization_function=nltk.word_tokenize,
-				#p_tokenization_function=EDAPoem.tokenize_line
+				#p_tokenization_function=DickinsonPoem.tokenize_line
 			)
 		
 	# Private methods
@@ -216,7 +216,7 @@ class WordFrequencyTracker:
 				
 				tokens = p_tokenization_function("\n".join(self.m_texts[text]["clean_components"][component]))
 				# tokens = nltk.word_tokenize("\n".join(self.m_texts[text]["clean_components"][component]))
-				# tokens = EDAPoem.tokenize_line("\n".join(self.m_texts[text]["clean_components"][component]))
+				# tokens = DickinsonPoem.tokenize_line("\n".join(self.m_texts[text]["clean_components"][component]))
 				self.m_texts[text]["word_counts"][component] = Counter(tokens)
 
 	# Properties
@@ -522,7 +522,7 @@ if "__main__" == __name__:
 # 	for component in edition_data[edition]["clean_components"]:
 		
 # 		tokens = nltk.word_tokenize("\n".join(edition_data[edition]["clean_components"][component]))
-# 		# tokens = EDAPoem.tokenize_line("\n".join(edition_data[edition]["clean_components"][component]))
+# 		# tokens = DickinsonPoem.tokenize_line("\n".join(edition_data[edition]["clean_components"][component]))
 # 		edition_data[edition]["word_counts"][component] = Counter(tokens)
 
 # # 4. Create cumulative word frequencies for each chapter

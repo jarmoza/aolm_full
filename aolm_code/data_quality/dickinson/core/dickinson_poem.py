@@ -1,18 +1,41 @@
-from itertools import chain
+# Author: Jonathan Armoza
+# Created: 2013-present
+# Purpose: Reads in and processes tei files from the Emily Dickinson Archive
+#          for cleaning, processing, and further modeling
+
+# Imports
+
+# Built-ins
 import glob
 import os
 import re
 import string
+from collections import Counter
+from itertools import chain
+
+# Third party
 
 from bs4 import BeautifulSoup
+# Builds tf-idf term weighted matrices
+from sklearn.feature_extraction.text import TfidfTransformer
+from tqdm import tqdm
 
 # NOTE: Requires spacy pip installation and python -m spacy download en_core_web_sm
 # import spacy
 
+# Custom
+
+# Includes logging and loop progress debug functionality
+from my_logging import logging
+
+# Comment out to enable debug messages
+# logging.disable(logging.DEBUG)
+
+
 
 class DickinsonPoem:
 
-    def __init__(self, p_filepath="", p_title="", p_manuscript_id="", p_publication="", p_lines=[]):
+    def __init__(self, p_filepath):
 
         # Parse file path
         self.m_file = {}
@@ -33,13 +56,15 @@ class DickinsonPoem:
         self.m_title = self.__m_soup.tei.titlestmt.title.string.strip()
         self.__get_manuscript_id()
 
+        # Text type defaults to 'verse'
+        self.m_editor_assigned_type = "verse"        
+
         # Bag of words-related fields (computed and stored only upon request)
         self.m_bow = None
         self.m_colletion_bow_vector = None
 
         # Lexicon, list of this poem's unique words (only gathered if requested)
         self.m_lexicon = None
-
 
     # Factory
 
@@ -51,11 +76,16 @@ class DickinsonPoem:
     def from_tei_file(cls, p_tei_filepath):
         pass
 
-
+        
     # Internal functions
+
+    def __body_words(self):
+
+        self.m_body_words = DickinsonPoem.tokenize(self.m_full_text)
+
     def __build_lexicon(self):
 
-        self.m_lexicon = list(self.bow.keys())
+        self.m_lexicon = list(self.bow.keys())        
 
     def __compute_bow(self):
 
@@ -80,10 +110,19 @@ class DickinsonPoem:
         self.__get_stanzas()
 
         # 2. Aggregate full text from stanzas in a single, endline-delimited string
-        self.m_full_text = "\n".join(list(chain.from_iterable(self.m_stanzas)))
+        self.m_full_text = []
+        for stanza in self.m_stanzas:
+            for line in stanza:
+                self.m_full_text.append(line + "\n")
+            self.m_full_text.append("\n")
+        self.m_full_text = "".join(self.m_full_text).strip()
+        # self.m_full_text = "\n".join(list(chain.from_iterable(self.m_stanzas)))
 
         # 3. Create a line by line list of the poem
         self.__get_lines()
+
+        # 4. Create token collection of body words for bag-of-words vectorization
+        self.__body_words()
 
     def __init_soup(self):
 
@@ -178,11 +217,17 @@ class DickinsonPoem:
                                         current_line_text.append(str(tag.contents[0]) + " ")
                                         break
 
-                    # Add this line to the current stanza
+                    # Add this line to the current stanza (retaining single spaces only)
+                    current_line_text = " ".join(current_line_text).strip()
+                    current_line_text = " ".join(current_line_text.split())
                     self.m_stanzas[len(self.m_stanzas) - 1].append("".join(current_line_text).strip())
 
 
     # Properties
+
+    @property
+    def body_words(self):
+        return self.m_body_words    
 
     @property
     def bow(self):
@@ -192,15 +237,33 @@ class DickinsonPoem:
         return self.m_bow
 
     @property
+    def bow_vector(self):
+        return self.m_bow_vector
+    def create_bow_vector(self, p_lexicon, p_top_words="all"):
+
+        # 1. Tally unique tokens in this text
+        self.m_bow_vector = [0] * len(p_lexicon)
+        body_words_counter = Counter(self.m_body_words)
+        
+        # 2. Create a vector with entries counting the words in this text for the given lexicon
+        for index in range(len(p_lexicon)):
+            if p_lexicon[index] in body_words_counter:
+                self.m_bow_vector[index] = body_words_counter[p_lexicon[index]]
+
+        # 3. Return only the top N words, if requested
+        if "all" != p_top_words:
+            self.m_bow_vector = self.m_bow_vector[0:p_top_words]          
+
+    @property
+    def clean_title(self):
+        return self.clean_line(self.title)
+
+    @property
     def collection_bow_vector(self):
         return self.m_colletion_bow_vector
     @collection_bow_vector.setter
     def collection_bow_vector(self, p_bow_vector):
         self.m_colletion_bow_vector = p_bow_vector
-
-    @property
-    def clean_title(self):
-        return self.clean_line(self.title)
 
     @property
     def collection_id(self):
@@ -209,6 +272,10 @@ class DickinsonPoem:
             if self.m_manuscript_id[index].isalpha():
                 collection_id += self.m_manuscript_id[index]
         return collection_id  
+
+    @property
+    def editor_assigned_type(self):
+        return self.m_editor_assigned_type
 
     @property
     def file_extension(self):
@@ -230,8 +297,7 @@ class DickinsonPoem:
     def lexicon(self):
         if None == self.m_lexicon:
             self.__build_lexicon()
-        return self.m_lexicon
-    
+        return self.m_lexicon        
 
     @property
     def line_match_threshold(self):
@@ -253,7 +319,6 @@ class DickinsonPoem:
         return self.m_numeric_manuscript_id
         # return DickinsonPoem.get_numeric_id(self.m_manuscript_id)
     
-
     @property
     def title(self):
         return self.m_title
@@ -288,72 +353,18 @@ class DickinsonPoem:
     @full_text.setter
     def full_text(self, p_text):
         self.m_full_text = p_text
-    
+
     @property
     def soup(self):
-        return self.__m_soup
-
+        return self.__m_soup        
+    
     @property 
     def stanzas(self):
-        return self.m_stanzas    
+        return self.m_stanzas
     
 
     # Utility functions
-    def tokenize_line(self, p_line):
-
-        # 1. Make sure tokens are evenly spaced by one space character
-        new_line = re.sub(r"\s+", " ", p_line)
-        new_line = new_line.strip().split(" ")
-
-        # 2. Clean each token in the line
-        clean_tokens = []
-        for token in new_line:
-
-            # a. Remove whitespace around token and lowercase
-            new_token = token.strip().lower()
-
-            # b. Remove non-alphanumeric characters around token if token has alphanumeric characters
-            has_alnum = False
-            first_alnum_index = last_alnum_index = -1
-
-            # c. Check for alphanumeric characters
-            for index in range(len(new_token)):
-                if new_token[index].isalnum():
-                    has_alnum = True
-                    first_alnum_index = index
-                    break
-
-            # d. Remove non-alphanumeric characters if at least one alphanumeric character exists
-            if has_alnum:
-            
-                # i. Look for last alphanumeric character
-                for index in range(len(new_token) - 1,-1,-1):
-                    if new_token[index].isalnum():
-                        last_alnum_index = index
-                        break
-
-                # ii. Produce a cleaned substring
-                if first_alnum_index != last_alnum_index:
-                    
-                    possible_token = new_token[first_alnum_index:last_alnum_index + 1]
-
-                    # Check for commas (special case)
-                    for c in possible_token:
-                        if c in string.punctuation and c is not "'":
-                            possible_token = possible_token.replace(c, " ")
-                    possible_tokens = possible_token.split(" ")
-                    for token in possible_tokens:
-                        clean_tokens.append(token.strip())
-
-                else:
-                    clean_tokens.append(new_token[first_alnum_index])
-            # Else, all characters are non-alphanumeric
-            else:
-                clean_tokens.append(new_token)
-
-        return clean_tokens
-
-
+    
     def clean_line(self, line):
 
         # Lowercase
@@ -435,6 +446,59 @@ class DickinsonPoem:
                     #        stanzas[current_stanza_index].append('\n')
         return stanzas          
 
+    def tokenize_line(self, p_line):
+
+        # 1. Make sure tokens are evenly spaced by one space character
+        new_line = re.sub(r"\s+", " ", p_line)
+        new_line = new_line.strip().split(" ")
+
+        # 2. Clean each token in the line
+        clean_tokens = []
+        for token in new_line:
+
+            # a. Remove whitespace around token and lowercase
+            new_token = token.strip().lower()
+
+            # b. Remove non-alphanumeric characters around token if token has alphanumeric characters
+            has_alnum = False
+            first_alnum_index = last_alnum_index = -1
+
+            # c. Check for alphanumeric characters
+            for index in range(len(new_token)):
+                if new_token[index].isalnum():
+                    has_alnum = True
+                    first_alnum_index = index
+                    break
+
+            # d. Remove non-alphanumeric characters if at least one alphanumeric character exists
+            if has_alnum:
+            
+                # i. Look for last alphanumeric character
+                for index in range(len(new_token) - 1,-1,-1):
+                    if new_token[index].isalnum():
+                        last_alnum_index = index
+                        break
+
+                # ii. Produce a cleaned substring
+                if first_alnum_index != last_alnum_index:
+                    
+                    possible_token = new_token[first_alnum_index:last_alnum_index + 1]
+
+                    # Check for commas (special case)
+                    for c in possible_token:
+                        if c in string.punctuation and c is not "'":
+                            possible_token = possible_token.replace(c, " ")
+                    possible_tokens = possible_token.split(" ")
+                    for token in possible_tokens:
+                        clean_tokens.append(token.strip())
+
+                else:
+                    clean_tokens.append(new_token[first_alnum_index])
+            # Else, all characters are non-alphanumeric
+            else:
+                clean_tokens.append(new_token)
+
+        return clean_tokens
 
     # Debug
 
@@ -448,7 +512,6 @@ class DickinsonPoem:
         print("Publication date: {0}".format(self.publication_date))
         print("==============================")
 
-
     # Static fields and functions        
 
     # Static DickinsonPoem thresholds for similarity testing
@@ -459,14 +522,7 @@ class DickinsonPoem:
     # nlp = spacy.load("en_core_web_sm")
 
     @staticmethod
-    def clean_folder(p_folder_name):
-
-        if len(p_folder_name) and os.sep != p_folder_name[len(p_folder_name) - 1]:
-            return p_folder_name + os.sep
-        return p_folder_name
-
-    @staticmethod
-    def bow_vectors_for_collection(p_poems):
+    def bow_vectors_for_collection(p_poems, p_normalize=False):
 
         # 1. Get all bags of words for the poems and construct an overall word list
         all_words = []
@@ -503,7 +559,13 @@ class DickinsonPoem:
             # c. Save bow vector for returning in list of bow vectors
             all_bow_vectors.append(bow_vector)
 
-        return all_bow_vectors
+        # Normalize all vectors if requested
+        if p_normalize:
+            for index in range(len(all_bow_vectors)):
+                total = float(sum([bow_tuple[1] for bow_tuple in all_bow_vectors[index]]))
+                all_bow_vectors[index] = [[bow_tuple[0], bow_tuple[1] / total] for bow_tuple in all_bow_vectors[index]]
+
+        return all_bow_vectors    
 
     @staticmethod
     def bow_vector_from_bow_tuple_list(p_tuple_list):
@@ -514,115 +576,22 @@ class DickinsonPoem:
         return bow_dict
 
     @staticmethod
-    def get_numeric_id(p_nonnumeric_id):
+    def clean_folder(p_folder_name):
 
-        return int("".join([char for char in p_nonnumeric_id if char.isdigit()]))
-
-        # digit_start_index = -1
-
-        # # 1. Skip all alpha characters in the beginning
-        # for index in range(len(p_nonnumeric_id)):
-        #     if p_nonnumeric_id[index].isalpha():
-        #         continue
-        #     else:
-        #         digit_start_index = index
-        #         break
-
-        # # 2. Numeric ID consists of all characters from first digit onward
-        # numeric_manuscript_id = ""
-        # if digit_start_index >= 0:
-        #     numeric_manuscript_id = p_nonnumeric_id[digit_start_index:]
-
-        # # Warning for ID with no numbers
-        # if 0 == len(numeric_manuscript_id):
-        #     print("Original ID: {0} contains no numbers".format(p_nonnumeric_id))
-
-        # return numeric_manuscript_id
-
-        # temp_manuscript_id = ""
-        # for index in range(len(p_nonnumeric_id)):
-        #     if 0 == index and p_nonnumeric_id[index].isalpha():
-        #         continue
-        #     if p_nonnumeric_id[index].isdigit():
-        #         temp_manuscript_id += p_nonnumeric_id[index]
-        #     else:
-        #         break
-
-        # if 0 == len(temp_manuscript_id):
-        #     print("Original ID: {0} becomes zero length".format(p_nonnumeric_id))
-
-        # return temp_manuscript_id           
+        if len(p_folder_name) and os.sep != p_folder_name[len(p_folder_name) - 1]:
+            return p_folder_name + os.sep
+        return p_folder_name
 
     @staticmethod
-    def is_poem_similar(original_poem, compared_poem):
+    def create_lexicon(p_poem_instances):
 
-        # 0. Get poem lines and line counts
-        my_lines = original_poem.lines
-        compared_lines = compared_poem.lines
-        my_lines_count = len(my_lines)
-        compared_lines_count = len(compared_lines)
+        poem_lexicon = []
+        for poem in tqdm(p_poem_instances):
+            poem_lexicon.extend(poem.body_words)
+        poem_lexicon = list(set(poem_lexicon))
+        poem_lexicon.sort()
 
-        # 1. Look for the first highly similar match
-        match_index = -1
-        for index in range(my_lines_count):
-            if index < compared_lines_count and DickinsonPoem.percent_line_match(my_lines[index], compared_lines[index], True) > DickinsonPoem.line_match_threshold:
-                match_index = index
-                break
-
-        # If there are no similar line matches, poems are either different or very dissimilar
-        if -1 == match_index:
-            return False
-
-        # 2. Count the remaining matches
-        matches = 0
-        for index in range(match_index, my_lines_count):
-            if index < compared_lines_count and DickinsonPoem.percent_line_match(my_lines[index], compared_lines[index], True) > DickinsonPoem.line_match_threshold:
-                matches += 1
-
-        # If there is a significant amount of similar lines, then the poems are considered similar
-        return float(matches) / float(my_lines_count) > DickinsonPoem.poem_match_threshold
-
-    @staticmethod
-    def is_poem_similar_bow(p_first_poem, p_second_poem, p_requested_percent=0.9):
-
-        # 0. Get poem words
-        compared_poems = [p_first_poem, p_second_poem]
-        compared_words = []
-        overall_word_count = 0
-        for index in range(len(compared_poems)): 
-            word_dict = {}
-            for line in compared_poems[index].lines:
-                # line_words = line.strip().split(" ")
-                line_words = line[1]
-                for item in line_words:
-
-                    # All items that are solely punctuation are disregarded
-                    if item in string.punctuation:
-                        continue
-
-                    overall_word_count += 1
-
-                    if item not in word_dict:
-                        word_dict[item] = 0
-
-                    word_dict[item] += 1
-
-            compared_words.append(word_dict)
-
-        # 1. Count the number of matches (re: bag of words)
-        match_count = 0
-        for item in compared_words[0]:
-            if item in compared_words[1]:
-                match_count += compared_words[0][item] + \
-                               compared_words[1][item]
-
-        # 2. Percentage of poem words that match from a bag of words perspective
-        percent_match = float(match_count) / overall_word_count
-
-
-        return percent_match >= p_requested_percent
-
-
+        return poem_lexicon            
 
     @staticmethod
     def compare_collection_titles(p_tei_folder, p_collection_id1, p_collection_id2):
@@ -653,139 +622,7 @@ class DickinsonPoem:
         matched_titles.sort()
         for title in matched_titles:
             print(title)
-
-    @staticmethod
-    def percent_line_match(p_original_line, p_compared_line, p_prepared_line=False):
-
-        line_words = None
-        compared_line_words = None
-
-        # 0. Make sure we are comparing lists of words
-        # NOTE: If this is a prepared line it is an array sized 2,
-        # array[0] is the line, array[1] is the array of the line's words
-        if p_prepared_line:
-            line_words = p_original_line[1]
-            compared_line_words = p_compared_line[1]
-        else:
-            line_words = p_original_line.strip().split(" ")
-            compared_line_words = p_compared_line.strip().split(" ")
-
-        # Save word counts of each line
-        line_word_count = len(line_words)
-        compared_line_word_count = len(compared_line_words)
-
-        # 1. Try to find an initial word match
-        match_index = -1
-        for index in range(line_word_count):
-            if index < compared_line_word_count and line_words[index] == compared_line_words[index]:
-                match_index = index
-                break
-
-        # If no beginning to matching sequence found, return 0% similarity
-        if -1 == match_index:
-            return 0
-
-        # 2. Count all word matches that follow the initial word match
-        matches = 0
-        for index in range(match_index, line_word_count):
-            if index < compared_line_word_count and line_words[index] == compared_line_words[index]:
-                matches += 1
-
-        # Return percentage match (re: the above match rules) of compared line with original line
-        return float(matches) / float(line_word_count)
-
-    @staticmethod
-    def show_poems_by_collection_id(p_tei_folder):
-
-        all_poems = []
-        manuscript_collections = {}
-
-        # Format folder name
-        p_tei_folder = DickinsonPoem.clean_folder(p_tei_folder)
-
-        # Create DickinsonPoem objects from each TEI file and tally their collection IDs
-        print("Gathering poems and their collection IDs...")
-        for tei_filename in glob.glob(p_tei_folder + "*.tei"):
-
-            poem = DickinsonPoem(tei_filename)
-            
-            if poem.collection_id not in manuscript_collections:
-                manuscript_collections[poem.collection_id] = 0
-            manuscript_collections[poem.collection_id] += 1
-
-        print("Manuscript Collections:\n{0}".format(manuscript_collections))
-
-    @staticmethod
-    def show_poems_by_publication_date(p_tei_folder):
-
-        all_poems = []
-        publication_dates = {}
-
-        # Format folder name
-        p_tei_folder = DickinsonPoem.clean_folder(p_tei_folder)
-
-        # Create DickinsonPoem objects from each TEI file and tally their publication dates
-        print("Gathering poems and their publication dates...")
-        for tei_filename in glob.glob(p_tei_folder + "*.tei"):
-
-            poem = DickinsonPoem(tei_filename)
-            
-            if poem.publication_date not in publication_dates:
-                publication_dates[poem.publication_date] = 0
-            publication_dates[poem.publication_date] += 1
-
-        print("Publication dates:\n{0}".format(publication_dates))
-
-    @staticmethod
-    def show_poems_by_publication_info(p_tei_folder):
-
-        all_poems = []
-        collection_ids = {}
-
-        # Format folder name
-        p_tei_folder = DickinsonPoem.clean_folder(p_tei_folder)
-
-        # Create DickinsonPoem objects from each TEI file and tally their publication info
-        print("Gathering poems and their publication info...")
-        for tei_filename in glob.glob(p_tei_folder + "*.tei"):
-
-            poem = DickinsonPoem(tei_filename)
-            
-            if poem.collection_id not in collection_ids:
-                collection_ids[poem.collection_id] = {}
-            if poem.publication_statement not in collection_ids[poem.collection_id]:
-                collection_ids[poem.collection_id][poem.publication_statement] = 0
-            collection_ids[poem.collection_id][poem.publication_statement] += 1
-
-        for key in collection_ids:
-            print("=================================================")
-            print("ID: {0}".format(key))
-            print("Publication statements:\n{0}".format(collection_ids[key])       )
-
-    @staticmethod
-    def show_collection_titles(p_tei_folder, p_collection_id):
-
-        all_poems = []
-        titles = []
-
-        # Format folder name
-        p_tei_folder = DickinsonPoem.clean_folder(p_tei_folder)
-
-        # Create DickinsonPoem objects from each TEI file and collect their titles for a collection
-        print("Gathering titles for collection {0}...".format(p_collection_id))
-        for tei_filename in glob.glob(p_tei_folder + "*.tei"):
-
-            poem = DickinsonPoem(tei_filename)
-            
-            if p_collection_id == poem.collection_id:
-                titles.append(poem.title)
-
-        # Sort titles alphabetically
-        titles.sort()
-
-        for title in titles:
-            print(title)
-
+    
     @staticmethod
     def gather_poems(p_tei_folder, p_txt_folder, p_publication_date="N/A", p_collection_id="N/A", p_similarity_comparison=True, p_remove_old_plaintext=False):
 
@@ -882,4 +719,275 @@ class DickinsonPoem:
                 all_poems[poem_to_write_index][1] = True
 
         print("Wrote {0} poems to {1}".format(write_count, p_txt_folder))
+
+    @staticmethod
+    def get_numeric_id(p_nonnumeric_id):
+
+        # Which implementation?
+
+        # return int("".join([char for char in p_nonnumeric_id if char.isdigit()]))
+
+        # digit_start_index = -1
+
+        # # 1. Skip all alpha characters in the beginning
+        # for index in range(len(p_nonnumeric_id)):
+        #     if p_nonnumeric_id[index].isalpha():
+        #         continue
+        #     else:
+        #         digit_start_index = index
+        #         break
+
+        # # 2. Numeric ID consists of all characters from first digit onward
+        # numeric_manuscript_id = ""
+        # if digit_start_index >= 0:
+        #     numeric_manuscript_id = p_nonnumeric_id[digit_start_index:]
+
+        # # Warning for ID with no numbers
+        # if 0 == len(numeric_manuscript_id):
+        #     print("Original ID: {0} contains no numbers".format(p_nonnumeric_id))
+
+        # return numeric_manuscript_id        
+
+        temp_manuscript_id = ""
+        for index in range(len(p_nonnumeric_id)):
+            if 0 == index and p_nonnumeric_id[index].isalpha():
+                continue
+            if p_nonnumeric_id[index].isdigit():
+                temp_manuscript_id += p_nonnumeric_id[index]
+            else:
+                break
+
+        if 0 == len(temp_manuscript_id):
+            print("Original ID: {0} becomes zero length".format(p_nonnumeric_id))
+
+        return temp_manuscript_id           
+
+    @staticmethod
+    def is_poem_similar(original_poem, compared_poem):
+
+        # 0. Get poem lines and line counts
+        my_lines = original_poem.lines
+        compared_lines = compared_poem.lines
+        my_lines_count = len(my_lines)
+        compared_lines_count = len(compared_lines)
+
+        # 1. Look for the first highly similar match
+        match_index = -1
+        for index in range(my_lines_count):
+            if index < compared_lines_count and DickinsonPoem.percent_line_match(my_lines[index], compared_lines[index], True) > DickinsonPoem.line_match_threshold:
+                match_index = index
+                break
+
+        # If there are no similar line matches, poems are either different or very dissimilar
+        if -1 == match_index:
+            return False
+
+        # 2. Count the remaining matches
+        matches = 0
+        for index in range(match_index, my_lines_count):
+            if index < compared_lines_count and DickinsonPoem.percent_line_match(my_lines[index], compared_lines[index], True) > DickinsonPoem.line_match_threshold:
+                matches += 1
+
+        # If there is a significant amount of similar lines, then the poems are considered similar
+        return float(matches) / float(my_lines_count) > DickinsonPoem.poem_match_threshold
+
+    @staticmethod
+    def is_poem_similar_bow(p_first_poem, p_second_poem, p_requested_percent=0.9):
+
+        # 0. Get poem words
+        compared_poems = [p_first_poem, p_second_poem]
+        compared_words = []
+        overall_word_count = 0
+        for index in range(len(compared_poems)): 
+            word_dict = {}
+            for line in compared_poems[index].lines:
+                # line_words = line.strip().split(" ")
+                line_words = line[1]
+                for item in line_words:
+
+                    # All items that are solely punctuation are disregarded
+                    if item in string.punctuation:
+                        continue
+
+                    overall_word_count += 1
+
+                    if item not in word_dict:
+                        word_dict[item] = 0
+
+                    word_dict[item] += 1
+
+            compared_words.append(word_dict)
+
+        # 1. Count the number of matches (re: bag of words)
+        match_count = 0
+        for item in compared_words[0]:
+            if item in compared_words[1]:
+                match_count += compared_words[0][item] + \
+                               compared_words[1][item]
+
+        # 2. Percentage of poem words that match from a bag of words perspective
+        percent_match = float(match_count) / overall_word_count
+
+        return percent_match >= p_requested_percent
+
+    @staticmethod
+    def percent_line_match(p_original_line, p_compared_line, p_prepared_line=False):
+
+        line_words = None
+        compared_line_words = None
+
+        # 0. Make sure we are comparing lists of words
+        # NOTE: If this is a prepared line it is an array sized 2,
+        # array[0] is the line, array[1] is the array of the line's words
+        if p_prepared_line:
+            line_words = p_original_line[1]
+            compared_line_words = p_compared_line[1]
+        else:
+            line_words = p_original_line.strip().split(" ")
+            compared_line_words = p_compared_line.strip().split(" ")
+
+        # Save word counts of each line
+        line_word_count = len(line_words)
+        compared_line_word_count = len(compared_line_words)
+
+        # 1. Try to find an initial word match
+        match_index = -1
+        for index in range(line_word_count):
+            if index < compared_line_word_count and line_words[index] == compared_line_words[index]:
+                match_index = index
+                break
+
+        # If no beginning to matching sequence found, return 0% similarity
+        if -1 == match_index:
+            return 0
+
+        # 2. Count all word matches that follow the initial word match
+        matches = 0
+        for index in range(match_index, line_word_count):
+            if index < compared_line_word_count and line_words[index] == compared_line_words[index]:
+                matches += 1
+
+        # Return percentage match (re: the above match rules) of compared line with original line
+        return float(matches) / float(line_word_count)
+
+    @staticmethod
+    def show_collection_titles(p_tei_folder, p_collection_id):
+
+        all_poems = []
+        titles = []
+
+        # Format folder name
+        p_tei_folder = DickinsonPoem.clean_folder(p_tei_folder)
+
+        # Create DickinsonPoem objects from each TEI file and collect their titles for a collection
+        print("Gathering titles for collection {0}...".format(p_collection_id))
+        for tei_filename in glob.glob(p_tei_folder + "*.tei"):
+
+            poem = DickinsonPoem(tei_filename)
+            
+            if p_collection_id == poem.collection_id:
+                titles.append(poem.title)
+
+        # Sort titles alphabetically
+        titles.sort()
+
+        for title in titles:
+            print(title)
+
+    @staticmethod
+    def show_poems_by_collection_id(p_tei_folder):
+
+        all_poems = []
+        manuscript_collections = {}
+
+        # Format folder name
+        p_tei_folder = DickinsonPoem.clean_folder(p_tei_folder)
+
+        # Create DickinsonPoem objects from each TEI file and tally their collection IDs
+        print("Gathering poems and their collection IDs...")
+        for tei_filename in glob.glob(p_tei_folder + "*.tei"):
+
+            poem = DickinsonPoem(tei_filename)
+            
+            if poem.collection_id not in manuscript_collections:
+                manuscript_collections[poem.collection_id] = 0
+            manuscript_collections[poem.collection_id] += 1
+
+        print("Manuscript Collections:\n{0}".format(manuscript_collections))
+
+    @staticmethod
+    def show_poems_by_publication_date(p_tei_folder):
+
+        all_poems = []
+        publication_dates = {}
+
+        # Format folder name
+        p_tei_folder = DickinsonPoem.clean_folder(p_tei_folder)
+
+        # Create DickinsonPoem objects from each TEI file and tally their publication dates
+        print("Gathering poems and their publication dates...")
+        for tei_filename in glob.glob(p_tei_folder + "*.tei"):
+
+            poem = DickinsonPoem(tei_filename)
+            
+            if poem.publication_date not in publication_dates:
+                publication_dates[poem.publication_date] = 0
+            publication_dates[poem.publication_date] += 1
+
+        print("Publication dates:\n{0}".format(publication_dates))
+
+    @staticmethod
+    def show_poems_by_publication_info(p_tei_folder):
+
+        all_poems = []
+        collection_ids = {}
+
+        # Format folder name
+        p_tei_folder = DickinsonPoem.clean_folder(p_tei_folder)
+
+        # Create DickinsonPoem objects from each TEI file and tally their publication info
+        print("Gathering poems and their publication info...")
+        for tei_filename in glob.glob(p_tei_folder + "*.tei"):
+
+            poem = DickinsonPoem(tei_filename)
+            
+            if poem.collection_id not in collection_ids:
+                collection_ids[poem.collection_id] = {}
+            if poem.publication_statement not in collection_ids[poem.collection_id]:
+                collection_ids[poem.collection_id][poem.publication_statement] = 0
+            collection_ids[poem.collection_id][poem.publication_statement] += 1
+
+        for key in collection_ids:
+            print("=================================================")
+            print("ID: {0}".format(key))
+            print("Publication statements:\n{0}".format(collection_ids[key]))
+
+    @staticmethod
+    def strip_punctuation(word):
+
+        return "".join([c for c in word if c not in string.punctuation]).strip()
+
+    @staticmethod
+    def tokenize(p_line):
+
+        # 1. Strip the line of whitespace
+        p_line = p_line.strip()
+
+        # 2. Strip leading/trailing punctuation
+        p_line = DickinsonPoem.strip_punctuation(p_line)
+
+        # 3. Strip the line of whitespace again
+        p_line = p_line.strip()
+
+        # 4. Split the line into tokens by internal whitespace
+        p_line = p_line.replace("\n", " ")
+        p_line = p_line.replace("\t", " ")
+        line_tokens = p_line.split(" ")
+
+        # 5. Strip tokens of leading/trailing punctuation
+        for index in range(len(line_tokens)):
+            line_tokens[index] = DickinsonPoem.strip_punctuation(line_tokens[index])
+
+        # 6. Return all non-empty tokens in lowercase form
+        return [token.lower() for token in line_tokens if "" != token]    
 
