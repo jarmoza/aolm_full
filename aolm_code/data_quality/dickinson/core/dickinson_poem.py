@@ -394,6 +394,21 @@ class DickinsonPoem:
                     # Write to plain text file
                     output_file.write(str(output_line).encode("utf-8"))
 
+    def create_bow_vector(self, p_lexicon, p_top_words="all"):
+
+        # 1. Tally unique tokens in this text
+        self.m_bow_vector = [0] * len(p_lexicon)
+        body_words_counter = Counter(self.m_body_words)
+        
+        # 2. Create a vector with entries counting the words in this text for the given lexicon
+        for index in range(len(p_lexicon)):
+            if p_lexicon[index] in body_words_counter:
+                self.m_bow_vector[index] = body_words_counter[p_lexicon[index]]
+
+        # 3. Return only the top N words, if requested
+        if "all" != p_top_words:
+            self.m_bow_vector = self.m_bow_vector[0:p_top_words]                    
+
     # NOTE: Needs re-implementation (J. Armoza 08/19/2019) 
     # Purpose: Consider more complex annotations made in the TEI files
     def get_formatted_stanzas(self, with_formatting=False, use_alternate_lines=False):
