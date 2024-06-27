@@ -1,9 +1,17 @@
+# Author: Jonathan Armoza
+# Created:
+# Purpose: Debug logging library for The Art of Literary Modeling
 
-# Condition-less general debug output
-import logging
+# Imports
 
-# Loop progress output
-from tqdm import tqdm
+# Built-ins
+
+import logging  # Condition-less general debug output
+
+# Third party
+
+from tqdm import tqdm   # # Loop progress output
+
 
 # Source: https://stackoverflow.com/questions/38543506/change-logging-print-function-to-tqdm-write-so-logging-doesnt-interfere-wit
 # Initial source: https://github.com/tqdm/tqdm/issues/313 from user https://github.com/lrq3000
