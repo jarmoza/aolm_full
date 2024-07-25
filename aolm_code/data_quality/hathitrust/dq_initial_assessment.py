@@ -40,10 +40,10 @@ class AOLM_DQProfile:
 
 		# Get metadata from the feature reader one volume at a time
 		self.m_metadata = fr.get_next_volume_metadata()
-		print "======================="
-		print "Metadata for {0}".format(os.path.basename(p_filepath))
-		print self.m_metadata
-		print "======================="
+		print("=======================")
+		print("Metadata for {0}".format(os.path.basename(p_filepath)))
+		print(self.m_metadata)
+		print("=======================")
 
 
 	def output_profile(self, p_output_path, p_indent=4):
@@ -59,7 +59,7 @@ class AOLM_DQProfile:
 			# Get ready to tally metadata
 			self.__read_metadata(filename)
 
-			print "Profiling {0}....".format(filename)
+			print("Profiling {0}....".format(filename))
 
 			# Go through the metadata schema and profile the actual metadata
 			# (assumes unique metadata keys)
@@ -77,7 +77,7 @@ class AOLM_DQProfile:
 					else:
 						self.profile_unary_nonstring_field(key)
 
-			print "Done file {0} of {1}".format(debug_index, len(self.m_metadata_filenames))
+			print("Done file {0} of {1}".format(debug_index, len(self.m_metadata_filenames)))
 			debug_index += 1
 
 	# Current implementation assumes single data type for dict values
