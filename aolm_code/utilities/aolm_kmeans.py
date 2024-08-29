@@ -31,9 +31,7 @@ class AOLM_KMeans:
 		self.m_cluster_labels = None
 
 
-	# Properties 
-
-
+	# Properties
 	@property
 	def clusterer(self):
 		return self.m_clusterer
@@ -53,7 +51,6 @@ class AOLM_KMeans:
 	def data_name(self):
 		return self.m_data_name
 	
-
 	@property
 	def silhouette_avg(self):
 		return self.m_silhouette_avg
