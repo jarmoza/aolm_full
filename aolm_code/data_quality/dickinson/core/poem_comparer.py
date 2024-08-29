@@ -6,44 +6,44 @@
 
 class PoemComparer(object):
 
-	# Constructor
+    # Constructor
 
-	def __init__(self):
+    def __init__(self):
 
-		self.m_poem_lists = {}
-		self.m_comparison_method = None
+        self.m_poem_lists = {}
+        self.m_comparison_method = None
 
-	# Public methods
+    # Public methods
 
-	def compare(self, p_poem_object1, p_poem_object2, p_options=None, p_comparison_method=None):
+    def compare(self, p_poem_object1, p_poem_object2, p_options=None, p_comparison_method=None):
 
-		# 0. Comparison method defaults to assigned method if not given
-		comparison_method = p_comparison_method if p_comparison_method else self.m_comparison_method
+        # 0. Comparison method defaults to assigned method if not given
+        comparison_method = p_comparison_method if p_comparison_method else self.m_comparison_method
 
-		# 1. String comparison methods
-		expected_percent_match = 100
-		if p_options:
-			try
-				expected_percent_match = p_options["expected_percent_match"]
-			except:
-				print("Error: Percent match not found in title_compare() options...")
+        # 1. String comparison methods
+        expected_percent_match = 100
+        if p_options:
+            try:
+                expected_percent_match = p_options["expected_percent_match"]
+            except:
+                print("Error: Percent match not found in title_compare() options...")
 
 
-	# Static methods
+    # Static methods
 
-	# Comparison methods
+    # Comparison methods
 
-	@staticmethod
-	def title_compare(self, p_poem_object1, p_poem_object2, p_options=None):
+    @staticmethod
+    def title_compare(self, p_poem_object1, p_poem_object2, p_options=None):
 
-		return PoemComparer.percent_line_match(p_poem_object1.title, p_poem_object2.title)
+        return PoemComparer.percent_line_match(p_poem_object1.title, p_poem_object2.title)
 
-	# Utility methods
+    # Utility methods
 
     @staticmethod
     def percent_line_match(p_original_line, p_compared_line):
 
-    	# 0. Clean lines of white space and split into separate tokens for comparison
+        # 0. Clean lines of white space and split into separate tokens for comparison
         line_words = p_original_line.strip().split(" ")
         compared_line_words = p_compared_line.strip().split(" ")
 
@@ -72,7 +72,7 @@ class PoemComparer(object):
         return float(matches) / float(line_word_count)
 
 
-		
+        
 
 
 
