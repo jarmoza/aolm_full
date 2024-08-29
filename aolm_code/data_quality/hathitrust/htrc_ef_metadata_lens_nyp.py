@@ -38,7 +38,7 @@ class AOLM_HTRCFeatureReader:
 	def get_next_filename(self):
 
 		next_filename = self.m_ef_filenames[self.m_file_index]
-		print "Getting metadata for {0}....".format(next_filename)
+		print("Getting metadata for {0}....".format(next_filename))
 		self.m_file_index += 1
 		self.m_at_first_file_index = False
 		if len(self.m_ef_filenames) == self.m_file_index:
@@ -100,7 +100,7 @@ class AOLM_HTRCFeatureReader:
 
 def main():
 
-	print "Getting metadata from files in:" + extracted_features_filepath
+	print("Getting metadata from files in:" + extracted_features_filepath)
 
 	# Get all HTRC compressed EF filenames in this filepath
 	extracted_features_filenames = glob.glob(extracted_features_filepath + "*.json.bz2")
