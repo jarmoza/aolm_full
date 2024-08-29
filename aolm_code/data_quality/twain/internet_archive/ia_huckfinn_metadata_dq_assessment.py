@@ -9,11 +9,12 @@ import glob
 import json
 import os
 from collections import Counter
+from framework.dq_assessment import DataQualityAssessment
 
 
 # Classes
 
-class InternetArchiveMetadata_Assessment:
+class InternetArchiveMetadata_Assessment(DataQualityAssessment):
 
     # Constructor and private methods
 
@@ -158,17 +159,17 @@ def main():
         "year"
     ]
 
-    print(f"Should be high on {ia_assessment_obj.text_count} works...")
-    for key in should_be_high_keys:
-        count_dict = Counter(ia_assessment_obj.tag_values(key))
-        print("=" * 80)
-        print(f"{key}: {count_dict}")
-
-    # print(f"Might be high on {ia_assessment_obj.text_count} works...")
-    # for key in might_be_high_keys:
+    # print(f"Should be high on {ia_assessment_obj.text_count} works...")
+    # for key in should_be_high_keys:
     #     count_dict = Counter(ia_assessment_obj.tag_values(key))
     #     print("=" * 80)
-    #     print(f"{key}: {count_dict}")        
+    #     print(f"{key}: {count_dict}")
+
+    print(f"Might be high on {ia_assessment_obj.text_count} works...")
+    for key in might_be_high_keys:
+        count_dict = Counter(ia_assessment_obj.tag_values(key))
+        print("=" * 80)
+        print(f"{key}: {count_dict}")        
 
 if "__main__" == __name__:
     main()
