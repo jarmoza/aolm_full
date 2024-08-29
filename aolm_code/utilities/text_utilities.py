@@ -1,0 +1,76 @@
+# Author: Jonathan Armoza
+# Created: August 28, 2024
+# Purpose: Houses generic text ingestion, manipulation, and visualtion
+# functions for the Art of Literary Modeling
+
+# Imports
+
+# Built-ins
+from collections import Counter
+from collections import OrderedDict
+from math import ceil
+import os
+
+# Third party
+import nltk
+from plotly.subplots import make_subplots
+import plotly.graph_objects as go
+
+def count_words_and_plot(p_text_filepath, p_top_words=10):
+
+    nltk.download("punkt")
+
+    # 1. Read in text file
+    text_data = {}
+    with open(p_text_filepath, "r") as input_file:
+        text_data[os.path.basename(p_text_filepath)] = input_file.readlines()
+
+    # 2. Clean and tokenize each text in the json file
+    token_dict = {}
+    for text in text_data:
+        token_dict[text] = nltk.word_tokenize("\n".join(text_data[text]))
+
+    # 3. Plot the counts of each given text
+    number_cols = 2
+    number_rows = ceil(len(text_data) / number_cols)
+    i = 1
+    j = 1
+
+    print(f"number_cols: {number_cols}")
+    print(f"number_rows: {number_rows}")
+
+    # A. Create the plotly figure
+    fig = make_subplots(rows=number_rows, cols=number_cols)
+
+    # B. Create a plot for each text's word frequencies
+    for text in text_data:
+
+        # I. Create an ordered dictionary of the word frequencies
+        # word_frequencies = OrderedDict(Counter(token_dict[text]))
+        word_frequencies = Counter(token_dict[text])
+        sorted_wordfreq_tuples = sorted(word_frequencies.items(), key=lambda item: item[1], reverse=True)
+
+        # II. Create a new bar plot based on the text's word frequencies
+        fig.add_trace(
+            go.Bar(x=[word_tuple[0] for word_tuple in sorted_wordfreq_tuples[0:p_top_words]],
+                   y=[word_tuple[1] for word_tuple in sorted_wordfreq_tuples[0:p_top_words]]),
+            row=i, col=j
+        )
+
+        # III. Increment rows and columns indices
+        j += 1
+        if j > 2:
+            i += 1
+            j = 1
+    
+    # C. Show the plot
+    fig.show()
+    
+def main():
+
+    huckfinn_path = "..{0}..{0}data{0}twain{0}huckleberry_finn{0}project_gutenberg{0}txt{0}2011-05-03-HuckFinn.txt".format(os.sep)
+    count_words_and_plot(huckfinn_path)
+
+if "__main__" == __name__:
+    main()
+
