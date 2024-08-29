@@ -5,3 +5,11 @@
 class DataQualityAssessment:
 
     pass
+
+class ContextualDataQualityAssessment(DataQualityAssessment):
+
+    pass
+
+class RepresentationalDataQualityAssessment(DataQualityAssessment):
+
+    pass
