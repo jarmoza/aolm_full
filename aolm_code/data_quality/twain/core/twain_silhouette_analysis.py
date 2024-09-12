@@ -1,7 +1,23 @@
-# Code from https://scikit-learn.org/stable/auto_examples/cluster/plot_kmeans_silhouette_analysis.html
-# "Selecting the number of clusters with silhouette analysis on KMeans clustering"
-# Taken on August 10, 2021
+# Author: Jonathan Armoza
+# Created: August 10, 2021
+# Purpose: Perform cleanup, k-means clustering, and silhouette analysis on Mark Twain's autobiography
 
+# Imports
+
+# Built-ins
+
+from collections import Counter
+import glob
+from math import log10
+import os
+import string
+
+# Third party
+
+from gensim.models import Word2Vec
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+import numpy as np
 from sklearn.cluster import AgglomerativeClustering
 from sklearn.cluster import KMeans
 from sklearn.datasets import make_blobs
@@ -10,9 +26,11 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.manifold import TSNE
 from sklearn.metrics import silhouette_samples, silhouette_score
 
-import matplotlib.pyplot as plt
-import matplotlib.cm as cm
-import numpy as np
+# NOTE: Code from https://scikit-learn.org/stable/auto_examples/cluster/plot_kmeans_silhouette_analysis.html
+# "Selecting the number of clusters with silhouette analysis on KMeans clustering"
+# Taken on August 10, 2021
+
+# Sample code
 
 # print(__doc__)
 
@@ -30,32 +48,21 @@ import numpy as np
 # range_n_clusters = [2, 3, 4, 5, 6]
 
 
-# Imports
-
-# Built-ins
-
-from collections import Counter
-import glob
-from math import log10
-import os
-import string
-
-# Third party
-
-from gensim.models import Word2Vec
-import numpy as np
-
-
 # Globals
 
 data_path = "{0}{1}output{1}twain_autobio{1}".format(os.getcwd(), os.sep)
+ignore_word_chars_ord = [9674]
+remove_chars_ord = [8221, 9671, 91]
 split_chars = ".?!,:;‚—"
 split_chars_ord = [160, 8211, 8216, 8220]
 split_chars_ord.extend([ord(ch) for ch in split_chars])
-remove_chars_ord = [8221, 9671, 91]
-ignore_word_chars_ord = [9674]
 substitution_chars_ord = [8214, 124, 8201]
 text_count = 0
+
+
+# Utility functions
+
+# Text processing functions
 
 def contains_non_alpha(p_string):
     return any([not is_alpha(ch) for ch in p_string])
@@ -174,6 +181,8 @@ def filter_nonwords(p_word_list):
 
     return new_word_list
 
+# Data visualization functions
+
 def plot_kmeans_and_silhouette(p_tf_idf_vectors):
 
     # Do principle component analysis on vectors
@@ -289,7 +298,8 @@ def plot_tsne_pca(data, labels):
     
     ax[1].scatter(tsne[idx, 0], tsne[idx, 1], c=label_subset)
     ax[1].set_title('TSNE Cluster Plot')
-#Objects
+
+# Classes
 
 # Object that holds Twain text
 class TwainText(object):
