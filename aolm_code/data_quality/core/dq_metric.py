@@ -3,20 +3,19 @@
 # Purpose: Contains the abstract base class to be implemented by all 'Art of
 #          Literary Modeling' data quality metrics
 
-
 # Imports
 
-# Standard libraries
+# Built-ins
 from abc import ABC, abstractmethod     # Python abstract classes
-
 
 # Classes
 
 """
-    'DataQualityMetric' is an abstract base class for data quality metric
-    classes. This abstraction is made so that metrics may have a standardized
-    set of methods and properties so that they may be collected and acted upon
-    uniformly across different sets of analyses.
+    'DataQualityMetric' is an abstract base class for all data quality metric
+    objects. This abstraction is made for metrics to have a standardized set of
+    methods and properties so that they may be collected and acted upon
+    uniformly across different sets of analyses (i.e. in a data quality
+    assessment framework).
 """
 class DataQualityMetric(ABC):
 
