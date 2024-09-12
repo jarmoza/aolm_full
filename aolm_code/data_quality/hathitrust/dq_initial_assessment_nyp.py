@@ -32,8 +32,7 @@ metadata_info = {
 			"title": ["str"],
 			"typeOfResource": ["str"],
 			"volumeIdentifier": ["str", "unique_id"]   
-		}	
-
+		}
 	},
 
 	"expectations": {
@@ -68,7 +67,6 @@ metadata_info = {
 		}
 
 	}
-
 }
 
 metadata_expectation_info = {

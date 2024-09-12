@@ -1,4 +1,6 @@
-# Module for comparison of data quality metrics between texts
+# Author: Jonathan Armoza
+# Created: 
+# Purpose: Module for comparison of data quality metrics between texts
 
 
 # Imports 
