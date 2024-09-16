@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8"/>
+  </head>
+  <body>
+    <ul id="mN2FCwHB">
+      <li id="3C" data-type="heading">
+        <p>AOLM Text Ingestion</p>
+      </li>
+      <li id="E4">
+        <p/>
+      </li>
+      <li id="xC">
+        <p><strong>Basic Functions</strong></p>
+        <ul>
+          <li id="XS">
+            <p>Read in text from file</p>
+            <ul>
+              <li id="t1">
+                <p>Txt format</p>
+                <ul>
+                  <li id="Cp">
+                    <p>Using a given reading method (abstract child-object basis)</p>
+                  </li>
+                </ul>
+              </li>
+              <li id="ZI">
+                <p>Tei format</p>
+                <ul>
+                  <li id="W-">
+                    <p>Conversion to plain text</p>
+                  </li>
+                  <li id="cXB">
+                    <p>Read values of specific tei tags</p>
+                  </li>
+                  <li id="vTX">
+                    <p>Input reading functions for specific texts</p>
+                  </li>
+                </ul>
+              </li>
+              <li id="N5">
+                <p>Hathitrust exploded text format</p>
+              </li>
+            </ul>
+          </li>
+          <li id="Xh">
+            <p>Separate text body from its metadata components</p>
+            <ul>
+              <li id="gXT">
+                <p>Doing so on a text-specific basis for its components</p>
+              </li>
+            </ul>
+          </li>
+          <li id="yr">
+            <p>Store text as object</p>
+          </li>
+          <li id="WEN">
+            <p>Rehydrating texts output as objects back into memory</p>
+          </li>
+          <li id="V0">
+            <p>Store text as vectors</p>
+          </li>
+          <li id="2l">
+            <p>Store texts as collections of objects</p>
+          </li>
+          <li id="rf">
+            <p>Text comparison</p>
+            <ul>
+              <li id="Af">
+                <p>Whole text match</p>
+              </li>
+              <li id="J6">
+                <p>Line match</p>
+              </li>
+            </ul>
+          </li>
+          <li id="Lp">
+            <p>Tokenize</p>
+            <ul>
+              <li id="3p">
+                <p>manual</p>
+              </li>
+              <li id="7B">
+                <p>nltk</p>
+              </li>
+            </ul>
+          </li>
+          <li id="B-">
+            <p>Cleaning</p>
+          </li>
+          <li id="_F">
+            <p>Remove stopwords</p>
+            <ul>
+              <li id="MF">
+                <p>voyant</p>
+              </li>
+            </ul>
+          </li>
+          <li id="Uc">
+            <p>Stylistic measurements</p>
+            <ul>
+              <li id="cf">
+                <p>Kilgariff Chi-Squared</p>
+              </li>
+              <li id="R6">
+                <p>TF-IDF</p>
+                <ul>
+                  <li id="uO">
+                    <p>TF-IDF vectors</p>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li id="Qd">
+            <p>Determine lexicon/vocabulary of a text</p>
+          </li>
+          <li id="Lc">
+            <p>Compiling statistics</p>
+            <ul>
+              <li id="y6">
+                <p>Token frequency</p>
+              </li>
+            </ul>
+          </li>
+          <li id="FD">
+            <p>Output</p>
+            <ul>
+              <li id="Fj">
+                <p>Metadata</p>
+              </li>
+              <li id="0B">
+                <p>Statistics</p>
+              </li>
+              <li id="hu">
+                <p>Stylistic measurements</p>
+              </li>
+            </ul>
+          </li>
+          <li id="8no">
+            <p/>
+          </li>
+          <li id="2rE">
+            <p/>
+          </li>
+          <li id="KV">
+            <p><strong>AOLMTextReader</strong><span> - Function-based, factory class for reading (produces objects from file or object file [e.g. rehydration])</span></p>
+            <ul>
+              <li id="7VX">
+                <p>AoLM_TextCleaner</p>
+              </li>
+              <li id="Sxv">
+                <p>TextCollection (read all texts into one string)</p>
+              </li>
+              <li id="AT3">
+                <p>Text</p>
+              </li>
+              <li id="rrq">
+                <p>BoltsReader</p>
+              </li>
+              <li id="R6H">
+                <p>DickinsonCollection</p>
+              </li>
+              <li id="-LY">
+                <p>GutenbergDickinsonPoem</p>
+              </li>
+              <li id="eQL">
+                <p>DickinsonPoem</p>
+              </li>
+              <li id="Ikm">
+                <p>PoemReader</p>
+              </li>
+              <li id="_NQ">
+                <p>EDCText</p>
+              </li>
+              <li id="-xO">
+                <p>DickinsonPoem (in fasicle_categorization.py)</p>
+              </li>
+              <li id="sWT">
+                <p>AOLM_HTRCFeatureReader</p>
+              </li>
+              <li id="RxQ">
+                <p>TwainText</p>
+              </li>
+              <li id="dGl">
+                <p>ProjectGutenbergText</p>
+              </li>
+              <li id="8MO">
+                <p>HuckleberryFinn</p>
+              </li>
+              <li id="rW-">
+                <p>GutenbergReader</p>
+              </li>
+              <li id="GfQ">
+                <p>MTPO_Volume</p>
+              </li>
+            </ul>
+          </li>
+          <li id="S0N">
+            <p><strong>AOLMText</strong><span> - Text object base class (text objects share common properties so that they can be generically examined)</span></p>
+          </li>
+          <li id="Nrv">
+            <p><strong>AOLMTextCleaner</strong><span> - Various cleaning, removing stopwords methods (works on text objects)</span></p>
+            <ul>
+              <li id="KPZ">
+                <p>aolm_utilities contains generic methods that AOLMTextCleaner can draw from?</p>
+              </li>
+            </ul>
+          </li>
+          <li id="sU6">
+            <p><strong>AOLMTextInfo</strong><span> - Produces tokens, stats, vocab, stylistic measurements, output methods (works on text objects)</span></p>
+          </li>
+          <li id="6tZ">
+            <p/>
+          </li>
+          <li id="JXU">
+            <p>Data quality classes work on these text objects</p>
+          </li>
+          <li id="h3V">
+            <p/>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </body>
+</html>
