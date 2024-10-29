@@ -1,0 +1,1058 @@
+<xml>
+	<div1 type="chapter" xml:id="la0238">
+        
+        <pb n="1" xml:id="pb0001"/>
+        
+        <head rend="toc">Chapter I.</head>
+        
+        <figure rend="ch-init" xml:id="y00101">
+          <graphic url="y00101.jpg"/>
+          <ab type="transcript">
+            <anchor type="app" xml:id="pr0070"/>
+            <anchor type="an" xml:id="se0001"/>
+The Adventures of Huckleberry Finn. Chapter I.
+
+            <ptr target="#ak0006" type="an" xml:id="se0002"/>
+            <app from="pr0070" n="1 title illus (1 title)" type="e" xml:id="la1022">
+              <lem wit="A">
+The Adventures of Huckleberry Finn
+
+                <lb/>
+Chapter I.
+
+              </lem>
+              <rdg wit="MS1a">
+                <hi rend="smallcaps">Huckleberry Finn</hi>
+                <lb/>
+Reported by
+
+                <lb/>
+                <hi rend="smallcaps">Mark Twain</hi>
+                <lb/>
+CHAP. 1.
+
+              </rdg>
+            </app>
+          </ab>
+          <ab type="transcript">
+            <anchor type="an" xml:id="se0003"/>
+            <anchor type="app" xml:id="pr0071"/>
+            <anchor type="alt" xml:id="tg0007"/>
+            <hi rend="smallcaps">You</hi>
+            <ptr target="#la8582" type="alt" xml:id="te0007"/>
+            <app from="pr0071" n="1.1 illus (1.1)" type="e" xml:id="la1023">
+              <lem wit="A">
+                <hi rend="smallcaps">You</hi>
+              </lem>
+              <rdg wit="MS1a">You</rdg>
+            </app>
+          </ab>
+        </figure>
+        <figure rend="ch-left" xml:id="hf0101">
+          <graphic url="hf0101.jpg"/>
+          <ab type="caption">
+            <hi rend="smallcaps">the widow’s</hi>
+.
+
+          </ab>
+        </figure>
+
+        <p rend="noindent" xml:id="d1e3547">
+          <anchor type="app" xml:id="pr0072"/>
+          <anchor type="alt" xml:id="tg0008"/>
+don’t
+
+          <ptr target="#la8583" type="alt" xml:id="te0008"/>
+          <app from="pr0072" n="1.1 (1.1)" type="e" xml:id="la1024">
+            <lem wit="A">don’t</lem>
+            <rdg wit="MS1a">do n’t</rdg>
+          </app>
+know about me, without you have read a book by the name of “The Adventures of
+
+          <anchor type="an" xml:id="se0005"/>
+Tom
+
+          <anchor type="app" xml:id="pr0073"/>
+Sawyer
+
+          <ptr target="#as0008" type="an" xml:id="se0006"/>
+,”
+
+          <ptr target="#ak0007" type="an" xml:id="se0004"/>
+but that ain’t no matter.
+
+          <app from="pr0073" n="1.4-5 (1.5)" type="e" xml:id="la1025">
+            <lem wit="A">Sawyer,” but . . . matter.</lem>
+            <rdg wit="MS1a">Sawyer.”</rdg>
+          </app>
+That book was made by Mr. Mark Twain, and he told the truth, mainly. There was things which he stretched, but mainly he told the truth. That is
+
+          <anchor type="app" xml:id="pr0074"/>
+          <anchor type="alt" xml:id="tg0009"/>
+nothing
+
+          <ptr target="#la8584" type="alt" xml:id="te0009"/>
+.
+
+          <app from="pr0074" n="1.9-10 (1.10-11)" type="e" xml:id="la1026">
+            <lem wit="A">nothing</lem>
+            <rdg wit="MS1a">
+              <corr>◇◇◇◇◇</corr>
+              <lb/>
+ing
+
+              <note place="inline" resp="MTP" type="ed" xml:id="de1027">
+page torn; i.e.
+
+                <hi rend="normal">
+‘noth-
+
+                  <lb/>
+ing’
+
+                </hi>
+              </note>
+            </rdg>
+          </app>
+I never seen
+
+          <anchor type="app" xml:id="pr0075"/>
+          <anchor type="alt" xml:id="tg0010"/>
+anybody
+
+          <ptr target="#la8585" type="alt" xml:id="te0010"/>
+          <app from="pr0075" n="1.10 (1.11-2.1)" type="e" xml:id="la1028">
+            <lem wit="A">anybody</lem>
+            <rdg wit="MS1a">
+              <corr>◇◇◇◇</corr>
+              <milestone unit="page"/>
+body
+
+              <note place="inline" resp="MTP" type="ed" xml:id="de1029">
+page torn; i.e.
+
+                <hi rend="normal">
+‘any-
+
+                  <milestone unit="page"/>
+body’
+
+                </hi>
+              </note>
+            </rdg>
+          </app>
+but lied, one time or another, without it was
+
+          <anchor type="an" xml:id="se0007"/>
+          <anchor type="app" xml:id="pr0076"/>
+aunt
+
+          <app from="pr0076" n="1.12 (2.2)" type="hc" xml:id="la1030">
+            <lem wit="MS1a">aunt</lem>
+            <rdg wit="A">Aunt</rdg>
+          </app>
+          <anchor type="app" xml:id="pr0077"/>
+Polly
+
+          <ptr target="#as0009" type="an" xml:id="se0008"/>
+,
+
+          <app from="pr0077" n="1.14 (2.5)" type="hc" xml:id="la1031">
+            <lem wit="MS1a">Polly,</lem>
+            <rdg wit="A">
+Polly
+
+              <hi rend="subscript">⁁</hi>
+            </rdg>
+          </app>
+or the widow,
+
+          <anchor type="alt" xml:id="tg0011"/>
+or maybe
+
+          <ptr target="#la8586" type="alt" xml:id="te0011"/>
+          <anchor type="an" xml:id="se0009"/>
+Mary
+
+          <ptr target="#as0010" type="an" xml:id="se0010"/>
+. Aunt Polly,
+
+          <anchor type="alt" xml:id="tg0012"/>
+—Tom’s
+
+          <ptr target="#la8587" type="alt" xml:id="te0012"/>
+          <anchor type="app" xml:id="pr0078"/>
+aunt
+
+          <app from="pr0078" n="1.14 (2.6)" type="hc" xml:id="la1032">
+            <lem wit="MS1a">aunt</lem>
+            <rdg wit="A">Aunt</rdg>
+          </app>
+Polly, she
+
+          <anchor type="app" xml:id="pr0079"/>
+is
+
+          <app from="pr0079" n="1.15 (2.6)" type="e" xml:id="la1033">
+            <lem wit="A">is</lem>
+            <rdg wit="MS1a">was</rdg>
+          </app>
+—and Mary, and
+
+          <anchor type="an" xml:id="se0011"/>
+the
+
+          <anchor type="app" xml:id="pr0080"/>
+widow
+
+          <app from="pr0080" n="1.15 (2.7)" type="hc" xml:id="la1034">
+            <lem wit="MS1a">widow</lem>
+            <rdg wit="A">Widow</rdg>
+          </app>
+Douglas
+
+          <ptr target="#as0011" type="an" xml:id="se0012"/>
+, is all told about in that book—which is
+
+          <anchor type="app" xml:id="pr0081"/>
+mostly
+
+          <app from="pr0081" n="1.17 (2.10)" type="e" xml:id="la1035">
+            <lem wit="A">mostly</lem>
+            <rdg wit="MS1a">mainly</rdg>
+          </app>
+a true book; with some stretchers, as I said before.
+
+        </p>
+        <p rend="text-indent:2" xml:id="d1e3680">
+Now
+
+          <anchor type="app" xml:id="pr0082"/>
+the
+
+          <app from="pr0082" n="1.19 (2.12)" type="e" xml:id="la1036">
+            <lem wit="A">the</lem>
+            <rdg wit="MS1a">that</rdg>
+          </app>
+way that the book winds up, is
+
+          <anchor type="app" xml:id="pr0083"/>
+this:
+
+          <app from="pr0083" n="1.19 (2.14)" type="e" xml:id="la1037">
+            <lem wit="A">this:</lem>
+            <rdg wit="MS1a">this.</rdg>
+          </app>
+Tom and me found the money that the robbers hid in the cave, and it made us rich. We got six thousand dollars apiece—all gold. It was an awful sight of money when it was piled up. Well,
+
+          <anchor type="an" xml:id="se0013"/>
+Judge Thatcher
+
+          <ptr target="#as0012" type="an" xml:id="se0014"/>
+, he took it and put it out at interest, and it fetched us a dollar a day apiece, all the year round—more than a body could tell what to do with. The
+
+          <anchor type="app" xml:id="pr0084"/>
+widow
+
+          <app from="pr0084" n="1.25 (3.7)" type="hc" xml:id="la1038">
+            <lem wit="MS1a">widow</lem>
+            <rdg wit="A">Widow</rdg>
+          </app>
+          <anchor type="app" xml:id="pr0085"/>
+Douglas
+
+          <app from="pr0085" n="1.25 (3.8)" type="hc" xml:id="la1039">
+            <lem wit="MS1a">Douglas</lem>
+            <rdg wit="A">Douglas,</rdg>
+          </app>
+she took me for her son,
+
+          <anchor type="app" xml:id="pr0086"/>
+and allowed she would sivilize me;
+
+          <app from="pr0086" n="1.25–26 (3.9)" type="e" xml:id="la1040">
+            <lem wit="A">and . . . me;</lem>
+            <rdg wit="MS1a">
+              <note place="inline" resp="MTP" type="ed" xml:id="de1041">not in</note>
+            </rdg>
+          </app>
+but it was rough living in the house all the time, considering how dismal regular and decent the widow was in all her ways; and so when I couldn’t stand it no longer, I lit out. I got into my old rags, and my
+
+          <anchor type="app" xml:id="pr0087"/>
+sugar hogshead
+
+          <app from="pr0087" n="1.29 (3.18-19)" type="e" xml:id="la1042">
+            <lem wit="C">sugar hogshead</lem>
+            <rdg wit="MS1a">
+sugar hogs-
+
+              <lb/>
+head
+
+            </rdg>
+            <rdg wit="A">sugar-hogshead</rdg>
+          </app>
+again, and was free
+
+          <anchor type="alt" xml:id="tg0013"/>
+and satisfied.
+
+          <ptr target="#la8588" type="alt" xml:id="te0013"/>
+But Tom
+
+          <anchor type="app" xml:id="pr0088"/>
+Sawyer
+
+          <app from="pr0088" n="1.30 (3.21)" type="hc" xml:id="la1043">
+            <lem wit="MS1a">Sawyer</lem>
+            <rdg wit="A">Sawyer,</rdg>
+          </app>
+he hunted me up and said he was going to
+
+          <pb n="2" xml:id="pb0002"/>
+start a band of robbers, and I might join if I would go back to the widow and be respectable. So I went back.
+
+        </p>
+        <p rend="text-indent:2" xml:id="d1e3755">
+The widow she cried over me, and called me a poor lost lamb, and she called me
+
+          <anchor type="alt" xml:id="tg0014"/>
+a lot of
+
+          <ptr target="#la8589" type="alt" xml:id="te0014"/>
+other names, too, but she never meant no harm by it. She put me in them new clothes again, and I couldn’t do nothing but sweat and sweat, and feel all cramped up. Well, then, the old thing commenced again. The widow rung a bell for supper, and you had to come to time. When you got to the table you couldn’t
+
+          <anchor type="alt" xml:id="tg0015"/>
+go right to eating,
+
+          <ptr target="#la8590" type="alt" xml:id="te0015"/>
+but you had to wait for the widow to
+
+          <anchor type="app" xml:id="pr0089"/>
+tuck down
+
+          <app from="pr0089" n="2.9 (5.2)" type="e" xml:id="la1044">
+            <lem wit="A">tuck down</lem>
+            <rdg wit="MS1a">duck</rdg>
+          </app>
+her head and grumble a little over the
+
+          <anchor type="app" xml:id="pr0090"/>
+          <anchor type="alt" xml:id="tg0016"/>
+victuals;
+
+          <ptr target="#la8591" type="alt" xml:id="te0016"/>
+          <app from="pr0090" n="2.10 (5.5)" type="hc" xml:id="la1045">
+            <lem wit="MS1a">victuals;</lem>
+            <rdg wit="A">victuals,</rdg>
+          </app>
+though there warn’t really anything the matter with them. That is, nothing only everything was cooked by itself. In a
+
+          <anchor type="alt" xml:id="tg0017"/>
+barrel of odds and ends
+
+          <ptr target="#la8592" type="alt" xml:id="te0017"/>
+it is
+
+          <anchor type="app" xml:id="pr0091"/>
+different; things
+
+          <app from="pr0091" n="2.12–13 (5.11–12)" type="e" xml:id="la1046">
+            <lem wit="A">different; things</lem>
+            <rdg wit="MS1a">different. Things</rdg>
+          </app>
+get mixed up, and the
+
+          <anchor type="app" xml:id="pr0092"/>
+juice
+
+          <app from="pr0092" n="2.13 (5.12)" type="e" xml:id="la1047">
+            <lem wit="A">juice</lem>
+            <rdg wit="MS1a">juices</rdg>
+          </app>
+kind of
+
+          <anchor type="app" xml:id="pr0093"/>
+swaps
+
+          <app from="pr0093" n="2.13 (5.12)" type="e" xml:id="la1048">
+            <lem wit="A">swaps</lem>
+            <rdg wit="MS1a">swap</rdg>
+          </app>
+around, and the things go better.
+
+        </p>
+        <p rend="text-indent:2" xml:id="d1e3813">
+          <anchor type="an" xml:id="se0015"/>
+          <figure rend="block" xml:id="y00201">
+            <graphic url="y00201.jpg"/>
+            <ab type="caption">
+              <hi rend="smallcaps">learning about moses and the “bulrushers.”</hi>
+            </ab>
+            <ab type="transcript">Kemble.</ab>
+          </figure>
+          <ptr target="#as0013" type="an" xml:id="se0016"/>
+        </p>
+        <p rend="text-indent:2" xml:id="d1e3822">
+After supper she got out her book and learned me about
+
+          <anchor type="an" xml:id="se0017"/>
+Moses and the
+
+          <anchor type="app" xml:id="pr0094"/>
+bulrushers
+
+          <ptr target="#as0014" type="an" xml:id="se0018"/>
+,
+
+          <app from="pr0094" n="2.16 (5.19)" type="hc" xml:id="la1049">
+            <lem wit="MS1a">bulrushers,</lem>
+            <rdg wit="A">
+Bul-
+
+              <lb/>
+rushers;
+
+            </rdg>
+          </app>
+and I was in a sweat to find out all about him; but
+
+          <anchor type="app" xml:id="pr0095"/>
+by and by
+
+          <app from="pr0095" n="2.17 (5.21)" type="hc" xml:id="la1050">
+            <lem wit="MS1a">by and by</lem>
+            <rdg wit="A">by-and-by</rdg>
+          </app>
+she let it out that Moses had been dead a considerable long time; so then I didn’t care no more about him; because I
+
+          <anchor type="app" xml:id="pr0096"/>
+don’t
+
+          <app from="pr0096" n="2.18 (6.6)" type="e" xml:id="la1051">
+            <lem wit="A">don’t</lem>
+            <rdg wit="MS1a">do n’t</rdg>
+          </app>
+take no stock in dead people.
+
+        </p>
+        <p rend="text-indent:2" xml:id="d1e3855">
+          <pb n="3" xml:id="pb0003"/>
+Pretty soon I wanted to smoke, and asked the widow to let me. But she wouldn’t. She said it was a mean practice and wasn’t clean, and I must try to not do it any more. That is just the way with some people. They
+
+          <anchor type="an" xml:id="se0019"/>
+get down on a thing when they don’t know
+
+          <anchor type="app" xml:id="pr0097"/>
+nothing
+
+          <app from="pr0097" n="3.4 (6.17-18)" type="e" xml:id="la1052">
+            <lem wit="A">nothing</lem>
+            <rdg wit="MS1a">anything</rdg>
+          </app>
+about it. Here she was
+
+          <anchor type="app" xml:id="pr0098"/>
+a-bothering
+
+          <app from="pr0098" n="3.5 (6.19)" type="hc" xml:id="la1053">
+            <lem wit="MS1a">a-bothering</lem>
+            <rdg wit="A">a bothering</rdg>
+          </app>
+about Moses, which was
+
+          <anchor type="app" xml:id="pr0099"/>
+no kin to her, and no use to anybody, being gone, you see,
+
+          <app from="pr0099" n="3.6 (6.21)" type="e" xml:id="la1054">
+            <lem wit="A">no . . . see,</lem>
+            <rdg wit="MS1a">dead and that, and</rdg>
+          </app>
+yet finding a power of fault with me for doing a thing that had some good in it
+
+          <ptr target="#as0015" type="an" xml:id="se0020"/>
+. And she took snuff too; of course that was all right, because she done it herself.
+
+        </p>
+        
+        <figure rend="center" xml:id="y00301">
+          <graphic url="y00301.jpg"/>
+          <ab type="transcript">Miss Watson</ab>
+        </figure>
+
+        <p rend="text-indent:2" xml:id="d1e3891">
+Her sister,
+
+          <anchor type="an" xml:id="se0021"/>
+Miss Watson
+
+          <ptr target="#as0016" type="an" xml:id="se0022"/>
+, a tolerable
+
+          <anchor type="app" xml:id="pr0100"/>
+          <anchor type="alt" xml:id="tg0018"/>
+slim
+
+          <ptr target="#la8593" type="alt" xml:id="te0018"/>
+          <app from="pr0100" n="3.10 (7.9)" type="e" xml:id="la1055">
+            <lem wit="A">slim</lem>
+            <rdg wit="MS1a">
+lanky/
+
+              <add>slim</add>
+            </rdg>
+          </app>
+old maid, with goggles on, had just come to live with her, and
+
+          <anchor type="alt" xml:id="tg0019"/>
+took a set at
+
+          <ptr target="#la8594" type="alt" xml:id="te0019"/>
+me now, with a spelling-book. She
+
+          <anchor type="alt" xml:id="tg0020"/>
+worked me middling hard
+
+          <ptr target="#la8595" type="alt" xml:id="te0020"/>
+for about an hour, and then the widow made her
+
+          <anchor type="alt" xml:id="tg0021"/>
+ease up.
+
+          <ptr target="#la8596" type="alt" xml:id="te0021"/>
+I couldn’t stood it much longer. Then for an hour it was
+
+          <anchor type="alt" xml:id="tg0022"/>
+          <anchor type="app" xml:id="pr0101"/>
+deadly
+
+          <app from="pr0101" n="3.14 (7.19)" type="e" xml:id="la1056">
+            <lem wit="A">deadly</lem>
+            <rdg wit="MS1a">
+              <hi rend="italic">so</hi>
+            </rdg>
+          </app>
+dull,
+
+          <ptr target="#la8597" type="alt" xml:id="te0022"/>
+and I was
+
+          <anchor type="app" xml:id="pr0102"/>
+fidgety
+
+          <app from="pr0102" n="3.14 (7.20)" type="e" xml:id="la1057">
+            <lem wit="A">fidgety</lem>
+            <rdg wit="MS1a">fidgetty</rdg>
+          </app>
+. Miss Watson would say, “
+
+          <anchor type="app" xml:id="pr0103"/>
+Don’t put
+
+          <app from="pr0103" n="3.15 (7.21)" type="hc" xml:id="la1058">
+            <lem wit="MS1a">Don’t put</lem>
+            <rdg wit="A">Dont put</rdg>
+          </app>
+your feet up
+
+          <anchor type="alt" xml:id="tg0023"/>
+there,
+
+          <ptr target="#la8598" type="alt" xml:id="te0023"/>
+          <anchor type="app" xml:id="pr0104"/>
+Huckleberry,
+
+          <app from="pr0104" n="3.15 (8.1)" type="hc" xml:id="la1059">
+            <lem wit="MS1a">Huckleberry,</lem>
+            <rdg wit="A">Huckleberry;</rdg>
+          </app>
+”
+
+          <anchor type="app" xml:id="pr0105"/>
+and “Don’t
+
+          <app from="pr0105" n="3.15 (8.1)" type="hc" xml:id="la1060">
+            <lem wit="MS1a">and “Don’t</lem>
+            <rdg wit="A">and “dont</rdg>
+          </app>
+scrunch up
+
+          <anchor type="alt" xml:id="tg0024"/>
+like
+
+          <ptr target="#la8599" type="alt" xml:id="te0024"/>
+that, Huckleberry—set up straight;” and pretty soon she would say, “
+
+          <anchor type="alt" xml:id="tg0025"/>
+Don’t
+
+          <ptr target="#la8600" type="alt" xml:id="te0025"/>
+          <anchor type="alt" xml:id="tg0026"/>
+gap
+
+          <ptr target="#la8601" type="alt" xml:id="te0026"/>
+          <anchor type="alt" xml:id="tg0027"/>
+and stretch
+
+          <ptr target="#la8602" type="alt" xml:id="te0027"/>
+like that, Huckleberry—why don’t you try to behave?” Then she told me all about the bad place, and I said I
+
+          <anchor type="alt" xml:id="tg0028"/>
+wished
+
+          <ptr target="#la8603" type="alt" xml:id="te0028"/>
+I was there. She got
+
+          <anchor type="app" xml:id="pr0106"/>
+          <anchor type="alt" xml:id="tg0029"/>
+mad
+
+          <ptr target="#la8604" type="alt" xml:id="te0029"/>
+          <app from="pr0106" n="3.19 (8.12)" type="e" xml:id="la1061">
+            <lem wit="A">mad</lem>
+            <rdg wit="MS1a">
+mad/
+
+              <add>huffy</add>
+            </rdg>
+          </app>
+, then, but I didn’t
+
+          <pb n="4" xml:id="pb0004"/>
+mean no harm. All I wanted was to go
+
+          <anchor type="app" xml:id="pr0107"/>
+somewheres
+
+          <app from="pr0107" n="4.1 (8.15-16)" type="e" xml:id="la1062">
+            <lem wit="A">somewheres</lem>
+            <rdg wit="MS1a">somewher’s</rdg>
+          </app>
+; all I wanted was a
+
+          <anchor type="app" xml:id="pr0108"/>
+change—
+
+          <app from="pr0108" n="4.2 (8.17)" type="hc" xml:id="la1063">
+            <lem wit="MS1a">change—</lem>
+            <rdg wit="A">change,</rdg>
+          </app>
+I warn’t particular. She said it was wicked to say what I
+
+          <anchor type="app" xml:id="pr0109"/>
+said; said
+
+          <app from="pr0109" n="4.3 (8.20)" type="e" xml:id="la1064">
+            <lem wit="A">said; said</lem>
+            <rdg wit="MS1a">said. Said</rdg>
+          </app>
+she
+
+          <anchor type="alt" xml:id="tg0030"/>
+wouldn’t
+
+          <ptr target="#la8605" type="alt" xml:id="te0030"/>
+say it for the whole world;
+
+          <hi rend="italic">she</hi>
+was going to live so as to go to the good place. Well, I couldn’t see no advantage in going where she was going, so I made up my mind
+
+          <anchor type="alt" xml:id="tg0031"/>
+I wouldn’t try for it.
+
+          <ptr target="#la8606" type="alt" xml:id="te0031"/>
+But I never said so, because it
+
+          <anchor type="app" xml:id="pr0110"/>
+would only
+
+          <app from="pr0110" n="4.6 (9.8)" type="e" xml:id="la1065">
+            <lem wit="A">would only</lem>
+            <rdg wit="MS1a">might</rdg>
+          </app>
+make
+
+          <anchor type="app" xml:id="pr0111"/>
+trouble, and wouldn’t do no good
+
+          <app from="pr0111" n="4.6-7 (9.9)" type="e" xml:id="la1066">
+            <lem wit="A">trouble, . . . good</lem>
+            <rdg wit="MS1a">trouble</rdg>
+          </app>
+.
+
+        </p>
+        <p rend="text-indent:2" xml:id="d1e4060">
+Now she
+
+          <anchor type="alt" xml:id="tg0032"/>
+had
+
+          <ptr target="#la8607" type="alt" xml:id="te0032"/>
+got a start, and she went on and told me all about the good place. She said all a body would have to do there was to
+
+          <anchor type="an" xml:id="se0023"/>
+go around all day long with a harp and sing
+
+          <ptr target="#as0017" type="an" xml:id="se0024"/>
+, forever and ever. So I didn’t
+
+          <anchor type="alt" xml:id="tg0033"/>
+think much of it.
+
+          <ptr target="#la8608" type="alt" xml:id="te0033"/>
+But I never said so. I asked her if she reckoned Tom Sawyer would go there,
+
+          <anchor type="app" xml:id="pr0112"/>
+and
+
+          <app from="pr0112" n="4.12 (9.22)" type="hc" xml:id="la1067">
+            <lem wit="MS1a">and</lem>
+            <rdg wit="A">and,</rdg>
+          </app>
+she
+
+          <anchor type="app" xml:id="pr0113"/>
+said
+
+          <app from="pr0113" n="4.12 (9.22)" type="hc" xml:id="la1068">
+            <lem wit="MS1a">said</lem>
+            <rdg wit="A">said,</rdg>
+          </app>
+not by a considerable sight. I was glad about
+
+          <anchor type="alt" xml:id="tg0034"/>
+that,
+
+          <anchor type="app" xml:id="pr0114"/>
+because I wanted him and me to be together.
+
+          <ptr target="#la8609" type="alt" xml:id="te0034"/>
+          <app from="pr0114" n="4.13 (10.1-7)" type="e" xml:id="la1069">
+            <lem wit="A">because . . . together.</lem>
+            <rdg wit="MS1a">
+be-
+
+              <lb/>
+cause I wanted him and me to be together./
+
+              <corr>
+be-
+
+                <lb/>
+              </corr>
+              <add>cause I knowed I would be lonesome with angels, not being used to them, and they not being used to my kind, but I could get along anywheres with Tom Sawyer.</add>
+              <note place="inline" resp="MTP" type="ed" xml:id="de1700">see Alterations</note>
+            </rdg>
+          </app>
+        </p>
+        <p rend="text-indent:2" xml:id="d1e4111">
+Miss Watson she kept pecking at
+
+          <anchor type="app" xml:id="pr0115"/>
+me
+
+          <app from="pr0115" n="4.14 (10.10)" type="hc" xml:id="la1071">
+            <lem wit="MS1a">me</lem>
+            <rdg wit="A">me,</rdg>
+          </app>
+and it got
+
+          <anchor type="app" xml:id="pr0116"/>
+          <anchor type="alt" xml:id="tg0035"/>
+tiresome
+
+          <ptr target="#la8610" type="alt" xml:id="te0035"/>
+and
+
+          <app from="pr0116" n="4.14 (10.10)" type="e" xml:id="la1072">
+            <lem wit="A">tiresome and</lem>
+            <rdg wit="MS1a">tiresome</rdg>
+          </app>
+lonesome.
+
+          <anchor type="app" xml:id="pr0117"/>
+By and by
+
+          <app from="pr0117" n="4.15 (10.11-12)" type="hc" xml:id="la1073">
+            <lem wit="MS1a">By and by</lem>
+            <rdg wit="A">By-and-by</rdg>
+          </app>
+they
+
+          <anchor type="an" xml:id="se0025"/>
+fetched the niggers in and had prayers
+
+          <ptr target="#as0018" type="an" xml:id="se0026"/>
+, and then everybody was off to bed. I went up to my room with a piece of candle and put it on the table. Then I set down in a chair by the window and tried to think of something cheerful, but it warn’t no use. I felt so lonesome I
+
+          <anchor type="alt" xml:id="tg0036"/>
+most
+
+          <ptr target="#la8611" type="alt" xml:id="te0036"/>
+wished I was
+
+          <anchor type="alt" xml:id="tg0037"/>
+dead.
+
+          <ptr target="#la8612" type="alt" xml:id="te0037"/>
+          <anchor type="an" xml:id="se0027"/>
+The stars was
+
+          <anchor type="alt" xml:id="tg0038"/>
+shining
+
+          <ptr target="#la8613" type="alt" xml:id="te0038"/>
+, and the leaves
+
+          <anchor type="app" xml:id="pr0118"/>
+          <anchor type="alt" xml:id="tg0039"/>
+rustled
+
+          <ptr target="#la8614" type="alt" xml:id="te0039"/>
+          <app from="pr0118" n="4.20 (11.6)" type="e" xml:id="la1074">
+            <lem wit="A">rustled</lem>
+            <rdg wit="MS1a">rustling</rdg>
+          </app>
+in the woods ever so mournful; and I heard
+
+          <anchor type="an" xml:id="se0029"/>
+an owl, away off, who-whooing about somebody that was dead, and a
+
+          <anchor type="app" xml:id="pr0119"/>
+whippowill
+
+          <app from="pr0119" n="4.22 (11.11)" type="e" xml:id="la1075">
+            <lem wit="A">whippowill</lem>
+            <rdg wit="MS1a">whippoorwill</rdg>
+          </app>
+and a dog crying
+
+          <ptr target="#as0020" type="an" xml:id="se0030"/>
+about somebody that was going to die; and the wind was trying to whisper something to me and I couldn’t make out what it was, and so it made the cold shivers run over me. Then away out in the woods I heard that kind of a sound that
+
+          <anchor type="an" xml:id="se0031"/>
+a ghost makes when it wants to tell about something that’s on its mind and can’t make itself understood, and so can’t rest easy in its grave
+
+          <ptr target="#as0021" type="an" xml:id="se0032"/>
+and has to go about that way every
+
+          <anchor type="app" xml:id="pr0120"/>
+night,
+
+          <app from="pr0120" n="4.28 (12.8)" type="hc" xml:id="la1077">
+            <lem wit="MS1a">night,</lem>
+            <rdg wit="A">
+night
+
+              <hi rend="subscript">⁁</hi>
+            </rdg>
+          </app>
+grieving. I got
+
+          <anchor type="alt" xml:id="tg0040"/>
+so
+
+          <ptr target="#la8615" type="alt" xml:id="te0040"/>
+down-hearted and scared, I did wish I had some company. Pretty soon
+
+          <anchor type="an" xml:id="se0033"/>
+a spider went crawling up my shoulder, and I flipped it off and it lit in the candle
+
+          <ptr target="#as0022" type="an" xml:id="se0034"/>
+; and before I could budge it was all shriveled up. I didn’t need anybody to tell me that that was
+
+          <anchor type="app" xml:id="pr0121"/>
+          <anchor type="alt" xml:id="tg0041"/>
+an awful bad
+
+          <ptr target="#la8616" type="alt" xml:id="te0041"/>
+          <app from="pr0121" n="4.32 (12.19-20)" type="e" xml:id="la1079">
+            <lem wit="A">an awful bad</lem>
+            <rdg wit="MS1a">an bad</rdg>
+          </app>
+sign and would fetch me some bad luck, so I was scared and most shook the clothes off of me.
+
+          <anchor type="an" xml:id="sc0035"/>
+I got up and turned around in my tracks three times and crossed my breast every time
+
+          <ptr target="#as0023" type="an" xml:id="sc0036"/>
+; and then
+
+          <anchor type="an" xml:id="se0037"/>
+I tied up a little lock of my hair
+
+          <ptr target="#as0024" type="an" xml:id="se0038"/>
+with a thread to keep witches away. But I hadn’t no confidence. You do that
+
+          <anchor type="an" xml:id="se0039"/>
+when you’ve lost a horse-shoe that
+
+          <anchor type="app" xml:id="pr0122"/>
+you’ve found
+
+          <app from="pr0122" n="4.37 (13.11)" type="e" xml:id="la1081">
+            <lem wit="A">you’ve found</lem>
+            <rdg wit="MS1a">you’d found</rdg>
+          </app>
+          <ptr target="#as0025" type="an" xml:id="se0040"/>
+, instead of nailing it up over the door, but I
+
+          <anchor type="app" xml:id="pr0123"/>
+hadn’t ever
+
+          <app from="pr0123" n="4.38 (13.14)" type="e" xml:id="la1083">
+            <lem wit="A">hadn’t ever</lem>
+            <rdg wit="MS1a">had never</rdg>
+          </app>
+heard anybody say it was any way to keep off bad luck when you’d killed a spider.
+
+        </p>
+        <p rend="text-indent:2" xml:id="d1e4243">
+          <pb n="5" xml:id="pb0005"/>
+I set down again,
+
+          <anchor type="app" xml:id="pr0124"/>
+a-shaking
+
+          <app from="pr0124" n="5.1 (13.19-20)" type="e" xml:id="la1085">
+            <lem wit="C">a-shaking</lem>
+            <rdg wit="MS1a">
+a-
+
+              <lb/>
+shaking
+
+            </rdg>
+            <rdg wit="A">a shaking</rdg>
+          </app>
+all over, and got out my pipe for a smoke; for the house was all as still as death, now, and so the widow wouldn’t know. Well,
+
+          <anchor type="alt" xml:id="tg0042"/>
+after a long time
+
+          <ptr target="#la8617" type="alt" xml:id="te0042"/>
+I heard the clock away off in the
+
+          <anchor type="app" xml:id="pr0125"/>
+town
+
+          <app from="pr0125" n="5.4 (14.7)" type="e" xml:id="la1087">
+            <lem wit="A">town</lem>
+            <rdg wit="MS1a">village</rdg>
+          </app>
+go
+
+          <anchor type="app" xml:id="pr0126"/>
+Boom
+
+          <app from="pr0126" n="5.4 (14.7)" type="hc" xml:id="la1089">
+            <lem wit="MS1a">Boom</lem>
+            <rdg wit="A">boom</rdg>
+          </app>
+—boom—boom—twelve
+
+          <anchor type="alt" xml:id="tg0043"/>
+licks—
+
+          <ptr target="#la8618" type="alt" xml:id="te0043"/>
+and all still again—stiller than ever. Pretty soon I heard a twig snap, down in the dark amongst the trees—something was
+
+          <anchor type="app" xml:id="pr0127"/>
+a-stirring
+
+          <app from="pr0127" n="5.6 (14.13-14)" type="e" xml:id="la1091">
+            <lem wit="C">a-stirring</lem>
+            <rdg wit="MS1a">
+a-
+
+              <lb/>
+stirring
+
+            </rdg>
+            <rdg wit="A">a stirring</rdg>
+          </app>
+. I set still and listened. Directly I could just barely hear a “
+
+          <anchor type="app" xml:id="pr0128"/>
+          <hi rend="italic">Me-yow! me-yow!</hi>
+          <app from="pr0128" n="5.7 (14.16–17)" type="e" xml:id="la1093">
+            <lem wit="C">
+              <hi rend="italic">Me-yow! me-yow!</hi>
+            </lem>
+            <rdg wit="MS1a">
+Me-
+
+              <lb/>
+yow! me-yow!
+
+            </rdg>
+            <rdg wit="A">
+              <hi rend="italic">me-yow! me-yow!</hi>
+            </rdg>
+          </app>
+” down there. That was
+
+          <anchor type="alt" xml:id="tq0043"/>
+good!
+
+          <ptr target="#la8619" type="alt" xml:id="te0044"/>
+Says I,
+
+          <anchor type="app" xml:id="pr0129"/>
+“
+
+          <hi rend="italic">Me-yow! me-yow!</hi>
+”
+
+          <app from="pr0129" n="5.8 (14.19–20)" type="e" xml:id="la1095">
+            <lem wit="C">
+              <hi rend="italic">Me-yow! me-yow!</hi>
+            </lem>
+            <rdg wit="MS1a">
+Me-yow! me-
+
+              <lb/>
+yow!
+
+            </rdg>
+            <rdg wit="A">
+              <hi rend="italic">me-yow! me-yow!</hi>
+            </rdg>
+          </app>
+as soft as I could, and then I put out the light and scrambled out of the window onto the shed. Then I
+
+          <anchor type="alt" xml:id="tg0045"/>
+slipped
+
+          <ptr target="#la8620" type="alt" xml:id="te0045"/>
+          <anchor type="app" xml:id="pr0130"/>
+down
+
+          <app from="pr0130" n="5.10 (15.2)" type="e" xml:id="la1097">
+            <lem wit="A">down</lem>
+            <rdg wit="MS1a">
+              <note place="inline" resp="MTP" type="ed" xml:id="de1099">not in</note>
+            </rdg>
+          </app>
+to the ground and crawled in amongst the trees, and sure enough there was Tom Sawyer
+
+          <anchor type="alt" xml:id="tg0046"/>
+waiting
+
+          <ptr target="#la8621" type="alt" xml:id="te0046"/>
+for me.
+
+          <ptr target="#as0019" type="an" xml:id="se0028"/>
+        </p>
+        <p rend="text-indent:2" xml:id="d1e4351">
+          <figure rend="block" xml:id="y00501">
+            <graphic url="y00501.jpg"/>
+            <ab type="caption">
+              <hi rend="smallcaps">huck stealing away.</hi>
+            </ab>
+          </figure>
+        </p>
+
+    </div1>
+</xml>
