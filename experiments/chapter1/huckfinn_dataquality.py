@@ -38,8 +38,51 @@
 # Let's re-read Sebastian Coleman and my notes for data quality metrics that would be applicable for the texts in the collection
 # Then implement a few metrics using the text ingestion utility scripts already written
 
-# Hypothesis: Texts should (1) Contain all chapters found in the ur copy (MTPO)
+# Hypothesis: Texts should (1) Contain all chapters found in the Ur copy (MTPO)
 # and (2) be mostly identical internally chapter by chapter
+
+# Format for experiment functions
+
+# <quality-type>_<work-short-title>_<experiment-short-description>_<experiment-number>
+
+import json
+import os
+import sys
+
+huckfinn_paths = {
+
+    "hf_json_path": "/Users/user/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/json",
+    "hf_txt_path": "/Users/user/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/txt"
+}
+
+def dq_huckfinn_chapterquality_1():
+
+    # Experiment 2 - Text quality
+
+    # 1) Does a text contain all the chapters of the Ur copy of that text?
+
+    # 2) What percent of each chapter is identical to its corresponding chapter in the Ur copy of that text?
+
+    # 3) Given that, what percent of chapters are complete in this text?
+
+    # 1. Read in Ur text
+
+    # 2. Perform quality tests on subject texts
+    subject_filepath_list = []
+
+    # A. Read in each subject text
+
+    # B. Perform quality tests on subject, comparing it against Ur text
+
+
+
+def main(p_filename, p_filetype):
+    
+    pass
+
+
+if "__main__" == __name__:
+    main()
 
 
 
