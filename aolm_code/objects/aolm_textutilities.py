@@ -73,5 +73,28 @@ class AOLMTextUtilities:
                 i += 1
                 j = 1
     
-    # C. Show the plot
-    fig.show()        
+        # C. Show the plot
+        fig.show()
+
+    @staticmethod
+    def roman_numeral_from_decimal(p_decimal_number):
+
+        # Conversion code from https://www.geeksforgeeks.org/python-program-to-convert-integer-to-roman/
+        # on 10/30/2024
+
+        number = p_decimal_number
+        num = [1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000]
+        sym = ["I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M"]
+        i = 12
+        finished_numeral = []
+     
+        while number:
+            div = number // num[i]
+            number %= num[i]
+ 
+            while div:
+                finished_numeral.append(sym[i])
+                div -= 1
+            i -= 1        
+
+        return "".join(finished_numeral)
