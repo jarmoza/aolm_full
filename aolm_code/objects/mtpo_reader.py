@@ -22,7 +22,6 @@ class MTPOReader(AOLMTextReader):
 
         super().__init__(p_filepath, READER_FILETYPE_TEI)
 
-        self.m_raw_file_contents = None
         self.m_tei_soup = None
 
     def read(self):
@@ -30,10 +29,16 @@ class MTPOReader(AOLMTextReader):
         with open(self.filepath, "r") as tei_file:
 
             # A. Save raw file contents
-            self.m_raw_file_contents = tei_file.read()
+            self.m_aolm_text.m_raw_file_contents = tei_file.read()
 
             # B. Parse the TEI xml
-            self.m_tei_soup = BeautifulSoup(self.m_raw_file_contents, "lxml")
+            self.m_tei_soup = BeautifulSoup(self.m_aolm_text.m_raw_file_contents, "html.parser")
+
+            # C. Separate metadata and body text tags
+            self.m_aolm_text.m_metadata = self.m_tei_soup.find("teiHeader")
+            self.m_front = self.m_tei_soup.find("text").front
+            self.m_aolm_text.m_body = self.m_tei_soup.find("text").body
+            self.m_back = self.m_tei_soup.find("text").back
 
     def print(self):
 
@@ -50,8 +55,9 @@ class MTPOReader(AOLMTextReader):
 def main():
 
     test_filepath = f"{os.getcwd()}{os.sep}..{os.sep}..{os.sep}data{os.sep}twain{os.sep}huckleberry_finn{os.sep}mtpo{os.sep}"
-    # test_file = "MTDP10000.xml"
-    test_file = "chapter_example.xml"
+    
+    test_file = "MTDP10000_edited.xml"
+    # test_file = "chapter_example.xml"
     reader = MTPOReader(test_filepath + test_file)
     reader.read()
     reader.print()
