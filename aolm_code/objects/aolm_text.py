@@ -19,6 +19,7 @@ class AOLMText(object):
         self.m_body = None
         self.m_metadata = None
         
+        self.m_raw_file_contents = None
         self.m_text_lines = []
 
     @property
