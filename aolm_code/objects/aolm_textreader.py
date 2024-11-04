@@ -17,6 +17,7 @@ from aolm_text import AOLMText
 # Supported file types
 READER_FILETYPE_AOLM = "aolm"
 READER_FILETYPE_HATHI = "hathi"
+READER_FILETYPE_JSON = "json"
 READER_FILETYPE_TEI = "tei"
 READER_FILETYPE_TXT = "txt"
 
@@ -40,10 +41,13 @@ class AOLMTextReader:
     def __hydrate_hathi_file(self):
         pass
 
-    def __read_as_tei(self):
+    def __read_file_as_json(self):
         pass
 
-    def __read_as_txt(self):
+    def __read_file_as_tei(self):
+        pass
+
+    def __read_file_as_txt(self):
 
         # Read in the text line by line
         with open(self.m_filepath, "r") as text_file:
@@ -60,6 +64,8 @@ class AOLMTextReader:
                 self.__hydrate_aolm_file()
             elif READER_FILETYPE_HATHI is self.m_filetype:
                 self.__hydrate_hathi_file()
+            elif READER_FILETYPE_JSON is self.m_filetype:
+                self.__read_file_as_json()
             elif READER_FILETYPE_TEI is self.m_filetype:
                 self.__read_file_as_tei()
             elif READER_FILETYPE_TXT is self.m_filetype:
