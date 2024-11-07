@@ -8,6 +8,8 @@
 from collections import Counter
 from math import ceil
 import os
+import re
+import string
 
 # Third party
 import nltk
@@ -24,6 +26,23 @@ class AOLMTextUtilities:
     def __init__(self, p_aolm_text=None):
 
         self.m_text = p_aolm_text
+
+    @staticmethod
+    def clean_line(p_line):
+
+        # Lowercase
+        clean_line = p_line.lower()
+
+        # Clean remaining tags
+        clean_line = re.sub(r"<[^>]*>", " ", clean_line)
+
+        # Clean any other non-alphanumeric character
+        clean_line = "".join([char for char in clean_line if char not in string.punctuation])
+
+        # Clean multi-spaces
+        clean_line = " ".join([word for word in clean_line.split() if "" != word])
+
+        return clean_line
 
     @staticmethod
     def count_words_and_plot(p_text_filepath, p_top_words=10):
@@ -77,6 +96,13 @@ class AOLMTextUtilities:
         fig.show()
 
     @staticmethod
+    def create_string_from_lines(p_text_lines):
+
+        final_text_lines = [line.strip() for line in p_text_lines if len(line.strip()) > 0]
+
+        return " ".join(final_text_lines)
+
+    @staticmethod
     def roman_numeral_from_decimal(p_decimal_number):
 
         # Conversion code from https://www.geeksforgeeks.org/python-program-to-convert-integer-to-roman/
@@ -98,3 +124,44 @@ class AOLMTextUtilities:
             i -= 1        
 
         return "".join(finished_numeral)
+
+    # from /aolm_code/data_quality/dickinson/core
+    @staticmethod
+    def percent_line_match(p_original_line, p_compared_line, p_prepared_line=False):
+
+        line_words = None
+        compared_line_words = None
+
+        # 0. Make sure we are comparing lists of words
+        # NOTE: If this is a prepared line it is an array sized 2,
+        # array[0] is the line, array[1] is the array of the line's words
+        if p_prepared_line:
+            line_words = p_original_line[1]
+            compared_line_words = p_compared_line[1]
+        else:
+            line_words = p_original_line.strip().split(" ")
+            compared_line_words = p_compared_line.strip().split(" ")
+
+        # Save word counts of each line
+        line_word_count = len(line_words)
+        compared_line_word_count = len(compared_line_words)
+
+        # 1. Try to find an initial word match
+        match_index = -1
+        for index in range(line_word_count):
+            if index < compared_line_word_count and line_words[index] == compared_line_words[index]:
+                match_index = index
+                break
+
+        # If no beginning to matching sequence found, return 0% similarity
+        if -1 == match_index:
+            return 0
+
+        # 2. Count all word matches that follow the initial word match
+        matches = 0
+        for index in range(match_index, line_word_count):
+            if index < compared_line_word_count and line_words[index] == compared_line_words[index]:
+                matches += 1
+
+        # Return percentage match (re: the above match rules) of compared line with original line
+        return float(matches) / float(line_word_count)
