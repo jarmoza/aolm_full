@@ -53,6 +53,12 @@ class AOLMTextReader:
         with open(self.m_filepath, "r") as text_file:
             self.m_text_lines = text_file.readlines()
 
+    # Properties
+
+    @property
+    def body(self):
+        return self.m_aolm_text.body
+
     # Public methods
 
     def read(self):
