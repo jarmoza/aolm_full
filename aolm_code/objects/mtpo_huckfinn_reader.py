@@ -1,7 +1,7 @@
 # Author: Jonathan Armoza
 # Created: October 30, 2024
-# Purpose: Reads the Mark Twain Project Online's version of The Adventures of
-#          Huckleberry Finn
+# Purpose: Reads the Mark Twain Project Online's TEI version of The Adventures
+#          of Huckleberry Finn
 
 # Imports
 
@@ -13,16 +13,28 @@ from bs4 import BeautifulSoup, NavigableString
 
 # Custom
 from aolm_textutilities import AOLMTextUtilities
-from mtpo_reader import MTPOReader
+from aolm_textreader import AOLMTextReader, READER_FILETYPE_TEI
 
 
 # Classes
 
-class MTPOHuckFinnReader(MTPOReader):
+class MTPOHuckFinnReader(AOLMTextReader):
+
+    # Constructor and private methods
     
     def __init__(self, p_filepath):
 
-        super().__init__(p_filepath)
+        super().__init__(p_filepath, READER_FILETYPE_TEI)
+
+        self.m_tei_soup = None
+
+    # Properties
+
+    @property
+    def soup(self):
+        return self.m_tei_soup
+
+    # Methods
 
     def get_chapter(self, p_chapter_number):
 
@@ -53,7 +65,21 @@ class MTPOHuckFinnReader(MTPOReader):
 
         return text_lines
 
+    def read(self):
 
+        with open(self.filepath, "r") as tei_file:
+
+            # A. Save raw file contents
+            self.m_aolm_text.m_raw_file_contents = tei_file.read()
+
+            # B. Parse the TEI xml
+            self.m_tei_soup = BeautifulSoup(self.m_aolm_text.m_raw_file_contents, "html.parser")
+
+            # C. Separate metadata and body text tags
+            self.m_aolm_text.m_metadata = self.m_tei_soup.find("teiHeader")
+            self.m_front = self.m_tei_soup.find("text").front
+            self.m_aolm_text.m_body = self.m_tei_soup.find("text").body
+            self.m_back = self.m_tei_soup.find("text").back
 def main():
 
     test_filepath = f"{os.getcwd()}{os.sep}data{os.sep}twain{os.sep}huckleberry_finn{os.sep}mtpo{os.sep}"
