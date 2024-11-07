@@ -45,15 +45,33 @@
 
 # <quality-type>_<work-short-title>_<experiment-short-description>_<experiment-number>
 
+# Imports
+
+# Built-ins
 import json
 import os
 import sys
+
+print(os.getcwd())
+
+# Custom
+# sys.path.append(f"..{os.sep}..{os.sep}aolm_code{os.sep}objects")
+sys.path.append(f"{os.getcwd()}{os.sep}aolm_code{os.sep}objects")
+from mtpo_huckfinn_reader import MTPOHuckFinnReader
+from pg_huckfinn_reader import PGHuckFinnReader
+from aolm_textutilities import AOLMTextUtilities
+
+
+# Globals
 
 huckfinn_paths = {
 
     "hf_json_path": "/Users/user/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/json",
     "hf_txt_path": "/Users/user/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/txt"
 }
+
+
+# Experiments
 
 def dq_huckfinn_chapterquality_1():
 
@@ -66,19 +84,70 @@ def dq_huckfinn_chapterquality_1():
     # 3) Given that, what percent of chapters are complete in this text?
 
     # 1. Read in Ur text
+    mtpo_huckfinn_filepath = f"{os.getcwd()}{os.sep}data{os.sep}twain{os.sep}huckleberry_finn{os.sep}mtpo{os.sep}"
+    mtpo_huckfinn_file = "MTDP10000_edited.xml"
+    mtpo_reader = MTPOHuckFinnReader(mtpo_huckfinn_filepath + mtpo_huckfinn_file)
+    mtpo_reader.read()
 
     # 2. Perform quality tests on subject texts
     subject_filepath_list = []
 
     # A. Read in each subject text
+    pg_huckfinn_filepath = f"{os.getcwd()}{os.sep}data{os.sep}twain{os.sep}huckleberry_finn{os.sep}project_gutenberg{os.sep}json{os.sep}"
+    pg_huckfinn_file = "2011-05-03-HuckFinn.json"
+    pg_reader = PGHuckFinnReader(pg_huckfinn_filepath + pg_huckfinn_file)
+    pg_reader.read()
 
     # B. Perform quality tests on subject, comparing it against Ur text
 
+    # Percent line match between Ur text and subject text
 
+    # I. Chapters to run through
+    chapter_count = 1
 
-def main(p_filename, p_filetype):
+    # II. Keeps track of line match values for each chapter
+    line_match_percents = { index: 0 for index in range(chapter_count) }
+
+    # III. Compare line matches across chapters
+    for index in range(chapter_count):
+
+        # a. Get Ur text lines for this chapter
+        mtpo_chapter_lines = mtpo_reader.get_chapter(index + 1)
+        mtpo_chapter_string = AOLMTextUtilities.create_string_from_lines(mtpo_chapter_lines)
+        mtpo_chapter_string = AOLMTextUtilities.clean_line(mtpo_chapter_string)
+
+        # b. Get subject text lines for this chapter
+        pg_chapter_lines = pg_reader.get_chapter(index + 1)
+        pg_chapter_string = AOLMTextUtilities.create_string_from_lines(pg_chapter_lines)
+        pg_chapter_string = AOLMTextUtilities.clean_line(pg_chapter_string)
+
+        line_match_percents[index] = AOLMTextUtilities.percent_line_match(
+            mtpo_chapter_string,
+            pg_chapter_string
+        )
+
+        # # c. Compare chapter lines between Ur edition and subject and save the result
+        # breakout = False
+        # mtpo_index = 0
+        # pg_index = 0
+        # while not breakout:
+
+        #     # i. Roll compared indices forward until non-blank line is encountered
+        #     while "" == mtpo_chapter_lines[mtpo_index].strip():
+        #         mtpo_index += 1
+        #     while "" == pg_chapter_lines[pg_index].strip():
+        #         pg_index += 1
+
+        #     # ii. Make the comparison             
+        #     line_match_percents[index].append(
+        #         AOLMTextUtilities.percent_line_match(mtpo_chapter_lines[mtpo_index], pg_chapter_lines[pg_index])
+        #     )
+
+    print(line_match_percents)
+
+def main():
     
-    pass
+    dq_huckfinn_chapterquality_1()
 
 
 if "__main__" == __name__:
