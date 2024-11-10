@@ -75,35 +75,34 @@ huckfinn_paths = {
 
 def dq_huckfinn_chapterquality_1():
 
-    # Experiment 2 - Text quality
+    # 0. Setup
 
-    # 1) Does a text contain all the chapters of the Ur copy of that text?
-
-    # 2) What percent of each chapter is identical to its corresponding chapter in the Ur copy of that text?
-
-    # 3) Given that, what percent of chapters are complete in this text?
-
-    # 1. Read in Ur text
+    # A. Read in Ur text
     mtpo_huckfinn_filepath = f"{os.getcwd()}{os.sep}data{os.sep}twain{os.sep}huckleberry_finn{os.sep}mtpo{os.sep}"
     mtpo_huckfinn_file = "MTDP10000_edited.xml"
     mtpo_reader = MTPOHuckFinnReader(mtpo_huckfinn_filepath + mtpo_huckfinn_file)
     mtpo_reader.read()
 
-    # 2. Perform quality tests on subject texts
+    # B. Read in each subject text
     subject_filepath_list = []
-
-    # A. Read in each subject text
+    subject_readers = []
     pg_huckfinn_filepath = f"{os.getcwd()}{os.sep}data{os.sep}twain{os.sep}huckleberry_finn{os.sep}project_gutenberg{os.sep}json{os.sep}"
     pg_huckfinn_file = "2011-05-03-HuckFinn.json"
     pg_reader = PGHuckFinnReader(pg_huckfinn_filepath + pg_huckfinn_file)
-    pg_reader.read()
+    pg_reader.read()    
 
-    # B. Perform quality tests on subject, comparing it against Ur text
+    # 1. Experiment 2 - Text quality
 
-    # Percent line match between Ur text and subject text
+    # A. Does a text contain all the chapters of the Ur copy of that text?
+    print(f"Ur text chapter count: {mtpo_reader.chapter_count}")
+    print(f"Subject text chapter count: {pg_reader.chapter_count}")
+
+    # B. What percent of each chapter is identical to its corresponding chapter in the Ur copy of that text?
+
+    # Measure percent line match between Ur text and subject texts
 
     # I. Chapters to run through
-    chapter_count = 1
+    chapter_count = 43
 
     # II. Keeps track of line match values for each chapter
     line_match_percents = { index: 0 for index in range(chapter_count) }
@@ -114,36 +113,28 @@ def dq_huckfinn_chapterquality_1():
         # a. Get Ur text lines for this chapter
         mtpo_chapter_lines = mtpo_reader.get_chapter(index + 1)
         mtpo_chapter_string = AOLMTextUtilities.create_string_from_lines(mtpo_chapter_lines)
-        mtpo_chapter_string = AOLMTextUtilities.clean_line(mtpo_chapter_string)
+        mtpo_chapter_string = AOLMTextUtilities.clean_string(mtpo_chapter_string)
 
         # b. Get subject text lines for this chapter
         pg_chapter_lines = pg_reader.get_chapter(index + 1)
         pg_chapter_string = AOLMTextUtilities.create_string_from_lines(pg_chapter_lines)
-        pg_chapter_string = AOLMTextUtilities.clean_line(pg_chapter_string)
+        pg_chapter_string = AOLMTextUtilities.clean_string(pg_chapter_string)
 
         line_match_percents[index] = AOLMTextUtilities.percent_line_match(
             mtpo_chapter_string,
             pg_chapter_string
         )
 
-        # # c. Compare chapter lines between Ur edition and subject and save the result
-        # breakout = False
-        # mtpo_index = 0
-        # pg_index = 0
-        # while not breakout:
+    print(line_match_percents)    
 
-        #     # i. Roll compared indices forward until non-blank line is encountered
-        #     while "" == mtpo_chapter_lines[mtpo_index].strip():
-        #         mtpo_index += 1
-        #     while "" == pg_chapter_lines[pg_index].strip():
-        #         pg_index += 1
+    # C. Given that, what percent of chapters are complete in this text?
+    acceptable_completion_percent = 0.95
+    passable_chapters = 0
+    for chapter_index in line_match_percents:
+        if line_match_percents[chapter_index] >= acceptable_completion_percent:
+            passable_chapters += 1
+    print(f"# of chapters with >= 95% complete: {passable_chapters}")
 
-        #     # ii. Make the comparison             
-        #     line_match_percents[index].append(
-        #         AOLMTextUtilities.percent_line_match(mtpo_chapter_lines[mtpo_index], pg_chapter_lines[pg_index])
-        #     )
-
-    print(line_match_percents)
 
 def main():
     
@@ -151,6 +142,9 @@ def main():
 
 
 if "__main__" == __name__:
+
+    print(f"Current working directory: {os.getcwd()}")
+
     main()
 
 
