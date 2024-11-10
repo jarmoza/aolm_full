@@ -214,24 +214,33 @@ class AOLMTextUtilities:
         line_word_count = len(line_words)
         compared_line_word_count = len(compared_line_words)
 
+        # NEW LINE MATCH ALGORITHM
 
+        # Tally instances of unique words in each line
+        line_words_counter = Counter(line_words)
+        compared_line_words_counter = Counter(compared_line_words)
 
-        # 1. Try to find an initial word match
-        match_index = -1
-        for index in range(line_word_count):
-            if index < compared_line_word_count and line_words[index] == compared_line_words[index]:
-                match_index = index
-                break
+        # Tallies in the compared line determine the percent of line match
+        return compared_line_words_counter.total() / float(line_word_count)
 
-        # If no beginning to matching sequence found, return 0% similarity
-        if -1 == match_index:
-            return 0
+        # OLD LINE MATCH ALGORITHM
 
-        # 2. Count all word matches that follow the initial word match
-        matches = 0
-        for index in range(match_index, line_word_count):
-            if index < compared_line_word_count and line_words[index] == compared_line_words[index]:
-                matches += 1
+        # # 1. Try to find an initial word match
+        # match_index = -1
+        # for index in range(line_word_count):
+        #     if index < compared_line_word_count and line_words[index] == compared_line_words[index]:
+        #         match_index = index
+        #         break
 
-        # Return percentage match (re: the above match rules) of compared line with original line
-        return float(matches) / float(line_word_count)
+        # # If no beginning to matching sequence found, return 0% similarity
+        # if -1 == match_index:
+        #     return 0
+
+        # # 2. Count all word matches that follow the initial word match
+        # matches = 0
+        # for index in range(match_index, line_word_count):
+        #     if index < compared_line_word_count and line_words[index] == compared_line_words[index]:
+        #         matches += 1
+
+        # # Return percentage match (re: the above match rules) of compared line with original line
+        # return float(matches) / float(line_word_count)
