@@ -19,10 +19,20 @@ from aolm_textreader import AOLMTextReader, READER_FILETYPE_JSON
 # Classes
 
 class PGHuckFinnReader(AOLMTextReader):
+
+    # Constructor and private methods
     
     def __init__(self, p_filepath):
 
         super().__init__(p_filepath, READER_FILETYPE_JSON)
+
+    # Properties
+
+    @property
+    def chapter_count(self):
+        return len(self.m_json["components"]["body"])
+
+    # Public methods
 
     def get_chapter(self, p_chapter_number):
         
