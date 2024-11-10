@@ -128,7 +128,7 @@ def dq_huckfinn_chapterquality_1():
     print(line_match_percents)    
 
     # C. Given that, what percent of chapters are complete in this text?
-    acceptable_completion_percent = 0.95
+    acceptable_completion_percent = 0.99
     passable_chapters = 0
     for chapter_index in line_match_percents:
         if line_match_percents[chapter_index] >= acceptable_completion_percent:
