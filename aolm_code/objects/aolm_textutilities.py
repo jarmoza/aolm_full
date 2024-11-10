@@ -10,6 +10,7 @@ from math import ceil
 import os
 import re
 import string
+import unicodedata # Removing diacritics from characters
 
 # Third party
 import nltk
@@ -28,21 +29,30 @@ class AOLMTextUtilities:
         self.m_text = p_aolm_text
 
     @staticmethod
-    def clean_line(p_line):
+    def clean_string(p_original_string, p_remove_internal_punctuation=False):
 
-        # Lowercase
-        clean_line = p_line.lower()
+        # 1. Strip whitespace and lowercase
+        new_str = p_original_string.strip().lower()
 
-        # Clean remaining tags
-        clean_line = re.sub(r"<[^>]*>", " ", clean_line)
+        # 2. Remove all accents
+        new_str = AOLMTextUtilities.remove_diacritics(new_str)
 
-        # Clean any other non-alphanumeric character
-        clean_line = "".join([char for char in clean_line if char not in string.punctuation])
+        # 3. Replace all \n and \t with ' '
+        new_str = new_str.replace("\n", " ").replace("\t", " ")	
 
-        # Clean multi-spaces
-        clean_line = " ".join([word for word in clean_line.split() if "" != word])
+        # 4. Split by spaces
+        new_str_parts = new_str.split()
+        # a. Removing single n's - unicode error converted em-dash to n-tilda
+        new_str_parts = [part for part in new_str_parts if "n" != part]
 
-        return clean_line
+        # 5. Remove punctuation from each word
+        new_str_parts = [AOLMTextUtilities.remove_punctuation(new_str, p_remove_internal_punctuation)	\
+            for new_str in new_str_parts]
+
+        # 6. Clean multi-spaces and rejoin with single spaces
+        new_str = " ".join([word for word in new_str_parts if "" != word.strip()])
+
+        return new_str.strip()
 
     @staticmethod
     def count_words_and_plot(p_text_filepath, p_top_words=10):
@@ -102,6 +112,64 @@ class AOLMTextUtilities:
 
         return " ".join(final_text_lines)
 
+    # Source: https://stackoverflow.com/questions/517923/what-is-the-best-way-to-remove-accents-in-a-python-unicode-string
+    @staticmethod
+    def remove_diacritics(p_original_string):
+
+        new_str = []
+        for char in p_original_string:
+            # Gets the base character of char, by "removing" any
+            # diacritics like accents or curls and strokes and the like.
+
+            desc = unicodedata.name(char)
+            cutoff = desc.find(" WITH ")
+            if cutoff != -1:
+                desc = desc[:cutoff]
+                try:
+                    char = unicodedata.lookup(desc)
+                except KeyError:
+                    continue  # removing "WITH ..." produced an invalid name
+            new_str.append(char)
+
+        return "".join(new_str)
+
+    @staticmethod
+    def remove_punctuation(p_original_string, p_remove_internal_punctuation=False):
+
+        # 1. Remove punctuation from the given string
+
+        # A. Remove all punctuation, external and internal
+        if p_remove_internal_punctuation:
+
+            new_str_parts = []
+
+            for char in p_original_string:
+                if char in string.punctuation:
+                    continue
+                new_str_parts.append(char)
+            return "".join(new_str_parts)
+        # B. Remove external punctuation only
+        else:
+
+            # A. Find first alphanumeric character
+            first_index = -1
+            for index in range(len(p_original_string)):
+                if p_original_string[index].isalnum():
+                    first_index = index
+                    break
+
+            # B. Find last alphanumeric character
+            last_index = -1
+            for index in reversed(range(len(p_original_string))):
+                if p_original_string[index].isalnum():
+                    last_index = index
+                    break
+
+            return p_original_string[first_index:last_index + 1]
+            # return p_original_string[first_index:last_index]
+
+        return p_original_string
+
     @staticmethod
     def roman_numeral_from_decimal(p_decimal_number):
 
@@ -145,6 +213,8 @@ class AOLMTextUtilities:
         # Save word counts of each line
         line_word_count = len(line_words)
         compared_line_word_count = len(compared_line_words)
+
+
 
         # 1. Try to find an initial word match
         match_index = -1
