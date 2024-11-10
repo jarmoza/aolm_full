@@ -31,6 +31,10 @@ class MTPOHuckFinnReader(AOLMTextReader):
     # Properties
 
     @property
+    def chapter_count(self):
+        return len(self.m_aolm_text.m_body.find_all("div1", attrs={"type": "chapter"}))
+
+    @property
     def soup(self):
         return self.m_tei_soup
 
