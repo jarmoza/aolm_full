@@ -4,6 +4,9 @@
 
 # Imports
 
+# Built-ins
+import os
+
 # Globals
 
 # Classes
@@ -25,6 +28,9 @@ class AOLMText(object):
     @property
     def body(self):
         return self.m_body
+    @property
+    def filename(self):
+        return os.path.basename(self.m_filepath)
     @property
     def filepath(self):
         return self.m_filepath
