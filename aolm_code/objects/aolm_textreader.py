@@ -58,6 +58,12 @@ class AOLMTextReader:
     @property
     def body(self):
         return self.m_aolm_text.body
+    @property
+    def filepath(self):
+        return self.m_aolm_text.filepath
+    @property
+    def filename(self):
+        return self.m_aolm_text.filename
 
     # Public methods
 
