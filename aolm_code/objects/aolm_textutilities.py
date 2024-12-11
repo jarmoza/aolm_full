@@ -116,9 +116,20 @@ class AOLMTextUtilities:
         return " ".join(final_text_lines)
 
     @staticmethod
-    def get_keyset(p_dictionary_list):
+    def get_keyset(p_dictionary_list, p_secondlevel_keys=[]):
 
-        return reduce(lambda a, b: a+b, [list(dictionary.keys()) for dictionary in p_dictionary_list])
+        # Gather keys (and keys of second level keys if given)
+        all_keys = []
+        for dictionary in p_dictionary_list:
+            all_keys.extend(list(dictionary.keys()))
+            if len(p_secondlevel_keys):
+                for key in p_secondlevel_keys:
+                    if key in dictionary:
+                        all_keys.extend(list(dictionary[key].keys()))
+
+        # all_keys = reduce(lambda a, b: a+b, [list(dictionary.keys()) for dictionary in p_dictionary_list])
+
+        return list(set(all_keys))
 
     # Source: https://stackoverflow.com/questions/517923/what-is-the-best-way-to-remove-accents-in-a-python-unicode-string
     @staticmethod
