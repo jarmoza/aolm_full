@@ -57,10 +57,12 @@ print(os.getcwd())
 # Custom
 
 # Command line
-# sys.path.append(f"..{os.sep}..{os.sep}aolm_code{os.sep}objects")
+sys.path.append(f"..{os.sep}..{os.sep}aolm_code{os.sep}objects")
 
 # IDE
 sys.path.append(f"{os.getcwd()}{os.sep}aolm_code{os.sep}objects")
+
+print(sys.path)
 
 from mtpo_huckfinn_reader import MTPOHuckFinnReader
 from pg_huckfinn_reader import PGHuckFinnReader
@@ -71,15 +73,16 @@ from aolm_textutilities import AOLMTextUtilities
 
 huckfinn_paths = {
 
-    "hf_json_path": "/Users/user/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/json",
-    "hf_txt_path": "/Users/user/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/txt"
+    "ia_json_path": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/json",
+    "ia_txt_path": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/txt",
+    "pg_path": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/project_gutenberg"
 }
 
 # Utility functions
 
 def read_project_gutenberg_json():
 
-    pg_huckfinn_filepath = f"{os.getcwd()}{os.sep}data{os.sep}twain{os.sep}huckleberry_finn{os.sep}project_gutenberg{os.sep}json{os.sep}"
+    pg_huckfinn_filepath = f"{huckfinn_paths["pg_path"]}{os.sep}json{os.sep}"
     subject_filepath_list = [
         pg_huckfinn_filepath + "2011-05-03-HuckFinn.json",
         pg_huckfinn_filepath + "2016-08-17-HuckFinn.json",
@@ -93,7 +96,7 @@ def read_project_gutenberg_json():
 
 def read_project_gutneberg_metadata():
 
-    pg_huckfinn_filepath = f"{os.getcwd()}{os.sep}data{os.sep}twain{os.sep}huckleberry_finn{os.sep}project_gutenberg{os.sep}metadata{os.sep}"
+    pg_huckfinn_filepath = f"{huckfinn_paths["pg_path"]}{os.sep}metadata{os.sep}"
     subject_filepath_list = [
         
         pg_huckfinn_filepath + "2011-05-03-HuckFinn_metadata.json",
@@ -227,14 +230,18 @@ def dq_huckfinn_datasetcompleteness_metadatasufficiency():
     percent_tables_defined = 1
 
     # B. Percentage of columns defined
-    pg_metadata_keyset = AOLMTextUtilities.get_keyset([metadata_json[filepath] for filepath in metadata_json])
+    unkeyed_key = "unkeyed_fields"
+    pg_metadata_keyset = AOLMTextUtilities.get_keyset([metadata_json[filepath] for filepath in metadata_json], [unkeyed_key])
+    pg_metadata_keyset.remove(unkeyed_key)
     percent_metadata_fields = [len(metadata_json[filepath].keys()) / float(len(pg_metadata_keyset)) for filepath in metadata_json]
 
     print(f"Total keyset: {pg_metadata_keyset}")
     for filepath in metadata_json:
         print(debug_separator)
-        print(f"Keys for {filepath}:\n{metadata_json[filepath].keys()}")
-        print(f"Percent fields overlapping with overall keyset: {100 * len(metadata_json[filepath].keys()) / float(len(pg_metadata_keyset))}")
+        edition_keys = AOLMTextUtilities.get_keyset([metadata_json[filepath]], [unkeyed_key])
+        edition_keys.remove(unkeyed_key)
+        print(f"Keys for {filepath}:\n{edition_keys}")
+        print(f"Percent fields overlapping with overall keyset: {100 * len(edition_keys) / float(len(pg_metadata_keyset))}")
     
     # 2. Clarity and quality of definitions
 
