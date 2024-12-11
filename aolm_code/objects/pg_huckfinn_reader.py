@@ -31,6 +31,9 @@ class PGHuckFinnReader(AOLMTextReader):
     @property
     def chapter_count(self):
         return len(self.m_json["components"]["body"])
+    @property
+    def json(self):
+        return self.m_json
 
     # Public methods
 
