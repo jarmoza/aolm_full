@@ -1,0 +1,22 @@
+{
+    "unkeyed_fields": {
+
+        "ebook_no": "#76",
+        "edition_title": "\ufeffThe Project Gutenberg eBook of Adventures of Huckleberry Finn, by Mark Twain (Samuel Clemens)",
+        "filenames": [
+            
+            "76-0.txt",
+            "76-0.zip"
+        ],
+        "url": "https://www.gutenberg.org/7/76/",
+        "usage_note": "This eBook is for the use of anyone anywhere in the United States and most other parts of the world at no cost and with almost no restrictions whatsoever. You may copy it, give it away or re-use it under the terms of the Project Gutenberg License included with this eBook or online at www.gutenberg.org. If you are not located in the United States, you will have to check the laws of the country where you are located before using this eBook."
+    },
+
+    "Author": "Mark Twain (Samuel Clemens)",
+    "Character set encoding": "UTF-8",
+    "Language": "English",
+    "Most recently updated": "February 21, 2021",
+    "Produced by": "David Widger",
+    "Release Date": "August, 1993",
+    "Title": "Adventures of Huckleberry Finn"
+}
