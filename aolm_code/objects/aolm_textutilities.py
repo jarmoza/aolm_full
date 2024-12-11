@@ -6,6 +6,7 @@
 
 # Built-ins
 from collections import Counter
+from functools import reduce 
 from math import ceil
 import os
 import re
@@ -19,6 +20,8 @@ import plotly.graph_objects as go
 
 
 # Globals
+# global debug_separator
+# debug_separator = "=" * 80
 
 # Classes
 
@@ -111,6 +114,11 @@ class AOLMTextUtilities:
         final_text_lines = [line.strip() for line in p_text_lines if len(line.strip()) > 0]
 
         return " ".join(final_text_lines)
+
+    @staticmethod
+    def get_keyset(p_dictionary_list):
+
+        return reduce(lambda a, b: a+b, [list(dictionary.keys()) for dictionary in p_dictionary_list])
 
     # Source: https://stackoverflow.com/questions/517923/what-is-the-best-way-to-remove-accents-in-a-python-unicode-string
     @staticmethod
