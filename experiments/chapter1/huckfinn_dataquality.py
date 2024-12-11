@@ -55,8 +55,13 @@ import sys
 print(os.getcwd())
 
 # Custom
+
+# Command line
 # sys.path.append(f"..{os.sep}..{os.sep}aolm_code{os.sep}objects")
+
+# IDE
 sys.path.append(f"{os.getcwd()}{os.sep}aolm_code{os.sep}objects")
+
 from mtpo_huckfinn_reader import MTPOHuckFinnReader
 from pg_huckfinn_reader import PGHuckFinnReader
 from aolm_textutilities import AOLMTextUtilities
@@ -70,6 +75,37 @@ huckfinn_paths = {
     "hf_txt_path": "/Users/user/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/txt"
 }
 
+# Utility functions
+
+def read_project_gutenberg_json():
+
+    pg_huckfinn_filepath = f"{os.getcwd()}{os.sep}data{os.sep}twain{os.sep}huckleberry_finn{os.sep}project_gutenberg{os.sep}json{os.sep}"
+    subject_filepath_list = [
+        pg_huckfinn_filepath + "2011-05-03-HuckFinn.json",
+        pg_huckfinn_filepath + "2016-08-17-HuckFinn.json",
+        pg_huckfinn_filepath + "2021-02-21-HuckFinn.json"
+    ]
+    subject_readers = [PGHuckFinnReader(filepath) for filepath in subject_filepath_list]
+    for reader in subject_readers:
+        reader.read()
+
+    return subject_readers  
+
+def read_project_gutneberg_metadata():
+
+    pg_huckfinn_filepath = f"{os.getcwd()}{os.sep}data{os.sep}twain{os.sep}huckleberry_finn{os.sep}project_gutenberg{os.sep}metadata{os.sep}"
+    subject_filepath_list = [
+        
+        pg_huckfinn_filepath + "2011-05-03-HuckFinn_metadata.json",
+        pg_huckfinn_filepath + "2016-08-17-HuckFinn_metadata.json",
+        pg_huckfinn_filepath + "2021-02-21-HuckFinn_metadata.json"
+    ]
+    metadata_json = {}
+    for subject_filepath in subject_filepath_list:
+        with open(subject_filepath, "r") as json_file:
+            metadata_json[os.path.basename(subject_filepath)] = json.load(json_file)
+
+    return metadata_json
 
 # Experiments
 
@@ -157,10 +193,60 @@ def dq_huckfinn_chapterquality_1():
 
         print("=" * 80)
 
+def dq_huckfinn_datasetcompleteness_metadatasufficiency():
+
+    # NOTES
+    # “Metadata assessment tests first for existence and completeness
+    # (percentage of tables defined, percentage of columns defined; percentage
+    # of codefields supported by references data, etc.) and next for the
+    # clarity and quality of definitions (clear, comprehensible, unambiguous,
+    # grammatically correct, etc.) and consistency of representation (the same
+    # field content defined in the same way).” (224)
+
+    # 1. Existence and Completeness
+    # A. Percentage of tables defined
+    # B. Percentage of columns defined
+    # C. Percentage of codefields supported by reference data
+
+    # 2. Clarity and quality of definitions (clear, comprehensible, unambiguous,
+    # grammatically correct, etc.)
+
+    # 3. Consistency of representation (the same field content defined in the same way)
+
+    # Internet Archive
+
+    # Project Gutenberg
+    metadata_json = read_project_gutneberg_metadata()
+    debug_separator = "=" * 80
+
+    # Read metadata json here
+
+    # 1. Existence and Completeness
+
+    # A. Percentage of tables defined (All works have header metadata)
+    percent_tables_defined = 1
+
+    # B. Percentage of columns defined
+    pg_metadata_keyset = AOLMTextUtilities.get_keyset([metadata_json[filepath] for filepath in metadata_json])
+    percent_metadata_fields = [len(metadata_json[filepath].keys()) / float(len(pg_metadata_keyset)) for filepath in metadata_json]
+
+    print(f"Total keyset: {pg_metadata_keyset}")
+    for filepath in metadata_json:
+        print(debug_separator)
+        print(f"Keys for {filepath}:\n{metadata_json[filepath].keys()}")
+        print(f"Percent fields overlapping with overall keyset: {100 * len(metadata_json[filepath].keys()) / float(len(pg_metadata_keyset))}")
+    
+    # 2. Clarity and quality of definitions
+
+
+    # Mark Twain Project Online
+
+    pass
 
 def main():
     
-    dq_huckfinn_chapterquality_1()
+    # dq_huckfinn_chapterquality_1()
+    dq_huckfinn_datasetcompleteness_metadatasufficiency()
 
 
 if "__main__" == __name__:
