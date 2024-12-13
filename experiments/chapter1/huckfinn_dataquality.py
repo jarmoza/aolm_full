@@ -231,10 +231,12 @@ def dq_huckfinn_datasetcompleteness_metadatasufficiency():
 
     # B. Percentage of columns defined
     unkeyed_key = "unkeyed_fields"
+
+    # Get keyset for all metadata files
     pg_metadata_keyset = AOLMTextUtilities.get_keyset([metadata_json[filepath] for filepath in metadata_json], [unkeyed_key])
     pg_metadata_keyset.remove(unkeyed_key)
-    percent_metadata_fields = [len(metadata_json[filepath].keys()) / float(len(pg_metadata_keyset)) for filepath in metadata_json]
 
+    # Calculate percentage coverage each edition has of the total keyset
     print(f"Total keyset: {pg_metadata_keyset}")
     for filepath in metadata_json:
         print(debug_separator)
@@ -244,6 +246,17 @@ def dq_huckfinn_datasetcompleteness_metadatasufficiency():
         print(f"Percent fields overlapping with overall keyset: {100 * len(edition_keys) / float(len(pg_metadata_keyset))}")
     
     # 2. Clarity and quality of definitions
+
+    # A. How many fields are unkeyed?
+    total_keyset_len = (len(pg_metadata_keyset))
+    unkeyed_count_by_edition = {}
+    for filepath in metadata_json:
+        edition_unkeyed = metadata_json[filepath][unkeyed_key].keys()
+        unkeyed_count_by_edition[filepath] = len(edition_unkeyed) / float(total_keyset_len)
+    print(debug_separator)
+    print(unkeyed_count_by_edition)
+
+    # 3. Consistency of representation
 
 
     # Mark Twain Project Online
