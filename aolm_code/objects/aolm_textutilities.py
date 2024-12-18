@@ -15,6 +15,7 @@ import unicodedata # Removing diacritics from characters
 
 # Third party
 import nltk
+from Levenshtein import distance
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 
@@ -130,6 +131,57 @@ class AOLMTextUtilities:
         # all_keys = reduce(lambda a, b: a+b, [list(dictionary.keys()) for dictionary in p_dictionary_list])
 
         return list(set(all_keys))
+    
+    @staticmethod
+    def get_valueset(p_dictionary_list):
+
+        def NestedDictValues(d):
+            for v in d.values():
+                if isinstance(v, dict):
+                    yield from NestedDictValues(v)
+                else:
+                    yield v
+
+        # Gather values (and values of second level values if given)
+        all_values = []
+
+        for dictionary in p_dictionary_list:
+
+            flattened_values = NestedDictValues(dictionary)
+            for value in flattened_values:
+                if type(value) is list:
+                    for list_member in value:
+                        all_values.append(list_member)
+                else:
+                    all_values.append(value)
+
+            # for value in dictionary.values():
+            #     if type(value) is str:
+            #         all_values.append(value)
+            #     elif type(value) is dict:
+            #         all_values.extend(value.values())
+
+        return list(set(all_values))
+
+    @staticmethod
+    def levenshtein_listcompare(p_stringset):
+
+        stringmatch_dict = {}
+
+        for key in p_stringset:
+            stringmatch_dict[key] = []
+            for key2 in p_stringset:
+
+                # Get the Levenshtein distance between keys
+                comp_distance = distance(key, key2)
+
+                # Determine the minimum acceptable distance based on 'key' length
+                min_key_distance = len(key) / 2.0
+
+                if comp_distance > 0 and comp_distance <= min_key_distance:
+                    stringmatch_dict[key].append(key2)
+
+        return stringmatch_dict
 
     # Source: https://stackoverflow.com/questions/517923/what-is-the-best-way-to-remove-accents-in-a-python-unicode-string
     @staticmethod
