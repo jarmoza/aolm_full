@@ -52,7 +52,6 @@ import json
 import os
 import sys
 
-print(os.getcwd())
 
 # Custom
 
@@ -232,9 +231,12 @@ def dq_huckfinn_datasetcompleteness_metadatasufficiency():
     # B. Percentage of columns defined
     unkeyed_key = "unkeyed_fields"
 
-    # Get keyset for all metadata files
+    # Get key set for all metadata files
     pg_metadata_keyset = AOLMTextUtilities.get_keyset([metadata_json[filepath] for filepath in metadata_json], [unkeyed_key])
     pg_metadata_keyset.remove(unkeyed_key)
+
+    # Get value set for all metadata files
+    pg_metadata_valueset = AOLMTextUtilities.get_valueset([metadata_json[filepath] for filepath in metadata_json])
 
     # Calculate percentage coverage each edition has of the total keyset
     print(f"Total keyset: {pg_metadata_keyset}")
@@ -242,8 +244,8 @@ def dq_huckfinn_datasetcompleteness_metadatasufficiency():
         print(debug_separator)
         edition_keys = AOLMTextUtilities.get_keyset([metadata_json[filepath]], [unkeyed_key])
         edition_keys.remove(unkeyed_key)
-        print(f"Keys for {filepath}:\n{edition_keys}")
-        print(f"Percent fields overlapping with overall keyset: {100 * len(edition_keys) / float(len(pg_metadata_keyset))}")
+        # print(f"Keys for {filepath}:\n{edition_keys}")
+        # print(f"Percent fields overlapping with overall keyset: {100 * len(edition_keys) / float(len(pg_metadata_keyset))}")
     
     # 2. Clarity and quality of definitions
 
@@ -253,10 +255,24 @@ def dq_huckfinn_datasetcompleteness_metadatasufficiency():
     for filepath in metadata_json:
         edition_unkeyed = metadata_json[filepath][unkeyed_key].keys()
         unkeyed_count_by_edition[filepath] = len(edition_unkeyed) / float(total_keyset_len)
-    print(debug_separator)
-    print(unkeyed_count_by_edition)
+    # print(debug_separator)
+    # print(unkeyed_count_by_edition)
 
     # 3. Consistency of representation
+    
+    # Keys
+    keymatch_dict = AOLMTextUtilities.levenshtein_listcompare(pg_metadata_keyset)
+
+    # Values
+    valuematch_dict = AOLMTextUtilities.levenshtein_listcompare(pg_metadata_valueset)
+    
+    print(f"{debug_separator}\nValuematch Dict:")
+    mismatch_count = 0
+    for key in valuematch_dict:
+        if len(valuematch_dict[key]) > 0:
+            mismatch_count += len(valuematch_dict[key])
+            print(f"{key}: {valuematch_dict[key]}")
+    print(f"Mismatches: {mismatch_count} out of {len(pg_metadata_valueset)} values")
 
 
     # Mark Twain Project Online
