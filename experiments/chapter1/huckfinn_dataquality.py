@@ -57,15 +57,16 @@ import sys
 
 # Command line
 sys.path.append(f"..{os.sep}..{os.sep}aolm_code{os.sep}objects")
+sys.path.append(f"..{os.sep}..{os.sep}aolm_code{os.sep}data_quality{os.sep}core")
 
 # IDE
 sys.path.append(f"{os.getcwd()}{os.sep}aolm_code{os.sep}objects")
+sys.path.append(f"{os.getcwd()}{os.sep}aolm_code{os.sep}data_quality{os.sep}core")
 
-print(sys.path)
-
+from aolm_textutilities import AOLMTextUtilities
+from dq_metric import DataQualityMetric
 from mtpo_huckfinn_reader import MTPOHuckFinnReader
 from pg_huckfinn_reader import PGHuckFinnReader
-from aolm_textutilities import AOLMTextUtilities
 
 
 # Globals
@@ -195,7 +196,7 @@ def dq_huckfinn_chapterquality_1():
 
         print("=" * 80)
 
-def dq_huckfinn_datasetcompleteness_metadatasufficiency():
+def dq_huckfinn_pg_datasetcompleteness_metadatasufficiency(p_dqmetric_instance):
 
     # NOTES
     # “Metadata assessment tests first for existence and completeness
@@ -205,49 +206,60 @@ def dq_huckfinn_datasetcompleteness_metadatasufficiency():
     # grammatically correct, etc.) and consistency of representation (the same
     # field content defined in the same way).” (224)
 
+    # 2. Clarity and quality of definitions (clear, comprehensible, unambiguous,
+    # grammatically correct, etc.)
+
+    # Maybe here can be a more qualitative score based on the state of the metadata in the original files,
+    # the difficulty it took to extract and shape the metadata, etc.
+    # For example: A qualitative score based on a standard of qualitative scoring for this category
+    # and that reflects the state of the data and the work required, as mnetioned above
+
+    # 3. Consistency of representation (the same field content defined in the same way)
+
+    metadata_json = p_dqmetric_instance.input
+    results = {
+
+        "existence_and_completeness": {},
+        "clarity_and_quality": {},
+        "consistency_of_representation": {}
+    }
+
     # 1. Existence and Completeness
     # A. Percentage of tables defined
     # B. Percentage of columns defined
     # C. Percentage of codefields supported by reference data
 
-    # 2. Clarity and quality of definitions (clear, comprehensible, unambiguous,
-    # grammatically correct, etc.)
-
-    # 3. Consistency of representation (the same field content defined in the same way)
-
-    # Internet Archive
-
-    # Project Gutenberg
-    metadata_json = read_project_gutneberg_metadata()
-    debug_separator = "=" * 80
-
-    # Read metadata json here
-
-    # 1. Existence and Completeness
+    p_dqmetric_instance.add_explanation(
+        "existence_and_completeness",
+        "Existence score:\n" +
+        "Editions on Project Gutenberg vs # editions in entire dataset (how many editions are on PG compared to everyone else)\n" +
+        "Completeness score: Each edition gets a score that is #edition keys / #total unique keys from the overall dataset\n" +
+        "These then get tallied into an overall score for the Project Gutenberg site"
+    )
 
     # A. Percentage of tables defined (All works have header metadata)
-    percent_tables_defined = 1
+    results["existence_and_completeness"]["percent_tables_defined"] = 1.0
 
     # B. Percentage of columns defined
     unkeyed_key = "unkeyed_fields"
+    results["existence_and_completeness"]["percent_key_coverage"] = {}
 
-    # Get key set for all metadata files
+    # I. Get key set for all metadata files
     pg_metadata_keyset = AOLMTextUtilities.get_keyset([metadata_json[filepath] for filepath in metadata_json], [unkeyed_key])
     pg_metadata_keyset.remove(unkeyed_key)
 
-    # Get value set for all metadata files
-    pg_metadata_valueset = AOLMTextUtilities.get_valueset([metadata_json[filepath] for filepath in metadata_json])
-
-    # Calculate percentage coverage each edition has of the total keyset
-    print(f"Total keyset: {pg_metadata_keyset}")
+    # II. Calculate percentage coverage each edition has of the total keyset
     for filepath in metadata_json:
-        print(debug_separator)
         edition_keys = AOLMTextUtilities.get_keyset([metadata_json[filepath]], [unkeyed_key])
         edition_keys.remove(unkeyed_key)
-        # print(f"Keys for {filepath}:\n{edition_keys}")
-        # print(f"Percent fields overlapping with overall keyset: {100 * len(edition_keys) / float(len(pg_metadata_keyset))}")
+        results["existence_and_completeness"]["percent_key_coverage"][filepath] = 100 * len(edition_keys) / float(len(pg_metadata_keyset))
     
     # 2. Clarity and quality of definitions
+    
+    p_dqmetric_instance.add_explanation(
+        "clarity_and_quality",
+        "Number of unkeyed variables / total key count"
+    )
 
     # A. How many fields are unkeyed?
     total_keyset_len = (len(pg_metadata_keyset))
@@ -255,41 +267,63 @@ def dq_huckfinn_datasetcompleteness_metadatasufficiency():
     for filepath in metadata_json:
         edition_unkeyed = metadata_json[filepath][unkeyed_key].keys()
         unkeyed_count_by_edition[filepath] = len(edition_unkeyed) / float(total_keyset_len)
-    # print(debug_separator)
-    # print(unkeyed_count_by_edition)
+        results["clarity_and_quality"][filepath] = len(edition_unkeyed) / float(total_keyset_len)
 
     # 3. Consistency of representation
     
-    # Keys
-    keymatch_dict = AOLMTextUtilities.levenshtein_listcompare(pg_metadata_keyset)
-
-    # Values
+    p_dqmetric_instance.add_explanation(
+        "consistency_of_representation",
+        "Tallies number of mismatches across each unique value and then divides that by the total number of values in metadata of all editions"
+    )
+    
+    # A. Get lists of duplicated, unique values
+    pg_metadata_valueset = AOLMTextUtilities.get_valueset([metadata_json[filepath] for filepath in metadata_json])
     valuematch_dict = AOLMTextUtilities.levenshtein_listcompare(pg_metadata_valueset)
     
-    print(f"{debug_separator}\nValuematch Dict:")
+    # B. Determine mismatches as percentage of the total number of values
+    # represented in the metadata of all editions
     mismatch_count = 0
     for key in valuematch_dict:
         if len(valuematch_dict[key]) > 0:
             mismatch_count += len(valuematch_dict[key])
-            print(f"{key}: {valuematch_dict[key]}")
-    print(f"Mismatches: {mismatch_count} out of {len(pg_metadata_valueset)} values")
+    results["consistency_of_representation"] = 100 * mismatch_count / float(len(pg_metadata_valueset))
 
+    return results
 
-    # Mark Twain Project Online
-
-    pass
 
 def main():
+
+    # NEXT STEP:
+    # (1) Tally scores
+    # (2) Determine overall metadata data quality score
+    # (3) Move on to text data quality experiment 3
+
+    # Mark Twain Project Online (MTPO)
     
+    # Project Gutenberg (PG)
+
+    huckfinn_pg_metadata = read_project_gutneberg_metadata()
+
+    # Metadata sufficiency
+
+    huckfinn_pg_metadata_sufficiency = DataQualityMetric(
+        "HuckFinnPGMetadata",
+        huckfinn_pg_metadata,
+        dq_huckfinn_pg_datasetcompleteness_metadatasufficiency
+    )
+
+    huckfinn_pg_metadata_sufficiency.compute()
+
     # dq_huckfinn_chapterquality_1()
-    dq_huckfinn_datasetcompleteness_metadatasufficiency()
+
+    huckfinn_pg_metadata_sufficiency.show_results(p_show_explanations=True)
+
+    # Internet Archive (IA)
 
 
 if "__main__" == __name__:
 
-    print(f"Current working directory: {os.getcwd()}")
-
-    main()
+    main() 
 
 
 
