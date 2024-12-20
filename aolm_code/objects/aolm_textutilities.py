@@ -161,7 +161,7 @@ class AOLMTextUtilities:
             #     elif type(value) is dict:
             #         all_values.extend(value.values())
 
-        return list(set(all_values))
+        return all_values
 
     @staticmethod
     def levenshtein_listcompare(p_stringset):
