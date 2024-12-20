@@ -17,18 +17,20 @@ from abc import ABC, abstractmethod     # Python abstract classes
     uniformly across different sets of analyses (i.e. in a data quality
     assessment framework).
 """
-class DataQualityMetric(ABC):
+class DataQualityMetric:
 
     # Constructor
 
-    def __init__(self, p_name, p_input):
+    def __init__(self, p_name, p_input, p_compute_fn):
 
         # 0. Save parameters
         self.m_name = p_name
         self.m_input = p_input
+        self.m_compute = p_compute_fn
 
         # 1. Other class fields
-        self.m_result = None
+        self.m_explanation = {}
+        self.m_result = {}
 
     # Properties
 
@@ -41,13 +43,23 @@ class DataQualityMetric(ABC):
     @property
     def result(self):
         return self.m_result
+    @result.setter
+    def result(self, p_new_result):
+        self.m_result = p_new_result
 
-    # Required methods
+    # Methods
 
-    @abstractmethod
+    def add_explanation(self, p_key, p_text):
+        self.m_explanation[p_key] = p_text
     def compute(self):
-        pass
-
-    @abstractmethod
-    def output(self):
-        pass
+        self.m_result = self.m_compute(self)
+    def explanation(self, p_key=""):
+        return self.m_explanation[p_key] if len(p_key) else self.m_explanation
+    def show_results(self, p_show_explanations=False):
+        for key in self.m_result:
+            print("=" * 80)
+            print(key)
+            if p_show_explanations:
+                print(self.explanation(key))
+            print(self.m_result[key])
+    
