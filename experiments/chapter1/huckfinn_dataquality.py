@@ -94,7 +94,7 @@ def read_project_gutenberg_json():
 
     return subject_readers  
 
-def read_project_gutneberg_metadata():
+def read_project_gutenberg_metadata():
 
     pg_huckfinn_filepath = f"{huckfinn_paths["pg_path"]}{os.sep}metadata{os.sep}"
     subject_filepath_list = [
@@ -110,33 +110,41 @@ def read_project_gutneberg_metadata():
 
     return metadata_json
 
-# Experiments
+def read_project_gutenburg_text():
 
-def dq_huckfinn_chapterquality_1():
+    huckfinn_text_readers = {}
 
-    # 0. Setup
-
-    # A. Read in Ur text
+    # 1. Read in Ur text
     mtpo_huckfinn_filepath = f"{os.getcwd()}{os.sep}data{os.sep}twain{os.sep}huckleberry_finn{os.sep}mtpo{os.sep}"
     mtpo_huckfinn_file = "MTDP10000_edited.xml"
     mtpo_reader = MTPOHuckFinnReader(mtpo_huckfinn_filepath + mtpo_huckfinn_file)
     mtpo_reader.read()
+    huckfinn_text_readers["mtpo"] = mtpo_reader
 
-    # B. Read in each subject text
+    # 2. Read in each subject text
     pg_huckfinn_filepath = f"{os.getcwd()}{os.sep}data{os.sep}twain{os.sep}huckleberry_finn{os.sep}project_gutenberg{os.sep}json{os.sep}"
     subject_filepath_list = [
         pg_huckfinn_filepath + "2011-05-03-HuckFinn.json",
         pg_huckfinn_filepath + "2016-08-17-HuckFinn.json",
         pg_huckfinn_filepath + "2021-02-21-HuckFinn.json"
     ]
-    subject_readers = [PGHuckFinnReader(filepath) for filepath in subject_filepath_list]
-    for reader in subject_readers:
-        reader.read()
+    for filepath in subject_filepath_list:
+        huckfinn_text_readers[os.path.basename(filepath)] = PGHuckFinnReader(filepath)
+        huckfinn_text_readers[os.path.basename(filepath)].read()
+
+    return huckfinn_text_readers
+
+# Experiments
+
+def dq_huckfinn_chapterquality_1():
+
+    # 0. Setup
+    huckfinn_text_readers = read_project_gutenburg_text()
 
     # 1. Experiment 2 - Text quality
 
     # A. Does a text contain all the chapters of the Ur copy of that text?
-    print(f"Ur text chapter count: {mtpo_reader.chapter_count}")
+    print(f"Ur text chapter count: {huckfinn_text_readers["mtpo"].chapter_count}")
 
     # B. What percent of each chapter is identical to its corresponding chapter in the Ur copy of that text?
 
@@ -153,19 +161,26 @@ def dq_huckfinn_chapterquality_1():
     for index in range(chapter_count):
 
         # a. Get Ur text lines for this chapter
-        mtpo_chapter_lines = mtpo_reader.get_chapter(index + 1)
+        mtpo_chapter_lines = huckfinn_text_readers["mtpo"].get_chapter(index + 1)
         mtpo_chapter_string = AOLMTextUtilities.create_string_from_lines(mtpo_chapter_lines)
         mtpo_chapter_string = AOLMTextUtilities.clean_string(mtpo_chapter_string)
         mtpo_chapter_strings.append(mtpo_chapter_string)
 
 
     # III. Compare line matches across chapters
-    for pg_reader in subject_readers:
+    for reader_name in huckfinn_text_readers:
+        
+        # Skip Mark Twain project Ur text
+        if "mtpo" == reader_name:
+            continue
+    
+        pg_reader = huckfinn_text_readers[reader_name]
 
         print(f"Subject text {pg_reader.filename} chapter count: {pg_reader.chapter_count}")
 
         for index in range(chapter_count):
 
+            # NOTE: Why?
             if index + 1 == 16:
                 pass
 
@@ -290,6 +305,16 @@ def dq_huckfinn_pg_datasetcompleteness_metadatasufficiency(p_dqmetric_instance):
 
     return results
 
+def dq_huckfinn_pg_datasetcompleteness_recordcountstocontrolrecords(p_dqmetric_instance):
+    
+    # 0. Setup
+    huckfinn_text_readers = read_project_gutenburg_text()
+
+    # Chapter count
+
+    # Sentence count (spaCy?)
+
+    # Word count
 
 def main():
 
@@ -302,21 +327,24 @@ def main():
     
     # Project Gutenberg (PG)
 
-    huckfinn_pg_metadata = read_project_gutneberg_metadata()
-
     # Metadata sufficiency
+    # huckfinn_pg_metadata = read_project_gutenberg_metadata()
+    # huckfinn_pg_metadata_sufficiency = DataQualityMetric(
+    #     "HuckFinnPGMetadata",
+    #     huckfinn_pg_metadata,
+    #     dq_huckfinn_pg_datasetcompleteness_metadatasufficiency
+    # )
+    # huckfinn_pg_metadata_sufficiency.run(p_show_explanations=True)
 
-    huckfinn_pg_metadata_sufficiency = DataQualityMetric(
-        "HuckFinnPGMetadata",
-        huckfinn_pg_metadata,
-        dq_huckfinn_pg_datasetcompleteness_metadatasufficiency
+    # Text record counts
+    huckfinn_pg_textdata = read_project_gutenburg_text()
+    huckfinn_pg_text_recordcounts = DataQualityMetric(
+        "HuckFinnPGText",
+        huckfinn_pg_textdata,
+        dq_huckfinn_pg_datasetcompleteness_recordcountstocontrolrecords
     )
-
-    huckfinn_pg_metadata_sufficiency.compute()
-
+ 
     # dq_huckfinn_chapterquality_1()
-
-    huckfinn_pg_metadata_sufficiency.show_results(p_show_explanations=True)
 
     # Internet Archive (IA)
 
