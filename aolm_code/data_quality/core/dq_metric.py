@@ -47,7 +47,7 @@ class DataQualityMetric:
     def result(self, p_new_result):
         self.m_result = p_new_result
 
-    # Methods
+    # Public methods
 
     def add_explanation(self, p_key, p_text):
         self.m_explanation[p_key] = p_text
@@ -55,6 +55,9 @@ class DataQualityMetric:
         self.m_result = self.m_compute(self)
     def explanation(self, p_key=""):
         return self.m_explanation[p_key] if len(p_key) else self.m_explanation
+    def run(self, p_show_explanations=False):
+        self.compute()
+        self.show_results(p_show_explanations=p_show_explanations)
     def show_results(self, p_show_explanations=False):
         for key in self.m_result:
             print("=" * 80)
