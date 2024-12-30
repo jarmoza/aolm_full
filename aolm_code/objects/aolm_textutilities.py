@@ -164,7 +164,7 @@ class AOLMTextUtilities:
         return all_values
 
     @staticmethod
-    def levenshtein_listcompare(p_stringset):
+    def levenshtein_listcompare(p_stringset, p_acceptable_distance_denom=2.0):
 
         stringmatch_dict = {}
 
@@ -176,7 +176,7 @@ class AOLMTextUtilities:
                 comp_distance = distance(key, key2)
 
                 # Determine the minimum acceptable distance based on 'key' length
-                min_key_distance = len(key) / 2.0
+                min_key_distance = len(key) / p_acceptable_distance_denom
 
                 if comp_distance > 0 and comp_distance <= min_key_distance:
                     stringmatch_dict[key].append(key2)
