@@ -80,20 +80,6 @@ huckfinn_paths = {
 
 # Utility functions
 
-def read_project_gutenberg_json():
-
-    pg_huckfinn_filepath = f"{huckfinn_paths["pg_path"]}{os.sep}json{os.sep}"
-    subject_filepath_list = [
-        pg_huckfinn_filepath + "2011-05-03-HuckFinn.json",
-        pg_huckfinn_filepath + "2016-08-17-HuckFinn.json",
-        pg_huckfinn_filepath + "2021-02-21-HuckFinn.json"
-    ]
-    subject_readers = [PGHuckFinnReader(filepath) for filepath in subject_filepath_list]
-    for reader in subject_readers:
-        reader.read()
-
-    return subject_readers  
-
 def read_project_gutenberg_metadata():
 
     pg_huckfinn_filepath = f"{huckfinn_paths["pg_path"]}{os.sep}metadata{os.sep}"
@@ -136,82 +122,9 @@ def read_project_gutenburg_text():
 
 # Experiments
 
-def dq_huckfinn_chapterquality_1():
-
-    # 0. Setup
-    huckfinn_text_readers = read_project_gutenburg_text()
-
-    # 1. Experiment 2 - Text quality
-
-    # A. Does a text contain all the chapters of the Ur copy of that text?
-    print(f"Ur text chapter count: {huckfinn_text_readers["mtpo"].chapter_count}")
-
-    # B. What percent of each chapter is identical to its corresponding chapter in the Ur copy of that text?
-
-    # Measure percent line match between Ur text and subject texts
-
-    # I. Chapters to run through
-    chapter_count = 43
-
-    # II. Keeps track of line match values for each chapter
-    line_match_percents = { index: 0 for index in range(chapter_count) }
-
-    # III. Read Ur text chapters once for speed
-    mtpo_chapter_strings = []
-    for index in range(chapter_count):
-
-        # a. Get Ur text lines for this chapter
-        mtpo_chapter_lines = huckfinn_text_readers["mtpo"].get_chapter(index + 1)
-        mtpo_chapter_string = AOLMTextUtilities.create_string_from_lines(mtpo_chapter_lines)
-        mtpo_chapter_string = AOLMTextUtilities.clean_string(mtpo_chapter_string)
-        mtpo_chapter_strings.append(mtpo_chapter_string)
-
-
-    # III. Compare line matches across chapters
-    for reader_name in huckfinn_text_readers:
-        
-        # Skip Mark Twain project Ur text
-        if "mtpo" == reader_name:
-            continue
-    
-        pg_reader = huckfinn_text_readers[reader_name]
-
-        print(f"Subject text {pg_reader.filename} chapter count: {pg_reader.chapter_count}")
-
-        for index in range(chapter_count):
-
-            # NOTE: Why?
-            if index + 1 == 16:
-                pass
-
-            # a. Get Ur text lines for this chapter
-            mtpo_chapter_string = mtpo_chapter_strings[index]
-
-            # b. Get subject text lines for this chapter
-            pg_chapter_lines = pg_reader.get_chapter(index + 1)
-            pg_chapter_string = AOLMTextUtilities.create_string_from_lines(pg_chapter_lines)
-            pg_chapter_string = AOLMTextUtilities.clean_string(pg_chapter_string)
-
-            line_match_percents[index] = AOLMTextUtilities.percent_line_match(
-                mtpo_chapter_string,
-                pg_chapter_string
-            )
-
-        # print(line_match_percents)    
-
-        # C. Given that, what percent of chapters are complete in this text?
-        acceptable_completion_percent = 0.99
-        passable_chapters = 0
-        for chapter_index in line_match_percents:
-            if line_match_percents[chapter_index] >= acceptable_completion_percent:
-                passable_chapters += 1
-            else:
-                print(f"Chapter {chapter_index + 1} is not passable for {pg_reader.filename}")
-        print(f"# of chapters with >= 95% complete: {passable_chapters}")
-
-        print("=" * 80)
-
 def dq_huckfinn_pg_datasetcompleteness_metadatasufficiency(p_dqmetric_instance):
+
+    # Experiment 1 - Metadata Quality
 
     # NOTES
     # “Metadata assessment tests first for existence and completeness
@@ -306,15 +219,90 @@ def dq_huckfinn_pg_datasetcompleteness_metadatasufficiency(p_dqmetric_instance):
     return results
 
 def dq_huckfinn_pg_datasetcompleteness_recordcountstocontrolrecords(p_dqmetric_instance):
-    
+
+    # Experiment 2 - Text Quality
+    # DQ Metric Dataset Completeness - Record Counts
+
     # 0. Setup
     huckfinn_text_readers = read_project_gutenburg_text()
 
-    # Chapter count
+    # 1. Chapter count
 
-    # Sentence count (spaCy?)
+    # A. Chapter count comparison between MTPO and PG editions
 
-    # Word count
+    # Does a text contain all the chapters of the Ur copy of that text?
+    print(f"Ur text chapter count: {huckfinn_text_readers["mtpo"].chapter_count}")
+
+    # Chapters to run through (43 from MTPO)
+    chapter_count = huckfinn_text_readers["mtpo"].chapter_count
+
+    # 2. Sentence count (spaCy?)
+
+    # Measure percent line match between Ur text and subject texts
+    line_match_percents = { index: 0 for index in range(chapter_count) }
+
+    # III. Read Ur text chapters once for speed
+    mtpo_chapter_strings = []
+    for index in range(chapter_count):
+
+        # a. Get Ur text lines for this chapter
+        mtpo_chapter_lines = huckfinn_text_readers["mtpo"].get_chapter(index + 1)
+        mtpo_chapter_string = AOLMTextUtilities.create_string_from_lines(mtpo_chapter_lines)
+        mtpo_chapter_string = AOLMTextUtilities.clean_string(mtpo_chapter_string)
+        mtpo_chapter_strings.append(mtpo_chapter_string)
+
+    # A. What percent of sentences of each chapter is identical to its
+    # corresponding chapter in the Ur copy of that text?
+
+    for reader_name in huckfinn_text_readers:
+        
+        # Skip Mark Twain project Ur text
+        if "mtpo" == reader_name:
+            continue
+    
+        pg_reader = huckfinn_text_readers[reader_name]
+
+        print(f"Subject text {pg_reader.filename} chapter count: {pg_reader.chapter_count}")
+
+        for index in range(chapter_count):
+
+            # NOTE: Why breakpoint here?
+            # NOTE: I believe it's because the MTPO version includes excised material in this chapter
+            # See incident where Huck and Jim swim ashore from the raft
+            if index + 1 == 16:
+                pass
+
+            # a. Get Ur text lines for this chapter
+            mtpo_chapter_string = mtpo_chapter_strings[index]
+
+            # b. Get subject text lines for this chapter
+            pg_chapter_lines = pg_reader.get_chapter(index + 1)
+            pg_chapter_string = AOLMTextUtilities.create_string_from_lines(pg_chapter_lines)
+            pg_chapter_string = AOLMTextUtilities.clean_string(pg_chapter_string)
+
+            line_match_percents[index] = AOLMTextUtilities.percent_line_match(
+                mtpo_chapter_string,
+                pg_chapter_string
+            )
+
+        # print(line_match_percents)    
+
+        # C. Given that, what percent of chapters are complete in this text?
+        acceptable_completion_percent = 0.99
+        passable_chapters = 0
+        for chapter_index in line_match_percents:
+            if line_match_percents[chapter_index] >= acceptable_completion_percent:
+                passable_chapters += 1
+            else:
+                print(f"Chapter {chapter_index + 1} is not passable for {pg_reader.filename}")
+        print(f"# of chapters with >= 95% complete: {passable_chapters}")
+
+        print("=" * 80)    
+
+    # B. What percent of sentences of each PG book is identical to the MTPO sentences?
+
+    # 3. Word count
+
 
 def main():
 
