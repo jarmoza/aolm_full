@@ -63,6 +63,7 @@ sys.path.append(f"..{os.sep}..{os.sep}aolm_code{os.sep}data_quality{os.sep}core"
 sys.path.append(f"{os.getcwd()}{os.sep}aolm_code{os.sep}objects")
 sys.path.append(f"{os.getcwd()}{os.sep}aolm_code{os.sep}data_quality{os.sep}core")
 
+import spacy
 from aolm_textutilities import AOLMTextUtilities
 from dq_metric import DataQualityMetric
 from mtpo_huckfinn_reader import MTPOHuckFinnReader
@@ -225,6 +226,15 @@ def dq_huckfinn_pg_datasetcompleteness_recordcountstocontrolrecords(p_dqmetric_i
 
     # 0. Setup
     huckfinn_text_readers = read_project_gutenburg_text()
+    results = {
+
+        "chapter_count": {},
+        "sentence_count": {
+            "by_chapter": {},
+            "whole_book": {}
+        },
+        "word_count": {}
+    }    
 
     # 1. Chapter count
 
@@ -233,17 +243,31 @@ def dq_huckfinn_pg_datasetcompleteness_recordcountstocontrolrecords(p_dqmetric_i
     # Does a text contain all the chapters of the Ur copy of that text?
     print(f"Ur text chapter count: {huckfinn_text_readers["mtpo"].chapter_count}")
 
-    # Chapters to run through (43 from MTPO)
-    chapter_count = huckfinn_text_readers["mtpo"].chapter_count
+    # Chapters to run through (43 from Ur copy, MTPO)
+    ur_chapter_count = huckfinn_text_readers["mtpo"].chapter_count
+
+    for reader_name in huckfinn_text_readers:        
+        if "mtpo" == reader_name:
+            continue
+        pg_reader = huckfinn_text_readers[reader_name]
+        results["chapter_count"][reader_name] = 100.0 * pg_reader.chapter_count / ur_chapter_count
 
     # 2. Sentence count (spaCy?)
 
     # Measure percent line match between Ur text and subject texts
-    line_match_percents = { index: 0 for index in range(chapter_count) }
+    line_match_percents = { index: 0 for index in range(ur_chapter_count) }
+
+    # NEXT: December 31, 2024
+    # Get sentences from chapter string via spaCy
+    nlp = spacy.load("en_core_web_sm")
+    doc = nlp("This is a sentence. This is another sentence.")
+    assert doc.has_annotation("SENT_START")
+    for sent in doc.sents:
+        print(sent.text)
 
     # III. Read Ur text chapters once for speed
     mtpo_chapter_strings = []
-    for index in range(chapter_count):
+    for index in range(ur_chapter_count):
 
         # a. Get Ur text lines for this chapter
         mtpo_chapter_lines = huckfinn_text_readers["mtpo"].get_chapter(index + 1)
@@ -264,7 +288,7 @@ def dq_huckfinn_pg_datasetcompleteness_recordcountstocontrolrecords(p_dqmetric_i
 
         print(f"Subject text {pg_reader.filename} chapter count: {pg_reader.chapter_count}")
 
-        for index in range(chapter_count):
+        for index in range(ur_chapter_count):
 
             # NOTE: Why breakpoint here?
             # NOTE: I believe it's because the MTPO version includes excised material in this chapter
