@@ -54,7 +54,8 @@ class AOLMTextUtilities:
             for new_str in new_str_parts]
 
         # 6. Clean multi-spaces and rejoin with single spaces
-        new_str = " ".join([word for word in new_str_parts if "" != word.strip()])
+        # new_str = " ".join([word for word in new_str_parts if "" != word.strip()])
+        new_str = " ".join(new_str.split())
 
         return new_str.strip()
 
@@ -109,6 +110,39 @@ class AOLMTextUtilities:
         # C. Show the plot
         fig.show()
 
+    # NOTE: Expected arguments are dict of form {key: count}
+    @staticmethod
+    def dictionaries_percent_equal(p_source_dict, p_compared_dict):
+
+        # 0. Percent will be based on the number of keys in the source dictionary
+        num_source_keys = len(p_source_dict.keys())
+
+        # How it works
+        # We start with 'total_percent' at 100.0% and deduct down
+        # Each key of the source dict is considering to be X% where X is 100 / num_source_keys [percent_per_source_key]
+        # (A) If a source key is not in the compared dict then X is deducted from total_percent
+        # (B) If source key is in compared dict then calculate percent of compared tally in source tally;
+        # deduct anything less than 100% from total_percent
+        # NOTE: Obviously there is the scenario where compared tally is greater than source tally, but we do not want to add to total percent
+        # as this could misconstrue the meaning of the final value of total_percent
+
+        total_percent = 100.0
+        percent_per_source_key = 100.0 / num_source_keys
+
+        for source_key in p_source_dict:
+
+            # (A) If a source key is not in the compared dict then X is deducted from total_percent
+            if source_key not in p_compared_dict:
+                total_percent -= percent_per_source_key
+            # (B) If source key is in compared dict then calculate percent of compared tally in source tally;
+            # deduct anything less than 100% from total_percent
+            else:
+                compared_tally_percent = 100.0 * p_compared_dict[source_key] / p_source_dict[source_key]
+                if compared_tally_percent < 100.0:
+                    total_percent -= (100.0 - compared_tally_percent)
+
+        return total_percent
+
     @staticmethod
     def create_string_from_lines(p_text_lines):
 
@@ -131,7 +165,18 @@ class AOLMTextUtilities:
         # all_keys = reduce(lambda a, b: a+b, [list(dictionary.keys()) for dictionary in p_dictionary_list])
 
         return list(set(all_keys))
-    
+
+    @staticmethod
+    def get_sentence_dict_from_spacy_doc(p_spacy_doc):
+
+        unique_sentences = {}
+        for sent in p_spacy_doc.sents:
+            if sent not in unique_sentences:
+                cleaned_sent = AOLMTextUtilities.clean_string(sent.text, p_remove_internal_punctuation=True)
+                unique_sentences[cleaned_sent] = 0
+            unique_sentences[cleaned_sent] += 1
+        return unique_sentences
+
     @staticmethod
     def get_valueset(p_dictionary_list):
 
@@ -192,15 +237,18 @@ class AOLMTextUtilities:
             # Gets the base character of char, by "removing" any
             # diacritics like accents or curls and strokes and the like.
 
-            desc = unicodedata.name(char)
-            cutoff = desc.find(" WITH ")
-            if cutoff != -1:
-                desc = desc[:cutoff]
-                try:
-                    char = unicodedata.lookup(desc)
-                except KeyError:
-                    continue  # removing "WITH ..." produced an invalid name
-            new_str.append(char)
+            try:
+                desc = unicodedata.name(char)
+                cutoff = desc.find(" WITH ")
+                if cutoff != -1:
+                    desc = desc[:cutoff]
+                    try:
+                        char = unicodedata.lookup(desc)
+                    except KeyError:
+                        continue  # removing "WITH ..." produced an invalid name
+                new_str.append(char)
+            except:
+                continue
 
         return "".join(new_str)
 
