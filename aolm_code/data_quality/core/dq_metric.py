@@ -29,8 +29,11 @@ class DataQualityMetric:
         self.m_compute = p_compute_fn
 
         # 1. Other class fields
+        self.m_metric_min = 0.0
+        self.m_metric_max = 100.0
         self.m_explanation = {}
         self.m_result = {}
+        self.m_urtext_name = ""
 
     # Properties
 
@@ -38,8 +41,26 @@ class DataQualityMetric:
     def input(self):
         return self.m_input
     @property
+    def metric_max(self):
+        return self.m_metric_max
+    @metric_max.setter
+    def metric_max(self, p_metric_max):
+        self.m_metric_max = p_metric_max
+    @property
+    def metric_min(self):
+        return self.m_metric_min
+    @metric_min.setter
+    def metric_min(self, p_metric_min):
+        self.m_metric_min = p_metric_min
+    @property
     def name(self):
         return self.m_name
+    @property
+    def urtext_name(self):
+        return self.m_urtext_name
+    @urtext_name.setter
+    def urtext_name(self, p_urtext_name):
+        self.m_urtext_name = p_urtext_name
     @property
     def result(self):
         return self.m_result
