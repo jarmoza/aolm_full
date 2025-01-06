@@ -79,7 +79,24 @@ huckfinn_paths = {
     "pg_path": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/project_gutenberg"
 }
 
+# Mark Twain Project Online abbreviation
+MTPO = "mtpo"
+
 # Utility functions
+
+def get_spacy_eng_sm_model():
+
+    return spacy.load("en_core_web_sm")
+
+def read_marktwain_project_online_text():
+
+    # 1. Read in Ur text
+    mtpo_huckfinn_filepath = f"{os.getcwd()}{os.sep}data{os.sep}twain{os.sep}huckleberry_finn{os.sep}mtpo{os.sep}"
+    mtpo_huckfinn_file = "MTDP10000_edited.xml"
+    mtpo_reader = MTPOHuckFinnReader(mtpo_huckfinn_filepath + mtpo_huckfinn_file)
+    mtpo_reader.read()
+    
+    return mtpo_reader    
 
 def read_project_gutenberg_metadata():
 
@@ -101,14 +118,7 @@ def read_project_gutenburg_text():
 
     huckfinn_text_readers = {}
 
-    # 1. Read in Ur text
-    mtpo_huckfinn_filepath = f"{os.getcwd()}{os.sep}data{os.sep}twain{os.sep}huckleberry_finn{os.sep}mtpo{os.sep}"
-    mtpo_huckfinn_file = "MTDP10000_edited.xml"
-    mtpo_reader = MTPOHuckFinnReader(mtpo_huckfinn_filepath + mtpo_huckfinn_file)
-    mtpo_reader.read()
-    huckfinn_text_readers["mtpo"] = mtpo_reader
-
-    # 2. Read in each subject text
+    # 1. Read in each Project Gutenberg edition of Huckleberry Finn
     pg_huckfinn_filepath = f"{os.getcwd()}{os.sep}data{os.sep}twain{os.sep}huckleberry_finn{os.sep}project_gutenberg{os.sep}json{os.sep}"
     subject_filepath_list = [
         pg_huckfinn_filepath + "2011-05-03-HuckFinn.json",
@@ -225,7 +235,7 @@ def dq_huckfinn_pg_datasetcompleteness_recordcountstocontrolrecords(p_dqmetric_i
     # DQ Metric Dataset Completeness - Record Counts
 
     # 0. Setup
-    huckfinn_text_readers = read_project_gutenburg_text()
+    huckfinn_text_readers = p_dqmetric_instance.input
     results = {
 
         "chapter_count": {},
@@ -241,36 +251,56 @@ def dq_huckfinn_pg_datasetcompleteness_recordcountstocontrolrecords(p_dqmetric_i
     # A. Chapter count comparison between MTPO and PG editions
 
     # Does a text contain all the chapters of the Ur copy of that text?
-    print(f"Ur text chapter count: {huckfinn_text_readers["mtpo"].chapter_count}")
+    print(f"Ur text chapter count: {huckfinn_text_readers[MTPO].chapter_count}")
 
     # Chapters to run through (43 from Ur copy, MTPO)
-    ur_chapter_count = huckfinn_text_readers["mtpo"].chapter_count
+    ur_chapter_count = huckfinn_text_readers[MTPO].chapter_count
 
-    for reader_name in huckfinn_text_readers:        
-        if "mtpo" == reader_name:
-            continue
-        pg_reader = huckfinn_text_readers[reader_name]
-        results["chapter_count"][reader_name] = 100.0 * pg_reader.chapter_count / ur_chapter_count
+    # Chapter counts of PG editions
+    results["chapter_count"] = { reader_name: 100.0 * huckfinn_text_readers[reader_name].chapter_count / ur_chapter_count for reader_name in huckfinn_text_readers if MTPO != reader_name }
 
-    # 2. Sentence count (spaCy?)
+    # 2. Sentence count (using spaCy's sentence model)
 
     # Measure percent line match between Ur text and subject texts
     line_match_percents = { index: 0 for index in range(ur_chapter_count) }
 
-    # NEXT: December 31, 2024
-    # Get sentences from chapter string via spaCy
-    nlp = spacy.load("en_core_web_sm")
-    doc = nlp("This is a sentence. This is another sentence.")
-    assert doc.has_annotation("SENT_START")
-    for sent in doc.sents:
-        print(sent.text)
+    # Get sentences from chapter strings via spaCy
+
+    # A. Load up spaCy model
+    nlp = get_spacy_eng_sm_model()
+
+    # B. Compare sentences of each chapter of Ur text with each PG edition
+    for index in range(1, ur_chapter_count + 1):
+
+        # I. Read the ur chapter
+        ur_spacy_chapter = nlp("\n".join(huckfinn_text_readers[MTPO].get_chapter(index)))
+
+        # II. Create a dictionary of unique sentence counts of the ur chapter
+        ur_sentence_dict = AOLMTextUtilities.get_sentence_dict_from_spacy_doc(ur_spacy_chapter)
+
+        # III. Compare the ur chapter sentences to those in each PG edition
+        for reader_name in huckfinn_text_readers:
+            if MTPO == reader_name:
+                continue
+            pg_spacy_chapter = nlp("\n".join(huckfinn_text_readers[reader_name].get_chapter(index)))
+            pg_sentence_dict = AOLMTextUtilities.get_sentence_dict_from_spacy_doc(pg_spacy_chapter)
+            
+            results["sentence_count"]["by_chapter"][reader_name] = \
+                AOLMTextUtilities.dictionaries_percent_equal(ur_sentence_dict, pg_sentence_dict)
+
+    # doc = nlp("This is a sentence. This is another sentence.")
+    # assert doc.has_annotation("SENT_START")
+    # for sent in doc.sents:
+    #     print(sent.text)
+
+    # for sent in ur_spacy_doc.sents:
 
     # III. Read Ur text chapters once for speed
     mtpo_chapter_strings = []
     for index in range(ur_chapter_count):
 
         # a. Get Ur text lines for this chapter
-        mtpo_chapter_lines = huckfinn_text_readers["mtpo"].get_chapter(index + 1)
+        mtpo_chapter_lines = huckfinn_text_readers[MTPO].get_chapter(index + 1)
         mtpo_chapter_string = AOLMTextUtilities.create_string_from_lines(mtpo_chapter_lines)
         mtpo_chapter_string = AOLMTextUtilities.clean_string(mtpo_chapter_string)
         mtpo_chapter_strings.append(mtpo_chapter_string)
@@ -281,7 +311,7 @@ def dq_huckfinn_pg_datasetcompleteness_recordcountstocontrolrecords(p_dqmetric_i
     for reader_name in huckfinn_text_readers:
         
         # Skip Mark Twain project Ur text
-        if "mtpo" == reader_name:
+        if MTPO == reader_name:
             continue
     
         pg_reader = huckfinn_text_readers[reader_name]
@@ -312,7 +342,7 @@ def dq_huckfinn_pg_datasetcompleteness_recordcountstocontrolrecords(p_dqmetric_i
         # print(line_match_percents)    
 
         # C. Given that, what percent of chapters are complete in this text?
-        acceptable_completion_percent = 0.99
+        acceptable_completion_percent = p_dqmetric_instance.metric_min
         passable_chapters = 0
         for chapter_index in line_match_percents:
             if line_match_percents[chapter_index] >= acceptable_completion_percent:
@@ -349,14 +379,22 @@ def main():
     # huckfinn_pg_metadata_sufficiency.run(p_show_explanations=True)
 
     # Text record counts
-    huckfinn_pg_textdata = read_project_gutenburg_text()
+
+    # 1. Read ur text and subject texts
+    huckfinn_textdata = read_project_gutenburg_text()
+    huckfinn_textdata[MTPO] = read_marktwain_project_online_text()
+
+    # 2. Create data quality metric
     huckfinn_pg_text_recordcounts = DataQualityMetric(
         "HuckFinnPGText",
-        huckfinn_pg_textdata,
+        huckfinn_textdata,
         dq_huckfinn_pg_datasetcompleteness_recordcountstocontrolrecords
     )
- 
-    # dq_huckfinn_chapterquality_1()
+    huckfinn_pg_text_recordcounts.urtext_name = MTPO
+    huckfinn_pg_text_recordcounts.metric_min = 0.95
+
+    # 3. Compute metric and save results
+    huckfinn_pg_text_recordcounts.compute()
 
     # Internet Archive (IA)
 
