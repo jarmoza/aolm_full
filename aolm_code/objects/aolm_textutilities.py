@@ -10,6 +10,7 @@ from functools import reduce
 from math import ceil
 import os
 import re
+from statistics import mean
 import string
 import unicodedata # Removing diacritics from characters
 
@@ -35,29 +36,25 @@ class AOLMTextUtilities:
     @staticmethod
     def clean_string(p_original_string, p_remove_internal_punctuation=False):
 
-        # 1. Strip whitespace and lowercase
-        new_str = p_original_string.strip().lower()
+        # 1. Strip whitespace, lowercase, and replace \n and \t with ' '
+        new_str = p_original_string.strip().lower().replace("\n", " ").replace("\t", " ")
 
         # 2. Remove all accents
         new_str = AOLMTextUtilities.remove_diacritics(new_str)
 
-        # 3. Replace all \n and \t with ' '
-        new_str = new_str.replace("\n", " ").replace("\t", " ")	
+        # 3. Split by spaces and remove single 'n' characters
+        new_str_parts = [part for part in new_str.split() if part != "n"]
 
-        # 4. Split by spaces
-        new_str_parts = new_str.split()
-        # a. Removing single n's - unicode error converted em-dash to n-tilda
-        new_str_parts = [part for part in new_str_parts if "n" != part]
+        # 4. Remove punctuation from each word
+        if p_remove_internal_punctuation:
+            new_str_parts = ["".join(char for char in part if char.isalnum() or char.isspace()) for part in new_str_parts]
+        else:
+            new_str_parts = [AOLMTextUtilities.remove_punctuation(part, p_remove_internal_punctuation).strip() for part in new_str_parts]
 
-        # 5. Remove punctuation from each word
-        new_str_parts = [AOLMTextUtilities.remove_punctuation(new_str, p_remove_internal_punctuation)	\
-            for new_str in new_str_parts]
+        # 5. Replace multiple spaces with a single space
+        new_str = " ".join(new_str_parts)
 
-        # 6. Clean multi-spaces and rejoin with single spaces
-        # new_str = " ".join([word for word in new_str_parts if "" != word.strip()])
-        new_str = " ".join(new_str.split())
-
-        return new_str.strip()
+        return new_str
 
     @staticmethod
     def count_words_and_plot(p_text_filepath, p_top_words=10):
@@ -139,7 +136,7 @@ class AOLMTextUtilities:
             else:
                 compared_tally_percent = 100.0 * p_compared_dict[source_key] / p_source_dict[source_key]
                 if compared_tally_percent < 100.0:
-                    total_percent -= (100.0 - compared_tally_percent)
+                    total_percent -= (100.0 - compared_tally_percent) * (percent_per_source_key / 100.0)
 
         return total_percent
 
@@ -171,12 +168,16 @@ class AOLMTextUtilities:
 
         unique_sentences = {}
         for sent in p_spacy_doc.sents:
-            if sent not in unique_sentences:
-                cleaned_sent = AOLMTextUtilities.clean_string(sent.text, p_remove_internal_punctuation=True)
+            cleaned_sent = AOLMTextUtilities.clean_string(sent.text, p_remove_internal_punctuation=True)
+            if cleaned_sent not in unique_sentences:
                 unique_sentences[cleaned_sent] = 0
             unique_sentences[cleaned_sent] += 1
         return unique_sentences
 
+    @staticmethod
+    def get_words_from_string(p_string):
+        return p_string.strip().split()
+    
     @staticmethod
     def get_valueset(p_dictionary_list):
 
@@ -363,3 +364,8 @@ class AOLMTextUtilities:
 
         # # Return percentage match (re: the above match rules) of compared line with original line
         # return float(matches) / float(line_word_count)
+
+    @staticmethod
+    def weighted_mean_from_dict(p_dict):
+
+        return mean([p_dict[key] * 1.0 / len(p_dict.keys()) for key in p_dict])
