@@ -21,12 +21,13 @@ class DataQualityMetric:
 
     # Constructor
 
-    def __init__(self, p_name, p_input, p_compute_fn):
+    def __init__(self, p_name, p_input, p_compute_fn, p_evaluate_fn):
 
         # 0. Save parameters
         self.m_name = p_name
         self.m_input = p_input
         self.m_compute = p_compute_fn
+        self.m_evaluate = p_evaluate_fn
 
         # 1. Other class fields
         self.m_metric_min = 0.0
@@ -76,6 +77,8 @@ class DataQualityMetric:
         self.m_result = self.m_compute(self)
     def explanation(self, p_key=""):
         return self.m_explanation[p_key] if len(p_key) else self.m_explanation
+    def evaluate(self):
+        return self.m_evaluate(self)
     def run(self, p_show_explanations=False):
         self.compute()
         self.show_results(p_show_explanations=p_show_explanations)
