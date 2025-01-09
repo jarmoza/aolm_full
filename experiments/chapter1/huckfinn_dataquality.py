@@ -51,7 +51,8 @@
 import json
 import os
 import sys
-
+from collections import Counter
+from statistics import mean
 
 # Custom
 
@@ -133,7 +134,9 @@ def read_project_gutenburg_text():
 
 # Experiments
 
-def dq_huckfinn_pg_datasetcompleteness_metadatasufficiency(p_dqmetric_instance):
+# Metric computes
+
+def __compute_dq_huckfinn_pg_datasetcompleteness_metadatasufficiency(p_dqmetric_instance):
 
     # Experiment 1 - Metadata Quality
 
@@ -177,7 +180,7 @@ def dq_huckfinn_pg_datasetcompleteness_metadatasufficiency(p_dqmetric_instance):
     )
 
     # A. Percentage of tables defined (All works have header metadata)
-    results["existence_and_completeness"]["percent_tables_defined"] = 1.0
+    results["existence_and_completeness"]["percent_tables_defined"] = 100.0
 
     # B. Percentage of columns defined
     unkeyed_key = "unkeyed_fields"
@@ -206,7 +209,7 @@ def dq_huckfinn_pg_datasetcompleteness_metadatasufficiency(p_dqmetric_instance):
     for filepath in metadata_json:
         edition_unkeyed = metadata_json[filepath][unkeyed_key].keys()
         unkeyed_count_by_edition[filepath] = len(edition_unkeyed) / float(total_keyset_len)
-        results["clarity_and_quality"][filepath] = len(edition_unkeyed) / float(total_keyset_len)
+        results["clarity_and_quality"][filepath] = 100 * len(edition_unkeyed) / float(total_keyset_len)
 
     # 3. Consistency of representation
     
@@ -229,21 +232,23 @@ def dq_huckfinn_pg_datasetcompleteness_metadatasufficiency(p_dqmetric_instance):
 
     return results
 
-def dq_huckfinn_pg_datasetcompleteness_recordcountstocontrolrecords(p_dqmetric_instance):
+def __compute_dq_huckfinn_pg_datasetcompleteness_recordcountstocontrolrecords(p_dqmetric_instance):
 
     # Experiment 2 - Text Quality
     # DQ Metric Dataset Completeness - Record Counts
 
     # 0. Setup
     huckfinn_text_readers = p_dqmetric_instance.input
-    results = {
+    results = { reader_name: {
 
-        "chapter_count": {},
-        "sentence_count": {
-            "by_chapter": {},
-            "whole_book": {}
-        },
-        "word_count": {}
+            "chapter_count": {},
+            "sentence_count": {
+                "by_chapter": {}
+            },
+            "word_count": {
+                "by_chapter": {}
+            }
+        } for reader_name in huckfinn_text_readers if MTPO != reader_name
     }    
 
     # 1. Chapter count
@@ -257,7 +262,10 @@ def dq_huckfinn_pg_datasetcompleteness_recordcountstocontrolrecords(p_dqmetric_i
     ur_chapter_count = huckfinn_text_readers[MTPO].chapter_count
 
     # Chapter counts of PG editions
-    results["chapter_count"] = { reader_name: 100.0 * huckfinn_text_readers[reader_name].chapter_count / ur_chapter_count for reader_name in huckfinn_text_readers if MTPO != reader_name }
+    for reader_name in results:
+        if MTPO == reader_name:
+            continue
+        results[reader_name]["chapter_count"] = 100.0 * huckfinn_text_readers[reader_name].chapter_count / ur_chapter_count
 
     # 2. Sentence count (using spaCy's sentence model)
 
@@ -282,103 +290,156 @@ def dq_huckfinn_pg_datasetcompleteness_recordcountstocontrolrecords(p_dqmetric_i
         for reader_name in huckfinn_text_readers:
             if MTPO == reader_name:
                 continue
+
             pg_spacy_chapter = nlp("\n".join(huckfinn_text_readers[reader_name].get_chapter(index)))
             pg_sentence_dict = AOLMTextUtilities.get_sentence_dict_from_spacy_doc(pg_spacy_chapter)
             
-            results["sentence_count"]["by_chapter"][reader_name] = \
+            results[reader_name]["sentence_count"]["by_chapter"][str(index)] = \
                 AOLMTextUtilities.dictionaries_percent_equal(ur_sentence_dict, pg_sentence_dict)
+            
+    # for reader_name in results:
+    #     print("=" * 80)
+    #     print(f"{reader_name}")
+    #     for chapter_index in results[reader_name]["sentence_count"]["by_chapter"]:
+    #         print(f"chapter {chapter_index}: {results[reader_name]["sentence_count"]["by_chapter"][chapter_index]}")
+    #     print("\n")
 
-    # doc = nlp("This is a sentence. This is another sentence.")
-    # assert doc.has_annotation("SENT_START")
-    # for sent in doc.sents:
-    #     print(sent.text)
+    # 3. Sentence count
+    for index in range(1, ur_chapter_count + 1):
 
-    # for sent in ur_spacy_doc.sents:
+        # I. Read the ur chapter's words
+        ur_chapter = huckfinn_text_readers[MTPO].get_chapter(index)
+        ur_words = AOLMTextUtilities.get_words_from_string(AOLMTextUtilities.create_string_from_lines(ur_chapter))
+        ur_words = Counter(ur_words)
 
-    # III. Read Ur text chapters once for speed
-    mtpo_chapter_strings = []
-    for index in range(ur_chapter_count):
+        # II. Compare the ur chapter words to those in each PG edition
+        for reader_name in huckfinn_text_readers:
+            if MTPO == reader_name:
+                continue
 
-        # a. Get Ur text lines for this chapter
-        mtpo_chapter_lines = huckfinn_text_readers[MTPO].get_chapter(index + 1)
-        mtpo_chapter_string = AOLMTextUtilities.create_string_from_lines(mtpo_chapter_lines)
-        mtpo_chapter_string = AOLMTextUtilities.clean_string(mtpo_chapter_string)
-        mtpo_chapter_strings.append(mtpo_chapter_string)
+            pg_chapter = huckfinn_text_readers[reader_name].get_chapter(index)
+            pg_words = AOLMTextUtilities.get_words_from_string(AOLMTextUtilities.create_string_from_lines(pg_chapter))
+            pg_words = Counter(pg_words)
+            
+            results[reader_name]["word_count"]["by_chapter"][str(index)] = \
+                AOLMTextUtilities.dictionaries_percent_equal(ur_words, pg_words)
+            
+    # for reader_name in results:
+    #     print("=" * 80)
+    #     print(f"{reader_name}")
+    #     for chapter_index in results[reader_name]["word_count"]["by_chapter"]:
+    #         print(f"chapter {chapter_index}: {results[reader_name]["word_count"]["by_chapter"][chapter_index]}")
+    #     print("\n")    
 
-    # A. What percent of sentences of each chapter is identical to its
-    # corresponding chapter in the Ur copy of that text?
+    # NEXT UP:
+    # (1) Review sentence comparison function
+    # (2) Finish out text record count dq metric
+    # (3) Visualize text record count and metadata suffiency submetrics and write about them
 
-    for reader_name in huckfinn_text_readers:
-        
-        # Skip Mark Twain project Ur text
-        if MTPO == reader_name:
-            continue
-    
-        pg_reader = huckfinn_text_readers[reader_name]
+    # # C. Given that, what percent of chapters are complete in this text?
+    # acceptable_completion_percent = p_dqmetric_instance.metric_min
+    # passable_chapters = 0
 
-        print(f"Subject text {pg_reader.filename} chapter count: {pg_reader.chapter_count}")
+    return results
 
-        for index in range(ur_chapter_count):
+# Metric evaluations
 
-            # NOTE: Why breakpoint here?
-            # NOTE: I believe it's because the MTPO version includes excised material in this chapter
-            # See incident where Huck and Jim swim ashore from the raft
-            if index + 1 == 16:
-                pass
+def __eval_dq_huckfinn_pg_datasetcompleteness_metadatasufficiency(p_dqmetric_instance):
 
-            # a. Get Ur text lines for this chapter
-            mtpo_chapter_string = mtpo_chapter_strings[index]
+    # results = {
 
-            # b. Get subject text lines for this chapter
-            pg_chapter_lines = pg_reader.get_chapter(index + 1)
-            pg_chapter_string = AOLMTextUtilities.create_string_from_lines(pg_chapter_lines)
-            pg_chapter_string = AOLMTextUtilities.clean_string(pg_chapter_string)
+    #     "existence_and_completeness": {
+    #         "percent_tables_defined": 0,
+    #         "percent_key_coverage": {}
+    #     },
+    #     "clarity_and_quality": {},
+    #     "consistency_of_representation": {}
+    # }
 
-            line_match_percents[index] = AOLMTextUtilities.percent_line_match(
-                mtpo_chapter_string,
-                pg_chapter_string
-            )
+    results = p_dqmetric_instance.result
 
-        # print(line_match_percents)    
+    # 1. Calculate evaluations of subsubmetrics
+    subsubmetric_evaluations = {
+        "existence_and_completeness": {
+            "percent_tables_defined": results["existence_and_completeness"]["percent_tables_defined"],
+            "percent_key_coverage": mean(results["existence_and_completeness"]["percent_key_coverage"].values())
+        },
+        "clarity_and_quality": mean(results["clarity_and_quality"].values()),
+        "consistency_of_representation": results["consistency_of_representation"]
+    }
 
-        # C. Given that, what percent of chapters are complete in this text?
-        acceptable_completion_percent = p_dqmetric_instance.metric_min
-        passable_chapters = 0
-        for chapter_index in line_match_percents:
-            if line_match_percents[chapter_index] >= acceptable_completion_percent:
-                passable_chapters += 1
-            else:
-                print(f"Chapter {chapter_index + 1} is not passable for {pg_reader.filename}")
-        print(f"# of chapters with >= 95% complete: {passable_chapters}")
+    # 2. Calculate evaluation of submetrics
+    submetric_evaluations = {
+        "existence_and_completeness": mean(subsubmetric_evaluations["existence_and_completeness"].values()),
+        "clarity_and_quality": subsubmetric_evaluations["clarity_and_quality"],
+        "consistency_of_representation": subsubmetric_evaluations["consistency_of_representation"]
+    }
 
-        print("=" * 80)    
+    # 3. Metric is weighted mean of submetrics
+    metric_evaluation = mean(submetric_evaluations.values())
 
-    # B. What percent of sentences of each PG book is identical to the MTPO sentences?
+    return metric_evaluation
 
-    # 3. Word count
+def __eval_dq_huckfinn_pg_datasetcompleteness_recordcountstocontrolrecords(p_dqmetric_instance):
 
+    # results = { reader_name: {
 
-def main():
+    #         "chapter_count": {},
+    #         "sentence_count": {
+    #             "by_chapter": {}
+    #         },
+    #         "word_count": {
+    #             "by_chapter": {}
+    #         }
+    #     } for reader_name in huckfinn_text_readers if MTPO != reader_name
+    # }
 
-    # NEXT STEP:
-    # (1) Tally scores
-    # (2) Determine overall metadata data quality score
-    # (3) Move on to text data quality experiment 3
+    results = p_dqmetric_instance.result
 
-    # Mark Twain Project Online (MTPO)
-    
-    # Project Gutenberg (PG)
+    # 1. Calculate evaluations of subsubmetrics
+    subsubmetric_evaluations = { 
+        reader_name: {
+            "chapter_count": results[reader_name]["chapter_count"],
+            "sentence_count": mean(results[reader_name]["sentence_count"]["by_chapter"].values()),
+            "word_count": mean(results[reader_name]["word_count"]["by_chapter"].values())
+        }
+        for reader_name in results 
+    }
 
-    # Metadata sufficiency
-    # huckfinn_pg_metadata = read_project_gutenberg_metadata()
-    # huckfinn_pg_metadata_sufficiency = DataQualityMetric(
-    #     "HuckFinnPGMetadata",
-    #     huckfinn_pg_metadata,
-    #     dq_huckfinn_pg_datasetcompleteness_metadatasufficiency
-    # )
-    # huckfinn_pg_metadata_sufficiency.run(p_show_explanations=True)
+    # 2. Calculate evaluation of submetrics
+    submetric_evaluations = {
 
-    # Text record counts
+        "chapter_count": mean([subsubmetric_evaluations[reader_name]["chapter_count"] for reader_name in subsubmetric_evaluations if MTPO != reader_name]),
+        "sentence_count": mean([subsubmetric_evaluations[reader_name]["sentence_count"] for reader_name in subsubmetric_evaluations if MTPO != reader_name]),
+        "word_count": mean([subsubmetric_evaluations[reader_name]["word_count"] for reader_name in subsubmetric_evaluations if MTPO != reader_name]),
+    }
+
+    # 3. Metric is weighted mean of submetrics
+    metric_evaluation = mean(submetric_evaluations.values())
+
+    return metric_evaluation
+
+# Metric run helper functions
+
+def run_pg_huckfinn_dq_metadatasufficiency():
+
+    # Metadata sufficiency (MTPO vs PG)
+
+    huckfinn_pg_metadata = read_project_gutenberg_metadata()
+    # huckfinn_pg_metadata[MTPO] = read_marktwain_project_online_text()
+    huckfinn_pg_metadata_sufficiency = DataQualityMetric(
+        "HuckFinnPGMetadata",
+        huckfinn_pg_metadata,
+        __compute_dq_huckfinn_pg_datasetcompleteness_metadatasufficiency,
+        __eval_dq_huckfinn_pg_datasetcompleteness_metadatasufficiency
+    )
+    huckfinn_pg_metadata_sufficiency.run(p_show_explanations=True)
+
+    return huckfinn_pg_metadata_sufficiency
+
+def run_pg_huckfinn_dq_textrecordcounts():
+
+    # Text record counts (MTPO vs PG)
 
     # 1. Read ur text and subject texts
     huckfinn_textdata = read_project_gutenburg_text()
@@ -388,7 +449,8 @@ def main():
     huckfinn_pg_text_recordcounts = DataQualityMetric(
         "HuckFinnPGText",
         huckfinn_textdata,
-        dq_huckfinn_pg_datasetcompleteness_recordcountstocontrolrecords
+        __compute_dq_huckfinn_pg_datasetcompleteness_recordcountstocontrolrecords,
+        __eval_dq_huckfinn_pg_datasetcompleteness_recordcountstocontrolrecords
     )
     huckfinn_pg_text_recordcounts.urtext_name = MTPO
     huckfinn_pg_text_recordcounts.metric_min = 0.95
@@ -396,7 +458,23 @@ def main():
     # 3. Compute metric and save results
     huckfinn_pg_text_recordcounts.compute()
 
-    # Internet Archive (IA)
+    # 4. Visualize metric with metric min falloff chart
+
+    return huckfinn_pg_text_recordcounts
+
+
+def main():
+
+    dq_metrics = [
+        run_pg_huckfinn_dq_metadatasufficiency(),
+        run_pg_huckfinn_dq_textrecordcounts()
+    ]
+
+    dq_metric_evaluations = [metric.evaluate() for metric in dq_metrics]
+    
+    overall_evaluation = mean(dq_metric_evaluations)
+
+    print(f"Overall Project Gutenberg data quality: {overall_evaluation}")
 
 
 if "__main__" == __name__:
