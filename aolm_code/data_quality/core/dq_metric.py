@@ -8,6 +8,9 @@
 # Built-ins
 from abc import ABC, abstractmethod     # Python abstract classes
 
+# Third party
+import spacy
+
 # Classes
 
 """
@@ -21,27 +24,58 @@ class DataQualityMetric:
 
     # Constructor
 
-    def __init__(self, p_name, p_input, p_compute_fn, p_evaluate_fn, p_evaluate_by_edition=None):
+    def __init__(self, p_name, p_input):
 
         # 0. Save parameters
         self.m_name = p_name
         self.m_input = p_input
-        self.m_compute = p_compute_fn
-        self.m_evaluate = p_evaluate_fn
-        self.m_evaluate_by_edition = p_evaluate_by_edition
 
         # 1. Other class fields
         self.m_metric_min = 0.0
         self.m_metric_max = 100.0
         self.m_explanation = {}
-        self.m_result = {}
+        self.m_spacymodel = None
+        self.m_results = {}
+        self.m_spacymodel_name = "en_core_web_sm"
         self.m_urtext_name = ""
+
+        self.m_evaluations = {
+            "subsubmetric": {},
+            "submetric": {},
+            "metric": 0.0
+        }
+
+    def __load_spacymodel(self):
+        self.m_spacymodel = spacy.load(self.m_spacymodel_name)
 
     # Properties
 
     @property
     def input(self):
         return self.m_input
+    @input.setter
+    def input(self, p_input):
+        self.m_input = p_input
+    
+    @property
+    def metric_evaluation(self):
+        return self.m_evaluations["metric"]
+    @metric_evaluation.setter
+    def metric_evaluation(self, p_metric_evaluation):
+        self.m_evaluations["metric"] = p_metric_evaluation
+    @property
+    def submetric_evaluation(self):
+        return self.m_evaluations["submetric"]
+    @submetric_evaluation.setter
+    def submetric_evaluation(self, p_submetric_evaluation):
+        self.m_evaluations["submetric"] = p_submetric_evaluation
+    @property
+    def subsubmetric_evaluation(self):
+        return self.m_evaluations["subsubmetric"]
+    @subsubmetric_evaluation.setter
+    def subsubmetric_evaluation(self, p_subsubmetric_evaluation):
+        self.m_evaluations["subsubmetric"] = p_subsubmetric_evaluation
+      
     @property
     def metric_max(self):
         return self.m_metric_max
@@ -64,32 +98,36 @@ class DataQualityMetric:
     def urtext_name(self, p_urtext_name):
         self.m_urtext_name = p_urtext_name
     @property
+    def spacymodel_name(self):
+        return self.m_spacymodel_name
+    @spacymodel_name.setter
+    def spacymodel_name(self, p_spacymodel_name):
+        self.m_spacymodel_name = p_spacymodel_name
+    @property
     def result(self):
-        return self.m_result
+        return self.m_results
     @result.setter
-    def result(self, p_new_result):
-        self.m_result = p_new_result
+    def result(self, p_new_results):
+        self.m_results = p_new_results
 
     # Public methods
 
     def add_explanation(self, p_key, p_text):
         self.m_explanation[p_key] = p_text
     def compute(self):
-        self.m_result = self.m_compute(self)
+        self.m_results = {}
     def explanation(self, p_key=""):
         return self.m_explanation[p_key] if len(p_key) else self.m_explanation
     def evaluate(self):
-        return self.m_evaluate(self)
-    def evaluate_by_edition(self, p_edition_name):
-        return None if None == self.m_evaluate_by_edition else self.m_evaluate_by_edition(self, p_edition_name)
+        return self.m_evaluations
     def run(self, p_show_explanations=False):
         self.compute()
         self.show_results(p_show_explanations=p_show_explanations)
     def show_results(self, p_show_explanations=False):
-        for key in self.m_result:
+        for key in self.m_results:
             print("=" * 80)
             print(key)
             if p_show_explanations:
                 print(self.explanation(key))
-            print(self.m_result[key])
+            print(self.m_results[key])
     
