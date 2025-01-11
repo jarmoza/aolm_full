@@ -154,9 +154,9 @@ class DatasetCompleteness_RecordCountsToControlRecords(DataQualityMetric):
         # 2. Calculate evaluation of submetrics
         self.submetric_evaluations = {
 
-            "chapter_count": mean([self.subsubmetric_evaluations[reader_name]["chapter_count"] for reader_name in self.subsubmetric_evaluations if MTPO != reader_name]),
-            "sentence_count": mean([self.subsubmetric_evaluations[reader_name]["sentence_count"] for reader_name in self.subsubmetric_evaluations if MTPO != reader_name]),
-            "word_count": mean([self.subsubmetric_evaluations[reader_name]["word_count"] for reader_name in self.subsubmetric_evaluations if MTPO != reader_name]),
+            "chapter_count": mean([self.subsubmetric_evaluations[reader_name]["chapter_count"] for reader_name in self.subsubmetric_evaluations if self.m_urtext_name != reader_name]),
+            "sentence_count": mean([self.subsubmetric_evaluations[reader_name]["sentence_count"] for reader_name in self.subsubmetric_evaluations if self.m_urtext_name != reader_name]),
+            "word_count": mean([self.subsubmetric_evaluations[reader_name]["word_count"] for reader_name in self.subsubmetric_evaluations if self.m_urtext_name != reader_name]),
         }
 
         # 3. Metric is weighted mean of submetrics
