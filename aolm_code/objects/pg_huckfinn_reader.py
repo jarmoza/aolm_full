@@ -1,15 +1,13 @@
 # Author: Jonathan Armoza
 # Created: November 4, 2024
-# Purpose: Read Project Gutenberg's versions of The Adventures of Huckleberry Finn
+# Purpose: Defines AOLM Text Reader to read Project Gutenberg (PG) versions of
+#          The Adventures of Huckleberry Finn
 
 # Imports
 
 # Built-ins
 import json
 import os
-
-# Third party
-from bs4 import BeautifulSoup, NavigableString
 
 # Custom
 from aolm_textutilities import AOLMTextUtilities
