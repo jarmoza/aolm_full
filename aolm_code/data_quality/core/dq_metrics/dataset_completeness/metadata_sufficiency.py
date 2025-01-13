@@ -12,10 +12,11 @@ from statistics import mean
 from aolm_textutilities import AOLMTextUtilities
 from dq_metric import DataQualityMetric
 
+
 class DatasetCompleteness_MetadataSufficiency(DataQualityMetric):
 
     def __init__(self, p_name, p_input):
-        
+
         super().__init__(p_name, p_input)
 
     def compute(self):

@@ -44,7 +44,7 @@ class DatasetCompleteness_RecordCountsToControlRecords(DataQualityMetric):
         # A. Chapter count comparison between self.m_urtext_name and PG editions
 
         # Does a text contain all the chapters of the Ur copy of that text?
-        print(f"Ur text chapter count: {self.m_input[self.m_urtext_name].chapter_count}")
+        # print(f"Ur text chapter count: {self.m_input[self.m_urtext_name].chapter_count}")
 
         # Chapters to run through (43 from Ur copy, self.m_urtext_name)
         ur_chapter_count = self.m_input[self.m_urtext_name].chapter_count
@@ -60,7 +60,7 @@ class DatasetCompleteness_RecordCountsToControlRecords(DataQualityMetric):
         # Get sentences from chapter strings via spaCy
 
         # A. Load up spaCy model with the given name
-        self.__load_spacymodel()
+        super().load_spacymodel()
 
         # B. Compare sentences of each chapter of Ur text with each PG edition
         for index in range(1, ur_chapter_count + 1):
