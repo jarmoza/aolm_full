@@ -48,130 +48,98 @@
 # Imports
 
 # Built-ins
-import json
 import os
 import sys
 from statistics import mean
 
+# Add the project root to sys.path
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+sys.path.append(ROOT_DIR)
+from definitions import add_lib_paths
+add_lib_paths()
+
 # Custom
 
-# Command line
-sys.path.append(f"..{os.sep}..{os.sep}aolm_code{os.sep}objects")
-sys.path.append(f"..{os.sep}..{os.sep}aolm_code{os.sep}data_quality{os.sep}core")
+import aolm_data_reading
+from dq_metrics.dataset_completeness.metadata_sufficiency import DatasetCompleteness_MetadataSufficiency
+from dq_metrics.dataset_completeness.recordcounts_to_controlrecords import DatasetCompleteness_RecordCountsToControlRecords
 
-# IDE
-sys.path.append(f"{os.getcwd()}{os.sep}aolm_code{os.sep}objects")
-sys.path.append(f"{os.getcwd()}{os.sep}aolm_code{os.sep}data_quality{os.sep}core")
-
-from dq_metric import DataQualityMetric
-from mtpo_huckfinn_reader import MTPOHuckFinnReader
-from pg_huckfinn_reader import PGHuckFinnReader
-
-
-# Globals
-
-huckfinn_paths = {
-
-    "ia_json_path": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/json",
-    "ia_txt_path": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/txt",
-    "pg_path": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/project_gutenberg"
-}
-
-# Mark Twain Project Online abbreviation
-MTPO = "mtpo"
-
-# Utility functions
-
-def read_marktwain_project_online_text():
-
-    # 1. Read in Ur text
-    mtpo_huckfinn_filepath = f"{os.getcwd()}{os.sep}data{os.sep}twain{os.sep}huckleberry_finn{os.sep}mtpo{os.sep}"
-    mtpo_huckfinn_file = "MTDP10000_edited.xml"
-    mtpo_reader = MTPOHuckFinnReader(mtpo_huckfinn_filepath + mtpo_huckfinn_file)
-    mtpo_reader.read()
-    
-    return mtpo_reader    
-
-def read_project_gutenberg_metadata():
-
-    pg_huckfinn_filepath = f"{huckfinn_paths["pg_path"]}{os.sep}metadata{os.sep}"
-    subject_filepath_list = [
-        
-        pg_huckfinn_filepath + "2011-05-03-HuckFinn_metadata.json",
-        pg_huckfinn_filepath + "2016-08-17-HuckFinn_metadata.json",
-        pg_huckfinn_filepath + "2021-02-21-HuckFinn_metadata.json"
-    ]
-    metadata_json = {}
-    for subject_filepath in subject_filepath_list:
-        with open(subject_filepath, "r") as json_file:
-            metadata_json[os.path.basename(subject_filepath)] = json.load(json_file)
-
-    return metadata_json
-
-def read_project_gutenburg_text():
-
-    huckfinn_text_readers = {}
-
-    # 1. Read in each Project Gutenberg edition of Huckleberry Finn
-    pg_huckfinn_filepath = f"{os.getcwd()}{os.sep}data{os.sep}twain{os.sep}huckleberry_finn{os.sep}project_gutenberg{os.sep}json{os.sep}"
-    subject_filepath_list = [
-        pg_huckfinn_filepath + "2011-05-03-HuckFinn.json",
-        pg_huckfinn_filepath + "2016-08-17-HuckFinn.json",
-        pg_huckfinn_filepath + "2021-02-21-HuckFinn.json"
-    ]
-    for filepath in subject_filepath_list:
-        huckfinn_text_readers[os.path.basename(filepath)] = PGHuckFinnReader(filepath)
-        huckfinn_text_readers[os.path.basename(filepath)].read()
-
-    return huckfinn_text_readers
 
 # Experiments
 
 # Metric run helper functions
 
-def run_pg_huckfinn_dq_metadatasufficiency():
+def run_pg_huckfinn_dq_metadatasufficiency(p_edition_filenames=None):
 
-    # Metadata sufficiency (MTPO vs PG)
+    # Metadata sufficiency
+    # (Comparison among Project Gutenberg editions only)
 
-    huckfinn_pg_metadata = read_project_gutenberg_metadata()
-    huckfinn_pg_metadata_sufficiency = DataQualityMetric("HuckFinn_PG_MetadataSufficiency", huckfinn_pg_metadata)
-    huckfinn_pg_metadata_sufficiency.run(p_show_explanations=True)
+    # 1. Read in texts to be compared
+    huckfinn_pg_metadata = aolm_data_reading.read_project_gutenberg_metadata(p_edition_filenames)
 
+    # 2. Create the data quality metric
+    huckfinn_pg_metadata_sufficiency = DatasetCompleteness_MetadataSufficiency("HuckFinn_PG_MetadataSufficiency", huckfinn_pg_metadata)
+
+    # 3. Compute the metric and save results
+    huckfinn_pg_metadata_sufficiency.compute()
+
+    # Return instance of the metric for further use
     return huckfinn_pg_metadata_sufficiency
 
-def run_pg_huckfinn_dq_textrecordcounts():
+def run_pg_huckfinn_dq_textrecordcounts(p_edition_filenames=None):
 
-    # Text record counts (MTPO vs PG)
+    # Text record counts
+    # (Comparing Mark Twain Project Online edition record counts versus Project
+    # Gutenberg edition record counts)
 
     # 1. Read ur text and subject texts
-    huckfinn_textdata = read_project_gutenburg_text()
-    huckfinn_textdata[MTPO] = read_marktwain_project_online_text()
+    huckfinn_textdata = aolm_data_reading.read_project_gutenburg_text(p_edition_filenames)
+    huckfinn_textdata[aolm_data_reading.MTPO] = aolm_data_reading.read_marktwain_project_online_text()
 
-    # 2. Create data quality metric
-    huckfinn_pg_text_recordcounts = DataQualityMetric("HuckFinn_PG_TextRecordCounts", huckfinn_textdata)
-    huckfinn_pg_text_recordcounts.urtext_name = MTPO
+    # 2. Create the data quality metric
+    huckfinn_pg_text_recordcounts = DatasetCompleteness_RecordCountsToControlRecords("HuckFinn_MTPOvPG_TextRecordCounts", huckfinn_textdata)
+    huckfinn_pg_text_recordcounts.urtext_name = aolm_data_reading.MTPO
     huckfinn_pg_text_recordcounts.metric_min = 0.95
 
-    # 3. Compute metric and save results
+    # 3. Compute the metric and save results
     huckfinn_pg_text_recordcounts.compute()
 
-    # 4. Visualize metric with metric min falloff chart
-
+    # Return instance of the metric for further use
     return huckfinn_pg_text_recordcounts
 
 
 def main():
 
-    dq_metrics = [
+    # Project Gutenberg (PG) vs. Mark Twain Project Online (MTPO)
+
+    # 1. Rate PG editions data quality based on metadata sufficiency
+    metric = run_pg_huckfinn_dq_metadatasufficiency()
+    evaluation = metric.evaluate()
+    print(f"Project Gutenberg metadata sufficiency metric: {evaluation}")
+
+    # 2. Rate individual PG editions based on text record counts vs. MTPO
+    for edition_name in aolm_data_reading.huckfinn_edition_names[aolm_data_reading.PG]:
+        metric = run_pg_huckfinn_dq_textrecordcounts([f"{edition_name}-HuckFinn.json"])
+        evaluation = metric.evaluate()
+        print(f"Project Gutenberg text records count metric for {edition_name}: {evaluation}")
+
+    # 3. Rate all PG editions based on text record counts vs. MTPO
+    metric = run_pg_huckfinn_dq_textrecordcounts()
+    evaluation = metric.evaluate()
+    print(f"Overall Project Gutenberg text records metric: {evaluation}")
+
+    # 4. Combine the results of PG metadata sufficiency and overall PG text record counts vs. MTPO
+    # for an overall data quality measurement of the PG editions vs. MTPO
+
+    metrics = [
         run_pg_huckfinn_dq_metadatasufficiency(),
         run_pg_huckfinn_dq_textrecordcounts()
     ]
-
-    dq_metric_evaluations = [metric.evaluate() for metric in dq_metrics]
-    
-    overall_evaluation = mean(dq_metric_evaluations)
-
+    evaluations = [metric.evaluate() for metric in metrics]
+    overall_evaluation = mean(evaluations)
     print(f"Overall Project Gutenberg data quality: {overall_evaluation}")
+
+    # 4. Visualize metric with metric min falloff chart
 
 
 if "__main__" == __name__:
