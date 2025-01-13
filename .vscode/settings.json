@@ -3,5 +3,6 @@
     "python.analysis.extraPaths": [
         "./aolm_code/objects",
         "./aolm_code/data_quality/core"
-    ]
+    ],
+    "python.defaultInterpreterPath": "/opt/homebrew/anaconda3/envs/aolm/bin/python3"
 }
