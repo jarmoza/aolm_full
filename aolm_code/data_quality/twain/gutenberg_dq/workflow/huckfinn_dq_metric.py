@@ -10,7 +10,7 @@
 from abc import abstractmethod
 
 # Local libraries
-from data_quality.core.dq_metric import DataQualityMetric
+from data_quality.core.dq_metrics import DataQualityMetric
 
 
 # Classes =====================================================================

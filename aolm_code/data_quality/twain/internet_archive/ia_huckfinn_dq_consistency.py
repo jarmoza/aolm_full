@@ -17,7 +17,7 @@
 # Imports
 
 # Custom
-from dq_metric import DataQualityMetric
+from dq_metrics import DataQualityMetric
 
 
 # Classes
