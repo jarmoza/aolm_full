@@ -24,11 +24,11 @@ class DataQualityMetric:
 
     # Constructor
 
-    def __init__(self, p_name, p_input):
+    def __init__(self, p_name, p_text_readers):
 
         # 0. Save parameters
         self.m_name = p_name
-        self.m_input = p_input
+        self.m_input = p_text_readers
 
         # 1. Other class fields
         self.m_metric_min = 0.0
@@ -44,9 +44,6 @@ class DataQualityMetric:
             "submetric": {},
             "metric": 0.0
         }
-
-    def __load_spacymodel(self):
-        self.m_spacymodel = spacy.load(self.m_spacymodel_name)
 
     # Properties
 
@@ -120,6 +117,8 @@ class DataQualityMetric:
         return self.m_explanation[p_key] if len(p_key) else self.m_explanation
     def evaluate(self):
         return self.m_evaluations
+    def load_spacymodel(self):
+        self.m_spacymodel = spacy.load(self.m_spacymodel_name)
     def run(self, p_show_explanations=False):
         self.compute()
         self.show_results(p_show_explanations=p_show_explanations)
