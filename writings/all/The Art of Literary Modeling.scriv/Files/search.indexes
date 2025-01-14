@@ -124,6 +124,25 @@ Thoughts on the above excerpts
 	1.	These same notions can be applied and tested to the style and qualities of literary writing over time and cultures and political events.
 	2.	What if literary phenomena act as such unguided, but seemingly intelligent swarms reacting to external stimuli. (What is that stimuli? It may not be relevant to exactly pinpoint, but rather that the authors are reacting.)</Text>
         </Document>
+        <Document ID="2D9C0DC1-F59F-4137-873F-24554DC0AF93">
+            <Title>December 9, 2024</Title>
+            <Text>Measurement Types
+
+#1 Dataset Completeness – Sufficiency of Metadata and Reference Data
+
+“Over the life of a database [field of study], opportunity costs are associated with insufficient metadata. Redundant data may be stored because people are not aware of what data an organization already possesses and in what form. Data consumers may use data inappropriate to their purpose because they make incorrect assumptions about it. Or different consumers may use different data for the same kind of analysis, generating inconsistent results.” (Sebastian-Coleman 224)
+
+“Metadata assessment tests first for existence and completeness (percentage of tables defined, percentage of columns defined; percentage of codefields supported by references data, etc.) and next for the clarity and quality of definitions (clear, comprehensible, unambiguous, grammatically correct, etc.) and consistency of representation (the same field content defined in the same way).” (224)
+
+“One of the primary goals of metadatramanagement is to document organizational understanding of terms and usage.” (225)
+
+Notes on Huck Finn Metadata processing for measurement of Dataset Completeness
+
+Some processing/cleanup from the raw Project Gutenberg text files is necessary. The question becomes how much processing is acceptable before we move into the threshold where we are manipulating the metadata in such a way that it no longer represents the raw state of the “data quality” of the data (each edition text file). Essentially, we must at least make note that some processing was necessary in order to get the metadata into such a state that it may be adequately compared. Here this initial processing is a matter of judgment depending on the usefulness of leaving the data in as raw of a state as possible versus if it would be useful to bare with/do some pre-processing.
+
+
+</Text>
+        </Document>
         <Document ID="F0F21BC9-F8DA-4F98-8BCF-22E4DE12B337">
             <Title>Emily Dickinson Project Gutenberg</Title>
         </Document>
@@ -150,6 +169,17 @@ If you can quantify the information loss over time, we can get discrete measures
 
 Data quality becomes a function of text cleaning vs information loss
   - Some things like the header/footer may be excusable but maybe not more internal cleaning methods. For instance, removing stop words or lemmatizing may be too lossy.</Text>
+        </Document>
+        <Document ID="21BBDFDB-6886-4E7C-B6B9-34F0FD0585A3">
+            <Text>December 17, 2024
+
+Work done today
+
+Worked on metrics for Clarity and Quality of Representation for Project Gutenberg Huck Finn metadata
+
+What’s left is to figure out to best measure how many mismatches among keys and values for the metadata there are
+
+So far I have a flat, but dumb mismatch count</Text>
         </Document>
         <Document ID="EFB56A5F-5C91-4A0E-BEDB-02EC3176EA77">
             <Title>Preparatory</Title>
@@ -307,6 +337,26 @@ Supporting Sources
 
 What are the “salient aspects” of data that we choose? Why are they salient?</Notes>
         </Document>
+        <Document ID="8C92C5C8-1E9A-4535-85C0-A4FE979B2EF0">
+            <Title>December 31, 2024</Title>
+            <Text>Continuation of implementation of data quality metric for dataset completeness - record counts for the body text of Huck Finn 
+
+Experiment results for dataset completeness - metadata sufficiency for the metadata of Project Gutenberg editions of Huck Finn:
+
+Cleaned up huckfinn_dataquality.py
+Added second experiment function for dataset completeness - record counts
+Backed down to Python 3.12 in order to install spaCy for sentence counts
+
+nlp = spacy.load("en_core_web_sm")
+doc = nlp("This is a sentence. This is another sentence.")
+assert doc.has_annotation("SENT_START")
+for sent in doc.sents:
+    print(sent.text)
+
+SW 2361
+Arrive 2:15
+At curb 2:45</Text>
+        </Document>
         <Document ID="E9E8BF9D-B04D-4F48-9511-38DFD57346F3">
             <Title>Call Notes</Title>
         </Document>
@@ -325,6 +375,26 @@ Text mining DH criticism with the aim of showing rhetorical claims about philoso
 	◆	Floridi: Information. A Very Short Introduction. Oxford: Oxford Univ. Press, 2010, 22-25.
 	◆	Mehta and Sahni (eds.): Handbook of Data Structures and Applications. Boca Raton: Chapman &amp; Hall/CRC, 2005, section “Basic Structures.”
 </Text>
+        </Document>
+        <Document ID="D7846FA2-8777-43FA-8CDB-06320642D819">
+            <Title>January 9, 2025</Title>
+            <Text>Once results are computed for each overarching metric (including its submetrics), an evaluation function is called to combine the results in a logical way in order to produce one, unidimensional number for the metric
+
+Each submetric is weighted evenly. And each sub-submetric may calculate its own evaluation to a number in a way that is logical for that sub-submetric. (Weighted average)
+
+Submetrics are folded into a metric via averaging
+
+Each subsubmetric is similarly weighted evenly in creating the final submetric number and then averaged for the final submetric number
+
+Metadata sufficiency is an explicitly internal metric
+
+While textrecord count is one that relies on external comparison with the ur text
+
+Now on to visualizing and writing. The evaluations are now complete on the Project Gutenberg Huck Finn editions.
+
+Overall, they average a 72% quality rating based on metadata sufficiency and text record data quality metrics
+
+These can be separated by edition and also extended now to the Internet Archive editions for further testing</Text>
         </Document>
         <Document ID="1F334A32-A877-410D-9EE5-E995879929A9">
             <Title>Notes</Title>
@@ -444,6 +514,15 @@ While delta has been used as a means of understanding the closeness between docu
         </Document>
         <Document ID="DB89B126-9EFD-45C5-8C3A-D5BB5DC45F1F">
             <Title>Gone through</Title>
+        </Document>
+        <Document ID="9B871F45-BE94-41E8-A912-A1091707CF29">
+            <Title>January 6 2025</Title>
+            <Text>Found error in MTPO Huck Finn xml
+
+Usually chapter number is identified by locating all div1 tags with type attribute = “chapter”
+That tag’s head.string value should match the string Chapter &lt;chapter roman numeral number&gt;.
+
+Chapter 18 had no dot suffix, causing an error</Text>
         </Document>
         <Document ID="DFCF95EB-61D1-4796-A4B7-929A1E0E5F86">
             <Title>May 21, 2019</Title>
@@ -738,6 +817,13 @@ In deep bosom of ocean buried.
 Let’s take a visual look at what has happened to the word counts.
 </Text>
         </Document>
+        <Document ID="F43ADD01-FC0D-4C47-AAC0-D720E2D2A3D6">
+            <Text>December 19, 2024
+
+What we need is a set of standards for data quality measurement across categories. The output of each metric generates a number or set of numbers that can be used interchangeably among other metrics in the formulation of an overall score for that particular data quality category.
+
+Once those metric scores are tallied, then those scores themselves can be a) featured and described given the errors/quality and the underlying reasons for those scores, and b) used in an overall scoring of the dataset (thus the data quality framework as factory-like machine.</Text>
+        </Document>
         <Document ID="9DF4E8CC-FFB2-4735-8AA9-B09B61C6BD12">
             <Title>Chapter 3: Visualization Quality</Title>
         </Document>
@@ -773,19 +859,11 @@ Part 1
  
 New Outline</Text>
         </Document>
-        <Document ID="98A2B9B3-ADEE-4087-A764-F889AF95F4A2">
-            <Title>May 23, 2019</Title>
-            <Text>Notes
-	1.	Rotunda UVA press access granted to Emily Dickinson’s correspondences for a period of 2 weeks beginning May 22, 2019
-	⁃	credentials (u: T-JA-9355, p: NS9hRziZnc, expiry: Wed, 05 Jun 2019, 14:25)
-	⁃	url: http://www.upress.virginia.edu/rotunda/
-	2.	Thoughts
-	⁃	The considered qualities of a cultural data set – like a data set composed of literary content – and metadata on that content must be composed of more than just the physical attributes and aspects of the underlying content and the particularities of its physical gathering. It must be acknowledged that the gathering of that data set was derived in a context and is perspectival. This is okay. It does not make the material “fettered” by subjective aims. It is simply acknowledging the unavoidable interventions that researchers, librarians, and curators make when they perform the activities of archiving and curating that work. This is not just okay. This is a very good thing. When humans thoughtfully intervene with materials they become an author of them in more than just an aspirational sense. They become guardians and editors. So when we are modeling, we are not just modeling the materials, we are modeling the perspectives of those individuals, enriching and extending the cultural fabric of those materials. Their window frames.
-Done
-	1.	Gathered all tei files for the Emily Dickinson correspondences via two webscraping scripts
-	2.	Data and scripts are located in Users/PeregrinePickle/Documents/School/New York University/Dissertation/datasets/dickinson_correspondences
+        <Document ID="A33A2A02-AB5A-4D5C-BD3F-F7469E4EF934">
+            <Text>December 20, 2024
 
-</Text>
+When I was younger, I would watch Star Trek: The Next Generation. There were all sorts of literary figures and things on this show. Some, you wouldn’t even think were literary. What do I mean by the word “literary”? Well, if you think about it it’s anthing associated with the writing or reading of history. History. That’s a funny word too. Any gender association with the word aside, it’s our story. Humanity’s story. So who gets to tell it? And what will they be telling when they do? That’s why Star Trek: The Next Generation and any other science fiction like it is such a notable place to start this story about literary modeling. You have Patrick Stewart, the actor who himself is very literary. A famed stage actor whose own life and his character Captain Jean-Luc Picard turns much of his thought and decision-making on humanity’s literary figures and books. You have Levar Burton whose life, aside from award-winning acting, is almost entirely associated with storytelling and literacy. His famed television show Reading Rainbow taught generations of children the importance of reading and of stepping into other people’s shoes. He continues that tradition to this day with a storytelling podcast. Burton’s character on Star Trek, Chief Engineer Geordi LaForge, is also very closely associated with literature and storytelling but not in the same traditional ways that Jean-Luc Picard (Patrick Stewart) is. As an engineer aboard the starship Enterprise in the particular 24th century the story is set, Geordi oversees the ship’s many holodecks. What is a holodeck? Holodecks are rooms where the prospective technology of holography is used to place people in that room into wholly different environements, fictive, distant in space and/or time. These environments can feature anything imaginable too: water, sunsets, historical figures like Plato or Mark Twain, fictional figures like Ahab or Sherlock Holmes, storylines with plots, operas, trees, animals,… The only limit is one’s imagination and the ship’s computer’s ability to generate it using light waves to model and mimic the sight, sound, feel, smell, and even taste of those things. Given our technology at this point in the 21st century it’s actually not so difficult to believe that mimicking these things via light is possible. We know that because of how statistical modeling has been merged with machine learning so that we can model the world. Some of the major impediments between us and this fictive 24th century technology are the computing power to create these models – and to do so convincingly – and the technology that emits light in such a way that it could convincingly be used to represent virtual environments, virtual objects, and virtual people. But there is another impediment that was not really mentioned in Star Trek: The Next Generation or subsequent Star Trek shows. Sure, we had a few chances to see characters talk of building holographic worlds and storylines for other characters to experience, but we did not hear much of anything about who and how the historical and literary information that is available to the ship’s computer came into being. 
+When I would be watching the show, and to this day, I would often ponder the answer to those questions because it does matter who provided those stories and that information and how they did it. That’s because in order retrieve, process, and store that data each step along the way requires notable means of subjective synthesis. There are many versions of stories and of history. How do we decide which to choose? You might be saying to yourself at this point, “Well, who really cares? Star Trek: The Next Generation is an entirely fictional story.” You’re not wrong. But given the state of the technology we have today where machine learning has birthed deep learning and large language models, we can already see the beginnings of those syntheses. Ten years ago at Dartmouth, I was giving one of my first digital humanities talks. The topic was a plot-generating book by a 1920’s pulp novelist. In the 1920’s, fiction publishing was really being turned into an industry. Authors were churning out more books than ever before to a hungry reading public, and also so that everyone in the publishing industry could make a consistent living. William Wallace Cook made a book called Plotto which contained an intricate and deep plot generating system which authors could use to construct the bones of their stories before filling in the details. At the time, there was also much optimism about automation and the beginnings of roboticism were taking hold of the public’s imagination. One newspaper story, associated with Cook’s new plot-constructing book even featured the image of a robot, stating, “In the future, robots will tell our stories.” I made sure to put that one up on a slide in my talk. I did so partly as a joke, but also because I could already foresee how machine learning could be used to generate convincing stories. In the future, we will continue to have human authors – the reason being that history remains our story as humans and humans will remain interested in other humans’ stories. However, it may not be a human who is doing the telling of those stories. And that is our real world connection to Star Trek: The Next Generation. We know that in our future, “robots” or “artifical intelligence” will be telling our stories from statistical models of the texts that we compose and that have been composed by our predecessors. The focus of my writing within is on the literary models from which our stories will be told and how the quality of those models can ensure that those stories are synthesized and told as accurately as possible to the future humans hearing them. Who fed those stories and information to our future computers and how did they do it? How does humanity interface with a digital future? I believe we are at a time in history where some of us will get to be those people and to decide how we do so.</Text>
         </Document>
         <Document ID="495AD012-338D-4825-BA97-B6EDF0F4343C">
             <Title>April 25, 2019</Title>
@@ -818,8 +896,19 @@ Consider a business that runs web services for their clients that relies on a a 
 Frequency analysis
 Topic analysis</Text>
         </Document>
-        <Document ID="515AC365-9EF3-4CFC-8028-6FE2D60581CC">
-            <Title>Prose</Title>
+        <Document ID="98A2B9B3-ADEE-4087-A764-F889AF95F4A2">
+            <Title>May 23, 2019</Title>
+            <Text>Notes
+	1.	Rotunda UVA press access granted to Emily Dickinson’s correspondences for a period of 2 weeks beginning May 22, 2019
+	⁃	credentials (u: T-JA-9355, p: NS9hRziZnc, expiry: Wed, 05 Jun 2019, 14:25)
+	⁃	url: http://www.upress.virginia.edu/rotunda/
+	2.	Thoughts
+	⁃	The considered qualities of a cultural data set – like a data set composed of literary content – and metadata on that content must be composed of more than just the physical attributes and aspects of the underlying content and the particularities of its physical gathering. It must be acknowledged that the gathering of that data set was derived in a context and is perspectival. This is okay. It does not make the material “fettered” by subjective aims. It is simply acknowledging the unavoidable interventions that researchers, librarians, and curators make when they perform the activities of archiving and curating that work. This is not just okay. This is a very good thing. When humans thoughtfully intervene with materials they become an author of them in more than just an aspirational sense. They become guardians and editors. So when we are modeling, we are not just modeling the materials, we are modeling the perspectives of those individuals, enriching and extending the cultural fabric of those materials. Their window frames.
+Done
+	1.	Gathered all tei files for the Emily Dickinson correspondences via two webscraping scripts
+	2.	Data and scripts are located in Users/PeregrinePickle/Documents/School/New York University/Dissertation/datasets/dickinson_correspondences
+
+</Text>
         </Document>
         <Document ID="AA091AC3-8F10-47AE-9E09-7C3ED675ED7B">
             <Title>May 13, 2019</Title>
@@ -831,6 +920,9 @@ Sebastian Coleman on Data and Architecture
 	⁃	“For most databases, especially data warehouses, models are critical to data management. The conceptual and logical models allow data managers to know what data resides in the data asset. The physical model has a direct bearing on how data is moved within the database, as well as how it is accessed.”
 	⁃	from just before “Physical Characteristics of Data”</Text>
         </Document>
+        <Document ID="515AC365-9EF3-4CFC-8028-6FE2D60581CC">
+            <Title>Prose</Title>
+        </Document>
         <Document ID="99E5F012-3010-4B60-A6D4-171F55BA004D">
             <Title>August 1, 2019</Title>
             <Text>Notes
@@ -841,6 +933,29 @@ Sebastian Coleman on Data and Architecture
 
 
 </Text>
+        </Document>
+        <Document ID="10E4100C-D7F8-4BD6-BE12-E2DD2D861721">
+            <Title>Todo and Sources</Title>
+            <Text>Todo:
+
+	1.	Do readings on contemporary information criterion
+	⁃	Read preface to Burnham and Anderson’s book Model Selection and Multimodel Inference
+	⁃	“Information theory includes the celebrated Kullback–Leibler “distance” between two models (actually, probability distributions), and this represents a fundamental quantity in science.” (vii-viii)
+	⁃	“In 1973, Hirotugu Akaike derived an estimator of the (relative) expectation of Kullback–Leibler distance based on Fisher’s maximized log-likelihood. His measure, now called Akaike’s information criterion (AIC)” (viii)
+	⁃	We focus on Akaike’s information criterion (and various extensions) for selection of a parsimonious model as a basis for statistical inference. (viii)
+	2.	- Do readings on Twain’s autobiography (popular reception, academic reception, academic critique) 
+	3.	- Find elements of both data and metadata in autobiography tei files for analysis
+	4.	- Model those data and metadata elements
+	5.	- Examine code already done for chapter/fellowship in Twain and information criterion
+	6.	- Consider possible visualizations that can be drawn out from modeling results to demonstrate the differences between models of low and high quality
+
+
+Sources:
+
+Introduction to AIC — Akaike Information Criterion: https://towardsdatascience.com/introduction-to-aic-akaike-information-criterion-9c9ba1c96ced
+Zajic, Alexandre; December 27, 2019
+
+AIC works by evaluating the model’s fit on the training data, and adding a penalty term for the complexity of the model (similar fundamentals to regularization). The desired result is to find the lowest possible AIC, which indicates the best balance of model fit with generalizability. This serves the eventual goal of maximizing fit on out-of-sample data.</Text>
         </Document>
         <Document ID="3C5B7E58-0222-41E6-9358-41CF46116A29">
             <Title>Project Description</Title>
@@ -1119,26 +1234,6 @@ DONE - 2) Miro board for abstract total project workflow (what are the pieces an
         </Document>
         <Document ID="BEA8FBB3-8887-437F-800F-5E384A51682F">
             <Title>Summer Fellowship</Title>
-            <Text>Todo:
-
-	1.	Do readings on contemporary information criterion
-	⁃	Read preface to Burnham and Anderson’s book Model Selection and Multimodel Inference
-	⁃	“Information theory includes the celebrated Kullback–Leibler “distance” between two models (actually, probability distributions), and this represents a fundamental quantity in science.” (vii-viii)
-	⁃	“In 1973, Hirotugu Akaike derived an estimator of the (relative) expectation of Kullback–Leibler distance based on Fisher’s maximized log-likelihood. His measure, now called Akaike’s information criterion (AIC)” (viii)
-	⁃	We focus on Akaike’s information criterion (and various extensions) for selection of a parsimonious model as a basis for statistical inference. (viii)
-	2.	- Do readings on Twain’s autobiography (popular reception, academic reception, academic critique) 
-	3.	- Find elements of both data and metadata in autobiography tei files for analysis
-	4.	- Model those data and metadata elements
-	5.	- Examine code already done for chapter/fellowship in Twain and information criterion
-	6.	- Consider possible visualizations that can be drawn out from modeling results to demonstrate the differences between models of low and high quality
-
-
-Sources:
-
-Introduction to AIC — Akaike Information Criterion: https://towardsdatascience.com/introduction-to-aic-akaike-information-criterion-9c9ba1c96ced
-Zajic, Alexandre; December 27, 2019
-
-AIC works by evaluating the model’s fit on the training data, and adding a penalty term for the complexity of the model (similar fundamentals to regularization). The desired result is to find the lowest possible AIC, which indicates the best balance of model fit with generalizability. This serves the eventual goal of maximizing fit on out-of-sample data.</Text>
         </Document>
         <Document ID="96DE8CCB-ED09-4406-B204-D475F8405DC7">
             <Title>The Whys and Whats of the Project</Title>
@@ -1429,13 +1524,13 @@ Data Quality Testing Plan
 
 </Text>
         </Document>
-        <Document ID="EACF3D13-D2FB-4C26-9A4B-2BC018728415">
-            <Title>Prose</Title>
-        </Document>
         <Document ID="8D3BC7B2-AE86-4A56-B0A4-E1A5A3F60D65">
             <Title>Bio</Title>
             <Text>	Jonathan Armoza is an English PhD student at New York University where he works on the development and theorization of new text analysis and data visualization methods for digital humanities. His work focuses on nineteenth century American literature, most notably the poems of Emily Dickinson. His academic background includes degrees in computer science and literature from University of Maryland and University of Washington. He has worked as a software engineer, game programmer on titles such as 'Civilization' and 'Scribblenauts,' and as a technical consultant for Google where he began his digital humanities work volunteering on Google Books’ Ngram Viewer. Jonathan has been involved with the international digital humanities community over the last decade and has been invited to give talks on his research throughout the United States, Canada, and Europe. He is the recipient of the Canadian Society for Digital Humanities’ 2017 Ian Lancashire award for Outstanding Graduate Research for his introduction and application of matrix factorization modeling to literature. His visualization, "Topic Words in Context" (TWiC) is used by researchers and in classrooms. It allows users to spatially explore topic models of collections of texts in a web browser, showing how the model operates at the level of the collection and its individual texts. Its design and application in exploring Dickinson's fascicle poems were the subjects of his Master's thesis at McGill University. 
 	Jonathan’s recent projects include a collaboration at University of Edinburgh called “Working with Scraps”, a interactive and browsable reimagining of Scottish poet laureate Edwin Morgan’s scrapbooks. For the past several years, he has worked as part-time neuroscience researcher and developer at SimExp Lab in Montréal, designing and implementing AI language experiments for test subjects reading in MRI scanners. His ongoing dissertation, ‘The Art of Literary Modeling,’ demonstrates new scholarly activities that provide context-sensitive, evidentiary bases for making interpretive claims from computational models of literature. It borrows and adapts ideas from information science, statistics, and design to give humanities-centric understandings of quality for datasets, models, and visualizations.</Text>
+        </Document>
+        <Document ID="EACF3D13-D2FB-4C26-9A4B-2BC018728415">
+            <Title>Prose</Title>
         </Document>
         <Document ID="90A512AB-4665-49B8-A5DA-5934B254A11E">
             <Title>Huckleberry Finn text editions metadata</Title>
@@ -1832,27 +1927,6 @@ What are the links between a data subset and its wider context/full dataset?
 
 </Text>
         </Document>
-        <Document ID="C96AF56F-82EE-4920-9D6A-DE2DFE9B79CB">
-            <Title>January 14, 2021</Title>
-            <Text>Introduction prose
-Borderline
-
-	One summer I drove up the pine-lined coast of Vancouver Island in British Columbia. I didn’t have any particular destination in mind. The prospect of Tofino had occurred to me, but that would be several hours further along the coast. The region, what Americans refer to as the Pacific Northwest, is somewhat lesser known in the American imaginary. To describe the landscape briefly, it is a place where mountains and large coniferous forests directly meet the Pacific ocean. The beaches of this place are also comparatively alien, particularly to someone who has spent their life in the east, where fine sand beaches are more common. In the northwest, one finds rocky beaches composed of small to medium sized stones. The colors are extraordinary. Amid the giant sea stacks and escarpments, the foamy surf of the water washes up and recedes upon these stones that glisten in pinks, greens, oranges, blues, and purples – products of volcanism, water, wind, and time. Even the more common basalt grey ones shine under a typical cloudy day. The summer time however brings long spells of sunshine. I stopped my car at a small, nameless beach park where only a few travelers or area residents were sitting and begin to hike toward one of the bordering escarpments where a giant pine was perched. The erosion had exposed some of its finer roots the saltwater and air. I clambered over the boulders at the base of this outcropping, as best as a non-native could. These types of giant rocks, immediately adjacent to the place where water greets the land, are notorious for their danger, covered in slick seaweed, anemones and razor-sharp, black mussels. Further along and closer to the escarpment, I entered a small cave – really more of an arbor considering the tree’s roots jutted down from overhead. This was a calm place, sequestered away from even the scant amount of people a few dozen yards away. The cave cut underneath the escarpment and continued around away from the beach. To my surprise, I found the path led upward through the soil and to the small, grass and moss covered area around the tree. From this vantage, I saw the boulders below, the stone beach, the people, but now even more: the coastline leading northward, oceangoing vessels, more pine-covered islands and mountains in the far distance.
-	These kinds of perspectives – on the beach, over top the boulders, inside the cave, above on the tree’s perch – all inform an experience of what would be considered the world outside our interior spaces – our homes, office buildings, and the rooms and spaces inside them. As we venture into more metaphorical (and metaphysical) spaces provided by computers, the contrast with the exterior space has been extended, one step further removed from such a wild, if serene scene. The computer itself acts a technological extension of our mind’s interiority. The subsequent virtual spaces on it reflect as such (desktops, windows, bins, folders, file systems, and on).  But the metaphors we use to move in and comprehend any of these spaces turn out to be universal. Grasping to understand a concept within a virtual, interior, or exterior space follows a similar heuristic:
-
-	1.	We situate ourselves from a particular position in that space.
-	2.	We observe objects from that vantage.
-	3.	We measure them.
-	4.	We produce determinations, comparisons, and inferences.
-
-	From the tree’s perch, I observe the pine-topped island across the water, a gigantic ferry slowly moving away from shore, the miniscule person reading on the beach. The relationships between these objects produce a sense of space and perhaps quietude. They are less tangible in the moment, but I know that with some effort I could proceed towards them, albeit with some considerable effort. Yet, during and by journey’s end, my perspective on them will have changed. In my office, the scale of the space and my conception of it circumscribes that kind of physical possibility. Yet, as it does so, the possibilities for heightened attention and exploration of the objects in the room become more possible. These choices of space and perspective then become generative of the perceptions and conceptions that are produced from them.
-
-Further thoughts
-
-	1.	Spaces and objects with relationships forming the theoretically possible
-	2.	Why do we build big windows looking out onto that exteriority - the fear of the loss of perspective when moving indoors. The desire to be able to have large perspective while being interior, occuping interior physical, psychological, virtual spaces
-</Text>
-        </Document>
         <Document ID="BF8D1EF3-16EC-4395-B331-6724F9EE5123">
             <Title>Schöch - Big? Smart? Clean? Messy? Data in the Humanities</Title>
             <Text>Author: Schöch, Christof
@@ -1894,6 +1968,27 @@ Drucker prefers the term “capta” - “that which has been captured or gather
 “Data in the humanities could be considered a digital, selectively constructed, machine-actionable abstraction representing some aspects of a given object of humanistic inquiry.”
 
 “…digital data add another layer of mediation into the equation. Data (as well as the tools with which we manipulate them) add complexity to the relation between researchers and their objects of study.”
+</Text>
+        </Document>
+        <Document ID="C96AF56F-82EE-4920-9D6A-DE2DFE9B79CB">
+            <Title>January 14, 2021</Title>
+            <Text>Introduction prose
+Borderline
+
+	One summer I drove up the pine-lined coast of Vancouver Island in British Columbia. I didn’t have any particular destination in mind. The prospect of Tofino had occurred to me, but that would be several hours further along the coast. The region, what Americans refer to as the Pacific Northwest, is somewhat lesser known in the American imaginary. To describe the landscape briefly, it is a place where mountains and large coniferous forests directly meet the Pacific ocean. The beaches of this place are also comparatively alien, particularly to someone who has spent their life in the east, where fine sand beaches are more common. In the northwest, one finds rocky beaches composed of small to medium sized stones. The colors are extraordinary. Amid the giant sea stacks and escarpments, the foamy surf of the water washes up and recedes upon these stones that glisten in pinks, greens, oranges, blues, and purples – products of volcanism, water, wind, and time. Even the more common basalt grey ones shine under a typical cloudy day. The summer time however brings long spells of sunshine. I stopped my car at a small, nameless beach park where only a few travelers or area residents were sitting and begin to hike toward one of the bordering escarpments where a giant pine was perched. The erosion had exposed some of its finer roots the saltwater and air. I clambered over the boulders at the base of this outcropping, as best as a non-native could. These types of giant rocks, immediately adjacent to the place where water greets the land, are notorious for their danger, covered in slick seaweed, anemones and razor-sharp, black mussels. Further along and closer to the escarpment, I entered a small cave – really more of an arbor considering the tree’s roots jutted down from overhead. This was a calm place, sequestered away from even the scant amount of people a few dozen yards away. The cave cut underneath the escarpment and continued around away from the beach. To my surprise, I found the path led upward through the soil and to the small, grass and moss covered area around the tree. From this vantage, I saw the boulders below, the stone beach, the people, but now even more: the coastline leading northward, oceangoing vessels, more pine-covered islands and mountains in the far distance.
+	These kinds of perspectives – on the beach, over top the boulders, inside the cave, above on the tree’s perch – all inform an experience of what would be considered the world outside our interior spaces – our homes, office buildings, and the rooms and spaces inside them. As we venture into more metaphorical (and metaphysical) spaces provided by computers, the contrast with the exterior space has been extended, one step further removed from such a wild, if serene scene. The computer itself acts a technological extension of our mind’s interiority. The subsequent virtual spaces on it reflect as such (desktops, windows, bins, folders, file systems, and on).  But the metaphors we use to move in and comprehend any of these spaces turn out to be universal. Grasping to understand a concept within a virtual, interior, or exterior space follows a similar heuristic:
+
+	1.	We situate ourselves from a particular position in that space.
+	2.	We observe objects from that vantage.
+	3.	We measure them.
+	4.	We produce determinations, comparisons, and inferences.
+
+	From the tree’s perch, I observe the pine-topped island across the water, a gigantic ferry slowly moving away from shore, the miniscule person reading on the beach. The relationships between these objects produce a sense of space and perhaps quietude. They are less tangible in the moment, but I know that with some effort I could proceed towards them, albeit with some considerable effort. Yet, during and by journey’s end, my perspective on them will have changed. In my office, the scale of the space and my conception of it circumscribes that kind of physical possibility. Yet, as it does so, the possibilities for heightened attention and exploration of the objects in the room become more possible. These choices of space and perspective then become generative of the perceptions and conceptions that are produced from them.
+
+Further thoughts
+
+	1.	Spaces and objects with relationships forming the theoretically possible
+	2.	Why do we build big windows looking out onto that exteriority - the fear of the loss of perspective when moving indoors. The desire to be able to have large perspective while being interior, occuping interior physical, psychological, virtual spaces
 </Text>
         </Document>
         <Document ID="F1424286-C543-4A74-AC35-8C545112F136">
@@ -2041,6 +2136,159 @@ Chollet (223): “As always, deep learning is more an art than a science. We can
         <Document ID="8E933A1E-A2D5-4241-BB6D-FC14BCE33C46">
             <Title>Preparatory</Title>
         </Document>
+        <Document ID="88FEC3C2-E258-4319-8499-83600906876C">
+            <Title>January 7 2025</Title>
+            <Text>Finished sentence comparison between MTPO and PG editions
+
+Below values are percent matching sentences (bag of sentences style) between each chapter in the Ur text, MTPO, and the subject texts, Project Gutenberg.
+
+Cleaning function for sentences is as follows:
+
+        # 1. Strip whitespace, lowercase, and replace \n and \t with ' '
+        # 2. Remove all accents
+        # 3. Split by spaces and remove single 'n' characters
+        # 4. Remove punctuation from each word
+        # 5. Replace multiple spaces with a single space
+
+2011-05-03-HuckFinn.json
+chapter 1: 58.20895522388065
+chapter 2: 58.13953488372118
+chapter 3: 43.58974358974348
+chapter 4: 64.77272727272715
+chapter 5: 57.77777777777766
+chapter 6: 55.88235294117652
+chapter 7: 67.69230769230751
+chapter 8: 49.433962264150836
+chapter 9: 63.01369863013689
+chapter 10: 70.8333333333334
+chapter 11: 48.255813953488556
+chapter 12: 44.44444444444457
+chapter 13: 53.0
+chapter 14: 37.755102040816425
+chapter 15: 38.13559322033902
+chapter 16: 26.769911504425743
+chapter 17: 44.37086092715249
+chapter 18: 52.35849056603745
+chapter 19: 37.068965517241594
+chapter 20: 46.61654135338338
+chapter 21: 34.64566929133838
+chapter 22: 41.97530864197522
+chapter 23: 41.88034188034209
+chapter 24: 46.0
+chapter 25: 31.53153153153128
+chapter 26: 37.654320987654636
+chapter 27: 40.38461538461522
+chapter 28: 25.786163522012295
+chapter 29: 45.3947368421051
+chapter 30: 15.094339622641481
+chapter 31: 49.38271604938305
+chapter 32: 39.80582524271858
+chapter 33: 41.53846153846142
+chapter 34: 41.81818181818198
+chapter 35: 42.95774647887353
+chapter 36: 47.77777777777763
+chapter 37: 36.781609195402254
+chapter 38: 36.800000000000225
+chapter 39: 53.65853658536588
+chapter 40: 32.89473684210536
+chapter 41: 37.894736842105175
+chapter 42: 37.391304347826356
+chapter 43: 23.809523809523846
+
+
+================================================================================
+2016-08-17-HuckFinn.json
+chapter 1: 58.20895522388065
+chapter 2: 62.01550387596925
+chapter 3: 49.9999999999999
+chapter 4: 68.18181818181807
+chapter 5: 62.222222222222115
+chapter 6: 55.14705882352946
+chapter 7: 66.92307692307674
+chapter 8: 53.9622641509433
+chapter 9: 65.75342465753415
+chapter 10: 75.00000000000006
+chapter 11: 56.97674418604674
+chapter 12: 46.5277777777779
+chapter 13: 57.0
+chapter 14: 40.81632653061235
+chapter 15: 44.91525423728817
+chapter 16: 29.646017699116015
+chapter 17: 45.695364238410775
+chapter 18: 54.24528301886763
+chapter 19: 41.379310344827786
+chapter 20: 48.87218045112775
+chapter 21: 39.37007874015727
+chapter 22: 44.44444444444436
+chapter 23: 48.7179487179489
+chapter 24: 53.0
+chapter 25: 31.53153153153128
+chapter 26: 45.67901234567934
+chapter 27: 41.34615384615368
+chapter 28: 32.704402515722975
+chapter 29: 48.68421052631561
+chapter 30: 22.641509433962238
+chapter 31: 53.08641975308676
+chapter 32: 46.60194174757294
+chapter 33: 46.15384615384602
+chapter 34: 45.45454545454561
+chapter 35: 43.661971830986204
+chapter 36: 52.222222222222086
+chapter 37: 37.93103448275858
+chapter 38: 46.40000000000019
+chapter 39: 56.09756097560978
+chapter 40: 36.842105263158
+chapter 41: 42.105263157894655
+chapter 42: 43.47826086956549
+chapter 43: 23.809523809523846
+
+
+================================================================================
+2021-02-21-HuckFinn.json
+chapter 1: 56.71641791044782
+chapter 2: 62.01550387596925
+chapter 3: 49.9999999999999
+chapter 4: 68.18181818181807
+chapter 5: 62.222222222222115
+chapter 6: 55.14705882352946
+chapter 7: 69.23076923076906
+chapter 8: 54.716981132075375
+chapter 9: 65.75342465753415
+chapter 10: 75.00000000000006
+chapter 11: 58.13953488372116
+chapter 12: 46.5277777777779
+chapter 13: 57.0
+chapter 14: 43.877551020408276
+chapter 15: 44.91525423728817
+chapter 16: 29.424778761062917
+chapter 17: 46.35761589403992
+chapter 18: 56.13207547169781
+chapter 19: 40.51724137931055
+chapter 20: 48.87218045112775
+chapter 21: 40.15748031496042
+chapter 22: 44.44444444444436
+chapter 23: 47.86324786324805
+chapter 24: 53.0
+chapter 25: 31.53153153153128
+chapter 26: 48.14814814814848
+chapter 27: 41.34615384615368
+chapter 28: 32.704402515722975
+chapter 29: 51.31578947368402
+chapter 30: 22.641509433962238
+chapter 31: 53.70370370370404
+chapter 32: 46.60194174757294
+chapter 33: 48.46153846153832
+chapter 34: 46.363636363636516
+chapter 35: 45.77464788732422
+chapter 36: 53.3333333333332
+chapter 37: 37.93103448275858
+chapter 38: 46.40000000000019
+chapter 39: 54.87804878048783
+chapter 40: 36.842105263158
+chapter 41: 42.105263157894655
+chapter 42: 43.47826086956549
+chapter 43: 23.809523809523846</Text>
+        </Document>
         <Document ID="58C7D8F0-6D67-4E12-99D6-5B8E47E940EA">
             <Title>June 6, 2019</Title>
             <Text>Done
@@ -2100,6 +2348,9 @@ To do
 	2.	Flesh out introduction to include some thoughts of that
 	3.	Continue the introduction with some comments on Pollan’s chapter on Site in A Place of My Own</Text>
         </Document>
+        <Document ID="2C498126-22DA-4F2B-B071-2E4A1AF24521">
+            <Title>Chapter 1 Draft (Conflicts)</Title>
+        </Document>
         <Document ID="A3DD3A1E-F4CE-49EC-AE29-16B50E6857A3">
             <Title>Preparatory</Title>
         </Document>
@@ -2117,26 +2368,6 @@ It ends with a house with a room
 “capturing data is not passively accepting what is given, but actively constructing what one is interested in.”
 
 	Toward the end of Distant Horizons (2019), Ted Underwood qualifies the risks of distant reading. He states that subjective evidence is central to the argument he has been making about/in favor of distant reading throughout the book, and that that argument also “resist[s] the notion that a firm boundary can be drawn between measurement and interpretation” (Underwood 147). Toward the beginning and end of Deep Learning with Python (2018), François Chollet alludes to this challenge from the other side of the qualitative-quantitative divide: “Deep learning is more of an art than a science” (Chollet 223). What does developing the correct neural network architecture for a research problem require? It requires “practice” and “intuition” (60). Sure, experts like Chollet and Underwood can give you “best practices” and “principles” (60) and “guidelines” (223). But in the end, experience and the particular question and problem set at hand will prevail. “There is currently no theory that will tell you in advance precisely what you should do to optimally solve a problem. You must iterate” (223). This is the horizon line of the blurred problem space between two spheres of culture modeling that have seen themselves largely as qualitative or quantitative in their most recent histories. The irony of it all is the similar apprehensiveness with which both authors/disciplines approach that space. The humanists are unsettled by the fixity, reductiveness, and supposed discipline-disrupting allure of quantification. The scientists are unsettled by the ambiguity, complexity, and supposed theoretically-devoid character of qualitative decision making. The unpaved path along that line offers the solution, a place where both interpretation and measurement are used conscientiously. Exploring this improvisational and exploratory art (or techne, for the classical-minded) of modeling literature is the subject of this work.</Text>
-        </Document>
-        <Document ID="E5F18ABC-7620-4E6D-B28B-D1696E909D69">
-            <Title>August 14, 2020</Title>
-            <Text>Notes
-Sketching out the reasoning behind the Chapter 1 - Dickinson, Publications, and Data Quality
-
-	1.	Emily Dickinson studies tend to be directed in a few notable and understandable ways. They have a natural progression. The first is to read through her poems and parse them. The second is to relate her poems to her biography. The third is to recover the chronological and fascicle/bundle orderings and to reinterpret the observations of and inferences about the first two readings through these new, authorially-grounded lenses.
-	2.	These two questions of ordering take hold. What was the progression of her drafting of these poems and what does that chronology say differently about the poems? Secondly, regardless – or perhaps in concert with – that chronology, what do the fascicle/bundle arrangements say about those poems when they are no longer read in isolation?
-	3.	The above have been fundamental stakes in addition to biographical and bibliographical discoveries as scholarship has proceeded over time.
-	4.	To put Dickinson herself at a remove once again however can give us yet another context in which to, perhaps selfishly, understand the power of publication orderings and the quality by which our observations and inferences from those arrangements are made.
-	5.	In considering how both a reader and a researcher can interpret a digital collection of works, particularly in its own vacuum with no known contextualizing provenance, we can get a sense of how the state of those materials affect that encounter. What are the effects of that cutaway or lens?
-	6.	Now qualitative approaches to understanding are well-practiced – at least in research circles. (Publication ordering scholar references here.)
-	7.	But to make more concrete some of our observations on the effects that lens/cutaway produced by a particular publication’s editing and arrangement, we can use metrics of data quality.
-	8.	Those metrics chosen and shaped by humanities scholarly concerns can provide a foundation for further qualitative scholarship (e.g. different types of reading) or more quantitative scholarship (e.g. computational modeling). Regardless of the nature of that further work, implementing and utilizing metrics of data quality for a collection materials involves hands-on work.
-	9.	As we will see, the degree to which that hands-on work is feasible is dictated by the size of the collection and the scope of the intended research. As such, as size and scope increase, with time being a limited resource, data quality necessarily decreases.
-	10.	This is what one might call a known known. “Distant” reading is famous for this observation. Quality of understanding at the sentence level might suffer, but the types of observations that can be made a “higher” macro level are both potentially new and informative to disregard that loss in quality.
-	11.	But chief to that disregard, or wave of the hand to a necessary evil, is an understanding of the nature of that loss in quality.
-	12.	To ground the question at hand: What is lost when we move from examining one or a handful of Dickinson poems to examining over a thousand? (And as a corollary, When (or at what ‘level’) is that lost?)
-	13.	And that is why implementing and utilizing metrics for data quality (and later on, as we will see model and visualization quality) become key to establishing more justifiable and authoritative interpretations of literary models.
-</Text>
         </Document>
         <Document ID="6089098D-8FE4-4295-8757-03A9D86492A7">
             <Title>July 16, 2019</Title>
@@ -2166,8 +2397,25 @@ That shaky question, as it turns out, is not just whether or not there is a diff
 
 Why is this important? It goes to the heart of the current questions before many different types of researchers considering how to use computational tools to accurately extract meaning from passages of text, and for literary scholars, whether or not they’re usable at all for the questions that have traditionally been asked by their field(s). And if quality is more indicative of inattention than not, or at least of the comforting “good enough” soup in which we navigate our everyday lives, then quality must be revisited, redefined, and reconfigured for the purposes of digital literary study.</Text>
         </Document>
-        <Document ID="2C498126-22DA-4F2B-B071-2E4A1AF24521">
-            <Title>Chapter 1 Draft (Conflicts)</Title>
+        <Document ID="E5F18ABC-7620-4E6D-B28B-D1696E909D69">
+            <Title>August 14, 2020</Title>
+            <Text>Notes
+Sketching out the reasoning behind the Chapter 1 - Dickinson, Publications, and Data Quality
+
+	1.	Emily Dickinson studies tend to be directed in a few notable and understandable ways. They have a natural progression. The first is to read through her poems and parse them. The second is to relate her poems to her biography. The third is to recover the chronological and fascicle/bundle orderings and to reinterpret the observations of and inferences about the first two readings through these new, authorially-grounded lenses.
+	2.	These two questions of ordering take hold. What was the progression of her drafting of these poems and what does that chronology say differently about the poems? Secondly, regardless – or perhaps in concert with – that chronology, what do the fascicle/bundle arrangements say about those poems when they are no longer read in isolation?
+	3.	The above have been fundamental stakes in addition to biographical and bibliographical discoveries as scholarship has proceeded over time.
+	4.	To put Dickinson herself at a remove once again however can give us yet another context in which to, perhaps selfishly, understand the power of publication orderings and the quality by which our observations and inferences from those arrangements are made.
+	5.	In considering how both a reader and a researcher can interpret a digital collection of works, particularly in its own vacuum with no known contextualizing provenance, we can get a sense of how the state of those materials affect that encounter. What are the effects of that cutaway or lens?
+	6.	Now qualitative approaches to understanding are well-practiced – at least in research circles. (Publication ordering scholar references here.)
+	7.	But to make more concrete some of our observations on the effects that lens/cutaway produced by a particular publication’s editing and arrangement, we can use metrics of data quality.
+	8.	Those metrics chosen and shaped by humanities scholarly concerns can provide a foundation for further qualitative scholarship (e.g. different types of reading) or more quantitative scholarship (e.g. computational modeling). Regardless of the nature of that further work, implementing and utilizing metrics of data quality for a collection materials involves hands-on work.
+	9.	As we will see, the degree to which that hands-on work is feasible is dictated by the size of the collection and the scope of the intended research. As such, as size and scope increase, with time being a limited resource, data quality necessarily decreases.
+	10.	This is what one might call a known known. “Distant” reading is famous for this observation. Quality of understanding at the sentence level might suffer, but the types of observations that can be made a “higher” macro level are both potentially new and informative to disregard that loss in quality.
+	11.	But chief to that disregard, or wave of the hand to a necessary evil, is an understanding of the nature of that loss in quality.
+	12.	To ground the question at hand: What is lost when we move from examining one or a handful of Dickinson poems to examining over a thousand? (And as a corollary, When (or at what ‘level’) is that lost?)
+	13.	And that is why implementing and utilizing metrics for data quality (and later on, as we will see model and visualization quality) become key to establishing more justifiable and authoritative interpretations of literary models.
+</Text>
         </Document>
         <Document ID="006C1C4A-133E-4CCD-8FF7-6E63A65FE10C">
             <Title>Daily Notes</Title>
@@ -2198,7 +2446,7 @@ The kinds of qualities humanities scholars are interested in, Part 1
 
 Ideas
 
-	▪	Taking a survey (via DHQ and a few other major DH journals) on how Project Gutenberg is referred to and using it for discussion of data quality of access
+	▪	Taking a survey of (via DHQ and a few other major DH journals) on how Project Gutenberg is referred to and using it for discussion of data quality of access
 
 Done
 

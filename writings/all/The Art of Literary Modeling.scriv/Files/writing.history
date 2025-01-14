@@ -33,5 +33,15 @@
     <Day dwc="0" dcc="0" dtwc="28810" owc="624" occ="3856" dtcc="180965">2023-06-08</Day>
     <Day dwc="0" dcc="0" owc="0" occ="1">2023-06-13</Day>
     <Day dwc="0" dcc="0" owc="1" occ="3">2023-09-23</Day>
-    <Day dwc="0" dcc="0" owc="1" occ="3">2024-01-01</Day>
+    <Day dwc="0" dcc="0" dtwc="29045" owc="1" occ="3" dtcc="182717">2024-01-01</Day>
+    <Day dwc="0" dcc="0" dtwc="28810" owc="283" occ="1848" dtcc="180965">2024-12-09</Day>
+    <Day dwc="0" dcc="0" owc="52" occ="298">2024-12-17</Day>
+    <Day dwc="0" dcc="0" dtwc="28810" owc="95" occ="577" dtcc="180965">2024-12-19</Day>
+    <Day dwc="0" dcc="0" dtwc="28810" owc="1014" occ="6010" dtcc="180965">2024-12-20</Day>
+    <Day dwc="0" dcc="0" dtwc="28810" owc="83" occ="617" dtcc="180965">2024-12-31</Day>
+    <Day dwc="0" dcc="0" dtwc="28810" owc="9" occ="34" dtcc="180965">2025-01-02</Day>
+    <Day dwc="0" dcc="0" dtwc="28810" owc="43" occ="270" dtcc="180965">2025-01-06</Day>
+    <Day dwc="0" dcc="0" dtwc="28810" owc="466" occ="4558" dtcc="180965">2025-01-07</Day>
+    <Day dwc="0" dcc="0" dtwc="28810" owc="163" occ="1048" dtcc="180965">2025-01-09</Day>
+    <Day dwc="0" dcc="0" owc="170" occ="1088">2025-01-14</Day>
 </WritingHistory>
