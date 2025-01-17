@@ -50,7 +50,7 @@ class AOLMTextReader:
     def __read_file_as_txt(self):
 
         # Read in the text line by line
-        with open(self.m_filepath, "r") as text_file:
+        with open(self.filepath, "r") as text_file:
             self.m_text_lines = text_file.readlines()
 
     # Properties
@@ -70,22 +70,22 @@ class AOLMTextReader:
     def read(self):
 
         # 1. Open the text file for reading
-        if os.path.exists(self.m_filepath):
+        if os.path.exists(self.filepath):
 
-            if READER_FILETYPE_AOLM is self.m_filetype:
+            if READER_FILETYPE_AOLM is self.filetype:
                 self.__hydrate_aolm_file()
-            elif READER_FILETYPE_HATHI is self.m_filetype:
+            elif READER_FILETYPE_HATHI is self.filetype:
                 self.__hydrate_hathi_file()
-            elif READER_FILETYPE_JSON is self.m_filetype:
+            elif READER_FILETYPE_JSON is self.filetype:
                 self.__read_file_as_json()
-            elif READER_FILETYPE_TEI is self.m_filetype:
+            elif READER_FILETYPE_TEI is self.filetype:
                 self.__read_file_as_tei()
-            elif READER_FILETYPE_TXT is self.m_filetype:
+            elif READER_FILETYPE_TXT is self.filetype:
                 self.__read_file_as_txt()
             else:
-                raise Exception(f"File type {self.m_filetype} not supported.")
+                raise Exception(f"File type {self.filetype} not supported.")
         else:
-            raise FileNotFoundError(f"Cannot find file {self.m_filepath}")
+            raise FileNotFoundError(f"Cannot find file {self.filepath}")
 
     # Properties
 
