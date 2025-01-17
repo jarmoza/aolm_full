@@ -70,12 +70,14 @@ class DatasetCompleteness_MetadataSufficiency(DataQualityMetric):
 
         # I. Get key set for all metadata files
         pg_metadata_keyset = AOLMTextUtilities.get_keyset([self.m_input[filepath] for filepath in self.m_input], [unkeyed_key])
-        pg_metadata_keyset.remove(unkeyed_key)
+        if unkeyed_key in pg_metadata_keyset:
+            pg_metadata_keyset.remove(unkeyed_key)
 
         # II. Calculate percentage coverage each edition has of the total keyset
         for filepath in self.m_input:
             edition_keys = AOLMTextUtilities.get_keyset([self.m_input[filepath]], [unkeyed_key])
-            edition_keys.remove(unkeyed_key)
+            if unkeyed_key in edition_keys:
+                edition_keys.remove(unkeyed_key)
             self.m_results["existence_and_completeness"]["percent_key_coverage"][filepath] = 100 * len(edition_keys) / float(len(pg_metadata_keyset))
         
         # 2. Clarity and quality of definitions
@@ -87,11 +89,9 @@ class DatasetCompleteness_MetadataSufficiency(DataQualityMetric):
 
         # A. How many fields are unkeyed?
         total_keyset_len = (len(pg_metadata_keyset))
-        unkeyed_count_by_edition = {}
         for filepath in self.m_input:
-            edition_unkeyed = self.m_input[filepath][unkeyed_key].keys()
-            unkeyed_count_by_edition[filepath] = len(edition_unkeyed) / float(total_keyset_len)
-            self.m_results["clarity_and_quality"][filepath] = 100 * len(edition_unkeyed) / float(total_keyset_len)
+            edition_unkeyed = [] if unkeyed_key not in self.m_input[filepath] else self.m_input[filepath][unkeyed_key].keys()
+            self.m_results["clarity_and_quality"][filepath] = 100 - (100 * len(edition_unkeyed) / float(total_keyset_len))
 
         # 3. Consistency of representation
         
