@@ -167,11 +167,12 @@ class AOLMTextUtilities:
     def get_sentence_dict_from_spacy_doc(p_spacy_doc):
 
         unique_sentences = {}
-        for sent in p_spacy_doc.sents:
-            cleaned_sent = AOLMTextUtilities.clean_string(sent.text, p_remove_internal_punctuation=True)
-            if cleaned_sent not in unique_sentences:
-                unique_sentences[cleaned_sent] = 0
-            unique_sentences[cleaned_sent] += 1
+        if p_spacy_doc:
+            for sent in p_spacy_doc.sents:
+                cleaned_sent = AOLMTextUtilities.clean_string(sent.text, p_remove_internal_punctuation=True)
+                if cleaned_sent not in unique_sentences:
+                    unique_sentences[cleaned_sent] = 0
+                unique_sentences[cleaned_sent] += 1
         return unique_sentences
 
     @staticmethod
