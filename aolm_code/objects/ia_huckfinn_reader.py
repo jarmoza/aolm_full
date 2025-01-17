@@ -40,7 +40,7 @@ class IAHuckFinnReader(AOLMTextReader):
         roman_numeral = AOLMTextUtilities.roman_numeral_from_decimal(p_chapter_number)
         body_id = f"{self.m_json["keys"]["output"]["body"]}CHAPTER {roman_numeral}."
 
-        return self.m_json["components"]["body"][body_id]
+        return self.m_json["components"]["body"][body_id] if body_id in self.m_json["components"]["body"] else []
 
     def read(self):
 
@@ -53,10 +53,10 @@ class IAHuckFinnReader(AOLMTextReader):
             self.m_json = json.loads(self.m_aolm_text.m_raw_file_contents)
 
             # C. Separate metadata and body text tags
-            self.m_aolm_text.m_metadata = self.m_json["components"]["header"]
+            self.m_aolm_text.m_metadata = self.m_json["components"]["header"] if "header" in self.m_json["components"] else None
             self.m_front = self.m_json["components"]["frontmatter"]
             self.m_aolm_text.m_body = self.m_json["components"]["body"]
-            self.m_back = self.m_json["components"]["footer"]
+            self.m_back = self.m_json["components"]["footer"] if "footer" in self.m_json["components"] else None
 
 
 # Test script
