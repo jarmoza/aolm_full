@@ -41,7 +41,7 @@ class DatasetCompleteness_RecordCountsToControlRecords(DataQualityMetric):
 
         # 1. Chapter count
 
-        # A. Chapter count comparison between self.m_urtext_name and PG editions
+        # A. Chapter count comparison between self.m_urtext_name and compared editions
 
         # Does a text contain all the chapters of the Ur copy of that text?
         # print(f"Ur text chapter count: {self.m_input[self.m_urtext_name].chapter_count}")
@@ -49,7 +49,7 @@ class DatasetCompleteness_RecordCountsToControlRecords(DataQualityMetric):
         # Chapters to run through (43 from Ur copy, self.m_urtext_name)
         ur_chapter_count = self.m_input[self.m_urtext_name].chapter_count
 
-        # Chapter counts of PG editions
+        # Chapter counts of compared editions
         for reader_name in self.m_results:
             if self.m_urtext_name == reader_name:
                 continue
@@ -62,7 +62,7 @@ class DatasetCompleteness_RecordCountsToControlRecords(DataQualityMetric):
         # A. Load up spaCy model with the given name
         super().load_spacymodel()
 
-        # B. Compare sentences of each chapter of Ur text with each PG edition
+        # B. Compare sentences of each chapter of Ur text with each compared edition
         for index in range(1, ur_chapter_count + 1):
 
             # I. Read the ur chapter
@@ -71,16 +71,16 @@ class DatasetCompleteness_RecordCountsToControlRecords(DataQualityMetric):
             # II. Create a dictionary of unique sentence counts of the ur chapter
             ur_sentence_dict = AOLMTextUtilities.get_sentence_dict_from_spacy_doc(ur_spacy_chapter)
 
-            # III. Compare the ur chapter sentences to those in each PG edition
+            # III. Compare the ur chapter sentences to those in each compared edition
             for reader_name in self.m_input:
                 if self.m_urtext_name == reader_name:
                     continue
 
-                pg_spacy_chapter = self.m_spacymodel("\n".join(self.m_input[reader_name].get_chapter(index)))
-                pg_sentence_dict = AOLMTextUtilities.get_sentence_dict_from_spacy_doc(pg_spacy_chapter)
+                compared_spacy_chapter = self.m_spacymodel("\n".join(self.m_input[reader_name].get_chapter(index)))
+                compared_sentence_dict = AOLMTextUtilities.get_sentence_dict_from_spacy_doc(compared_spacy_chapter)
                 
                 self.m_results[reader_name]["sentence_count"]["by_chapter"][str(index)] = \
-                    AOLMTextUtilities.dictionaries_percent_equal(ur_sentence_dict, pg_sentence_dict)
+                    AOLMTextUtilities.dictionaries_percent_equal(ur_sentence_dict, compared_sentence_dict)
                 
         # for reader_name in self.m_results:
         #     print("=" * 80)
@@ -97,17 +97,17 @@ class DatasetCompleteness_RecordCountsToControlRecords(DataQualityMetric):
             ur_words = AOLMTextUtilities.get_words_from_string(AOLMTextUtilities.create_string_from_lines(ur_chapter))
             ur_words = Counter(ur_words)
 
-            # II. Compare the ur chapter words to those in each PG edition
+            # II. Compare the ur chapter words to those in each compared edition
             for reader_name in self.m_input:
                 if self.m_urtext_name == reader_name:
                     continue
 
-                pg_chapter = self.m_input[reader_name].get_chapter(index)
-                pg_words = AOLMTextUtilities.get_words_from_string(AOLMTextUtilities.create_string_from_lines(pg_chapter))
-                pg_words = Counter(pg_words)
+                compared_chapter = self.m_input[reader_name].get_chapter(index)
+                compared_words = AOLMTextUtilities.get_words_from_string(AOLMTextUtilities.create_string_from_lines(compared_chapter))
+                compared_words = Counter(compared_words)
                 
                 self.m_results[reader_name]["word_count"]["by_chapter"][str(index)] = \
-                    AOLMTextUtilities.dictionaries_percent_equal(ur_words, pg_words)
+                    AOLMTextUtilities.dictionaries_percent_equal(ur_words, compared_words)
                 
         # for reader_name in self.m_results:
         #     print("=" * 80)
