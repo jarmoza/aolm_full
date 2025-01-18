@@ -147,6 +147,17 @@ class AOLMTextUtilities:
 
         return " ".join(final_text_lines)
 
+    @staticmethod    
+    def find_matches(p_text, p_re_substring):
+        
+        # Define the regex pattern
+        pattern = re.compile(p_re_substring)
+
+        # Find all matches in the text
+        matches = pattern.findall(p_text)
+
+        return matches    
+
     @staticmethod
     def get_keyset(p_dictionary_list, p_secondlevel_keys=[]):
 
