@@ -7,6 +7,7 @@
 # Built-ins
 import json
 import os
+import re
 import sys
 
 # Add the project root to sys.path
@@ -17,6 +18,7 @@ add_lib_paths()
 
 # Custom
 from aolm_textreader import AOLMTextReader
+from aolm_textutilities import AOLMTextUtilities
 
 
 # Classes
@@ -37,7 +39,7 @@ class IAHuckFinnWriter:
 
     # Public methods
 
-    def populate_json_components(self, p_chapter_prefix=""):
+    def populate_json_components(self, p_chapter_prefix="", p_page_skiplines=[]):
 
         components_json = {}
 
@@ -72,6 +74,15 @@ class IAHuckFinnWriter:
                         if line.strip().startswith("CHAPTER"):
                             current_chapter = p_chapter_prefix + line.strip()
                             components_json[component][current_chapter] = []
+                            continue
+
+                        found_skipline = False
+                        for skipline in p_page_skiplines:
+                            if len(AOLMTextUtilities.find_matches(line.strip(), skipline)):
+                                found_skipline = True
+                                break
+                        if found_skipline:
+                            continue
 
                         if current_chapter:
                             components_json[component][current_chapter].append(line.strip())
@@ -117,9 +128,17 @@ def main():
 
     huckfinn_txt_file = "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/incomplete/txt/adventuresofhuck1904twai_demarcated.txt"
     huckfinn_json_template = "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/incomplete/json/adventuresofhuck1904twai_demarcated.json"
+
+    page_headings_to_skip = [
+        
+        r".* Huckleberry Finn .*",
+        r".* Huckleberry Finn",
+        r"Huckleberry Finn .*",
+        r"Huckleberry Finn"
+    ]
     
     hf_json_writer = IAHuckFinnWriter(huckfinn_txt_file, huckfinn_json_template)
-    hf_json_writer.populate_json_components(p_chapter_prefix="HUCKLEBERRYFINN_BODY_")
+    hf_json_writer.populate_json_components(p_chapter_prefix="HUCKLEBERRYFINN_BODY_", p_page_skiplines=page_headings_to_skip)
 
 if "__main__" == __name__:
     main()
