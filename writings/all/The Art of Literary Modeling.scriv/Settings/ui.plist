@@ -21,8 +21,8 @@
 	<false/>
 	<key>binderSplitFrames</key>
 	<array>
-		<string>{{0, 0}, {249.5, 900}}</string>
-		<string>{{250.5, 0}, {1261.5, 900}}</string>
+		<string>{{0, 0}, {250, 900}}</string>
+		<string>{{251, 0}, {1261, 900}}</string>
 	</array>
 	<key>binderWidth</key>
 	<real>281.5</real>
@@ -722,6 +722,11 @@
 			<integer>-1</integer>
 		</dict>
 		<key>E5744F81-F08C-45DF-AFE4-2C2ECF4D199F</key>
+		<dict>
+			<key>Row</key>
+			<integer>-1</integer>
+		</dict>
+		<key>E5A5551B-0DDC-46E1-8861-DC0E64C7B08D</key>
 		<dict>
 			<key>Row</key>
 			<integer>-1</integer>
