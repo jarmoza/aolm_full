@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ScrivenerProject Identifier="9D1E41B9-1E5B-4BD0-A880-FE062B9FE6E8" Version="2.0" Creator="SCRMAC-3.4-16639" Device="SturgeonHome" Author="" Modified="2025-01-18 12:51:08 -0500" ModID="B050904B-7F6F-487B-BFBE-B4C150404E9F">
+<ScrivenerProject Identifier="9D1E41B9-1E5B-4BD0-A880-FE062B9FE6E8" Version="2.0" Creator="SCRMAC-3.4-16639" Device="SturgeonHome" Author="" Modified="2025-01-23 18:10:17 -0500" ModID="92F06F74-EBFE-4323-93EF-3954F12FC9A6">
     <Binder>
         <BinderItem UUID="006C1C4A-133E-4CCD-8FF7-6E63A65FE10C" Type="Folder" Created="2021-01-22 16:13:57 -0500" Modified="2021-01-22 16:29:55 -0500">
             <Title>Daily Notes</Title>
@@ -906,7 +906,25 @@
                                 <IncludeInCompile>Yes</IncludeInCompile>
                             </MetaData>
                             <TextSettings>
-                                <TextSelection>0,0</TextSelection>
+                                <TextSelection>227,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="00EB8C15-D0D7-4E30-AF3E-9DCAD5BDBD3F" Type="Text" Created="2025-01-18 17:02:53 -0500" Modified="2025-01-21 16:50:48 -0500">
+                            <Title>January 18, 2025</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>211,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="78DE8755-B3BE-4B82-8CDA-BF0BA9ECB7BD" Type="Text" Created="2025-01-21 16:50:52 -0500" Modified="2025-01-22 14:58:03 -0500">
+                            <Title>January 21, 2025</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>1726,0</TextSelection>
                             </TextSettings>
                         </BinderItem>
                     </Children>
@@ -1833,6 +1851,24 @@ Process for producing initial data quality assessment
                         </BinderItem>
                     </Children>
                 </BinderItem>
+                <BinderItem UUID="7ED0E743-FC6A-4005-905F-B42E27E37F3B" Type="Text" Created="2025-01-23 16:20:56 -0500" Modified="2025-01-23 18:10:17 -0500">
+                    <Title>What I have 2025</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>33,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="F13BBC08-49D3-486E-9EFE-2B7112584B37" Type="Text" Created="2025-01-23 16:25:11 -0500" Modified="2025-01-23 16:25:19 -0500">
+                    <Title>What I have been doing 2025</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
             </Children>
         </BinderItem>
         <BinderItem UUID="747BE06C-B21A-4F0A-9B27-0EF2629B83A7" Type="ResearchFolder" Created="2019-01-03 11:33:23 -0500" Modified="2019-01-03 11:33:23 -0500">
@@ -2757,14 +2793,14 @@ Process for producing initial data quality assessment
     </CustomMetaDataSettings>
     <ProjectTargets Notify="No">
         <DraftTarget Type="Words" CountIncludedOnly="Yes" CurrentCompileGroupOnly="No" Deadline="2019-01-03 11:33:22 -0500" IgnoreDeadline="Yes">0</DraftTarget>
-        <SessionTarget Type="Words" CountDraftOnly="Yes" AllowNegatives="Yes" NextResetDate="2025-01-19 00:00:00 -0500" ResetType="Time" ResetTime="00:00" DeterminedFromDeadline="No" WritingDays="" CanWriteOnDeadlineDate="No">0</SessionTarget>
-        <PreviousSession Words="0" Characters="0" Date="2025-01-18 12:51:06 -0500"/>
+        <SessionTarget Type="Words" CountDraftOnly="Yes" AllowNegatives="Yes" NextResetDate="2025-01-24 00:00:00 -0500" ResetType="Time" ResetTime="00:00" DeterminedFromDeadline="No" WritingDays="" CanWriteOnDeadlineDate="No">0</SessionTarget>
+        <PreviousSession Words="0" Characters="0" Date="2025-01-23 01:14:00 -0500"/>
     </ProjectTargets>
-    <RecentWritingHistory Date="2025-01-18 00:00:00 -0500">
+    <RecentWritingHistory Date="2025-01-23 00:00:00 -0500">
         <DraftWordCount>0</DraftWordCount>
         <DraftCharCount>0</DraftCharCount>
-        <OtherWordCount>0</OtherWordCount>
-        <OtherCharCount>0</OtherCharCount>
+        <OtherWordCount>1678</OtherWordCount>
+        <OtherCharCount>10814</OtherCharCount>
     </RecentWritingHistory>
     <PrintSettings PaperSize="612.0,792.0" LeftMargin="72.0" RightMargin="72.0" TopMargin="90.0" BottomMargin="90.0" PaperType="na-letter" Orientation="Portrait" HorizontalPagination="Clip" VerticalPagination="Auto" ScaleFactor="1.0" HorizontallyCentered="Yes" VerticallyCentered="Yes" Collates="Yes" PagesAcross="1" PagesDown="1"/>
 </ScrivenerProject>

@@ -1,0 +1,108 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2820
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\froman\fcharset0 Palatino-Bold;\f1\froman\fcharset0 Palatino-Roman;\f2\froman\fcharset0 Palatino-Italic;
+}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2880\tx3600\tx4320\fi360\sl264\slmult1\pardirnatural\partightenfactor0
+
+\f0\b\fs32 \cf0 Overview\
+
+\f1\b0\fs28 \
+\'93The Art of Literary Modeling\'94 (AoLM) is an attempt to create and describe several new research activities for digital humanists regarding defining and measuring the quality of literary datasets and computational models from those datasets. (AoLM describes these datasets as \'93literary\'94 intentionally in that these collections of textual data exist and function for different purposes in the humanities.) This has several motivations, both old and new. The first is that in previous history in the field, work on defining high quality datasets has been to identify \'93dirty\'94 data (i.e. OCR errors, issues with generalizability of typeset and characters) and to work to \'93clean\'94 that data in order to process it efficiently and to produce something where errors or non-standard aspects have been removed/ironed out. However, while this work is useful in moving the research process along, AoLM argues that these research outputs then rely on ahistorical sources in that they have been modified in order to proceed to what are seen as the more \'93valuable\'94 pieces of digital humanities text modeling research: modeling of literature, analyses of those models, and literary-historical conclusions based on them. Looking at datasets that have been modified in this way, in the past they have been deemed \'93good enough\'94 in order to proceed along that workflow. AoLM states that, \'93good enough\'94 is an oversight that is partly based on the economics of academic research and that instead there should be well-defined means of establishing the quality of those datasets, and in turn well-defined means of establishing the quality of models based upon them. (A researcher\'92s work could include establishing the quality of a data set and subsequent model of it, or could rely on the work of pay-it-forward researchers whose work consists of understanding the quality of available digital literary dataset \'96 and even working on the quality of models from it for subsequent use.)\
+AoLM borrows from the fields of Information Science, Statistics, and Computer Science alongside lessons learned in the humanities from incorporating their methods. In particular for data quality, AoLM looks to data quality frameworks as produced by Information Scientists both in academia and in private industry. The dissertation borrows and adopts data quality metrics. This is not to produce a set list of highly generalizable calculations for researchers, but rather to demonstrate how these data quality metrics can be custom-tailored to the datasets and research purposes of individual researchers, and then how they can be utilized together to understand overall quality of aspects of datasets and whole datasets themselves \'96 standards which can then be used to determine comparative quality of datasets and be used as objective grounds for modeling to follow. The dissertation proceeds along similar grounds for model quality using measurements from Statistics and Computer Science called \'93information criterion\'94, and also incorporates lessons from creating data quality frameworks to establish similar qualitative standards for models themselves.\
+The underlying material for the work describing these new research activities is a set of 19
+\fs18 \super th
+\fs28 \nosupersub  century American literature \'96 Mark Twain\'92s 
+\f2\i Adventures of Huckleberry Finn 
+\f1\i0 and his 
+\f2\i Autobiography Vol. 1
+\f1\i0 , Herman Melville\'92s 
+\f2\i Moby-Dick
+\f1\i0 , Emily Dickinson\'92s poetry and correspondence, and a collection of lesser known 19
+\fs18 \super th
+\fs28 \nosupersub  century works from the New York Public Library. These selections are made both because of my initimate familiarity with them, but also because of their high rate of publication, numerous editions, and numerous copies. Also as important as the works themselves, however, are their sources. Since data quality standards consider both physical attributes and lesser-considered external aspects of quality (i.e. accessibility as quality measurement), AoLM looks to both highly public and more private digital repositories including: university libraries and research centers (i.e. Mark Twain Project Online at UC Berkeley, Emily Dickinson Archive at Amherst College, etc.), Project Gutenberg, The Internet Archive, and Hathi Trust Digital Library. Research has also included investigating how these sources have produced these digital works, including both standard research via the internet, forums, and even an interview with Tanya Clement, in one instance, an early digital humanist involved in the creation of the Emily Dickinson correspondence site and Emily Dickinson Archive.\
+
+\f0\b\fs32 \
+Writing\
+\
+
+\f1\b0\fs28 Thus far writing for AoLM consists of introductory writing, copious notes on sources and processes, some interview notes, early drafts of portions of the first chapter on data, some writing on the second chapter on model quality, some early analysis of data and model quality measurements, and attempts to gather pieces of all of this work together. One of the reasons for the scattered writing in addition to side projects to sustain myself (see \'91What I have been doing\'92 below) is because much of AoLM relies on prototyping code for how data quality metrics from information science can be translated into useful metrics for both textual data and humanities research. (See \'91Code\'92 section below for a description of this work.) \
+
+\f0\b\fs32 \
+Datasets\
+\
+
+\f2\i\b0\fs28 Emily Dickinson, poetry and correspondence
+\f1\i0 \
+	- Bingham correspondence\
+	- Emily Dickinson Archive\
+	- Project Gutenberg\
+
+\f0\b\fs32 \
+
+\f2\i\b0\fs28 New York Public Library 19
+\fs18 \super th
+\fs28 \nosupersub  century American dataset 
+\f1\i0 from HathiTrust Digital Library\
+\
+
+\f2\i Herman Melville; Moby-Dick
+\f1\i0 , many editions from each of:\
+	- Melville Electronic Library\
+	- Project Gutenberg\
+	- Internet Archive\
+\
+
+\f2\i Mark Twain
+\f1\i0 \
+	- 
+\f2\i Autobiography vol 1-3 
+\f1\i0 from Mark Twain Project Online at University of California, Berkeley\
+	- 
+\f2\i Adventures of Huckleberry Finn
+\f1\i0 , many editions from each of:\
+		- Mark Twain Project Online\
+		- Project Gutenberg\
+		- Internet Archive
+\f0\b\fs32 \
+\
+Code\
+\
+
+\f1\b0\fs28 Coding these ideas have required numerous attempts, some of which have succeeded and others not. In order for the code to be successful, the code itself must be generalizable and - using my background as a software engineer, I have been able to do this: the idea is that I can have a script read through just about any of the literary datasets described above (as well as their metadata), be processed into generalized data structures (modified as little as possible), measured through generalized data quality metrics that are appropriate for each dataset, and then weighed together both mathematically into higher level measurements and weighed analytically. Generalizing data ingestion (downloading, scraping, reading from the resultant formats) has been a notable portion of the work. In addition thinking through and prototyping data quality metrics has proven challenging in that sometimes data quality metrics must be custom coded to consider unique characteristics of particular datasets (i.e. creating metrics of 
+\f2\i Huckleberry Finn
+\f1\i0  across three separate sources with three very different formats itself required carving out special exceptions so that the works could be reasonably compared together). While much of that challenge is behind me, I would say defining this new activity in of itself in that it has not been before has presented its own challenge.\
+\
+
+\f0\b\fs32 What I Have Been Doing\
+\
+
+\f1\b0\fs28 Since after my reading exam and my dissertation proposal (2017-2018), I have been engaged in several side research projects in digital humanities and in language for neuroscience. This is partly from part-time opportunities that arose given my skillset and academic network, and starting in 2021 partly from the need for at least some income. I worked on creating a interactive digital archive of Scottish national poet, Edwin Morgan\'92s collage books at University of Edinburgh with colleagues Bridget Moynihan and Anouk Lang. I worked with Pierre Bellec at University of Montreal on creating language datasets for MRI neuroscience/machine learning experiments. I worked at McGill University with Sebastian Urchs and Jean Baptiste Poline on a data/metadata alignment toolset for scientists. (I have been able to coopt much of these neuroscience works to my own digital humanities research and development work.) I have worked on a pipelines and site work for an early modern machine learing project at Carnegie Mellon under Christopher Warren. In addition to that I have continued to work on digital humanities data visualization tools, given many talks across Canada, the United States, and in Europe on my work, and published (or co-published) at least 6 papers \'96 including my own book chapter regarding a digital humanities project on 
+\f2\i Moby-Dick
+\f1\i0  and the work of one of its most famous scholars and editors, Harrison Hayford, and even won an award from the Canadian digital humanities association for the beginnings of that work in 2017. In 2021, I was able to springboard an NYU DH Showcase project to do some early model quality work on Twain\'92s autobiography. Needless to say, I have been busy, and unfortunately much of the above work even if related to my own dissertation has come at the cost of time I have been able to dedicate to it.\
+\
+
+\f2\i Project List
+\f1\i0 \
+\
+
+\f2\i Publication List
+\f1\i0 \
+\
+
+\f2\i Talk List
+\f1\i0 \
+
+\f0\b\fs32 \
+Next Steps\
+\
+
+\f1\b0\fs28 Work has been proceeding on data quality measurement for 
+\f2\i Adventures of Huckleberry Finn
+\f1\i0  and has been producing a series of metrics that is being used to produce analysis writing and investigation into why various aspects of editions of the work produce lower quality measurements. This work will be integrated into the first chapter and lessons from the measurements and their incorporation into a larger data quality framework will be used for both chapter 1 and also the model quality second chapter. Which works from the above listed datasets that are to be featured for particular examples of quality measurement are in flux, but it does seem that works with the highest number of digital editions/copies available (e.g. 
+\f2\i Huckleberry Finn
+\f1\i0  and 
+\f2\i Moby-Dick
+\f1\i0 ) are the ones that will be used the most while less available digital editions will be used as examples of what one can do to establish quality standards when there are not numerous editions available. Twain\'92s 
+\f2\i Autobiography 
+\f1\i0 will be featured in the second chapter in that its large size will produce a good example of what happens when researchers cannot attend to data quality in its fullest, but can at least attend to model quality in a more comprehensive fashion. In summary, there is still much analysis writing to be done for chapter 1 as well as integration of that writing with introductory text on the state of digital humanities research and the ideas of data quality. And much of chapter 2 remains to be written in addition to the code experiments necesary for defining model quality as a research activity. Chapter 3 of AoLM is dedicated to documenting the dataset and coding work involved in the dissertation.}

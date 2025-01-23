@@ -1845,6 +1845,13 @@ Blog
         <Document ID="847061CB-5E45-4CD9-ACE2-68E70966DDBB">
             <Title>Submission - Week of December 19, 2021 (Conflicts)</Title>
         </Document>
+        <Document ID="6553BF9C-1978-4BBC-8AF7-D3DCBB93D564">
+            <Title>January 14, 2025</Title>
+            <Text>This work is not for everybody – meaning not everybody will want to engage in this kind of quality-defining work
+However, this work is for everybody – in the sense that its outputs produce a level of confidence in datasets being used for modeling operations whereas without it we would have little precise confidence in the underlying data
+
+Defining data quality requires work – both in assessing texts, refining them (if warranted), and writing reproducible measurement code so that the current dataset and any other edition/iteration of it can be assessed with the same criteria and the same mechanism(s). Typically datasets are located, assessed, cleaned and prepped for use with particular experiments and projects. This dissertation suggests that defining/assessing the qualities of a dataset and its overall data quality is a new research activity in need of formalization, and that it is an activity that can bear fruit for many future researchers interested in the dataset (subject matter) being visited by these activities/exercises defined within this dissertation (and beyond).</Text>
+        </Document>
         <Document ID="5232633D-142A-4346-ADAD-C955C9E6160F">
             <Title>Thoughts - October 15, 2021</Title>
             <Text>The Art of Literary Modeling
@@ -2676,6 +2683,10 @@ Total words: 139
 Total unique words: 82
 {'way': 1, 'silas': 1, 'mornin': 1, 'first-rate': 1, "couldn't": 5, 'doan': 1, 'finn': 1, 'you': 2, 'jim': 4, 'second': 1, 'him': 1, 'lovely': 1, 'that': 1, "he'll": 2, 'how': 1, 'cowards': 1, 'thout': 1, 'striped': 1, 'where': 1, "that's": 1, 'please': 1, 'newrleans': 1, 'these': 1, 'we': 1, 'very': 1, 'cat': 1, 'border': 1, 'jack': 1, "he's": 2, 'forty': 1, 'year': 2, 'said': 1, 'one': 2, "you'll": 1, 'live': 1, 'had': 4, 'baths': 1, 'rights': 1, "didn't": 5, 'me': 3, "'s": 3, 'everything': 1, 'will': 1, "ain't": 7, 'lantern': 1, 'rob': 1, 'may': 1, 'leave': 1, "can't": 5, 'piles': 1, "don't": 1, 'reverend': 1, 'war': 2, 'den': 1, 'which': 2, 'husband': 1, 'what': 1, "they're": 2, 'a-a-men': 1, 'has': 1, 'duke': 1, 'tis': 1, "wouldn't": 8, 'good-bye': 1, 'any': 1, "le's": 1, 'soldier': 1, 'maim': 1, 'gentlemen': 1, 'ourn': 1, 'people': 1, 'i': 5, 'us': 1, 'given': 1, "'d": 5, 'bill': 1, 'all': 1, "'m": 2, "tom's": 1, 'sword': 1, 'up': 1, 'it': 6}</Text>
         </Document>
+        <Document ID="00EB8C15-D0D7-4E30-AF3E-9DCAD5BDBD3F">
+            <Title>January 18, 2025</Title>
+            <Text>Finished altering ia_huckfinn_writer.py and the three incomplete editions of Huck Finn from the internet archive. Processed them into json readable for the HuckFinn dq metric reading in huckfinn_dataquality.py</Text>
+        </Document>
         <Document ID="B738603E-CE2E-4700-A0AB-92F6EA7954B5">
             <Title>Introduction</Title>
         </Document>
@@ -2711,6 +2722,13 @@ Vol 3. 792 pages
 	9.	Prospects for new insights about the Twain autobiography and new notion of sound evidentiary basis for the highlighting/selection of sections for analysis/comparison/contrast/etc.
 	10.	Prospects for other researchers to use these model metrics and heuristic to make assessments of their own models and use of those assessments as (part) basis for the interpretive claims made
 </Text>
+        </Document>
+        <Document ID="E5A5551B-0DDC-46E1-8861-DC0E64C7B08D">
+            <Title>January 17, 2025</Title>
+            <Text>Why data quality matters for humanists?
+
+Computer scientists (etc.) will be creating models of what we refer to as literature (a.k.a. Humanities data) so that chatbots/LLMs can summarize and interpret that for the public in search of information about it. What is the role of humanities in this future? There are several, but one of them will be to work on defining and sustaining high quality versions of datasets for such models. While it’s true that statistically sometimes errata in a transcription or errata from a particular edition might not matter, as humanists know small changes often make differences in things like summaries and interpretations.
+Furthermore, if humanities scholars wish to produce research based on computational models of their textual subjects they too will want to have a well-defined quality standards for those subjects so that their own, more traditional research findings have sound bases</Text>
         </Document>
         <Document ID="E54A0184-4ED4-4A9E-95B2-5B0E4D3B0BDF">
             <Title>March 5, 2021</Title>

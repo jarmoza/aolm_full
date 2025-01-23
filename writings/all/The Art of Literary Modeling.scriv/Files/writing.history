@@ -44,5 +44,9 @@
     <Day dwc="0" dcc="0" dtwc="28810" owc="466" occ="4558" dtcc="180965">2025-01-07</Day>
     <Day dwc="0" dcc="0" dtwc="28810" owc="163" occ="1048" dtcc="180965">2025-01-09</Day>
     <Day dwc="0" dcc="0" dtwc="28810" owc="170" occ="1088" dtcc="180965">2025-01-14</Day>
-    <Day dwc="0" dcc="0" owc="146" occ="924">2025-01-17</Day>
+    <Day dwc="0" dcc="0" dtwc="28810" owc="146" occ="924" dtcc="180965">2025-01-17</Day>
+    <Day dwc="0" dcc="0" dtwc="28810" owc="28" occ="209" dtcc="180965">2025-01-18</Day>
+    <Day dwc="0" dcc="0" dtwc="28810" owc="98" occ="598" dtcc="180965">2025-01-21</Day>
+    <Day dwc="0" dcc="0" dtwc="28810" owc="186" occ="1130" dtcc="180965">2025-01-22</Day>
+    <Day dwc="0" dcc="0" owc="1676" occ="10791">2025-01-23</Day>
 </WritingHistory>
