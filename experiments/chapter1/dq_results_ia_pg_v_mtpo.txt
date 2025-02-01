@@ -1,0 +1,19 @@
+Internet Archive metadata sufficiency metric: 91.19496855345912
+Internet Archive text records count metric for adventureshuckle00twaiiala: 67.423671974687
+Internet Archive text records count metric for adventuresofhuc00twai: 69.73816108227099
+Internet Archive text records count metric for adventuresofhuck00twai_9: 67.89932715238893
+Internet Archive text records count metric for adventuresofhuck00twaiiala: 34.47197585995545
+Internet Archive text records count metric for adventuresofhuck00twaiuoft: 66.86207658767195
+Internet Archive text records count metric for adventuresofhuck1904twai: 66.40839516332457
+Internet Archive text records count metric for cihm_50160: 62.17092716865772
+Internet Archive text records count metric for dli.ernet.14052: 35.65891472868206
+Internet Archive text records count metric for dli.ernet.235649: 45.385873002990394
+Internet Archive text records count metric for dli.ernet.470159: 69.3756954321557
+Overall Internet Archive text records metric: 58.53950181527848
+Overall Internet Archive data quality: 74.8672351843688
+Project Gutenberg metadata sufficiency metric: 83.33333333333333
+Project Gutenberg text records count metric for 2011-05-03: 73.51552869569008
+Project Gutenberg text records count metric for 2016-08-17: 76.24658410617933
+Project Gutenberg text records count metric for 2021-02-21: 76.3830076241509
+Overall Project Gutenberg text records metric: 75.38170680867344
+Overall Project Gutenberg data quality: 79.35752007100339
