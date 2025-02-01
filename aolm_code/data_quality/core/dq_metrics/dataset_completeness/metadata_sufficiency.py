@@ -17,7 +17,7 @@ class DatasetCompleteness_MetadataSufficiency(DataQualityMetric):
 
     def __init__(self, p_name, p_input):
 
-        super().__init__(p_name, p_input)
+        super().__init__(p_name, p_input)       
 
     def compute(self):
 
@@ -78,7 +78,11 @@ class DatasetCompleteness_MetadataSufficiency(DataQualityMetric):
             edition_keys = AOLMTextUtilities.get_keyset([self.m_input[filepath]], [unkeyed_key])
             if unkeyed_key in edition_keys:
                 edition_keys.remove(unkeyed_key)
-            self.m_results["existence_and_completeness"]["percent_key_coverage"][filepath] = 100 * len(edition_keys) / float(len(pg_metadata_keyset))
+
+            percent_key_coverage = 100 * len(edition_keys) / float(len(pg_metadata_keyset))
+            assert 0 <= percent_key_coverage <= 100, f"Percent key coverage out of range: {percent_key_coverage}"
+            self.m_results["existence_and_completeness"]["percent_key_coverage"][filepath] = percent_key_coverage
+            # self.m_results["existence_and_completeness"]["percent_key_coverage"][filepath] = 100 * len(edition_keys) / float(len(pg_metadata_keyset))
         
         # 2. Clarity and quality of definitions
         
@@ -91,7 +95,11 @@ class DatasetCompleteness_MetadataSufficiency(DataQualityMetric):
         total_keyset_len = (len(pg_metadata_keyset))
         for filepath in self.m_input:
             edition_unkeyed = [] if unkeyed_key not in self.m_input[filepath] else self.m_input[filepath][unkeyed_key].keys()
-            self.m_results["clarity_and_quality"][filepath] = 100 - (100 * len(edition_unkeyed) / float(total_keyset_len))
+
+            clarity_and_quality = 100 - (100 * len(edition_unkeyed) / float(total_keyset_len))
+            assert 0 <= clarity_and_quality <= 100, f"Clarity and quality out of range: {clarity_and_quality}"
+            self.m_results["clarity_and_quality"][filepath] = clarity_and_quality            
+            # self.m_results["clarity_and_quality"][filepath] = 100 - (100 * len(edition_unkeyed) / float(total_keyset_len))
 
         # 3. Consistency of representation
         
@@ -100,34 +108,56 @@ class DatasetCompleteness_MetadataSufficiency(DataQualityMetric):
             "Tallies number of mismatches across each unique value and then divides that by the total number of values in metadata of all editions"
         )
         
-        # A. Get lists of duplicated, unique values
+        # NOTE: These is a problem with this algorithm overcounting past 100
+
+        # Try #2
+
+        # A. Create a list of all unique keys in the metadata files being examined
+        all_metadata_keys = list(set([ key for filepath in self.m_input for key in self.m_input[filepath] if key != unkeyed_key  ]))
+
+        # B. Create a dictionary of lists of unique values for each unique key in the metadata files being examined
+        all_metadata_values = { key: [] for key in all_metadata_keys }
+        for filepath in self.m_input:
+            for key in self.m_input[filepath]:
+                if key not in all_metadata_keys:
+                    continue
+                if isinstance(self.m_input[filepath][key], list):
+                    all_metadata_values[key].extend(self.m_input[filepath][key])
+                else:
+                    all_metadata_values[key].append(self.m_input[filepath][key])
+        for key in all_metadata_keys:
+            all_metadata_values[key] = list(set(all_metadata_values[key]))
+
+        # C. Create distance lists between all values for each key
+        mismatch_dict = { key: None for key in all_metadata_keys }
+        for key in all_metadata_keys:
+            mismatch_dict[key] = AOLMTextUtilities.levenshtein_listcompare(all_metadata_values[key], p_dedupe=True)
+
+        # # A. Get lists of duplicated, unique values
         pg_metadata_valueset = AOLMTextUtilities.get_valueset([self.m_input[filepath] for filepath in self.m_input])
-        valuematch_dict = AOLMTextUtilities.levenshtein_listcompare(pg_metadata_valueset)
+        pg_metadata_unique_valueset = list(set(pg_metadata_valueset))
         
         # B. Determine mismatches as percentage of the total number of values
         # represented in the metadata of all editions
         mismatch_count = 0
-        for key in valuematch_dict:
-            if len(valuematch_dict[key]) > 0:
-                mismatch_count += len(valuematch_dict[key])
-        self.m_results["consistency_of_representation"] = 100 * mismatch_count / float(len(pg_metadata_valueset))
+        for key in mismatch_dict:
+            for value in mismatch_dict[key]:
+                if len(mismatch_dict[key][value]) > 0:
+                    mismatch_count += len(mismatch_dict[key][value])
+
+        consistency_of_representation = 100.0 - (100 * mismatch_count / float(len(pg_metadata_unique_valueset)))
+        assert 0 <= consistency_of_representation <= 100, f"Consistency of representation out of range: {consistency_of_representation}"
+        self.m_results["consistency_of_representation"] = consistency_of_representation
 
         return self.m_results
     
     def evaluate(self):
-        
-        # self.m_results = {
 
-        #     "existence_and_completeness": {
-        #         "percent_tables_defined": 0,
-        #         "percent_key_coverage": {}
-        #     },
-        #     "clarity_and_quality": {},
-        #     "consistency_of_representation": {}
-        # }
+        # 0. Clear out any old evaluations
+        super()._reset_evaluations()
 
         # 1. Calculate evaluations of subsubmetrics
-        subsubmetric_evaluations = {
+        self.m_evaluations["subsubmetric"] = {
             "existence_and_completeness": {
                 "percent_tables_defined": self.m_results["existence_and_completeness"]["percent_tables_defined"],
                 "percent_key_coverage": mean(self.m_results["existence_and_completeness"]["percent_key_coverage"].values())
@@ -137,13 +167,13 @@ class DatasetCompleteness_MetadataSufficiency(DataQualityMetric):
         }
 
         # 2. Calculate evaluation of submetrics
-        submetric_evaluations = {
-            "existence_and_completeness": mean(subsubmetric_evaluations["existence_and_completeness"].values()),
-            "clarity_and_quality": subsubmetric_evaluations["clarity_and_quality"],
-            "consistency_of_representation": subsubmetric_evaluations["consistency_of_representation"]
+        self.m_evaluations["submetric"] = {
+            "existence_and_completeness": mean(self.m_evaluations["subsubmetric"]["existence_and_completeness"].values()),
+            "clarity_and_quality": self.m_evaluations["subsubmetric"]["clarity_and_quality"],
+            "consistency_of_representation": self.m_evaluations["subsubmetric"]["consistency_of_representation"]
         }
 
         # 3. Metric is weighted mean of submetrics
-        metric_evaluation = mean(submetric_evaluations.values())
+        self.m_evaluations["metric"] = mean(self.m_evaluations["submetric"].values())
 
-        return metric_evaluation
+        return self.m_evaluations["metric"]

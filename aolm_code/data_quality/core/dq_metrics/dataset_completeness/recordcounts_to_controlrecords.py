@@ -81,13 +81,6 @@ class DatasetCompleteness_RecordCountsToControlRecords(DataQualityMetric):
                 
                 self.m_results[reader_name]["sentence_count"]["by_chapter"][str(index)] = \
                     AOLMTextUtilities.dictionaries_percent_equal(ur_sentence_dict, compared_sentence_dict)
-                
-        # for reader_name in self.m_results:
-        #     print("=" * 80)
-        #     print(f"{reader_name}")
-        #     for chapter_index in self.m_results[reader_name]["sentence_count"]["by_chapter"]:
-        #         print(f"chapter {chapter_index}: {self.m_results[reader_name]["sentence_count"]["by_chapter"][chapter_index]}")
-        #     print("\n")
 
         # 3. Sentence count
         for index in range(1, ur_chapter_count + 1):
@@ -108,41 +101,13 @@ class DatasetCompleteness_RecordCountsToControlRecords(DataQualityMetric):
                 
                 self.m_results[reader_name]["word_count"]["by_chapter"][str(index)] = \
                     AOLMTextUtilities.dictionaries_percent_equal(ur_words, compared_words)
-                
-        # for reader_name in self.m_results:
-        #     print("=" * 80)
-        #     print(f"{reader_name}")
-        #     for chapter_index in self.m_results[reader_name]["word_count"]["by_chapter"]:
-        #         print(f"chapter {chapter_index}: {self.m_results[reader_name]["word_count"]["by_chapter"][chapter_index]}")
-        #     print("\n")    
-
-        # NEXT UP:
-        # (1) Review sentence comparison function
-        # (2) Finish out text record count dq metric
-        # (3) Visualize text record count and metadata suffiency submetrics and write about them
-
-        # # C. Given that, what percent of chapters are complete in this text?
-        # acceptable_completion_percent = p_dqmetric_instance.metric_min
-        # passable_chapters = 0
 
         return self.m_results
 
     def evaluate(self, p_edition=None):
 
-        # self.m_results = { 
-        #     reader_name: {
-        #         "chapter_count": {},
-        #         "sentence_count": {
-        #             "by_chapter": {}
-        #         },
-        #         "word_count": {
-        #             "by_chapter": {}
-        #         }
-        #     } for reader_name in huckfinn_text_readers if MTPO != reader_name
-        # }
-
         # 1. Calculate evaluations of subsubmetrics
-        self.subsubmetric_evaluations = { 
+        self.m_evaluations["subsubmetric"] = { 
             reader_name: {
                 "chapter_count": self.m_results[reader_name]["chapter_count"],
                 "sentence_count": mean(self.m_results[reader_name]["sentence_count"]["by_chapter"].values()),
@@ -152,14 +117,14 @@ class DatasetCompleteness_RecordCountsToControlRecords(DataQualityMetric):
         }
 
         # 2. Calculate evaluation of submetrics
-        self.submetric_evaluations = {
+        self.m_evaluations["submetric"] = {
 
-            "chapter_count": mean([self.subsubmetric_evaluations[reader_name]["chapter_count"] for reader_name in self.subsubmetric_evaluations if self.m_urtext_name != reader_name]),
-            "sentence_count": mean([self.subsubmetric_evaluations[reader_name]["sentence_count"] for reader_name in self.subsubmetric_evaluations if self.m_urtext_name != reader_name]),
-            "word_count": mean([self.subsubmetric_evaluations[reader_name]["word_count"] for reader_name in self.subsubmetric_evaluations if self.m_urtext_name != reader_name]),
+            "chapter_count": mean([self.m_evaluations["subsubmetric"][reader_name]["chapter_count"] for reader_name in self.m_evaluations["subsubmetric"] if self.m_urtext_name != reader_name]),
+            "sentence_count": mean([self.m_evaluations["subsubmetric"][reader_name]["sentence_count"] for reader_name in self.m_evaluations["subsubmetric"] if self.m_urtext_name != reader_name]),
+            "word_count": mean([self.m_evaluations["subsubmetric"][reader_name]["word_count"] for reader_name in self.m_evaluations["subsubmetric"] if self.m_urtext_name != reader_name]),
         }
 
         # 3. Metric is weighted mean of submetrics
-        self.metric_evaluation = mean(self.submetric_evaluations.values())
+        self.m_evaluations["metric"] = mean(self.m_evaluations["submetric"].values())
 
         return self.metric_evaluation
