@@ -121,16 +121,20 @@ class IAHuckFinnWriter:
         with open(self.m_json_filepath, "w") as output_file:
             json.dump(self.m_json_template, output_file)
 
+        # with open(os.path.dirname(self.m_json_filepath) + os.sep + "temp.json", "w") as output_file:
+        #     json.dump(self.m_json_template, output_file)
+
+
 
 # Test script
 
 def main():
 
-    huckfinn_txt_file = "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/incomplete/txt/adventuresofhuck1904twai_demarcated.txt"
-    huckfinn_json_template = "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/incomplete/json/adventuresofhuck1904twai_demarcated.json"
+    huckfinn_txt_file = "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/incomplete/txt/235649-The Adventures Of Huckleberry Finn (1918)_djvu.txt"
+    huckfinn_json_template = "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/incomplete/json/235649-The Adventures Of Huckleberry Finn (1918)_incomplete-HuckFinn.json"
 
     page_headings_to_skip = [
-        
+
         r".* Huckleberry Finn .*",
         r".* Huckleberry Finn",
         r"Huckleberry Finn .*",
