@@ -222,22 +222,46 @@ class AOLMTextUtilities:
         return all_values
 
     @staticmethod
-    def levenshtein_listcompare(p_stringset, p_acceptable_distance_denom=2.0):
+    def levenshtein_listcompare(p_stringset, p_acceptable_distance_denom=2.0, p_dedupe=False, p_ignore_numbers=True):
 
         stringmatch_dict = {}
 
         for key in p_stringset:
-            stringmatch_dict[key] = []
+            lower_key = key.lower()
+            stringmatch_dict[lower_key] = []
             for key2 in p_stringset:
 
-                # Get the Levenshtein distance between keys
-                comp_distance = distance(key, key2)
+                lower_key2 = key2.lower()
 
-                # Determine the minimum acceptable distance based on 'key' length
-                min_key_distance = len(key) / p_acceptable_distance_denom
+                if lower_key != lower_key2:
 
-                if comp_distance > 0 and comp_distance <= min_key_distance:
-                    stringmatch_dict[key].append(key2)
+                    # Get the Levenshtein distance between keys
+                    comp_distance = distance(lower_key, lower_key2)
+
+                    # Determine the minimum acceptable distance based on 'key' length
+                    if len(lower_key) <= p_acceptable_distance_denom:
+                        min_key_distance = len(lower_key) / p_acceptable_distance_denom
+                    else:
+                        min_key_distance = p_acceptable_distance_denom
+
+                    if comp_distance > 0 and comp_distance <= min_key_distance:
+                        
+                        if not p_ignore_numbers and (lower_key.isnumeric() or lower_key2.isnumeric()):
+                            stringmatch_dict[lower_key].append(lower_key2)
+
+        if p_dedupe:
+
+            dedupe_stringmatch_dict = {}
+            strings_encountered = []
+            for key in stringmatch_dict:
+                if key not in strings_encountered:
+                    strings_encountered.append(key)
+                    dedupe_stringmatch_dict[key] = []
+                    for value in stringmatch_dict[key]:
+                        if value not in strings_encountered:
+                            strings_encountered.append(value)
+                            dedupe_stringmatch_dict[key].append(value)
+                        
 
         return stringmatch_dict
 
