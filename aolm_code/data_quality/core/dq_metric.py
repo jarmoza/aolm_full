@@ -11,6 +11,9 @@ from abc import ABC, abstractmethod     # Python abstract classes
 # Third party
 import spacy
 
+# Custom
+# from dq_output import DataQualityOutput
+
 # Classes
 
 """
@@ -45,6 +48,17 @@ class DataQualityMetric:
             "metric": 0.0
         }
 
+        # This may refer to a single DataQualityOutput or multiple
+        self.m_ouput = None
+
+    def _reset_evaluations(self):
+
+        self.m_evaluations = {
+            "subsubmetric": {},
+            "submetric": {},
+            "metric": 0.0
+        }        
+
     # Properties
 
     @property
@@ -53,6 +67,9 @@ class DataQualityMetric:
     @input.setter
     def input(self, p_input):
         self.m_input = p_input
+    # @property
+    # def output(self):
+    #     return DataQualityOutput(self.m_evaluations)
     
     @property
     def metric_evaluation(self):
