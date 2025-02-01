@@ -39,16 +39,45 @@ huckfinn_source_fullnames = {
 huckfinn_directories = {
 
     IA: {
-        "json": "{0}{1}data{1}twain{1}huckleberry_finn{1}internet_archive{1}txt{1}demarcated{1}complete{1}json{1}".format(ROOT_DIR, os.sep),
         "metadata": "{0}{1}data{1}twain{1}huckleberry_finn{1}internet_archive{1}metadata{1}".format(ROOT_DIR, os.sep),
-        "txt": "{0}{1}data{1}twain{1}huckleberry_finn{1}internet_archive{1}txt{1}demarcated{1}complete{1}txt{1}".format(ROOT_DIR, os.sep),
+        "txt": "{0}{1}data{1}twain{1}huckleberry_finn{1}internet_archive{1}txt{1}demarcated{1}complete{1}json{1}".format(ROOT_DIR, os.sep)
     },
     MTPO: "{0}{1}data{1}twain{1}huckleberry_finn{1}mtpo{1}".format(ROOT_DIR, os.sep),
     PG: {
-        "txt": "{0}{1}data{1}twain{1}huckleberry_finn{1}project_gutenberg{1}json{1}".format(ROOT_DIR, os.sep),
         "metadata": "{0}{1}data{1}twain{1}huckleberry_finn{1}project_gutenberg{1}metadata{1}".format(ROOT_DIR, os.sep),
+        "txt": "{0}{1}data{1}twain{1}huckleberry_finn{1}project_gutenberg{1}json{1}".format(ROOT_DIR, os.sep)
     }
 }
+
+''' IA editions
+adventureshuckle00twaiiala
+ - incomplete txt (adventuresofhuck00twaiiala_djvu.txt)
+ - has metadata
+adventuresofhuc00twai
+ - has metadata
+adventuresofhuck00twai_9
+ - has metadata
+adventuresofhuck00twaiuoft
+ - has metadata
+adventuresofhuck1904twai
+ - incomplete txt (adventuresofhuck1904twai)
+ - has metadata
+cihm_50160
+ - has metadata
+completeworksofm11twai
+ - has metadata
+dli.ernet.14052
+ - has metadata
+dli.ernet.235649
+ - incomplete txt (235649-The Adventures Of Huckleberry Finn (1918)_djvu.txt)
+dli.ernet.470159
+ - has metadata
+'''
+
+# Needs demarcation
+# adventuresofhuck1904twai
+
+# completeworksofm11twai-HuckFinn_metadata
 
 huckfinn_edition_names = {
 
@@ -56,10 +85,12 @@ huckfinn_edition_names = {
         "adventureshuckle00twaiiala",
         "adventuresofhuc00twai",
         "adventuresofhuck00twai_9",
+        "adventuresofhuck00twaiiala",
         "adventuresofhuck00twaiuoft",
         "adventuresofhuck1904twai",
         "cihm_50160",
         "dli.ernet.14052",
+        "dli.ernet.235649",
         "dli.ernet.470159"
     ],
     PG: [
@@ -71,7 +102,7 @@ huckfinn_edition_names = {
 
 huckfinn_text_filepaths = {
 
-    IA: [f"{huckfinn_directories[IA][TXT]}{edition_name}_demarcated.json" for edition_name in huckfinn_edition_names[IA]],
+    IA: [f"{huckfinn_directories[IA][TXT]}{edition_name}-HuckFinn.json" for edition_name in huckfinn_edition_names[IA]],
     MTPO: f"{huckfinn_directories[MTPO]}MTDP10000_edited.xml",
     PG: [f"{huckfinn_directories[PG][TXT]}{edition_name}-HuckFinn.json" for edition_name in huckfinn_edition_names[PG]]
 }
@@ -97,7 +128,8 @@ def read_huckfinn_metadata(p_source_id, p_edition_filenames=None):
     if None != p_edition_filenames:
         metadata_filepaths = []
         for edition_filename in p_edition_filenames:
-            metadata_filepaths.append(f"{huckfinn_directories[p_source_id][METADATA]}{edition_filename}")
+            if os.path.exists(f"{huckfinn_directories[p_source_id][METADATA]}{edition_filename}"):
+                metadata_filepaths.append(f"{huckfinn_directories[p_source_id][METADATA]}{edition_filename}")
 
     # 2. Read in metadata on each <p_source_id> edition of Huckleberry Finn
     metadata_json = {}
@@ -116,7 +148,8 @@ def read_huckfinn_text(p_source_id, p_edition_filenames=None):
     if None != p_edition_filenames:
         text_filepaths = []
         for edition_filename in p_edition_filenames:
-            text_filepaths.append(f"{huckfinn_directories[p_source_id][TXT]}{edition_filename}")
+            if os.path.exists(f"{huckfinn_directories[p_source_id][TXT]}{edition_filename}"):
+                text_filepaths.append(f"{huckfinn_directories[p_source_id][TXT]}{edition_filename}")
 
     # 2. Read in each <p_source_id> edition of Huckleberry Finn
     for filepath in text_filepaths:
