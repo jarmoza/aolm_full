@@ -116,6 +116,9 @@ def main():
     # versus Mark Twain Project Online
     for source_id in aolm_data_reading.huckfinn_source_fullnames:
 
+        if aolm_data_reading.MTPO == source_id:
+            continue
+
         source_fullname = aolm_data_reading.huckfinn_source_fullnames[source_id]
 
         # 1. Huck Finn source vs. Mark Twain Project Online (MTPO)
