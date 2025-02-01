@@ -2,7 +2,18 @@
 # Created: June 11, 2024
 # Purpose: Basic output module for data quality metrics
 
+# Imports
+
+# Custom
+from dq_metric import DataQualityMetric
+
+
 class DataQualityOutput:
+
+    def __init__(self, p_evaluations):
+
+        self.m_value = p_evaluations
+        self.m_data_type = type(self.m_evaluations)        
 
     def __init__(self, p_parent_metric_id, p_value):
         
