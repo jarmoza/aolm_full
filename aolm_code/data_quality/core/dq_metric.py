@@ -27,11 +27,18 @@ class DataQualityMetric:
 
     # Constructor
 
-    def __init__(self, p_name, p_text_readers):
+    def __init__(self, p_name, p_text_readers, 
+                 p_source_id="", p_work_title="", p_path="", p_baseline_source_id="N/A"):
 
         # 0. Save parameters
         self.m_name = p_name
         self.m_input = p_text_readers
+
+        # A. Optional parameters
+        self.m_source_id = p_source_id
+        self.m_work_title = p_work_title
+        self.m_path = p_path
+        self.m_baseline_source_id = p_baseline_source_id
 
         # 1. Other class fields
         self.m_metric_min = 0.0
@@ -67,9 +74,28 @@ class DataQualityMetric:
     @input.setter
     def input(self, p_input):
         self.m_input = p_input
-    # @property
-    # def output(self):
-    #     return DataQualityOutput(self.m_evaluations)
+    @property
+    def output(self):
+        return ""
+    @property
+    def source_id(self):
+        return self.m_source_id
+    @property
+    def work_title(self):
+        return self.m_work_title
+    @property
+    def path(self):
+        return self.m_path
+    @property
+    def baseline_source_id(self):
+        return self.m_baseline_source_id
+    
+    @property
+    def results(self):
+        return self.m_results
+    @property
+    def evaluations(self):
+        return self.m_evaluations
     
     @property
     def metric_evaluation(self):
@@ -147,3 +173,21 @@ class DataQualityMetric:
                 print(self.explanation(key))
             print(self.m_results[key])
     
+    # Static fields and methods
+    
+    s_build_output_line_keys = [
+        "source",
+        "work_title",
+        "edition_title",
+        "metric",
+        "value",
+        "compared_against",
+        "filename",
+        "filepath"
+    ]
+    
+    s_not_available = "N/A"
+
+    @staticmethod
+    def write_output_header(p_output_file):
+        p_output_file.write(",".join(DataQualityMetric.s_build_output_line_keys) + "\n")
