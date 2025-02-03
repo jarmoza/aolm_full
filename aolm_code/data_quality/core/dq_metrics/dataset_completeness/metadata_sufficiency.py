@@ -6,6 +6,7 @@
 # Imports
 
 # Built-ins
+import os
 from statistics import mean
 
 # Custom
@@ -15,9 +16,37 @@ from dq_metric import DataQualityMetric
 
 class DatasetCompleteness_MetadataSufficiency(DataQualityMetric):
 
-    def __init__(self, p_name, p_input):
+    def __init__(self, p_name, p_input, p_source_id, p_work_title, p_metadata_directory):
 
-        super().__init__(p_name, p_input)       
+        super().__init__(p_name, p_input,
+                         p_source_id=p_source_id,
+                         p_work_title=p_work_title,
+                         p_path=p_metadata_directory)
+
+    def __build_output_line__(self):
+
+        key_value_map = {
+            
+            "source": self.m_source_id,
+            "work_title": self.m_work_title,
+            "path": self.m_path,
+            "edition_title": DataQualityMetric.s_not_available,
+            "metric": DatasetCompleteness_MetadataSufficiency.s_metric_name,
+            "value": self.m_evaluations["metric"],
+            "compared_against": self.baseline_source_id,
+            "filename": os.path.basename(self.m_path),
+            "filepath": self.m_path
+        }
+
+        line_dict = { key: key_value_map.get(key, None) for key in DataQualityMetric.s_build_output_line_keys }
+        line_str_array = [line_dict[key] for key in DataQualityMetric.s_build_output_line_keys]
+
+        return ",".join(map(str, line_str_array)) + "\n"
+
+
+    @property
+    def output(self):
+        return self.__build_output_line__()     
 
     def compute(self):
 
@@ -177,3 +206,6 @@ class DatasetCompleteness_MetadataSufficiency(DataQualityMetric):
         self.m_evaluations["metric"] = mean(self.m_evaluations["submetric"].values())
 
         return self.m_evaluations["metric"]
+    
+    # Static fields and methods
+    s_metric_name = "metadata sufficiency"
