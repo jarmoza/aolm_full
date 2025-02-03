@@ -1435,6 +1435,41 @@ Done
         <Document ID="93471D41-0E3E-4C9B-AA6B-39B0917F8F58">
             <Title>Preparatory</Title>
         </Document>
+        <Document ID="02F0DB45-339B-49C1-9E87-FD047385D293">
+            <Title>January 30 2025</Title>
+            <Text>Next steps will to write about the two data quality metrics used over Internet Archive, Project Gutenberg, and Mark Twain Project Online editions of Adventures of Huckleberry Finn, and to discuss how the first parts of the Data Quality Assessment Machine (DQAM) (alternate title, ‘Workflow’?). This will include the production of graphs to speak about the raw and evaluatory outputs of each metric and then the calculation of their combined metric values.
+
+Afterwards, the latter two pieces of the DQAM should be implemented: DataQualityOutput and DataQualityAssessment. These pieces will consider the metrics and their types and their evaluatory values and automate the quantitative analysis/comparison produced in the above writing.
+
+A diagram of the DQAM should also be produced with descriptions of each of its modules/steps along the way.
+
+Writing
+
+Two data quality metrics were selected for an initial assessment of a total of fourteen editions of Adventures of Huckleberry Finn from Internet Archive (IA) and Project Gutenberg (PG) as compared against the heavily-proofed XML edition from The Mark Twain Project Online (MTPO) at University of California, Berkeley: metadata sufficiency and comparing record counts to control records. One important note about this kind of measurement and comparative assessment is that it eschews a commonly held assumption that the most recent version of a digital text is likely the highest quality version of its digital edition. There are many differences across editions to consider aside from the edition’s publication date including the overall completeness of the edition, cleanliness of the data itself, the character and amount of metadata, and even the edition’s public availability. As we will see, these kinds of considerations closely align with the ideas of data quality measurement. Therefore it is useful to consider multiple editions from the same source in addition to editions from other sources.
+Metadata Sufficiency
+Comparing record counts to control records
+One of the challenges of this work is translating the premise of a data quality metric in its initial, more generic context from information science into a form that is relevant to a digitized text as well as the research premise of the project that this quality standard will be used for. So, for instance, measuring metadata sufficiency may require differing code across editions of the same work from different sources since there will more than likely be differences in what metadata was recorded by each digital repository. Furthermore, since data quality metrics themselves have subordinate measurements it is possible and even likely that those sub-measurements will not be compatible with every edition being compared in the data quality assessment. Editions of those works may therefore have to forego including those sub-measurements in the calculation of the overall data quality metric or default them to 100% or 0% (depending on what makes sense for that particular measurement). In addition to that challenge, some metrics may require the existence of a high(er) quality data source to act as baseline for comparison against other editions of unknown quality. Sometimes one lucks out and such an edition exists. Other times when it does not, the process of leave-one-out cross-validation (LOOCV), similar to what is done in machine learning, may be used to determine the highest quality edition that can act as a quality baseline. I will play out both scenarios below using metadata sufficiency and comparing record counts to control records to illustrate this process.  
+For the current experiment, we can say with high certainty that the MTPO edition of Adventures of Huckleberry Finn is the digital edition most likely to be the highest quality text. This is because it is one that has been worked on by many people, itself considering the entire publishing history of the novel in its various forms. Because it is such Adventures acts as a useful example of where a highly polished digital edition exists because of high publication volume and high amount of scholarship. Using the MTPO edition as a baseline we can reasonably expect editions from other sources to be of lower quality but exactly how much lower quality they are and why is still both a scholarly useful and practical use case for data quality metrics. Such an edition is also materially different than other editions that are direct from OCR, edited after OCR, or transcribed by eye. We will see below what happens if there is no baseline edition to consider and perform LOOCV on 14 editions of Adventures being considered. For now however, let’s observe what happens when data quality is measured using these metrics and the MTPO edition as a baseline.
+For a metric like metadata sufficiency on a data quality assessment, metadata of the baseline text can be ignored since as a single edition it is inherently 100% sufficient. (The same would go for a lone edition being compared against the baseline.) With this metric requiring to compare mulitple editions from a single source, the experiment proceeds in that metadata sufficiency is measured across all editions of Adventures from Internet Archive and then again across all editions from Project Gutenberg. Metadata sufficiency is measured by taking the mean of its three subordinate measurements: existence and completeness, clarity and quality, and consistency of representation.
+ &lt;Breakout how metadata exists/sits/was gathered for IA and PG editions&gt; 
+
+Let’s break out the measurements here for the sake of the example. As we can see, the metrics themselves can be used for more than just the purpose of a final data quality assessment or seeking the highest quality digital edition. Quality ratings can be found for individual editions, editions from a particular source, or the entire collection of editions the researcher has accumulated. Metadata on each edition, if available, can also be useful to speak intelligently of the quality of a digital edition over metadata variables like “creation date”. For Internet Archive and Project Gutenberg editions of Adventures, we find:
+
+&lt; Data viz showing subsubmetrics, submetrics, and overall metadata sufficiency percentages for IA and PG&gt;
+
+&lt;Text record count analysis for IA, PG, and MTPO editions&gt;
+
+&lt;Discussion of overall metric calculation&gt;
+
+&lt;Move on to discussion of how LOOCV will be performed for dq assessment&gt;
+
+&lt;Graphs and discussion of LOOCV on Adventures&gt;
+
+&lt;Next steps in this hypothetical process: DQ assessment framework machine explanation with final outputs, weighting, etc.&gt;
+
+
+ The MTPO edition is in TEI XML format</Text>
+        </Document>
         <Document ID="2484A0FD-D76F-41B3-B80F-77E605399605">
             <Title>Abstract</Title>
             <Text>Framing a Model: Literary Model Quality and the Autobiography of Mark Twain
