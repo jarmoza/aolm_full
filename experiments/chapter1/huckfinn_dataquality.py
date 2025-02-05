@@ -62,13 +62,41 @@ add_lib_paths()
 # Custom
 
 import aolm_data_reading
+from aolm_utilities import print_debug_header
 from dq_metric import DataQualityMetric
 from dq_metrics.dataset_completeness.metadata_sufficiency import DatasetCompleteness_MetadataSufficiency
 from dq_metrics.dataset_completeness.recordcounts_to_controlrecords import DatasetCompleteness_RecordCountsToControlRecords
 
 # Globals
 
-work_title = "Adventures of Huckleberry Finn"
+# String constants
+MS_METRIC_NAME = DatasetCompleteness_MetadataSufficiency.s_metric_name
+TR_METRIC_NAME = DatasetCompleteness_RecordCountsToControlRecords.s_metric_name
+WORK_TITLE = "Adventures of Huckleberry Finn"
+UR_EDITION = aolm_data_reading.MTPO
+
+# For output and plotting after metric evaluation
+experiment_metrics = { source_id: 
+    {
+        MS_METRIC_NAME: {
+            "metric": None,
+            "evaluation": None
+        },
+        TR_METRIC_NAME: {
+            "individual_editions": {
+                edition_name: {
+                    "metric": None,
+                    "evaluation": None
+                } for edition_name in aolm_data_reading.huckfinn_edition_names[source_id]
+            },
+            "overall": {
+                "metric": None,
+                "evaluation": None
+            }
+        },
+        "overall_data_quality": None
+    } for source_id in aolm_data_reading.huckfinn_source_fullnames if aolm_data_reading.MTPO != source_id
+}
 
 
 # Experiments
@@ -81,14 +109,16 @@ def run_huckfinn_dq_metadatasufficiency(p_source_id, p_edition_filenames=None):
     # (Comparison among <p_source_id> editions only)
 
     # 1. Read in texts to be compared
+    print(f"Reading metadata for editions of {WORK_TITLE} from {aolm_data_reading.huckfinn_source_fullnames[p_source_id]}...")
     huckfinn_metadata = aolm_data_reading.read_huckfinn_metadata(p_source_id, p_edition_filenames)
 
     # 2. Create the data quality metric
+    print(f"Computing '{MS_METRIC_NAME}' for editions of {WORK_TITLE} from {aolm_data_reading.huckfinn_source_fullnames[p_source_id]}...")
     huckfinn_metadata_sufficiency = DatasetCompleteness_MetadataSufficiency(
         f"HuckFinn_{p_source_id}_MetadataSufficiency",
         huckfinn_metadata,
         p_source_id,
-        work_title,
+        WORK_TITLE,
         aolm_data_reading.huckfinn_directories[p_source_id]["metadata"])
 
     # 3. Compute the metric and save results
@@ -104,10 +134,13 @@ def run_huckfinn_dq_textrecordcounts(p_source_id, p_edition_filenames=None):
     # <p_source_id> edition record counts)
 
     # 1. Read ur text and subject texts
+    print(f"Reading text of editions of {WORK_TITLE} from {aolm_data_reading.huckfinn_source_fullnames[p_source_id]}...")
     huckfinn_textdata = aolm_data_reading.read_huckfinn_text(p_source_id, p_edition_filenames)
+    print(f"Reading text of edition of {WORK_TITLE} from {aolm_data_reading.huckfinn_source_fullnames[aolm_data_reading.MTPO]} as the control record...")
     huckfinn_textdata[aolm_data_reading.MTPO] = aolm_data_reading.read_marktwain_project_online_text()
 
     # 2. Create the data quality metric
+    print(f"Computing '{TR_METRIC_NAME}' for editions of {WORK_TITLE} from {aolm_data_reading.huckfinn_source_fullnames[p_source_id]}...")
     edition_path = aolm_data_reading.huckfinn_directories[p_source_id]["txt"]
     if 1 == p_edition_filenames and len(p_edition_filenames):
         edition_path += p_edition_filenames[0]
@@ -115,7 +148,7 @@ def run_huckfinn_dq_textrecordcounts(p_source_id, p_edition_filenames=None):
         f"HuckFinn_MTPOv{p_source_id}_TextRecordCounts",
         huckfinn_textdata,
         p_source_id,
-        work_title,
+        WORK_TITLE,
         edition_path,
         aolm_data_reading.MTPO)
 
@@ -129,60 +162,125 @@ def run_huckfinn_dq_textrecordcounts(p_source_id, p_edition_filenames=None):
     return huckfinn_text_recordcounts
 
 
-def main():
+# Main script
 
-    # Data Quality of Sources:
-    # (1) Internet Archive
-    # (2) Project Gutenberg edition
-    # versus Mark Twain Project Online
+def read_and_compute_metrics():
 
-    script_run_time = datetime.now().strftime("%d%m%Y_%H%M%S")
-    output_filepath = f"{os.getcwd()}{os.sep}experiments{os.sep}outputs{os.sep}huckfinn_dq_experiment{script_run_time}.csv"
-    print(f"Outputting results to: {output_filepath}")
+    for source_id in aolm_data_reading.huckfinn_source_fullnames:
 
-    with open(output_filepath, "w") as output_file:
+        # Skip ur edition
+        if UR_EDITION == source_id:
+            continue
+
+        # A. Rate source_id editions data quality based on metadata sufficiency
+        experiment_metrics[source_id][MS_METRIC_NAME]["metric"] = \
+            run_huckfinn_dq_metadatasufficiency(source_id)
+
+        # B. Rate individual source_id editions based on text record counts vs. ur edition
+        for edition_name in aolm_data_reading.huckfinn_edition_names[source_id]:
+            experiment_metrics[source_id][TR_METRIC_NAME]["individual_editions"][edition_name]["metric"] = \
+                run_huckfinn_dq_textrecordcounts(source_id, [f"{edition_name}-HuckFinn.json"])
+
+        # C. Rate all source_id editions based on text record counts vs. ur edition
+        experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["metric"] = \
+            run_huckfinn_dq_textrecordcounts(source_id)
+        
+def evaluate_metrics():
+
+    for source_id in aolm_data_reading.huckfinn_source_fullnames:
+
+        # Skip ur edition
+        if UR_EDITION == source_id:
+            continue
+
+        source_fullname = aolm_data_reading.huckfinn_source_fullnames[source_id]
+
+        # A. Metadata sufficiency
+        experiment_metrics[source_id][MS_METRIC_NAME]["evaluation"] = \
+            experiment_metrics[source_id][MS_METRIC_NAME]["metric"].evaluate()
+        print(f"{source_fullname} '{MS_METRIC_NAME}' metric: {experiment_metrics[source_id][MS_METRIC_NAME]["evaluation"]}")
+
+        # B. Text record counts to control record by edition
+        for edition_name in aolm_data_reading.huckfinn_edition_names[source_id]:
+            experiment_metrics[source_id][TR_METRIC_NAME]["individual_editions"][edition_name]["evaluation"] = \
+                experiment_metrics[source_id][TR_METRIC_NAME]["individual_editions"][edition_name]["metric"].evaluate()
+            print(f"{source_fullname} '{TR_METRIC_NAME}' metric for {edition_name}: {experiment_metrics[source_id][TR_METRIC_NAME]["individual_editions"][edition_name]["evaluation"]}")
+
+        # C. Overall text record counts to control record of all editions from this source
+        experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["evaluation"] = \
+            experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["metric"].evaluate()
+        print(f"Overall {source_fullname} '{TR_METRIC_NAME}' metric: {experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["evaluation"]}")
+
+        # D. Evaluation for both metadata sufficiency and text record counts to control record
+        experiment_metrics[source_id]["overall_data_quality"] = mean([
+            experiment_metrics[source_id][MS_METRIC_NAME]["evaluation"],
+            experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["evaluation"]
+        ])
+        print(f"Overall {source_fullname} data quality: {experiment_metrics[source_id]["overall_data_quality"]}")
+
+def output_results(p_output_filepath):
+
+    print(f"Outputting results to: {p_output_filepath}")
+
+    with open(p_output_filepath, "w") as output_file:
 
         # Output csv header
         DataQualityMetric.write_output_header(output_file)
 
         for source_id in aolm_data_reading.huckfinn_source_fullnames:
 
-            if aolm_data_reading.MTPO == source_id:
+            # Skip ur edition
+            if UR_EDITION == source_id:
                 continue
 
-            source_fullname = aolm_data_reading.huckfinn_source_fullnames[source_id]
+            # A. Metadata sufficiency
+            output_file.write(experiment_metrics[source_id][MS_METRIC_NAME]["metric"].output)
 
-            # 1. Huck Finn source vs. Mark Twain Project Online (MTPO)
-
-            # A. Rate source_id editions data quality based on metadata sufficiency
-            ms_metric = run_huckfinn_dq_metadatasufficiency(source_id)
-            evaluation = ms_metric.evaluate()
-            output_file.write(ms_metric.output)
-            print(f"{source_fullname} metadata sufficiency metric: {evaluation}")
-
-
-            # B. Rate individual source_id editions based on text record counts vs. MTPO
+            # B. Text record counts to control records for individual editions vs. ur edition
             for edition_name in aolm_data_reading.huckfinn_edition_names[source_id]:
-                metric = run_huckfinn_dq_textrecordcounts(source_id, [f"{edition_name}-HuckFinn.json"])
-                evaluation = metric.evaluate()
-                output_file.write(metric.output)
-                print(f"{source_fullname} text records count metric for {edition_name}: {evaluation}")
+                output_file.write(experiment_metrics[source_id][TR_METRIC_NAME]["individual_editions"][edition_name]["metric"].output)
 
-            # C. Rate all source_id editions based on text record counts vs. MTPO
-            tr_metric = run_huckfinn_dq_textrecordcounts(source_id)
-            evaluation = tr_metric.evaluate()
-            output_file.write(tr_metric.output)
-            print(f"Overall {source_fullname} text records metric: {evaluation}")
+            # C. Overall text record counts to control record of all editions from this source
+            output_file.write(experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["metric"].output)
 
-            # D. Combine the results of source_id metadata sufficiency and overall source_id text record counts vs. MTPO
-            # for an overall data quality measurement of the source_id editions vs. MTPO
-            metrics = [ms_metric, tr_metric]
-            evaluations = [metric.evaluate() for metric in metrics]
-            overall_evaluation = mean(evaluations)
-            output_file.write(f"Overall Quality:,{overall_evaluation}\n")
-            print(f"Overall {source_fullname} data quality: {overall_evaluation}")
+            # D. Overall data quality measurement of the source_id editions vs. ur edition
+            output_file.write(f"Overall Quality:,{experiment_metrics[source_id]["overall_data_quality"]}\n")    
 
-            # 4. Visualize metric with metric min falloff chart
+def main():
+
+    # Experiment Description
+
+    # Dataset Completeness for sources of Adventures of Huckleberry Finn by Mark Twain:
+    # (1) Internet Archive
+    # (2) Project Gutenberg edition
+    # versus
+    # (3) Mark Twain Project Online
+
+    # Data quality metrics considered:
+    # (A) Metadata Sufficiency (metadata_sufficiency.py)
+    # (B) Record Counts to Control Records (recordcounts_to_controlrecords.py)
+
+    # 0. Setup
+
+    # Run time saved for output file
+    script_run_time = datetime.now().strftime("%d%m%Y_%H%M%S")
+
+    # Results file
+    output_filepath = f"{os.getcwd()}{os.sep}experiments{os.sep}outputs{os.sep}huckfinn_dq_experiment_{script_run_time}.csv"    
+
+    # 1. Read dataset(s)/Compute metrics
+    print_debug_header("Reading datasets and computing data quality metrics")
+    read_and_compute_metrics()
+
+    # 2. Evaluate (submetrics and overall metrics)
+    print_debug_header("Evaluating data quality metric results")
+    evaluate_metrics()
+
+    # 3. Output results for data quality metrics to csv file
+    print_debug_header("Outputting metric results")
+    output_results(output_filepath)
+    
+    # 4. Visualize metric with metric min falloff chart
 
 
 if "__main__" == __name__:
