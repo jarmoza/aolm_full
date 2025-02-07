@@ -48,6 +48,7 @@
 # Imports
 
 # Built-ins
+import csv
 import os
 import sys
 from datetime import datetime
@@ -255,8 +256,10 @@ def output_results(p_output_filepath):
             # D. Overall data quality measurement of the source_id editions vs. ur edition
             output_file.write(f"Overall Quality:,{experiment_metrics[source_id]["overall_data_quality"]}\n")
 
-def plot_results():
-    pass
+def plot_results(p_output_filepath):
+    
+    with open(p_output_filepath, "r") as input_file:
+        reader = csv.DictReader(input_file.readlines())
 
 def main():
 
@@ -272,29 +275,35 @@ def main():
     # (A) Metadata Sufficiency (metadata_sufficiency.py)
     # (B) Record Counts to Control Records (recordcounts_to_controlrecords.py)
 
-    # 0. Setup
+    # Short-circuit to move directly to plotting once output has been generated
+    compute_and_evaluate = True
+    output_filepath = "/Users/weirdbeard/Documents/school/aolm_full/experiments/outputs/huckfinn_dq_experiment_05022025_150854.csv"
 
-    # Run time saved for output file
-    script_run_time = datetime.now().strftime("%d%m%Y_%H%M%S")
+    if compute_and_evaluate:
 
-    # Results file
-    output_filepath = f"{os.getcwd()}{os.sep}experiments{os.sep}outputs{os.sep}huckfinn_dq_experiment_{script_run_time}.csv"
+        # 0. Setup
 
-    # 1. Read dataset(s)/Compute metrics
-    print_debug_header("Reading datasets and computing data quality metrics")
-    read_and_compute_metrics()
+        # Run time saved for output file
+        script_run_time = datetime.now().strftime("%d%m%Y_%H%M%S")
 
-    # 2. Evaluate (submetrics and overall metrics)
-    print_debug_header("Evaluating data quality metric results")
-    evaluate_metrics()
+        # Results file
+        output_filepath = f"{os.getcwd()}{os.sep}experiments{os.sep}outputs{os.sep}huckfinn_dq_experiment_{script_run_time}.csv"
 
-    # 3. Output results for data quality metrics to csv file
-    print_debug_header("Outputting metric results")
-    output_results(output_filepath)
+        # 1. Read dataset(s)/Compute metrics
+        print_debug_header("Reading datasets and computing data quality metrics")
+        read_and_compute_metrics()
+
+        # 2. Evaluate (submetrics and overall metrics)
+        print_debug_header("Evaluating data quality metric results")
+        evaluate_metrics()
+
+        # 3. Output results for data quality metrics to csv file
+        print_debug_header("Outputting metric results")
+        output_results(output_filepath)
     
     # 4. Visualize metric with metric min falloff chart
-    # print_debug_header("Plotting results")
-    # plot_results()
+    print_debug_header("Plotting results")
+    plot_results(output_filepath)
 
 if "__main__" == __name__:
 
