@@ -211,11 +211,20 @@
           <li id="sU6">
             <p><strong>AOLMTextInfo</strong><span> - Produces tokens, stats, vocab, stylistic measurements, output methods (works on text objects)</span></p>
           </li>
+          <li id="9bn">
+            <p><strong>AOLMTextUtilities </strong><span>- Contains methods to manipulate strings</span></p>
+          </li>
           <li id="6tZ">
             <p/>
           </li>
           <li id="JXU">
             <p>Data quality classes work on these text objects</p>
+          </li>
+          <li id="-f">
+            <p/>
+          </li>
+          <li id="ez">
+            <p>AOLM Text object children contain text specific reading - means of reading and hydrating/dehydrating specific texts corresponding to the child class type</p>
           </li>
           <li id="h3V">
             <p/>
