@@ -58,7 +58,10 @@ from statistics import mean
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 sys.path.append(ROOT_DIR)
 from definitions import add_lib_paths
-add_lib_paths()
+add_lib_paths(sys)
+
+# Third party
+import plotly.express as px
 
 # Custom
 
@@ -147,7 +150,7 @@ def run_huckfinn_dq_textrecordcounts(p_source_id, p_edition_filenames=None):
     edition_str = "all editions" if None == p_edition_filenames else "editions " + ", ".join(p_edition_filenames)
     print(f"Computing '{TR_METRIC_NAME}' for {edition_str} of {WORK_TITLE} from {aolm_data_reading.huckfinn_source_fullnames[p_source_id]}...")
     edition_path = aolm_data_reading.huckfinn_directories[p_source_id]["txt"]
-    if 1 == p_edition_filenames and len(p_edition_filenames):
+    if p_edition_filenames and len(p_edition_filenames):
         edition_path += p_edition_filenames[0]
     huckfinn_text_recordcounts = DatasetCompleteness_RecordCountsToControlRecords(
         f"HuckFinn_MTPOv{p_source_id}_TextRecordCounts",
@@ -229,6 +232,79 @@ def output_results(p_output_filepath):
 
     print(f"Outputting results to: {p_output_filepath}")
 
+    # 1. Output evaluation details
+
+    # A. Metadata sufficiency 
+    eval_ms_output_filepath = p_output_filepath.replace(".csv", f"_eval_{MS_METRIC_NAME}.csv")
+    
+    with open(eval_ms_output_filepath, "w") as eval_output_file:
+
+        # Output csv header
+        DatasetCompleteness_MetadataSufficiency.write_eval_output_header(eval_output_file)
+
+        for source_id in aolm_data_reading.huckfinn_source_fullnames:
+
+            # Skip ur edition
+            if UR_EDITION == source_id:
+                continue
+            
+            eval_output_file.write(experiment_metrics[source_id][MS_METRIC_NAME]["metric"].eval_output)
+
+    # B. Text record counts to control records
+    eval_tr_output_filepath = p_output_filepath.replace(".csv", f"_eval_{TR_METRIC_NAME}.csv")
+
+    # Gather all column names from the metric instances
+    tr_eval_column_names = []
+    for source_id in aolm_data_reading.huckfinn_source_fullnames:
+
+            # Skip ur edition
+            if UR_EDITION == source_id:
+                continue
+
+            # Gather column names for individual edition (only do it once per
+            # source since each edition evaluation will contain the same columns)
+            for edition_name in aolm_data_reading.huckfinn_edition_names[source_id]:
+                eval_columns = experiment_metrics[source_id][TR_METRIC_NAME]["individual_editions"][edition_name]["metric"].eval_output_header.strip().split(",")    
+                for column in eval_columns:
+                    if column not in tr_eval_column_names:
+                        tr_eval_column_names.append(column)
+                break
+
+            # eval_columns = experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["metric"].eval_output_header.strip().split(",")
+            # for column in eval_columns:
+            #     if column not in tr_eval_column_names:
+            #         tr_eval_column_names.append(column)
+
+    with open(eval_tr_output_filepath, "w") as eval_output_file:
+
+        # Output csv header
+        eval_output_file.write(",".join(tr_eval_column_names) + "\n")
+
+        # DatasetCompleteness_RecordCountsToControlRecords.write_eval_output_header(eval_output_file)
+
+        for source_id in aolm_data_reading.huckfinn_source_fullnames:
+
+            # Skip ur edition
+            if UR_EDITION == source_id:
+                continue
+
+            for edition_name in aolm_data_reading.huckfinn_edition_names[source_id]:
+                eval_output_dict = experiment_metrics[source_id][TR_METRIC_NAME]["individual_editions"][edition_name]["metric"].eval_output_dict
+                values_list = []
+                for key in tr_eval_column_names:
+                    values_list.append(str(eval_output_dict[key]) if key in eval_output_dict else "N/A")
+                eval_output_file.write(",".join(values_list) + "\n")
+
+            # Suggest edition name "sourceid_overall" here?
+            eval_output_dict = experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["metric"].eval_output_dict
+            values_list = []
+            for key in tr_eval_column_names:
+                values_list.append(str(eval_output_dict[key]) if key in eval_output_dict else "N/A")
+            eval_output_file.write(",".join(values_list) + "\n")
+
+    
+    # 2. Output top level stats
+
     with open(p_output_filepath, "w") as output_file:
 
         # Output csv header
@@ -254,11 +330,40 @@ def output_results(p_output_filepath):
             output_file.write(f"Overall Quality:,{experiment_metrics[source_id]["overall_data_quality"]}\n")
 
 def plot_results(p_output_filepath):
-    
+
+    # 1. Read in data quality metric results
     with open(p_output_filepath, "r") as input_file:
-        reader = csv.DictReader(input_file.readlines())
+        results_reader = csv.DictReader(input_file.readlines())
+
+    # 2. Read in metadata sufficiency metric evaluation
+    eval_ms_output_filepath = p_output_filepath.replace(".csv", f"_eval_{MS_METRIC_NAME}.csv")
+    with open(eval_ms_output_filepath, "r") as input_file:
+        ms_eval_reader = csv.DictReader(input_file.readlines())
+
+    # Read in record counts to control records metric evaluation
+    eval_tr_output_filepath = p_output_filepath.replace(".csv", f"_eval_{TR_METRIC_NAME}.csv")
+    with open(eval_tr_output_filepath, "r") as input_file:
+        tr_eval_reader = csv.DictReader(input_file.readlines())
+
+    # Multi Bar chart out each result across editions and sources
+    import plotly.express as px
+    df = px.data.tips()
+    fig = px.histogram(df, x="sex", y="total_bill",
+             color='smoker', barmode='group',
+             height=400)
+    fig.show()
+
 
 def main():
+
+    df = px.data.tips()
+    fig = px.histogram(df, x="sex", y="total_bill",
+             color='smoker', barmode='group',
+             height=400)
+    fig.show()
+
+    if True:
+        return    
 
     # Experiment Description
 
