@@ -23,6 +23,44 @@ class DatasetCompleteness_RecordCountsToControlRecords(DataQualityMetric):
                          p_work_title=p_work_title,
                          p_path=p_text_json_filepath,
                          p_baseline_source_id=p_baseline_source_id)
+        
+    def __build_eval_output_line__(self, p_return_dict=False):
+
+        # 1. Base data quality metric evaluation keys
+        key_value_map = { key: None for key in DataQualityMetric.s_build_output_line_keys }
+        key_value_map["source"] = self.m_source_id
+        key_value_map["work_title"] = self.m_work_title
+        key_value_map["path"] = self.m_path
+        key_value_map["edition_title"] = DataQualityMetric.s_not_available
+        key_value_map["compared_against"] = self.baseline_source_id
+        key_value_map["filename"] = os.path.basename(self.m_path)
+        key_value_map["filepath"] = self.m_path
+        key_value_map["metric"] = DatasetCompleteness_RecordCountsToControlRecords.s_metric_name
+        key_value_map["value"] = self.m_evaluations["metric"]
+
+        # 2. Record counts to control records-specific evaluation keys
+        keys_in_order = list(DataQualityMetric.s_build_output_line_keys)
+        keys_in_order.extend(DatasetCompleteness_RecordCountsToControlRecords.s_eval_output_line_keys)
+        
+        key_value_map["submetric__chapter_count"] = self.m_evaluations["submetric"]["chapter_count"]
+        key_value_map["submetric__sentence_count"] = self.m_evaluations["submetric"]["sentence_count"]
+        key_value_map["submetric__word_count"] = self.m_evaluations["submetric"]["word_count"]
+        for work_title in self.m_results:
+            key_value_map[f"subsubmetric__chapter_count"] = \
+                self.m_evaluations["subsubmetric"][work_title]["chapter_count"]
+            key_value_map[f"subsubmetric__sentence_count"] = \
+                self.m_evaluations["subsubmetric"][work_title]["sentence_count"]
+            key_value_map[f"subsubmetric__word_count"] = \
+                self.m_evaluations["subsubmetric"][work_title]["word_count"]
+            keys_in_order.append(f"subsubmetric__chapter_count")
+            keys_in_order.append(f"subsubmetric__sentence_count")
+            keys_in_order.append(f"subsubmetric__word_count")
+
+        # 3. Build line with key order [build keys, metric-specific evaluation keys]
+        line_dict = { key: key_value_map.get(key, None) for key in keys_in_order }
+        line_str_array = [line_dict[key] for key in keys_in_order]
+
+        return ",".join(map(str, line_str_array)) + "\n" if not p_return_dict else line_dict
 
     def __build_output_line__(self):
 
@@ -46,7 +84,33 @@ class DatasetCompleteness_RecordCountsToControlRecords(DataQualityMetric):
     
     @property
     def output(self):
-        return self.__build_output_line__()    
+        return self.__build_output_line__()
+    @property
+    def eval_output(self):
+        return self.__build_eval_output_line__()
+    @property
+    def eval_output_dict(self):
+        return self.__build_eval_output_line__(p_return_dict=True)
+    @property
+    def eval_output_header(self):
+        
+        # Base column names for DatasetCompleteness_RecordCountsToControlRecords
+        column_names = list(DataQualityMetric.s_build_output_line_keys)
+        column_names.extend(DatasetCompleteness_RecordCountsToControlRecords.s_eval_output_line_keys)
+
+        # Column names for this metric instance        
+        # for work_title in self.m_results:
+        #     column_names.append(f"subsubmetric_{work_title}__chapter_count")
+        #     column_names.append(f"subsubmetric_{work_title}__sentence_count")
+        #     column_names.append(f"subsubmetric_{work_title}__word_count")
+        if 1 == len(self.m_results):
+            column_names.append(f"subsubmetric__chapter_count")
+            column_names.append(f"subsubmetric__sentence_count")
+            column_names.append(f"subsubmetric__word_count")
+
+
+        return ",".join(column_names) + "\n"
+
 
     def compute(self):
 
@@ -160,4 +224,22 @@ class DatasetCompleteness_RecordCountsToControlRecords(DataQualityMetric):
     
     # Static fields and methods
 
+    s_eval_output_line_keys = [
+        "source",
+        "work_title",
+        "path",
+        "edition_title",
+        "compared_against",
+        "filename",
+        "filepath",
+        "metric",
+        "submetric__chapter_count",
+        "submetric__sentence_count",
+        "submetric__word_count"
+    ]
+
     s_metric_name = "record counts to control"
+
+    # @staticmethod
+    # def write_eval_output_header(p_output_file):
+    #     p_output_file.write(",".join(DatasetCompleteness_RecordCountsToControlRecords.s_eval_output_line_keys) + "\n")
