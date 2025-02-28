@@ -22,6 +22,36 @@ class DatasetCompleteness_MetadataSufficiency(DataQualityMetric):
                          p_source_id=p_source_id,
                          p_work_title=p_work_title,
                          p_path=p_metadata_directory)
+        
+    def __build_eval_output_line__(self):
+
+        # 1. Base data quality metric evaluation keys
+        key_value_map = { key: None for key in DataQualityMetric.s_build_output_line_keys }
+        key_value_map["source"] = self.m_source_id
+        key_value_map["work_title"] = self.m_work_title
+        key_value_map["edition_title"] = DataQualityMetric.s_not_available
+        key_value_map["metric"] = DatasetCompleteness_MetadataSufficiency.s_metric_name
+        key_value_map["value"] = self.m_evaluations["metric"]
+        key_value_map["compared_against"] = self.baseline_source_id
+        key_value_map["filepath"] = self.m_path
+        
+        # 2. Metadata sufficiency-specific evaluation keys
+        key_value_map["submetric__existence_and_completeness"] = self.m_evaluations["submetric"]["existence_and_completeness"]
+        key_value_map["submetric__clarity_and_quality"] = self.m_evaluations["submetric"]["clarity_and_quality"]
+        key_value_map["submetric__consistency_of_representation"] = self.m_evaluations["submetric"]["consistency_of_representation"]
+        key_value_map["subsubmetric_existence_and_completeness__percent_tables_defined"] = \
+            self.m_evaluations["subsubmetric"]["existence_and_completeness"]["percent_tables_defined"]
+        key_value_map["subsubmetric_existence_and_completeness__percent_key_coverage"] = \
+            self.m_evaluations["subsubmetric"]["existence_and_completeness"]["percent_key_coverage"]        
+
+        # 3. Build line with key order [build keys, metric-specific evaluation keys]
+        keys_in_order = list(DataQualityMetric.s_build_output_line_keys)
+        keys_in_order.extend(DatasetCompleteness_MetadataSufficiency.s_eval_output_line_keys)
+        line_dict = { key: key_value_map.get(key, None) for key in keys_in_order }
+        line_str_array = [line_dict[key] for key in keys_in_order]
+
+        return ",".join(map(str, line_str_array)) + "\n"
+
 
     def __build_output_line__(self):
 
@@ -29,7 +59,6 @@ class DatasetCompleteness_MetadataSufficiency(DataQualityMetric):
             
             "source": self.m_source_id,
             "work_title": self.m_work_title,
-            "path": self.m_path,
             "edition_title": DataQualityMetric.s_not_available,
             "metric": DatasetCompleteness_MetadataSufficiency.s_metric_name,
             "value": self.m_evaluations["metric"],
@@ -46,7 +75,10 @@ class DatasetCompleteness_MetadataSufficiency(DataQualityMetric):
 
     @property
     def output(self):
-        return self.__build_output_line__()     
+        return self.__build_output_line__()
+    @property
+    def eval_output(self):
+        return self.__build_eval_output_line__()
 
     def compute(self):
 
@@ -208,4 +240,22 @@ class DatasetCompleteness_MetadataSufficiency(DataQualityMetric):
         return self.m_evaluations["metric"]
     
     # Static fields and methods
+
+    s_eval_output_line_keys = [
+
+        "submetric__existence_and_completeness",
+        "submetric__clarity_and_quality",
+        "submetric__consistency_of_representation",
+        "subsubmetric_existence_and_completeness__percent_tables_defined",
+        "subsubmetric_existence_and_completeness__percent_key_coverage"
+    ]
+
     s_metric_name = "metadata sufficiency"
+
+    @staticmethod
+    def write_eval_output_header(p_output_file):
+
+        eval_header_keys = list(DataQualityMetric.s_build_output_line_keys)
+        eval_header_keys.extend(DatasetCompleteness_MetadataSufficiency.s_eval_output_line_keys)
+
+        p_output_file.write(",".join(eval_header_keys) + "\n")
