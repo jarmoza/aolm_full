@@ -14,9 +14,9 @@ import sys
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Import Paths
-def add_lib_paths():
+def add_lib_paths(p_sys_object):
     
-    sys.path.append(f"{ROOT_DIR}{os.sep}aolm_code{os.sep}objects")
-    sys.path.append(f"{ROOT_DIR}{os.sep}aolm_code{os.sep}utilities")
-    sys.path.append(f"{ROOT_DIR}{os.sep}aolm_code{os.sep}data_quality{os.sep}core")
-    sys.path.append(f"{ROOT_DIR}{os.sep}aolm_code{os.sep}data_quality{os.sep}core{os.sep}dq_metrics")
+    p_sys_object.path.append(f"{ROOT_DIR}{os.sep}aolm_code{os.sep}objects")
+    p_sys_object.path.append(f"{ROOT_DIR}{os.sep}aolm_code{os.sep}utilities")
+    p_sys_object.path.append(f"{ROOT_DIR}{os.sep}aolm_code{os.sep}data_quality{os.sep}core")
+    p_sys_object.path.append(f"{ROOT_DIR}{os.sep}aolm_code{os.sep}data_quality{os.sep}core{os.sep}dq_metrics")
