@@ -14,7 +14,7 @@ import sys
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..'))
 sys.path.append(ROOT_DIR)
 from definitions import add_lib_paths
-add_lib_paths()
+add_lib_paths(sys)
 
 # Custom
 from aolm_textreader import AOLMTextReader
