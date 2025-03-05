@@ -942,7 +942,7 @@
                                 <IncludeInCompile>Yes</IncludeInCompile>
                             </MetaData>
                             <TextSettings>
-                                <TextSelection>0,0</TextSelection>
+                                <TextSelection>39,0</TextSelection>
                             </TextSettings>
                         </BinderItem>
                     </Children>
