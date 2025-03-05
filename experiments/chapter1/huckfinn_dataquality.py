@@ -61,6 +61,7 @@ from definitions import add_lib_paths
 add_lib_paths(sys)
 
 # Third party
+import pandas as pd
 import plotly.express as px
 
 # Custom
@@ -353,17 +354,81 @@ def plot_results(p_output_filepath):
              height=400)
     fig.show()
 
+# Test
+
+def plot_results2(p_output_filepath):
+
+    # # 1. Read in data quality metric results
+    # with open(p_output_filepath, "r") as input_file:
+    #     results_reader = csv.DictReader(input_file.readlines())
+    #     results_data = list(results_reader)
+
+    # # 2. Read in metadata sufficiency metric evaluation
+    # eval_ms_output_filepath = p_output_filepath.replace(".csv", f"_eval_{MS_METRIC_NAME}.csv")
+    # with open(eval_ms_output_filepath, "r") as input_file:
+    #     ms_eval_reader = csv.DictReader(input_file.readlines())
+    #     ms_eval_data = list(ms_eval_reader)
+
+    # 3. Read in record counts to control records metric evaluation
+    # eval_tr_output_filepath = p_output_filepath.replace(".csv", f"_eval_{TR_METRIC_NAME}.csv")
+    with open(p_output_filepath, "r") as input_file:
+        tr_eval_reader = csv.DictReader(input_file.readlines())
+        tr_eval_data = list(tr_eval_reader)
+
+    # Convert the evaluation data to DataFrames
+    # df_results = pd.DataFrame(results_data)
+    # df_ms_eval = pd.DataFrame(ms_eval_data)
+    df_tr_eval = pd.DataFrame(tr_eval_data)
+
+    # Remove rows with empty filenames
+    df_tr_eval = df_tr_eval[df_tr_eval['filename'].notna() & df_tr_eval['filename'].str.strip().astype(bool)]
+
+    # source
+    # work_title
+    # edition_title
+    # metric
+    # value
+    # compared_against
+    # filename
+    # filepath
+    # path
+    # submetric__chapter_count
+    # submetric__sentence_count
+    # submetric__word_count
+    # subsubmetric__chapter_count
+    # subsubmetric__sentence_count
+    # subsubmetric__word_count
+
+    # Example: Plot histogram for a specific metric
+    # fig = px.histogram(
+    #     df_tr_eval,
+    #     x="value",
+    #     color="source",
+    #     facet_col="edition_title",
+    #     labels={"value": "Metric Value", "source": "Source"},
+    #     title="Metric Values by Source and Edition",
+    #     barmode='group',
+    #     height=600
+    # )
+    fig = px.bar(
+        df_tr_eval,
+        x="filename",
+        y="value",
+        title="Metric Values by Source and Edition",
+        barmode='group',
+        height=600
+    )    
+    fig.show()
+
 
 def main():
 
-    df = px.data.tips()
-    fig = px.histogram(df, x="sex", y="total_bill",
-             color='smoker', barmode='group',
-             height=400)
-    fig.show()
+    # Example usage
+    # output_filepath = "/Users/weirdbeard/Documents/school/aolm_full/experiments/outputs/huckfinn_dq_experiment_26022025_155205_eval_record_counts_to_control.csv"
+    # plot_results2(output_filepath)
 
-    if True:
-        return    
+    # if True:
+    #     return    
 
     # Experiment Description
 
@@ -404,8 +469,8 @@ def main():
         output_results(output_filepath)
     
     # 4. Visualize metric with metric min falloff chart
-    print_debug_header("Plotting results")
-    plot_results(output_filepath)
+    # print_debug_header("Plotting results")
+    # plot_results(output_filepath)
 
 if "__main__" == __name__:
 
