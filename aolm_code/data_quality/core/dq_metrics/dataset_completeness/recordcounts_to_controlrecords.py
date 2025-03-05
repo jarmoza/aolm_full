@@ -31,7 +31,7 @@ class DatasetCompleteness_RecordCountsToControlRecords(DataQualityMetric):
         key_value_map["source"] = self.m_source_id
         key_value_map["work_title"] = self.m_work_title
         key_value_map["path"] = self.m_path
-        key_value_map["edition_title"] = DataQualityMetric.s_not_available
+        key_value_map["edition_title"] = os.path.basename(os.path.splitext(self.m_path)[0]) if len(os.path.basename(self.m_path)) else self.m_source_id
         key_value_map["compared_against"] = self.baseline_source_id
         key_value_map["filename"] = os.path.basename(self.m_path)
         key_value_map["filepath"] = self.m_path
@@ -69,7 +69,7 @@ class DatasetCompleteness_RecordCountsToControlRecords(DataQualityMetric):
             "source": self.m_source_id,
             "work_title": self.m_work_title,
             "path": self.m_path,
-            "edition_title": DataQualityMetric.s_not_available,
+            "edition_title": os.path.basename(os.path.splitext(self.m_path)[0]) if len(os.path.basename(self.m_path)) else self.m_source_id,
             "metric": DatasetCompleteness_RecordCountsToControlRecords.s_metric_name,
             "value": self.m_evaluations["metric"],
             "compared_against": self.baseline_source_id,
@@ -238,7 +238,7 @@ class DatasetCompleteness_RecordCountsToControlRecords(DataQualityMetric):
         "submetric__word_count"
     ]
 
-    s_metric_name = "record counts to control"
+    s_metric_name = "record_counts_to_control"
 
     # @staticmethod
     # def write_eval_output_header(p_output_file):

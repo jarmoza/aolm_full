@@ -29,7 +29,7 @@ class DatasetCompleteness_MetadataSufficiency(DataQualityMetric):
         key_value_map = { key: None for key in DataQualityMetric.s_build_output_line_keys }
         key_value_map["source"] = self.m_source_id
         key_value_map["work_title"] = self.m_work_title
-        key_value_map["edition_title"] = DataQualityMetric.s_not_available
+        key_value_map["edition_title"] = os.path.basename(os.path.splitext(self.m_path)[0]) if len(os.path.basename(self.m_path)) else self.m_source_id
         key_value_map["metric"] = DatasetCompleteness_MetadataSufficiency.s_metric_name
         key_value_map["value"] = self.m_evaluations["metric"]
         key_value_map["compared_against"] = self.baseline_source_id
@@ -59,7 +59,7 @@ class DatasetCompleteness_MetadataSufficiency(DataQualityMetric):
             
             "source": self.m_source_id,
             "work_title": self.m_work_title,
-            "edition_title": DataQualityMetric.s_not_available,
+            "edition_title": os.path.basename(os.path.splitext(self.m_path)[0]) if len(os.path.basename(self.m_path)) else self.m_source_id,
             "metric": DatasetCompleteness_MetadataSufficiency.s_metric_name,
             "value": self.m_evaluations["metric"],
             "compared_against": self.baseline_source_id,
@@ -250,7 +250,7 @@ class DatasetCompleteness_MetadataSufficiency(DataQualityMetric):
         "subsubmetric_existence_and_completeness__percent_key_coverage"
     ]
 
-    s_metric_name = "metadata sufficiency"
+    s_metric_name = "metadata_sufficiency"
 
     @staticmethod
     def write_eval_output_header(p_output_file):
