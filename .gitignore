@@ -1,7 +1,7 @@
 # MacOS files
 .DS_Store
 data/twain/huckleberry_finn/.DS_Store
-experiments/chapter1/outputs/*
+experiments/outputs/*
 new_readings/.DS_Store
 writings/.DS_Store
 writings/all/.DS_Store
