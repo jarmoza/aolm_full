@@ -8,6 +8,7 @@
 # Built-ins
 import json
 import os
+from enum import Enum
 
 # Custom
 from definitions import ROOT_DIR
@@ -17,6 +18,21 @@ from pg_huckfinn_reader import PGHuckFinnReader
 
 
 # Globals
+
+# Corpus of Historical American English (COHA)
+# https://www.english-corpora.org/coha/
+
+class COHA(Enum):
+
+    # Columns in COHA's lexicon.txt
+    WORD_ID = "wID"
+    WORD_CS = "wordCS"
+    WORD = "word"
+    LEMMA = "lemma"
+    POS = "PoS"
+
+
+# Adventures of Huckleberry Finn
 
 # Abbreviation constants
 
