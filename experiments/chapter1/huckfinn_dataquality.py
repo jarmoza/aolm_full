@@ -227,6 +227,14 @@ def evaluate_metrics():
             experiment_metrics[source_id][MS_METRIC_NAME]["evaluation"],
             experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["evaluation"]
         ])
+
+        metric_weights = {
+            MS_METRIC_NAME: 0.25,
+            TR_METRIC_NAME: 0.75
+        }
+        experiment_metrics[source_id]["overall_data_quality"] = \
+            (metric_weights[MS_METRIC_NAME] * experiment_metrics[source_id][MS_METRIC_NAME]["evaluation"]) + \
+            (metric_weights[TR_METRIC_NAME] * experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["evaluation"])
         print(f"Overall {source_fullname} data quality: {experiment_metrics[source_id]["overall_data_quality"]}")
 
 def output_results(p_output_filepath):
@@ -381,7 +389,7 @@ def plot_results2(p_output_filepath):
     df_tr_eval = pd.DataFrame(tr_eval_data)
 
     # Remove rows with empty filenames
-    df_tr_eval = df_tr_eval[df_tr_eval['filename'].notna() & df_tr_eval['filename'].str.strip().astype(bool)]
+    df_tr_eval = df_tr_eval[df_tr_eval["filename"].notna() & df_tr_eval["filename"].str.strip().astype(bool)]
 
     # source
     # work_title
