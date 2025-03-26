@@ -40,7 +40,7 @@ class PGHuckFinnReader(AOLMTextReader):
         roman_numeral = AOLMTextUtilities.roman_numeral_from_decimal(p_chapter_number)
         body_id = f"{self.m_json["keys"]["output"]["body"]}CHAPTER {roman_numeral}."
 
-        return self.m_json["components"]["body"][body_id]
+        return self.m_json["components"]["body"][body_id] if body_id in self.m_json["components"]["body"] else []
     
     def has_chapter(self, p_chapter_number):
 
