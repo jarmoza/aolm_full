@@ -83,15 +83,18 @@ class DatasetValidity_LexicalValidity(DataQualityMetric):
                 if reader.has_chapter(index):
 
                     # A. Get chapter as string
-                    chapter_text = "\n".join(reader.get_chapter(index))
+                    chapter_text = AOLMTextUtilities.create_string_from_lines(reader.get_chapter(index))
 
                     # B. Calculate the lexical validity of this chapter
                     self.m_results[reader_name]["chapter_validity"][str(index)] = \
                         DatasetValidity_LexicalValidity.lexical_validity(chapter_text, self.m_lexicon)
 
             # B. Get total lexical validity of work
+            # NEXT: Figure out how to get all lines from text here
+            full_text = [AOLMTextUtilities.create_string_from_lines(chapter_lines) for chapter_lines in reader.aolm_text.body.values()]
+            full_text = "\n".join(full_text)
             self.m_results[reader_name]["work_validity"] = \
-                DatasetValidity_LexicalValidity.lexical_validity(reader.text_as_string, self.m_lexicon)
+                DatasetValidity_LexicalValidity.lexical_validity(full_text, self.m_lexicon)
 
     def evaluate(self):   
 
@@ -99,8 +102,10 @@ class DatasetValidity_LexicalValidity(DataQualityMetric):
 
         # 1. Calculate evaluations of subsubmetrics
         self.m_evaluations["subsubmetric"] = { 
+
             reader_name: {
-                "chapter_validity": mean(self.m_results[reader_name]["chapter_validity"]),
+
+                "chapter_validity": mean([self.m_results[reader_name]["chapter_validity"][index] for index in self.m_results[reader_name]["chapter_validity"]]),
                 "work_validity": self.m_results[reader_name]["work_validity"]
             }
             for reader_name in self.m_results 
@@ -108,6 +113,7 @@ class DatasetValidity_LexicalValidity(DataQualityMetric):
 
         # 2. Calculate evaluation of submetrics
         self.m_evaluations["submetric"] = {
+
             "chapter_validity": mean([self.m_evaluations["subsubmetric"][reader_name]["chapter_validity"] for reader_name in self.m_evaluations["subsubmetric"]]),
             "work_validity": mean([self.m_evaluations["subsubmetric"][reader_name]["work_validity"] for reader_name in self.m_evaluations["subsubmetric"]])
         }
@@ -181,12 +187,13 @@ def main():
     lexicon_filepath = "/Users/weirdbeard/Documents/school/aolm_full/data/lexicon/coha/lexicon.txt"
     coha_lexicon = read_coha(lexicon_filepath)
     
-    # B. Read the text to be examined
+    # B. Read the editions to be examined
     PG = aolm_data_reading.PG
     text_filepath = aolm_data_reading.huckfinn_directories[PG]["txt"]
     # pg_huckfinn_texts = aolm_data_reading.read_huckfinn_text(PG, [aolm_data_reading.huckfinn_edition_names[PG][0]])
     pg_huckfinn_texts = aolm_data_reading.read_huckfinn_text(PG)
 
+    # C. Compute the data quality metrics and evaluate them
     WORK_TITLE = "Adventures of Huckleberry Finn"
     validity_metric = DatasetValidity_LexicalValidity(
         f"HuckFinn_{PG}_LexicalValidity",
@@ -196,7 +203,6 @@ def main():
         text_filepath,
         coha_lexicon
     )
-
     validity_metric.compute()
     lexical_validity_value = validity_metric.evaluate()
 
