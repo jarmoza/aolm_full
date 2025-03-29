@@ -33,6 +33,8 @@ from dq_metric import DataQualityMetric
 
 # Constants
 COHA = aolm_data_reading.COHA
+PG = aolm_data_reading.PG
+WORK_TITLE = "Adventures of Huckleberry Finn"
 
 # NOTE: Use of this file entails loading spaCy and WordNet models
 # NOTE: You must run "python -m spacy download en_core_web_lg"
@@ -43,6 +45,8 @@ spacy_nlp = spacy.load("en_core_web_lg")
 # Download WordNet if not already downloaded
 nltk.download("wordnet")
 
+
+# Objects
 
 class DatasetValidity_LexicalValidity(DataQualityMetric):
 
@@ -55,7 +59,75 @@ class DatasetValidity_LexicalValidity(DataQualityMetric):
         
         # Lexicon used to test validity is read externally
         self.m_lexicon = p_lexicon
+
+    def __build_eval_output_line__(self):
+
+        # 1. Base data quality metric evaluation keys
+        key_value_map = { key: None for key in DataQualityMetric.s_build_output_line_keys }
+        key_value_map["source"] = self.m_source_id
+        key_value_map["work_title"] = self.m_work_title
+        key_value_map["edition_title"] = os.path.basename(os.path.splitext(self.m_path)[0]) if len(os.path.basename(self.m_path)) else self.m_source_id
+        key_value_map["metric"] = DatasetValidity_LexicalValidity.s_metric_name
+        key_value_map["value"] = self.m_evaluations["metric"]
+        key_value_map["compared_against"] = self.baseline_source_id
+        key_value_map["filepath"] = self.m_path
+
+        # s_eval_output_line_keys = [
+
+        #     "submetric__collection_chapter_validity",
+        #     "submetric__collection_work_validity",
+        #     "subsubmetric_collection_chapter_validity__edition_chapter_validity",
+        #     "subsubmetric_collection_work_validity__edition_work_validity"
+        # ]        
+        
+        # 2. Lexical validity-specific evaluation keys
+        keys_in_order = list(DataQualityMetric.s_build_output_line_keys)
+        keys_in_order.extend(DatasetValidity_LexicalValidity.s_eval_output_line_keys)
+
+        key_value_map["submetric__collection_chapter_validity"] = self.m_evaluations["submetric"]["collection_chapter_validity"]
+        key_value_map["submetric__collection_work_validity"] = self.m_evaluations["submetric"]["collection_work_validity"]
+        for work_title in self.m_results:
+            key_value_map["subsubmetric_collection_chapter_validity__edition_chapter_validity"] = \
+                self.m_evaluations["subsubmetric"][work_title]["edition_chapter_validity"]
+            key_value_map["subsubmetric_collection_work_validity__edition_work_validity"] = \
+                self.m_evaluations["subsubmetric"][work_title]["edition_work_validity"]
+            keys_in_order.append(f"subsubmetric_collection_chapter_validity__edition_chapter_validity")
+            keys_in_order.append(f"subsubmetric_collection_work_validity__edition_work_validity")
+
+        # 3. Build line with key order [build keys, metric-specific evaluation keys]
+        line_dict = { key: key_value_map.get(key, None) for key in keys_in_order }
+        line_str_array = [line_dict[key] for key in keys_in_order]
+
+        return ",".join(map(str, line_str_array)) + "\n"        
+
+    def __build_output_line__(self):
+
+        key_value_map = {
+            
+            "source": self.m_source_id,
+            "work_title": self.m_work_title,
+            "edition_title": os.path.basename(os.path.splitext(self.m_path)[0]) if len(os.path.basename(self.m_path)) else self.m_source_id,
+            "metric": DatasetValidity_LexicalValidity.s_metric_name,
+            "value": self.m_evaluations["metric"],
+            "compared_against": self.baseline_source_id,
+            "filename": os.path.basename(self.m_path),
+            "filepath": self.m_path
+        }
+
+        line_dict = { key: key_value_map.get(key, None) for key in DataQualityMetric.s_build_output_line_keys }
+        line_str_array = [line_dict[key] for key in DataQualityMetric.s_build_output_line_keys]
+
+        return ",".join(map(str, line_str_array)) + "\n"        
     
+    # Properties
+
+    @property
+    def eval_output(self):
+        return self.__build_eval_output_line__()
+    @property
+    def output(self):
+        return self.__build_output_line__()
+
     def compute(self):
         
         # Experiment 3 - Lexical Validity
@@ -66,8 +138,8 @@ class DatasetValidity_LexicalValidity(DataQualityMetric):
             
             reader_name: {
 
-                "chapter_validity": {},
-                "work_validity": 0
+                "edition_chapter_validity": {},
+                "edition_work_validity": 0
             } for reader_name in self.m_input
         }
 
@@ -86,14 +158,14 @@ class DatasetValidity_LexicalValidity(DataQualityMetric):
                     chapter_text = AOLMTextUtilities.create_string_from_lines(reader.get_chapter(index))
 
                     # B. Calculate the lexical validity of this chapter
-                    self.m_results[reader_name]["chapter_validity"][str(index)] = \
+                    self.m_results[reader_name]["edition_chapter_validity"][str(index)] = \
                         DatasetValidity_LexicalValidity.lexical_validity(chapter_text, self.m_lexicon)
 
             # B. Get total lexical validity of work
             # NEXT: Figure out how to get all lines from text here
             full_text = [AOLMTextUtilities.create_string_from_lines(chapter_lines) for chapter_lines in reader.aolm_text.body.values()]
             full_text = "\n".join(full_text)
-            self.m_results[reader_name]["work_validity"] = \
+            self.m_results[reader_name]["edition_work_validity"] = \
                 DatasetValidity_LexicalValidity.lexical_validity(full_text, self.m_lexicon)
 
     def evaluate(self):   
@@ -105,8 +177,8 @@ class DatasetValidity_LexicalValidity(DataQualityMetric):
 
             reader_name: {
 
-                "chapter_validity": mean([self.m_results[reader_name]["chapter_validity"][index] for index in self.m_results[reader_name]["chapter_validity"]]),
-                "work_validity": self.m_results[reader_name]["work_validity"]
+                "edition_chapter_validity": mean([self.m_results[reader_name]["edition_chapter_validity"][index] for index in self.m_results[reader_name]["edition_chapter_validity"]]),
+                "edition_work_validity": self.m_results[reader_name]["edition_work_validity"]
             }
             for reader_name in self.m_results 
         }
@@ -114,8 +186,8 @@ class DatasetValidity_LexicalValidity(DataQualityMetric):
         # 2. Calculate evaluation of submetrics
         self.m_evaluations["submetric"] = {
 
-            "chapter_validity": mean([self.m_evaluations["subsubmetric"][reader_name]["chapter_validity"] for reader_name in self.m_evaluations["subsubmetric"]]),
-            "work_validity": mean([self.m_evaluations["subsubmetric"][reader_name]["work_validity"] for reader_name in self.m_evaluations["subsubmetric"]])
+            "collection_chapter_validity": mean([self.m_evaluations["subsubmetric"][reader_name]["edition_chapter_validity"] for reader_name in self.m_evaluations["subsubmetric"]]),
+            "collection_work_validity": mean([self.m_evaluations["subsubmetric"][reader_name]["edition_work_validity"] for reader_name in self.m_evaluations["subsubmetric"]])
         }
 
         # 3. Metric is weighted mean of submetrics
@@ -124,7 +196,22 @@ class DatasetValidity_LexicalValidity(DataQualityMetric):
 
         return self.metric_evaluation
 
+
     # Static fields and methods
+
+    s_eval_output_line_keys = [
+
+        "source",
+        "work_title",
+        "path",
+        "edition_title",
+        "compared_against",
+        "filename",
+        "filepath",
+        "metric",
+        "submetric__collection_chapter_validity",
+        "submetric__collection_work_validity",
+    ]     
 
     s_metric_name = "lexical_validity"
 
@@ -159,6 +246,8 @@ class DatasetValidity_LexicalValidity(DataQualityMetric):
         return lexical_validity        
 
 
+# Utility functions
+
 def read_coha(p_coha_filepath):
 
      # Increase the CSV field size limit to accommodate COHA
@@ -179,6 +268,8 @@ def read_coha(p_coha_filepath):
     return lexicon_set
 
 
+# Main script
+
 def main():
 
     # 0. Test setup
@@ -188,25 +279,26 @@ def main():
     coha_lexicon = read_coha(lexicon_filepath)
     
     # B. Read the editions to be examined
-    PG = aolm_data_reading.PG
-    text_filepath = aolm_data_reading.huckfinn_directories[PG]["txt"]
-    # pg_huckfinn_texts = aolm_data_reading.read_huckfinn_text(PG, [aolm_data_reading.huckfinn_edition_names[PG][0]])
     pg_huckfinn_texts = aolm_data_reading.read_huckfinn_text(PG)
 
     # C. Compute the data quality metrics and evaluate them
-    WORK_TITLE = "Adventures of Huckleberry Finn"
     validity_metric = DatasetValidity_LexicalValidity(
         f"HuckFinn_{PG}_LexicalValidity",
         pg_huckfinn_texts,
         PG,
         WORK_TITLE,
-        text_filepath,
+        aolm_data_reading.huckfinn_directories[PG]["txt"],
         coha_lexicon
     )
     validity_metric.compute()
     lexical_validity_value = validity_metric.evaluate()
 
-    print(f"Lexical Validity of PG Huck Finn editions: {lexical_validity_value}")
+    print(f"Overall lexical Validity of PG Huck Finn editions: {lexical_validity_value}")
+    print(f"{"=" * 80}")
+    print(validity_metric.output)
+    print(f"{"=" * 80}")
+    print(validity_metric.eval_output)
+
 
 if "__main__" == __name__:
 
