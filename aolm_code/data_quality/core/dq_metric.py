@@ -69,6 +69,9 @@ class DataQualityMetric:
     # Properties
 
     @property
+    def eval_output(self):
+        return ""
+    @property
     def input(self):
         return self.m_input
     @input.setter
@@ -96,6 +99,7 @@ class DataQualityMetric:
     @property
     def evaluations(self):
         return self.m_evaluations
+    
     
     @property
     def metric_evaluation(self):
