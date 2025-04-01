@@ -619,6 +619,19 @@ The Site for Modeling
 Where do we place our chairs when we want to look at the landscape of a work of literature or a corpora of literature? Fully understanding the perspective we want to have when approaching the creation of model on this site of inquiry can help us down the road in the modeling, visualization, and analytical processes. What are our assumptions about our data set? What are our hypotheses? Fixing these things at the beginning of the process – fixing our perspective will allow for the objectivity necessary to understand our results and interpretations, as well as giving us a better idea of where we want to reposition the chair. After all, a model is easier to rebuild than a house.
 </Text>
         </Document>
+        <Document ID="BB7B70F8-E0C6-46D8-BCD1-299294685ED2">
+            <Title>March 26, 2025</Title>
+            <Text>What I mean by the "art" of literary modeling - a lofty title. Modeling of literature is a practice, an art form just like any other.
+We make human decisions based on our experience and knowledge, and those are well worth documenting in what seems a scientific or
+quantitative process. Each of these decisions affect our data, our models, and our interpretations. *Interpretations* That's something
+well worth highlighting because that is the strength of a humanities approach to the computational modeling of literature. We have to
+remember and remind one another of the humanity that went into the creating of that literature and the humanity that goes into our 
+understandings - plural - of it.
+
+NOTE: JSON file describing metric evaluation weights to be included along as output alongside data quality framework outputs
+
+'/Users/weirdbeard/Documents/school/aolm_full/data/lexicon/coha/lexicon.txt'</Text>
+        </Document>
         <Document ID="D0FA431C-3C52-46C1-B0BE-D750BE6654FA">
             <Title>May 14, 2019</Title>
             <Text>	

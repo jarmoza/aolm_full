@@ -21,8 +21,8 @@
 	<false/>
 	<key>binderSplitFrames</key>
 	<array>
-		<string>{{0, 0}, {175, 1035}}</string>
-		<string>{{176, 0}, {1744, 1035}}</string>
+		<string>{{0, 0}, {175, 900}}</string>
+		<string>{{176, 0}, {1336, 900}}</string>
 	</array>
 	<key>binderWidth</key>
 	<real>281.5</real>
@@ -941,7 +941,7 @@
 		<real>1.5</real>
 	</dict>
 	<key>mainWindowFrame</key>
-	<string>8 93 1130 650 0 0 1920 1055 </string>
+	<string>8 93 1130 650 0 0 1512 944 </string>
 	<key>projectStatsSheet</key>
 	<dict>
 		<key>countDraftFootnotes</key>
@@ -1000,7 +1000,7 @@
 		<real>193</real>
 	</dict>
 	<key>supportingDocumentEditor.scrollRect</key>
-	<string>{{0, 0}, {996.57142857142856, 542.28571428571433}}</string>
+	<string>{{0, 0}, {763.42857142857133, 465.14285714285722}}</string>
 	<key>supportingDocumentEditor.textEditorState</key>
 	<dict>
 		<key>textScaleFactor</key>
