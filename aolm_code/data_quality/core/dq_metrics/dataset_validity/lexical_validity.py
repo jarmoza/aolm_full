@@ -52,11 +52,12 @@ nltk.download("wordnet")
 
 class DatasetValidity_LexicalValidity(DataQualityMetric):
 
-    def __init__(self, p_name, p_input, p_source_id, p_work_title, p_text_json_filepath, p_lexicon):
+    def __init__(self, p_name, p_input, p_source_id, p_work_title, p_collection_title, p_text_json_filepath, p_lexicon):
 
         super().__init__(p_name, p_input,
                          p_source_id=p_source_id,
                          p_work_title=p_work_title,
+                         p_collection_title=p_collection_title,
                          p_path=p_text_json_filepath)
         
         # Lexicon used to test validity is read externally
@@ -64,20 +65,20 @@ class DatasetValidity_LexicalValidity(DataQualityMetric):
 
     def __build_eval_output_line__(self):
 
-        key_value_map = {}
-
-        # 1. Base data quality metric evaluation keys
         key_value_map = { key: None for key in DataQualityMetric.s_build_output_line_keys }
+        
+        # 1. Lexical validity-specific evaluation keys
+        key_value_map.update(self.m_evaluations)
+
+        # 2. Base data quality metric evaluation keys
         key_value_map["source"] = self.m_source_id
         key_value_map["work_title"] = self.m_work_title
-        key_value_map["edition_title"] = key_value_map["edition_title"] = aolm_data_reading.huckfinn_source_fullnames[self.m_source_id.upper()]
+        key_value_map["edition_title"] = [os.path.splitext(file)[0] for file in os.listdir(self.m_path) if file.endswith(".json")]
+        key_value_map["collection_title"] = self.m_collection_title
         key_value_map["metric"] = DatasetValidity_LexicalValidity.s_metric_name
         key_value_map["value"] = self.m_evaluations["metric"]
         key_value_map["compared_against"] = self.baseline_source_id
         key_value_map["filepath"] = self.m_path
-
-        # 2. Lexical validity-specific evaluation keys
-        key_value_map.update(self.m_evaluations)
 
         return key_value_map
 
@@ -277,6 +278,7 @@ def main():
         pg_huckfinn_texts,
         PG,
         WORK_TITLE,
+        aolm_data_reading.huckfinn_source_fullnames[PG],
         aolm_data_reading.huckfinn_directories[PG]["txt"],
         coha_lexicon
     )
