@@ -45,6 +45,16 @@
 
 # <quality-type>_<work-short-title>_<experiment-short-description>_<experiment-number>
 
+"""
+    Data Quality Metrics
+
+    1) Lexical Validity
+    - Takes in multiple editions across a collection
+    2) Metadata Sufficiency
+    3) Record Counts to Control Records
+
+"""
+
 # Imports
 
 # Built-ins
