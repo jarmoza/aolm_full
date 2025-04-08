@@ -2,7 +2,9 @@
     "python.REPL.enableREPLSmartSend": false,
     "python.analysis.extraPaths": [
         "./aolm_code/objects",
-        "./aolm_code/data_quality/core"
+        "./aolm_code/data_quality/core",
+        "./aolm_code/utilities"
     ],
-    "python.defaultInterpreterPath": "/opt/homebrew/anaconda3/envs/aolm/bin/python3"
+    "python.defaultInterpreterPath": "/opt/homebrew/anaconda3/envs/aolm/bin/python3",
+    "editor.autoClosingBrackets": "never"
 }
