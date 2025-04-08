@@ -16,59 +16,33 @@ from dq_metric import DataQualityMetric
 
 class DatasetCompleteness_RecordCountsToControlRecords(DataQualityMetric):
 
-    def __init__(self, p_name, p_input, p_source_id, p_work_title, p_text_json_filepath, p_baseline_source_id):
+    def __init__(self, p_name, p_input, p_source_id, p_work_title, p_collection_title, p_text_json_filepath, p_baseline_source_id):
 
         super().__init__(p_name, p_input,
                          p_source_id=p_source_id,
                          p_work_title=p_work_title,
+                         p_collection_title=p_collection_title,
                          p_path=p_text_json_filepath,
                          p_baseline_source_id=p_baseline_source_id)
         
     def __build_eval_output_line__(self, p_return_dict=False):
 
-        evaluations = {}
+        key_value_map = { key: None for key in DataQualityMetric.s_build_output_line_keys }
 
-        keys_in_order = list(DataQualityMetric.s_build_output_line_keys)
-        keys_in_order.extend(DatasetCompleteness_RecordCountsToControlRecords.s_eval_output_line_keys)
+        # 1. Record counts to control records-specific evaluation keys
+        key_value_map.update(self.m_evaluations)
 
-        for work_title in self.m_results:
-
-            evaluations[work_title] = {}
-            evaluations[work_title]["csv_line"] = "\n"
-            evaluations[work_title]["key_value_map"] = { key: None for key in DataQualityMetric.s_build_output_line_keys }
-
-            # 1. Base data quality metric evaluation keys
-            evaluations[work_title]["key_value_map"]["source"] = self.m_source_id
-            evaluations[work_title]["key_value_map"]["work_title"] = work_title
-            evaluations[work_title]["key_value_map"]["path"] = self.m_path
-            evaluations[work_title]["key_value_map"]["edition_title"] = os.path.basename(os.path.splitext(self.m_path)[0]) if len(os.path.basename(self.m_path)) else self.m_source_id
-            evaluations[work_title]["key_value_map"]["compared_against"] = self.baseline_source_id
-            evaluations[work_title]["key_value_map"]["filename"] = os.path.basename(self.m_path)
-            evaluations[work_title]["key_value_map"]["filepath"] = self.m_path
-            evaluations[work_title]["key_value_map"]["metric"] = DatasetCompleteness_RecordCountsToControlRecords.s_metric_name
-            evaluations[work_title]["key_value_map"]["value"] = self.m_evaluations["metric"]
-
-            # 2. Record counts to control records-specific evaluation keys
-            evaluations[work_title]["key_value_map"]["submetric__chapter_count"] = self.m_evaluations["submetric"]["chapter_count"]
-            evaluations[work_title]["key_value_map"]["submetric__sentence_count"] = self.m_evaluations["submetric"]["sentence_count"]
-            evaluations[work_title]["key_value_map"]["submetric__word_count"] = self.m_evaluations["submetric"]["word_count"]
-            evaluations[work_title]["key_value_map"][f"subsubmetric__chapter_count"] = \
-                self.m_evaluations["subsubmetric"][work_title]["chapter_count"]
-            evaluations[work_title]["key_value_map"][f"subsubmetric__sentence_count"] = \
-                self.m_evaluations["subsubmetric"][work_title]["sentence_count"]
-            evaluations[work_title]["key_value_map"][f"subsubmetric__word_count"] = \
-                self.m_evaluations["subsubmetric"][work_title]["word_count"]
-            keys_in_order.append(f"subsubmetric__chapter_count")
-            keys_in_order.append(f"subsubmetric__sentence_count")
-            keys_in_order.append(f"subsubmetric__word_count")
-
-            # 3. Build line with key order [build keys, metric-specific evaluation keys]
-            line_dict = { key: evaluations[work_title].get(key, None) for key in keys_in_order }
-            line_str_array = [line_dict[key] for key in keys_in_order]
-
-            evaluations[work_title]["csv_line"] = ",".join(map(str, line_str_array)) if not p_return_dict else line_dict
-
-        return "\n".join([evaluations[work_title]["csv_line"] for work_title in evaluations])
+        # 2. Base data quality metric evaluation keys
+        key_value_map["source"] = self.m_source_id
+        key_value_map["work_title"] = self.m_work_title
+        key_value_map["path"] = self.m_path
+        key_value_map["edition_title"] = os.path.basename(os.path.splitext(self.m_path)[0]) if len(os.path.basename(self.m_path)) else self.m_source_id
+        key_value_map["collection_title"] = self.m_collection_title
+        key_value_map["compared_against"] = self.baseline_source_id
+        key_value_map["filename"] = os.path.basename(self.m_path)
+        key_value_map["filepath"] = self.m_path
+        key_value_map["metric"] = DatasetCompleteness_RecordCountsToControlRecords.s_metric_name
+        key_value_map["value"] = self.m_evaluations["metric"]
 
     def __build_output_line__(self):
 
@@ -96,9 +70,6 @@ class DatasetCompleteness_RecordCountsToControlRecords(DataQualityMetric):
     @property
     def eval_output(self):
         return self.__build_eval_output_line__()
-    @property
-    def eval_output_dict(self):
-        return self.__build_eval_output_line__(p_return_dict=True)
     @property
     def eval_output_header(self):
         
