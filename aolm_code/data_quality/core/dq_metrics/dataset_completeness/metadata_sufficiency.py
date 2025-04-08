@@ -10,48 +10,39 @@ import os
 from statistics import mean
 
 # Custom
+import aolm_data_reading
 from aolm_textutilities import AOLMTextUtilities
 from dq_metric import DataQualityMetric
 
 
 class DatasetCompleteness_MetadataSufficiency(DataQualityMetric):
 
-    def __init__(self, p_name, p_input, p_source_id, p_work_title, p_metadata_directory):
+    def __init__(self, p_name, p_input, p_source_id, p_work_title, p_collection_title, p_metadata_directory):
 
         super().__init__(p_name, p_input,
                          p_source_id=p_source_id,
                          p_work_title=p_work_title,
+                         p_collection_title=p_collection_title,
                          p_path=p_metadata_directory)
         
     def __build_eval_output_line__(self):
 
-        # 1. Base data quality metric evaluation keys
         key_value_map = { key: None for key in DataQualityMetric.s_build_output_line_keys }
+        
+        # 1. Metadata sufficiency-specific evaluation keys
+        key_value_map.update(self.m_evaluations)
+
+        # 2. Base data quality metric evaluation keys
         key_value_map["source"] = self.m_source_id
         key_value_map["work_title"] = self.m_work_title
         key_value_map["edition_title"] = os.path.basename(os.path.splitext(self.m_path)[0]) if len(os.path.basename(self.m_path)) else self.m_source_id
+        key_value_map["collection_title"] = self.m_collection_title
         key_value_map["metric"] = DatasetCompleteness_MetadataSufficiency.s_metric_name
         key_value_map["value"] = self.m_evaluations["metric"]
         key_value_map["compared_against"] = self.baseline_source_id
         key_value_map["filepath"] = self.m_path
-        
-        # 2. Metadata sufficiency-specific evaluation keys
-        key_value_map["submetric__existence_and_completeness"] = self.m_evaluations["submetric"]["existence_and_completeness"]
-        key_value_map["submetric__clarity_and_quality"] = self.m_evaluations["submetric"]["clarity_and_quality"]
-        key_value_map["submetric__consistency_of_representation"] = self.m_evaluations["submetric"]["consistency_of_representation"]
-        key_value_map["subsubmetric_existence_and_completeness__percent_tables_defined"] = \
-            self.m_evaluations["subsubmetric"]["existence_and_completeness"]["percent_tables_defined"]
-        key_value_map["subsubmetric_existence_and_completeness__percent_key_coverage"] = \
-            self.m_evaluations["subsubmetric"]["existence_and_completeness"]["percent_key_coverage"]        
 
-        # 3. Build line with key order [build keys, metric-specific evaluation keys]
-        keys_in_order = list(DataQualityMetric.s_build_output_line_keys)
-        keys_in_order.extend(DatasetCompleteness_MetadataSufficiency.s_eval_output_line_keys)
-        line_dict = { key: key_value_map.get(key, None) for key in keys_in_order }
-        line_str_array = [line_dict[key] for key in keys_in_order]
-
-        return ",".join(map(str, line_str_array)) + "\n"
-
+        return key_value_map
 
     def __build_output_line__(self):
 
