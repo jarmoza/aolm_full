@@ -135,6 +135,7 @@ def run_huckfinn_dq_metadatasufficiency(p_source_id, p_edition_filenames=None):
         huckfinn_metadata,
         p_source_id,
         WORK_TITLE,
+        aolm_data_reading.huckfinn_source_fullnames[p_source_id],
         aolm_data_reading.huckfinn_directories[p_source_id]["metadata"])
 
     # 3. Compute the metric and save results
@@ -168,6 +169,7 @@ def run_huckfinn_dq_textrecordcounts(p_source_id, p_edition_filenames=None):
         huckfinn_textdata,
         p_source_id,
         WORK_TITLE,
+        aolm_data_reading.huckfinn_source_fullnames[p_source_id],
         edition_path,
         aolm_data_reading.MTPO)
 
@@ -308,14 +310,14 @@ def output_results(p_output_filepath):
                 continue
 
             for edition_name in aolm_data_reading.huckfinn_edition_names[source_id]:
-                eval_output_dict = experiment_metrics[source_id][TR_METRIC_NAME]["individual_editions"][edition_name]["metric"].eval_output_dict
+                eval_output_dict = experiment_metrics[source_id][TR_METRIC_NAME]["individual_editions"][edition_name]["metric"].eval_output
                 values_list = []
                 for key in tr_eval_column_names:
                     values_list.append(str(eval_output_dict[key]) if key in eval_output_dict else "N/A")
                 eval_output_file.write(",".join(values_list) + "\n")
 
             # Suggest edition name "sourceid_overall" here?
-            eval_output_dict = experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["metric"].eval_output_dict
+            eval_output_dict = experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["metric"].eval_output
             values_list = []
             for key in tr_eval_column_names:
                 values_list.append(str(eval_output_dict[key]) if key in eval_output_dict else "N/A")
