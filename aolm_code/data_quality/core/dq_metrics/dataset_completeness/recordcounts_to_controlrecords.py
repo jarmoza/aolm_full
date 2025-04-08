@@ -26,41 +26,49 @@ class DatasetCompleteness_RecordCountsToControlRecords(DataQualityMetric):
         
     def __build_eval_output_line__(self, p_return_dict=False):
 
-        # 1. Base data quality metric evaluation keys
-        key_value_map = { key: None for key in DataQualityMetric.s_build_output_line_keys }
-        key_value_map["source"] = self.m_source_id
-        key_value_map["work_title"] = self.m_work_title
-        key_value_map["path"] = self.m_path
-        key_value_map["edition_title"] = os.path.basename(os.path.splitext(self.m_path)[0]) if len(os.path.basename(self.m_path)) else self.m_source_id
-        key_value_map["compared_against"] = self.baseline_source_id
-        key_value_map["filename"] = os.path.basename(self.m_path)
-        key_value_map["filepath"] = self.m_path
-        key_value_map["metric"] = DatasetCompleteness_RecordCountsToControlRecords.s_metric_name
-        key_value_map["value"] = self.m_evaluations["metric"]
+        evaluations = {}
 
-        # 2. Record counts to control records-specific evaluation keys
         keys_in_order = list(DataQualityMetric.s_build_output_line_keys)
         keys_in_order.extend(DatasetCompleteness_RecordCountsToControlRecords.s_eval_output_line_keys)
-        
-        key_value_map["submetric__chapter_count"] = self.m_evaluations["submetric"]["chapter_count"]
-        key_value_map["submetric__sentence_count"] = self.m_evaluations["submetric"]["sentence_count"]
-        key_value_map["submetric__word_count"] = self.m_evaluations["submetric"]["word_count"]
+
         for work_title in self.m_results:
-            key_value_map[f"subsubmetric__chapter_count"] = \
+
+            evaluations[work_title] = {}
+            evaluations[work_title]["csv_line"] = "\n"
+            evaluations[work_title]["key_value_map"] = { key: None for key in DataQualityMetric.s_build_output_line_keys }
+
+            # 1. Base data quality metric evaluation keys
+            evaluations[work_title]["key_value_map"]["source"] = self.m_source_id
+            evaluations[work_title]["key_value_map"]["work_title"] = work_title
+            evaluations[work_title]["key_value_map"]["path"] = self.m_path
+            evaluations[work_title]["key_value_map"]["edition_title"] = os.path.basename(os.path.splitext(self.m_path)[0]) if len(os.path.basename(self.m_path)) else self.m_source_id
+            evaluations[work_title]["key_value_map"]["compared_against"] = self.baseline_source_id
+            evaluations[work_title]["key_value_map"]["filename"] = os.path.basename(self.m_path)
+            evaluations[work_title]["key_value_map"]["filepath"] = self.m_path
+            evaluations[work_title]["key_value_map"]["metric"] = DatasetCompleteness_RecordCountsToControlRecords.s_metric_name
+            evaluations[work_title]["key_value_map"]["value"] = self.m_evaluations["metric"]
+
+            # 2. Record counts to control records-specific evaluation keys
+            evaluations[work_title]["key_value_map"]["submetric__chapter_count"] = self.m_evaluations["submetric"]["chapter_count"]
+            evaluations[work_title]["key_value_map"]["submetric__sentence_count"] = self.m_evaluations["submetric"]["sentence_count"]
+            evaluations[work_title]["key_value_map"]["submetric__word_count"] = self.m_evaluations["submetric"]["word_count"]
+            evaluations[work_title]["key_value_map"][f"subsubmetric__chapter_count"] = \
                 self.m_evaluations["subsubmetric"][work_title]["chapter_count"]
-            key_value_map[f"subsubmetric__sentence_count"] = \
+            evaluations[work_title]["key_value_map"][f"subsubmetric__sentence_count"] = \
                 self.m_evaluations["subsubmetric"][work_title]["sentence_count"]
-            key_value_map[f"subsubmetric__word_count"] = \
+            evaluations[work_title]["key_value_map"][f"subsubmetric__word_count"] = \
                 self.m_evaluations["subsubmetric"][work_title]["word_count"]
             keys_in_order.append(f"subsubmetric__chapter_count")
             keys_in_order.append(f"subsubmetric__sentence_count")
             keys_in_order.append(f"subsubmetric__word_count")
 
-        # 3. Build line with key order [build keys, metric-specific evaluation keys]
-        line_dict = { key: key_value_map.get(key, None) for key in keys_in_order }
-        line_str_array = [line_dict[key] for key in keys_in_order]
+            # 3. Build line with key order [build keys, metric-specific evaluation keys]
+            line_dict = { key: evaluations[work_title].get(key, None) for key in keys_in_order }
+            line_str_array = [line_dict[key] for key in keys_in_order]
 
-        return ",".join(map(str, line_str_array)) + "\n" if not p_return_dict else line_dict
+            evaluations[work_title]["csv_line"] = ",".join(map(str, line_str_array)) if not p_return_dict else line_dict
+
+        return "\n".join([evaluations[work_title]["csv_line"] for work_title in evaluations])
 
     def __build_output_line__(self):
 
@@ -175,7 +183,7 @@ class DatasetCompleteness_RecordCountsToControlRecords(DataQualityMetric):
                 self.m_results[reader_name]["sentence_count"]["by_chapter"][str(index)] = \
                     AOLMTextUtilities.dictionaries_percent_equal(ur_sentence_dict, compared_sentence_dict)
 
-        # 3. Sentence count
+        # 3. Word count
         for index in range(1, ur_chapter_count + 1):
 
             # I. Read the ur chapter's words
