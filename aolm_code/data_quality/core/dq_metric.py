@@ -28,7 +28,7 @@ class DataQualityMetric:
     # Constructor
 
     def __init__(self, p_name, p_text_readers, 
-                 p_source_id="", p_work_title="", p_path="", p_baseline_source_id="N/A"):
+                 p_source_id="", p_work_title="", p_collection_title="", p_path="", p_baseline_source_id="N/A"):
 
         # 0. Save parameters
         self.m_name = p_name
@@ -37,6 +37,7 @@ class DataQualityMetric:
         # A. Optional parameters
         self.m_source_id = p_source_id
         self.m_work_title = p_work_title
+        self.m_collection_title = p_collection_title
         self.m_path = p_path
         self.m_baseline_source_id = p_baseline_source_id
 
