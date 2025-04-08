@@ -8,8 +8,10 @@
 
 # Built-ins
 import csv
+import json
 import os
 import sys
+from datetime import datetime
 from statistics import mean
 
 # Add the project root to sys.path
@@ -37,7 +39,7 @@ PG = aolm_data_reading.PG
 WORK_TITLE = "Adventures of Huckleberry Finn"
 
 # NOTE: Use of this file entails loading spaCy and WordNet models
-# NOTE: You must run "python -m spacy download en_core_web_lg"
+# NOTE: You must first run "python -m spacy download en_core_web_lg"
 
 # Load spaCy's large English model
 spacy_nlp = spacy.load("en_core_web_lg")
@@ -62,6 +64,27 @@ class DatasetValidity_LexicalValidity(DataQualityMetric):
 
     def __build_eval_output_line__(self):
 
+        key_value_map = {}
+
+        # 1. Base data quality metric evaluation keys
+        key_value_map = { key: None for key in DataQualityMetric.s_build_output_line_keys }
+        key_value_map["source"] = self.m_source_id
+        key_value_map["work_title"] = self.m_work_title
+        key_value_map["edition_title"] = key_value_map["edition_title"] = aolm_data_reading.huckfinn_source_fullnames[self.m_source_id.upper()]
+        key_value_map["metric"] = DatasetValidity_LexicalValidity.s_metric_name
+        key_value_map["value"] = self.m_evaluations["metric"]
+        key_value_map["compared_against"] = self.baseline_source_id
+        key_value_map["filepath"] = self.m_path
+
+        # 2. Lexical validity-specific evaluation keys
+        key_value_map.update(self.m_evaluations)
+
+        return key_value_map
+
+    def __build_eval_output_line__csv(self):
+
+        all_eval_lines = []
+
         # 1. Base data quality metric evaluation keys
         key_value_map = { key: None for key in DataQualityMetric.s_build_output_line_keys }
         key_value_map["source"] = self.m_source_id
@@ -84,21 +107,51 @@ class DatasetValidity_LexicalValidity(DataQualityMetric):
         keys_in_order = list(DataQualityMetric.s_build_output_line_keys)
         keys_in_order.extend(DatasetValidity_LexicalValidity.s_eval_output_line_keys)
 
+        # Save the mean lexcal validity metric for chapters of each edition in the collection for this metric object
         key_value_map["submetric__collection_chapter_validity"] = self.m_evaluations["submetric"]["collection_chapter_validity"]
+
+        # Save the mean lexical validity metric for editions in the collection for this metric object
         key_value_map["submetric__collection_work_validity"] = self.m_evaluations["submetric"]["collection_work_validity"]
+
+        
         for work_title in self.m_results:
-            key_value_map["subsubmetric_collection_chapter_validity__edition_chapter_validity"] = \
+        
+            key_value_map[work_title] = {}
+
+            # Save lexical validity metrics for each individual chapter of this edition
+            for chapter_index in self.m_evaluations["subsubmetric"][work_title]["edition_chapter_validity_bychapter"]:
+                key_value_map[work_title][f"subsubmetric__edition_chapter_validity__{chapter_index}"] = \
+                    self.m_evaluations["subsubmetric"][work_title]["edition_chapter_validity_bychapter"][chapter_index]
+                keys_in_order.append(f"subsubmetric__edition_chapter_validity__{work_title}_{chapter_index}")
+            
+            # Save the mean lexical validity metric for the chapters of each edition
+            key_value_map[work_title][f"subsubmetric__edition_chapter_validity_{work_title}"] = \
                 self.m_evaluations["subsubmetric"][work_title]["edition_chapter_validity"]
-            key_value_map["subsubmetric_collection_work_validity__edition_work_validity"] = \
+            keys_in_order.append(f"subsubmetric__edition_chapter_validity_{work_title}")
+            
+            # Save the lexical validity metric for this individual edition
+            key_value_map[work_title]["subsubmetric__edition_work_validity"] = \
                 self.m_evaluations["subsubmetric"][work_title]["edition_work_validity"]
-            keys_in_order.append(f"subsubmetric_collection_chapter_validity__edition_chapter_validity")
-            keys_in_order.append(f"subsubmetric_collection_work_validity__edition_work_validity")
+            keys_in_order.append(f"subsubmetric__edition_work_validity_{work_title}")
+            
+            # Save keys in order for csv rows
+            keys_in_order.append(f"subsubmetric_collection_chapter_validity__edition_chapter_validity_{work_title}")
+            keys_in_order.append(f"subsubmetric_collection_work_validity__edition_work_validity_{work_title}")
 
-        # 3. Build line with key order [build keys, metric-specific evaluation keys]
-        line_dict = { key: key_value_map.get(key, None) for key in keys_in_order }
-        line_str_array = [line_dict[key] for key in keys_in_order]
+            # 3. Build line with key order [build keys, metric-specific evaluation keys]
+            line_dict = {}
+            for key in keys_in_order:
+                if key.startswith("subsubmetric__edition_chapter_validity__"):
+                    # Handle keys for chapter validity
+                    work_title, chapter_index = key.split("__")[2:]
+                    line_dict[key] = key_value_map.get(work_title, {}).get(f"subsubmetric__edition_chapter_validity__{chapter_index}", None)
+                else:
+                    # Handle other keys
+                    line_dict[key] = key_value_map.get(key, None)
 
-        return ",".join(map(str, line_str_array)) + "\n"        
+            line_str_array = [line_dict[key] for key in keys_in_order]
+
+            all_eval_lines.append(",".join(map(str, line_str_array)) + "\n")
 
     def __build_output_line__(self):
 
@@ -108,7 +161,7 @@ class DatasetValidity_LexicalValidity(DataQualityMetric):
             "work_title": self.m_work_title,
             "edition_title": os.path.basename(os.path.splitext(self.m_path)[0]) if len(os.path.basename(self.m_path)) else self.m_source_id,
             "metric": DatasetValidity_LexicalValidity.s_metric_name,
-            "value": self.m_evaluations["metric"],
+            "value": self.m_evaluations["metric"], # This is wrong
             "compared_against": self.baseline_source_id,
             "filename": os.path.basename(self.m_path),
             "filepath": self.m_path
@@ -175,8 +228,11 @@ class DatasetValidity_LexicalValidity(DataQualityMetric):
         # 1. Calculate evaluations of subsubmetrics
         self.m_evaluations["subsubmetric"] = { 
 
+            # NOTE: mean chapter validity is not going to differ much from edition validity, reconsider how this works
+            # Do we need a subsubsubmetric here? Where each chapter validity gets its own column for a work
             reader_name: {
 
+                "edition_chapter_validity_bychapter": [self.m_results[reader_name]["edition_chapter_validity"][index] for index in self.m_results[reader_name]["edition_chapter_validity"]],
                 "edition_chapter_validity": mean([self.m_results[reader_name]["edition_chapter_validity"][index] for index in self.m_results[reader_name]["edition_chapter_validity"]]),
                 "edition_work_validity": self.m_results[reader_name]["edition_work_validity"]
             }
@@ -195,6 +251,15 @@ class DatasetValidity_LexicalValidity(DataQualityMetric):
         self.m_evaluations["metric"] = mean(self.m_evaluations["submetric"].values())
 
         return self.metric_evaluation
+    
+    def output_results(self, p_output_filepath):
+
+        # Output evaluation details
+
+        print(f"Outputting results to: {p_output_filepath}")
+
+        with open(p_output_filepath, "w") as eval_output_file:
+            json.dump(self.eval_output, eval_output_file, indent=4)            
 
 
     # Static fields and methods
@@ -298,6 +363,11 @@ def main():
     print(validity_metric.output)
     print(f"{"=" * 80}")
     print(validity_metric.eval_output)
+
+    output_directory = "/Users/weirdbeard/Documents/school/aolm_full/experiments/outputs/"
+    script_run_time = datetime.now().strftime("%d%m%Y_%H%M%S")
+    output_filepath = f"{output_directory}{DatasetValidity_LexicalValidity.s_metric_name}_eval_out_{script_run_time}.json"
+    validity_metric.output_results(output_filepath)
 
 
 if "__main__" == __name__:
