@@ -81,18 +81,28 @@ from aolm_utilities import print_debug_header
 from dq_metric import DataQualityMetric
 from dq_metrics.dataset_completeness.metadata_sufficiency import DatasetCompleteness_MetadataSufficiency
 from dq_metrics.dataset_completeness.recordcounts_to_controlrecords import DatasetCompleteness_RecordCountsToControlRecords
+from dq_metrics.dataset_validity.lexical_validity import DatasetValidity_LexicalValidity, read_coha
 
 # Globals
 
 # String constants
+LV_METRIC_NAME = DatasetValidity_LexicalValidity.s_metric_name
 MS_METRIC_NAME = DatasetCompleteness_MetadataSufficiency.s_metric_name
 TR_METRIC_NAME = DatasetCompleteness_RecordCountsToControlRecords.s_metric_name
-WORK_TITLE = "Adventures of Huckleberry Finn"
+
+COHA = aolm_data_reading.COHA
 UR_EDITION = aolm_data_reading.MTPO
+PG = aolm_data_reading.PG
+WORK_TITLE = "Adventures of Huckleberry Finn"
+
 
 # For output and plotting after metric evaluation
 experiment_metrics = { source_id: 
     {
+        LV_METRIC_NAME: {
+            "metric": None,
+            "evaluation": None
+        },
         MS_METRIC_NAME: {
             "metric": None,
             "evaluation": None
@@ -117,6 +127,31 @@ experiment_metrics = { source_id:
 # Experiments
 
 # Metric run helper functions
+
+def run_huckfinn_dq_lexicalvalidity(p_source_id, p_edition_filenames=None):
+
+    # 0. Test setup
+
+    # A. Load Corpus of Historical American English lexicon
+    lexicon_filepath = "/Users/weirdbeard/Documents/school/aolm_full/data/lexicon/coha/lexicon.txt"
+    coha_lexicon = read_coha(lexicon_filepath)
+    
+    # B. Read the editions to be examined
+    pg_huckfinn_texts = aolm_data_reading.read_huckfinn_text(PG)
+
+    # 1. Compute the data quality metrics and evaluate them
+    validity_metric = DatasetValidity_LexicalValidity(
+        f"HuckFinn_{PG}_LexicalValidity",
+        pg_huckfinn_texts,
+        PG,
+        WORK_TITLE,
+        aolm_data_reading.huckfinn_source_fullnames[PG],
+        aolm_data_reading.huckfinn_directories[PG]["txt"],
+        coha_lexicon
+    )
+    validity_metric.compute()
+
+    return validity_metric
 
 def run_huckfinn_dq_metadatasufficiency(p_source_id, p_edition_filenames=None):
 
@@ -195,16 +230,19 @@ def read_and_compute_metrics():
 
         huckfinn_textdata = None
 
-        # A. Rate source_id editions data quality based on metadata sufficiency
+        # A. Rate individual source editions on lexical validity
+        experiment_metrics[source_id][LV_METRIC_NAME]["metric"] = run_huckfinn_dq_lexicalvalidity(source_id) 
+
+        # B. Rate source_id editions data quality based on metadata sufficiency
         experiment_metrics[source_id][MS_METRIC_NAME]["metric"] = \
             run_huckfinn_dq_metadatasufficiency(source_id)
 
-        # B. Rate individual source_id editions based on text record counts vs. ur edition
+        # C. Rate individual source_id editions based on text record counts vs. ur edition
         for edition_name in aolm_data_reading.huckfinn_edition_names[source_id]:
             experiment_metrics[source_id][TR_METRIC_NAME]["individual_editions"][edition_name]["metric"] = \
                 run_huckfinn_dq_textrecordcounts(source_id, [f"{edition_name}-HuckFinn.json"])
 
-        # C. Rate all source_id editions based on text record counts vs. ur edition
+        # D. Rate all source_id editions based on text record counts vs. ur edition
         experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["metric"] = \
             run_huckfinn_dq_textrecordcounts(source_id)
         
@@ -218,33 +256,41 @@ def evaluate_metrics():
 
         source_fullname = aolm_data_reading.huckfinn_source_fullnames[source_id]
 
-        # A. Metadata sufficiency
+        # A. Lexical validity
+        experiment_metrics[source_id][LV_METRIC_NAME]["evaluation"] = \
+            experiment_metrics[source_id][LV_METRIC_NAME]["metric"].evaluate()
+        print(f"{source_fullname} '{LV_METRIC_NAME}' metric: {experiment_metrics[source_id][LV_METRIC_NAME]["evaluation"]}")
+
+        # B. Metadata sufficiency
         experiment_metrics[source_id][MS_METRIC_NAME]["evaluation"] = \
             experiment_metrics[source_id][MS_METRIC_NAME]["metric"].evaluate()
         print(f"{source_fullname} '{MS_METRIC_NAME}' metric: {experiment_metrics[source_id][MS_METRIC_NAME]["evaluation"]}")
 
-        # B. Text record counts to control record by edition
+        # C. Text record counts to control record by edition
         for edition_name in aolm_data_reading.huckfinn_edition_names[source_id]:
             experiment_metrics[source_id][TR_METRIC_NAME]["individual_editions"][edition_name]["evaluation"] = \
                 experiment_metrics[source_id][TR_METRIC_NAME]["individual_editions"][edition_name]["metric"].evaluate()
             print(f"{source_fullname} '{TR_METRIC_NAME}' metric for {edition_name}: {experiment_metrics[source_id][TR_METRIC_NAME]["individual_editions"][edition_name]["evaluation"]}")
 
-        # C. Overall text record counts to control record of all editions from this source
+        # D. Overall text record counts to control record of all editions from this source
         experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["evaluation"] = \
             experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["metric"].evaluate()
         print(f"Overall {source_fullname} '{TR_METRIC_NAME}' metric: {experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["evaluation"]}")
 
-        # D. Evaluation for both metadata sufficiency and text record counts to control record
-        experiment_metrics[source_id]["overall_data_quality"] = mean([
-            experiment_metrics[source_id][MS_METRIC_NAME]["evaluation"],
-            experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["evaluation"]
-        ])
+        # E. Evaluation for lexical validity, metadata sufficiency, and text record counts to control record
+        # experiment_metrics[source_id]["overall_data_quality"] = mean([
+        #     experiment_metrics[source_id][LV_METRIC_NAME]["evaluation"],
+        #     experiment_metrics[source_id][MS_METRIC_NAME]["evaluation"],
+        #     experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["evaluation"]
+        # ])
 
         metric_weights = {
-            MS_METRIC_NAME: 0.25,
-            TR_METRIC_NAME: 0.75
+            LV_METRIC_NAME: 0.1,
+            MS_METRIC_NAME: 0.2,
+            TR_METRIC_NAME: 0.7
         }
         experiment_metrics[source_id]["overall_data_quality"] = \
+            (metric_weights[LV_METRIC_NAME] * experiment_metrics[source_id][LV_METRIC_NAME]["evaluation"]) + \
             (metric_weights[MS_METRIC_NAME] * experiment_metrics[source_id][MS_METRIC_NAME]["evaluation"]) + \
             (metric_weights[TR_METRIC_NAME] * experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["evaluation"])
         print(f"Overall {source_fullname} data quality: {experiment_metrics[source_id]["overall_data_quality"]}")
@@ -255,7 +301,17 @@ def output_results(p_output_filepath):
 
     # 1. Output evaluation details
 
-    # A. Metadata sufficiency 
+    # A. Lexical validity
+    for source_id in aolm_data_reading.huckfinn_source_fullnames:
+
+        # Skip ur edition
+        if UR_EDITION == source_id:
+            continue
+
+        eval_lv_output_filepath = p_output_filepath.replace(".json", f"_eval_{LV_METRIC_NAME}_{source_id}.json")
+        experiment_metrics[source_id][LV_METRIC_NAME]["metric"].output_results(eval_lv_output_filepath)
+
+    # B. Metadata sufficiency 
     eval_ms_output_filepath = p_output_filepath.replace(".csv", f"_eval_{MS_METRIC_NAME}.csv")
     
     with open(eval_ms_output_filepath, "w") as eval_output_file:
@@ -271,7 +327,7 @@ def output_results(p_output_filepath):
             
             eval_output_file.write(experiment_metrics[source_id][MS_METRIC_NAME]["metric"].eval_output)
 
-    # B. Text record counts to control records
+    # C. Text record counts to control records
     eval_tr_output_filepath = p_output_filepath.replace(".csv", f"_eval_{TR_METRIC_NAME}.csv")
 
     # Gather all column names from the metric instances
@@ -337,17 +393,20 @@ def output_results(p_output_filepath):
             if UR_EDITION == source_id:
                 continue
 
-            # A. Metadata sufficiency
+            # A. Lexical validity
+            output_file.write(experiment_metrics[source_id][LV_METRIC_NAME]["metric"].output)
+
+            # B. Metadata sufficiency
             output_file.write(experiment_metrics[source_id][MS_METRIC_NAME]["metric"].output)
 
-            # B. Text record counts to control records for individual editions vs. ur edition
+            # C. Text record counts to control records for individual editions vs. ur edition
             for edition_name in aolm_data_reading.huckfinn_edition_names[source_id]:
                 output_file.write(experiment_metrics[source_id][TR_METRIC_NAME]["individual_editions"][edition_name]["metric"].output)
 
-            # C. Overall text record counts to control record of all editions from this source
+            # D. Overall text record counts to control record of all editions from this source
             output_file.write(experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["metric"].output)
 
-            # D. Overall data quality measurement of the source_id editions vs. ur edition
+            # E. Overall data quality measurement of the source_id editions vs. ur edition
             output_file.write(f"Overall Quality:,{experiment_metrics[source_id]["overall_data_quality"]}\n")
 
 def plot_results(p_output_filepath):
@@ -474,7 +533,7 @@ def main():
         script_run_time = datetime.now().strftime("%d%m%Y_%H%M%S")
 
         # Results file
-        output_filepath = f"{os.getcwd()}{os.sep}experiments{os.sep}outputs{os.sep}huckfinn_dq_experiment_{script_run_time}.csv"
+        output_filepath = f"{os.getcwd()}{os.sep}experiments{os.sep}outputs{os.sep}huckfinn_dq_experiment_{script_run_time}.json"
 
         # 1. Read dataset(s)/Compute metrics
         print_debug_header("Reading datasets and computing data quality metrics")
