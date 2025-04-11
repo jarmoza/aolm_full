@@ -720,6 +720,11 @@ Chollet (60): “Picking the right network architecture is more an art than a sc
 
 Chollet (223): “As always, deep learning is more an art than a science. We can provide guidelines that suggest what is likely to work or not work on a given problem, but, ultimately, every problem is unique; you’ll have to evaluate different strategies empirically. There is currently no theory that will tell you in advance precisely what you should do to optimally solve a problem. You must iterate.”</Text>
         </Document>
+        <Document ID="7B1506A4-8DB3-4355-A80F-AA8F985CC50D">
+            <Title>April 9,  2025</Title>
+            <Text>- Wrote a function to calculate dq metrics for the ur edition (MTPO). You can only calculate so many of them however because many dq metrics depend on comparing to other editins (intra-collection, i.e. metadata suffiency) or against an ur edition (extra-collection, i.e. text records to control records). In that case, the dq metric value is 100% (or 1.0). However, metrics that are compared against sources outside of both the ur edition and compared collections can be done (i.e. lexical validity)
+- It’s not clear how useful it is to calculate the dq metrics for an ur edition, but it could possibly give a rough idea of generic measurements of quality of the edition. These can be used in comparison to the dq metric values for compared editions</Text>
+        </Document>
         <Document ID="A33A2A02-AB5A-4D5C-BD3F-F7469E4EF934">
             <Text>December 20, 2024
 
@@ -2002,6 +2007,14 @@ Part 2
 While delta has been used as a means of understanding the closeness between documents and thus likelihood of attribution for works of unclear authorship, it also can be a touchstone in this quest for producing a measure of literary data quality. Since delta 
 </Text>
         </Document>
+        <Document ID="4C012669-0C9D-46AD-9433-A9C8A4856D6E">
+            <Title>April 8 2025</Title>
+            <Text>- Wrapped up lexical validity metric
+- Changed all metric outputs thus far from csv to json as this csv output was taking too long to code and the output files were getting too onerous to interpret
+- Integrated lexical validity into the Huck finn experiment script
+- Ran the Huck finn experiment script with the 3 data quality metrics running over Gutenberg, Internet Archive, and Mark Twain Project editions of Huckleberry Finn
+</Text>
+        </Document>
         <Document ID="91DD5783-4DD6-4C00-8517-8875B63682D5">
             <Title>Outlining</Title>
         </Document>
@@ -2524,9 +2537,6 @@ The following tasks are yet to be done to achieve those 3 components:
         <Document ID="EFB56A5F-5C91-4A0E-BEDB-02EC3176EA77">
             <Title>Preparatory</Title>
         </Document>
-        <Document ID="2C07058D-20FF-46B8-B782-64B2D4A3B0E1">
-            <Title>Code Documentation</Title>
-        </Document>
         <Document ID="05CA0104-0AED-40AF-BB73-4D2881624A9E">
             <Title>March 31, 2025</Title>
             <Text>Thoughts from this morning (transcribed from audio note on March 31, 2025)
@@ -2575,6 +2585,9 @@ There is value in doing the work itself, of course, because we build our skills,
 To get an answer quite quickly is a very powerful and very useful thing. But in order for that to happen accurately we need to make sure that the underlying data is accurate and that is not something that we can just rely on central tendency for. We do need to make sure that our data is good so that we can use it for all of these kinds of purposes into the future.
 
 </Text>
+        </Document>
+        <Document ID="2C07058D-20FF-46B8-B782-64B2D4A3B0E1">
+            <Title>Code Documentation</Title>
         </Document>
         <Document ID="7BA5F431-9325-4331-8B88-315BCBA7DED4">
             <Title>June 17, 2019</Title>
