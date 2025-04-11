@@ -59,6 +59,7 @@
 
 # Built-ins
 import csv
+import json
 import os
 import sys
 from datetime import datetime
@@ -97,6 +98,7 @@ WORK_TITLE = "Adventures of Huckleberry Finn"
 
 
 # For output and plotting after metric evaluation
+
 experiment_metrics = { source_id: 
     {
         LV_METRIC_NAME: {
@@ -120,7 +122,38 @@ experiment_metrics = { source_id:
             }
         },
         "overall_data_quality": None
-    } for source_id in aolm_data_reading.huckfinn_source_fullnames if aolm_data_reading.MTPO != source_id
+    } for source_id in aolm_data_reading.huckfinn_source_fullnames if UR_EDITION != source_id
+}
+
+metric_weights = {
+
+    LV_METRIC_NAME: 0.1,
+    MS_METRIC_NAME: 0.2,
+    TR_METRIC_NAME: 0.7
+}
+
+ur_metrics = { UR_EDITION: {
+
+        LV_METRIC_NAME: {
+
+            "metric": None,
+            "evaluation": None
+        },
+
+        MS_METRIC_NAME: {
+
+            "metric": 1.0,
+            "evaluation": None
+        },
+
+        TR_METRIC_NAME: {
+
+            "metric": 1.0,
+            "evaluation": None
+        },
+
+        "overall_data_quality": None
+    }
 }
 
 
@@ -137,16 +170,16 @@ def run_huckfinn_dq_lexicalvalidity(p_source_id, p_edition_filenames=None):
     coha_lexicon = read_coha(lexicon_filepath)
     
     # B. Read the editions to be examined
-    pg_huckfinn_texts = aolm_data_reading.read_huckfinn_text(PG)
+    pg_huckfinn_texts = aolm_data_reading.read_huckfinn_text(p_source_id)
 
     # 1. Compute the data quality metrics and evaluate them
     validity_metric = DatasetValidity_LexicalValidity(
-        f"HuckFinn_{PG}_LexicalValidity",
+        f"HuckFinn_{p_source_id}_LexicalValidity",
         pg_huckfinn_texts,
-        PG,
+        p_source_id,
         WORK_TITLE,
-        aolm_data_reading.huckfinn_source_fullnames[PG],
-        aolm_data_reading.huckfinn_directories[PG]["txt"],
+        aolm_data_reading.huckfinn_source_fullnames[p_source_id],
+        aolm_data_reading.huckfinn_directories[p_source_id]["txt"],
         coha_lexicon
     )
     validity_metric.compute()
@@ -284,11 +317,6 @@ def evaluate_metrics():
         #     experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["evaluation"]
         # ])
 
-        metric_weights = {
-            LV_METRIC_NAME: 0.1,
-            MS_METRIC_NAME: 0.2,
-            TR_METRIC_NAME: 0.7
-        }
         experiment_metrics[source_id]["overall_data_quality"] = \
             (metric_weights[LV_METRIC_NAME] * experiment_metrics[source_id][LV_METRIC_NAME]["evaluation"]) + \
             (metric_weights[MS_METRIC_NAME] * experiment_metrics[source_id][MS_METRIC_NAME]["evaluation"]) + \
@@ -325,7 +353,7 @@ def output_results(p_output_filepath):
             if UR_EDITION == source_id:
                 continue
             
-            eval_output_file.write(experiment_metrics[source_id][MS_METRIC_NAME]["metric"].eval_output)
+            json.dump(experiment_metrics[source_id][MS_METRIC_NAME]["metric"].eval_output, eval_output_file, indent=4)
 
     # C. Text record counts to control records
     eval_tr_output_filepath = p_output_filepath.replace(".csv", f"_eval_{TR_METRIC_NAME}.csv")
@@ -433,6 +461,30 @@ def plot_results(p_output_filepath):
              height=400)
     fig.show()
 
+def compute_and_evaluate_ur_edition():
+
+    source_fullname = aolm_data_reading.huckfinn_source_fullnames[UR_EDITION]
+
+    # 1. Rate individual source editions on lexical validity
+    ur_metrics[UR_EDITION][LV_METRIC_NAME]["metric"] = run_huckfinn_dq_lexicalvalidity(UR_EDITION)
+    ur_metrics[UR_EDITION][LV_METRIC_NAME]["evaluation"] = \
+        ur_metrics[UR_EDITION][LV_METRIC_NAME]["metric"].evaluate()
+
+    # 2. Since there is no other edition to compare to metadata suffiency is 100%
+    ur_metrics[UR_EDITION][MS_METRIC_NAME]["metric"] = 1.0
+
+    # 3. Since there is no other edition to compare to text records to control records is 100%
+    ur_metrics[UR_EDITION][TR_METRIC_NAME]["metric"] = 1.0
+
+    # 4. Compute overall data quality for the ur edition
+    ur_metrics[UR_EDITION]["overall_data_quality"] = \
+        (metric_weights[LV_METRIC_NAME] * ur_metrics[UR_EDITION][LV_METRIC_NAME]["evaluation"]) + \
+        (metric_weights[MS_METRIC_NAME] * ur_metrics[UR_EDITION][MS_METRIC_NAME]["metric"]) + \
+        (metric_weights[TR_METRIC_NAME] * ur_metrics[UR_EDITION][TR_METRIC_NAME]["metric"])
+    print(f"Overall {source_fullname} data quality for ur edition: {ur_metrics[UR_EDITION]["overall_data_quality"]}")
+
+    
+
 # Test
 
 def plot_results2(p_output_filepath):
@@ -509,6 +561,8 @@ def main():
     # if True:
     #     return    
 
+    # 1. Run data quality metrics over selected collections/editions of texts
+
     # Experiment Description
 
     # Dataset Completeness for sources of Adventures of Huckleberry Finn by Mark Twain:
@@ -550,6 +604,12 @@ def main():
     # 4. Visualize metric with metric min falloff chart
     # print_debug_header("Plotting results")
     # plot_results(output_filepath)
+
+    # 2. Run data quality metrics over ur edition
+    # NOTE: Since some metrics require comparison against ur edition
+    # so if that's the case the ur edition would naturally get 100% for that metric
+    compute_and_evaluate_ur_edition()
+
 
 if "__main__" == __name__:
 
