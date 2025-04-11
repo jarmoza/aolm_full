@@ -44,6 +44,8 @@ class DatasetCompleteness_RecordCountsToControlRecords(DataQualityMetric):
         key_value_map["metric"] = DatasetCompleteness_RecordCountsToControlRecords.s_metric_name
         key_value_map["value"] = self.m_evaluations["metric"]
 
+        return key_value_map
+
     def __build_output_line__(self):
 
         key_value_map = {
