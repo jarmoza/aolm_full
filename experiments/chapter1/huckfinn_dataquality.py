@@ -170,9 +170,12 @@ def run_huckfinn_dq_lexicalvalidity(p_source_id, p_edition_filenames=None):
     coha_lexicon = read_coha(lexicon_filepath)
     
     # B. Read the editions to be examined
-    pg_huckfinn_texts = aolm_data_reading.read_huckfinn_text(p_source_id)
+    print(f"Reading text of editions of {WORK_TITLE} from {aolm_data_reading.huckfinn_source_fullnames[p_source_id]}...")
+    pg_huckfinn_texts = aolm_data_reading.read_huckfinn_text(p_source_id, p_edition_filenames)
 
     # 1. Compute the data quality metrics and evaluate them
+    edition_str = "all editions" if None == p_edition_filenames else "editions " + ", ".join(p_edition_filenames)
+    print(f"Computing '{LV_METRIC_NAME}' for {edition_str} of {WORK_TITLE} from {aolm_data_reading.huckfinn_source_fullnames[p_source_id]}...")
     validity_metric = DatasetValidity_LexicalValidity(
         f"HuckFinn_{p_source_id}_LexicalValidity",
         pg_huckfinn_texts,
@@ -323,94 +326,62 @@ def evaluate_metrics():
             (metric_weights[TR_METRIC_NAME] * experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["evaluation"])
         print(f"Overall {source_fullname} data quality: {experiment_metrics[source_id]["overall_data_quality"]}")
 
-def output_results(p_output_filepath):
+def output_results(p_script_run_time):
 
-    print(f"Outputting results to: {p_output_filepath}")
+    # Overall data quality results file
+    output_filepath = f"{os.getcwd()}{os.sep}experiments{os.sep}outputs{os.sep}huckfinn_dq_experiment_{p_script_run_time}.csv"
 
     # 1. Output evaluation details
 
     # A. Lexical validity
+    eval_lv_output_filepath = output_filepath.replace(".json", f"_eval_{LV_METRIC_NAME}.json")
+
+    lv_eval_output = { source_id: experiment_metrics[source_id][LV_METRIC_NAME]["metric"].eval_output \
+        for source_id in aolm_data_reading.huckfinn_source_fullnames if UR_EDITION != source_id }
+
+    print(f"Outputting {LV_METRIC_NAME} results to: {eval_lv_output_filepath}")
+    with open(eval_lv_output_filepath, "w") as eval_output_file:
+        json.dump(lv_eval_output, eval_output_file, indent=4)
+
+    # B. Metadata sufficiency 
+    eval_ms_output_filepath = output_filepath.replace(".json", f"_eval_{MS_METRIC_NAME}.json")
+
+    ms_eval_output = { source_id: experiment_metrics[source_id][MS_METRIC_NAME]["metric"].eval_output \
+        for source_id in aolm_data_reading.huckfinn_source_fullnames if UR_EDITION != source_id }
+    
+    print(f"Outputting {MS_METRIC_NAME} results to: {eval_lv_output_filepath}")
+    with open(eval_ms_output_filepath, "w") as eval_output_file:
+        json.dump(ms_eval_output, eval_output_file, indent=4)
+
+    # C. Text record counts to control records
+    eval_tr_output_filepath = output_filepath.replace(".json", f"_eval_{TR_METRIC_NAME}.json")
+
+    # I. Merge all json evaluation data from text record counts to control record metrics
+    tr_eval_output = {}
     for source_id in aolm_data_reading.huckfinn_source_fullnames:
 
         # Skip ur edition
         if UR_EDITION == source_id:
             continue
 
-        eval_lv_output_filepath = p_output_filepath.replace(".json", f"_eval_{LV_METRIC_NAME}_{source_id}.json")
-        experiment_metrics[source_id][LV_METRIC_NAME]["metric"].output_results(eval_lv_output_filepath)
+        # Individual edition and overall source metrics evaluation data
+        tr_eval_output[source_id] = {
 
-    # B. Metadata sufficiency 
-    eval_ms_output_filepath = p_output_filepath.replace(".csv", f"_eval_{MS_METRIC_NAME}.csv")
-    
-    with open(eval_ms_output_filepath, "w") as eval_output_file:
+            "individual_editions": { 
+                edition_name: experiment_metrics[source_id][TR_METRIC_NAME]["individual_editions"][edition_name]["metric"].eval_output \
+                    for edition_name in aolm_data_reading.huckfinn_edition_names[source_id]
+            },
+            "overall": experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["metric"].eval_output
+        }
 
-        # Output csv header
-        DatasetCompleteness_MetadataSufficiency.write_eval_output_header(eval_output_file)
-
-        for source_id in aolm_data_reading.huckfinn_source_fullnames:
-
-            # Skip ur edition
-            if UR_EDITION == source_id:
-                continue
-            
-            json.dump(experiment_metrics[source_id][MS_METRIC_NAME]["metric"].eval_output, eval_output_file, indent=4)
-
-    # C. Text record counts to control records
-    eval_tr_output_filepath = p_output_filepath.replace(".csv", f"_eval_{TR_METRIC_NAME}.csv")
-
-    # Gather all column names from the metric instances
-    tr_eval_column_names = []
-    for source_id in aolm_data_reading.huckfinn_source_fullnames:
-
-            # Skip ur edition
-            if UR_EDITION == source_id:
-                continue
-
-            # Gather column names for individual edition (only do it once per
-            # source since each edition evaluation will contain the same columns)
-            for edition_name in aolm_data_reading.huckfinn_edition_names[source_id]:
-                eval_columns = experiment_metrics[source_id][TR_METRIC_NAME]["individual_editions"][edition_name]["metric"].eval_output_header.strip().split(",")    
-                for column in eval_columns:
-                    if column not in tr_eval_column_names:
-                        tr_eval_column_names.append(column)
-                break
-
-            # eval_columns = experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["metric"].eval_output_header.strip().split(",")
-            # for column in eval_columns:
-            #     if column not in tr_eval_column_names:
-            #         tr_eval_column_names.append(column)
-
+    # II. Output all metric evaluation data to a single file
+    print(f"Outputting {TR_METRIC_NAME} results to: {eval_lv_output_filepath}")
     with open(eval_tr_output_filepath, "w") as eval_output_file:
+        json.dump(tr_eval_output, eval_tr_output_filepath, indent=4)
 
-        # Output csv header
-        eval_output_file.write(",".join(tr_eval_column_names) + "\n")
-
-        # DatasetCompleteness_RecordCountsToControlRecords.write_eval_output_header(eval_output_file)
-
-        for source_id in aolm_data_reading.huckfinn_source_fullnames:
-
-            # Skip ur edition
-            if UR_EDITION == source_id:
-                continue
-
-            for edition_name in aolm_data_reading.huckfinn_edition_names[source_id]:
-                eval_output_dict = experiment_metrics[source_id][TR_METRIC_NAME]["individual_editions"][edition_name]["metric"].eval_output
-                values_list = []
-                for key in tr_eval_column_names:
-                    values_list.append(str(eval_output_dict[key]) if key in eval_output_dict else "N/A")
-                eval_output_file.write(",".join(values_list) + "\n")
-
-            # Suggest edition name "sourceid_overall" here?
-            eval_output_dict = experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["metric"].eval_output
-            values_list = []
-            for key in tr_eval_column_names:
-                values_list.append(str(eval_output_dict[key]) if key in eval_output_dict else "N/A")
-            eval_output_file.write(",".join(values_list) + "\n")
-
-    
     # 2. Output top level stats
-
-    with open(p_output_filepath, "w") as output_file:
+    print(f"Outputting overall data quality results to: {output_filepath}")
+    with open(output_filepath, "w") as output_file:
 
         # Output csv header
         DataQualityMetric.write_output_header(output_file)
@@ -427,14 +398,16 @@ def output_results(p_output_filepath):
             # B. Metadata sufficiency
             output_file.write(experiment_metrics[source_id][MS_METRIC_NAME]["metric"].output)
 
-            # C. Text record counts to control records for individual editions vs. ur edition
+            # C. Text record counts to control records
+
+            # I. Individual editions vs. ur edition
             for edition_name in aolm_data_reading.huckfinn_edition_names[source_id]:
                 output_file.write(experiment_metrics[source_id][TR_METRIC_NAME]["individual_editions"][edition_name]["metric"].output)
 
-            # D. Overall text record counts to control record of all editions from this source
+            # II. Overall text record counts to control record of all editions from this source
             output_file.write(experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["metric"].output)
 
-            # E. Overall data quality measurement of the source_id editions vs. ur edition
+            # D. Overall data quality measurement of the source_id editions vs. ur edition
             output_file.write(f"Overall Quality:,{experiment_metrics[source_id]["overall_data_quality"]}\n")
 
 def plot_results(p_output_filepath):
@@ -586,9 +559,6 @@ def main():
         # Run time saved for output file
         script_run_time = datetime.now().strftime("%d%m%Y_%H%M%S")
 
-        # Results file
-        output_filepath = f"{os.getcwd()}{os.sep}experiments{os.sep}outputs{os.sep}huckfinn_dq_experiment_{script_run_time}.json"
-
         # 1. Read dataset(s)/Compute metrics
         print_debug_header("Reading datasets and computing data quality metrics")
         read_and_compute_metrics()
@@ -599,7 +569,7 @@ def main():
 
         # 3. Output results for data quality metrics to csv file
         print_debug_header("Outputting metric results")
-        output_results(output_filepath)
+        output_results(script_run_time)
     
     # 4. Visualize metric with metric min falloff chart
     # print_debug_header("Plotting results")
