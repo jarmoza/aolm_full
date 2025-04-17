@@ -1331,11 +1331,11 @@ Some notes from Coleman
 
 “While we began our project with the hope of establising repeatable processes for in-line measurements, ultimately we produced a set of measurement types that can be applied at different points in the general process of data assessment: initial assessments that establish the baseline condition of the data, the data model, and the metadata; process controls that assure the integrity of data as it moves between or within systems; in-line measurmenets taken as part of data processing; periodic measurments that test the integrity of data relationships within a database; and periodic assessmentsthat analyze the sufficiency of database content to meet the ongoing needs of the organization.”
 
-This implies that measuring data quality for literary modeling and analysis can take place at several stages for a project: namely the initial in-take of data using (hopefully) generalized measurement scripts, and then continually after each round of textual clean up (if the researcher chooses to do so). In turn, measuring iteratively can convey the degrees of efficacy of each separate clean up process. Since the overall dq is meted out across several metrics this gives a more detailed look at the efficacy of those cleanup processes. This may then for future researchers indicate which process is more worth of their time. Then of course measuring dq at the final iteration, after all cleanup is done, can indicate the dq of the dataset at time of usage for modeling and for subsequent researchers who may want to reuse the now cleaned up dataset.
+This implies that measuring data quality for literary modeling and analysis can gtake place at several stages for a project: namely the initial in-take of data using (hopefully) generalized measurement scripts, and then continually after each round of textual clean up (if the researcher chooses to do so). In turn, measuring iteratively can convey the degrees of efficacy of each separate clean up process. Since the overall dq is meted out across several metrics this gives a more detailed look at the efficacy of those cleanup processes. This may then for future researchers indicate which process is more worth of their time. Then of course measuring dq at the final iteration, after all cleanup is done, can indicate the dq of the dataset at time of usage for modeling and for subsequent researchers who may want to reuse the now cleaned up dataset.
 
 Spatialization and Data Quality Assessment (Voice memo from April 10)
 
-Since data quality assessment is done over several metrics, we can easily translate these measurements into a vector space. In turn, we can compare datasets across the various dimensions of that vector space to see where the strengths and weaknesses of each lay. This, of course, can be represented visually. Additionally, weighting schemes for the individual metrics may still be used, but those weightings would have to be treated in linear algebra terms as a subspace for proper comparisons if datasets with different weightings were to be wanted to be compared in a similar vector space. The weighting remains useful however, because that data quality assessment with weights remains meaningful when we consider how the SME weighs the relative importance of particular qualities of a dataset. [See the Piper/Algee-Hewitt Goethe paper for unique spatial representation of vector-based text models, entitled, “The Werther Effect 1: Goethe, Objecthood, and the Handling of Knowledge”]
+Since data quality assessment is done over several metrics, we can easily translate these measurements into a vector space. In turn, we can compare datasets across the various dimensions of that vector space to see where the strengths and weaknesses of each lay. This, of course, can be represented visually. Additionally, weighting schemes for the individual metrics may still be used, but those weightings would have to be treated – in linear algebra terms – as a subspace for proper comparison if it were desired for datasets with different weighting schemes to be compared in a similar vector space. That translation aside the weighting of metrics remains useful and meaningful when we consider how a subject matter expert weighs the relative importance of particular qualities of a dataset. [See the Piper/Algee-Hewitt Goethe paper for unique spatial representation of vector-based text models, entitled, “The Werther Effect 1: Goethe, Objecthood, and the Handling of Knowledge”]
 
 Transcription from yesterday’s (April 10) writing session at Black Bean Deli
 
@@ -1512,6 +1512,20 @@ Sebastian Coleman on Data and Architecture
 	◆	Floridi: Information. A Very Short Introduction. Oxford: Oxford Univ. Press, 2010, 22-25.
 	◆	Mehta and Sahni (eds.): Handbook of Data Structures and Applications. Boca Raton: Chapman &amp; Hall/CRC, 2005, section “Basic Structures.”
 </Text>
+        </Document>
+        <Document ID="6A835642-069A-49E4-AFE5-F97F2213F50B">
+            <Title>April 15, 2025</Title>
+            <Text>TODO:
+
+PENDING - Finishing conversion of Huck Finn experiment output from csv to json
+- Finish analyzing if earlier consistency and integrity metrics are salvagable or if they were simple merged conceptually with the new completeness and validity metrics
+- Put recent prose into context of the Chapter 1 outline
+
+Current Issues:
+
+- One of the DNI HuckFinn’s is not computing edition chapter validity for the lexical validity metric.
+
+============================</Text>
         </Document>
         <Document ID="910FA819-842F-457F-8255-050A41E87DB1">
             <Title>Knowledge Organization and Data Modeling in the Humanities - White Paper</Title>
@@ -2258,6 +2272,30 @@ Moving forward from that sensibility for data quality as foundation for modeling
 The project's object of study for assessing "literary" model quality will be a work comparatively opaque because of its very size: The Autobiography of Mark Twain. Often joked about by Twain scholars as a work popularly bought but not read, the autobiography dictated by Twain and purposefully delayed in release by 100 years after his death, spans three volumes and roughly 2,300 pages. The digital version of this work, in TEI form, has been supplied to me via the Mark Twain Project Online at University of California, Berkeley. Extending from the general question of modeling literature as data, this project looks to uncover new insights about Twain's sizable autobiography via computational models of it produced with the aid of these model quality metrics that have been adapted to consider specific epistemological and subject matter contexts in humanities research.
 
 The publication of Mark Twain’s autobiography 100 years after his death presented a difficult proposition for the reading public at the time of its publication due to its unwieldy size of over 2000 pages, stretched across three volumes. The work also presents an opportunity for computational text analysis to provide scholarly insights on the autiobiography where a more traditional close reading might prove difficult. My dissertation, ‘The Art of Literary Modeling’ , describes and demonstrates several new scholarly activities that provide context-sensitive, evidentiary bases for making interpretive claims from computational models of literature. Its first chapter attempts to answer the question, "What does it mean to read literature as data?" That chapter's discussion of "literary" data quality looked to Emily Dickinson's poetry and its complex publication history.</Text>
+        </Document>
+        <Document ID="B6D215D2-EADE-45C0-AE84-24D800AAC436">
+            <Title>April 14, 2025</Title>
+            <Text>TODO:
+
+PENDING - Finishing conversion of Huck Finn experiment output from csv to json
+- Finish analyzing if earlier consistency and integrity metrics are salvagable or if they were simple merged conceptually with the new completeness and validity metrics
+- Put recent prose into context of the Chapter 1 outline
+DONE - Get drugs from pharmacy
+- Work out at YMCA
+
+Note for tomorrow: One of the DNI HuckFinn’s is not computing edition chapter validity for lexical validity metric
+
+============================
+
+Tribute/Message for Peter Gibian
+
+Peter,
+
+I couldn’t thank you enough for making me feel at home in Montréal after traipsing all the way from a land we both inhabited: the San Francisco Bay area. Your courses and your counsel have been instrumental in my thinking on 19th century American literature and American history, but really literary studies in general and straight on into the digital humanities I practice to this day. The joy and enthusiasm you conveyed and in turn I felt for reading and studying literature is something I have long appreciated and admired. And when the deadlines mounted or I needed help thinking through something I always viewed you as a reliable ear, a friend, and a source of wisdom and still do to this day. You’ll be happy to know I’m no longer writing about “Bartleby”, but am at this moment trying to finish my dissertation that involves the works of Twain and Dickinson…and, okay, some Melville too. I was actually planning on reaching out to you recently, and here they hunted me down to get a quote. Watch out for a message from me soon, but in the meantime I want to wish you all the best in your retirement whatever you plan on doing. Knowing you you’ll probably be traveling and spreading some much-needed American cosmopolitanism.
+
+Best and talk to you soon,
+
+Jonathan Armoza</Text>
         </Document>
         <Document ID="1C045CA1-D0A8-4F04-96E9-7CCD4369D114">
             <Title>June 10, 2019</Title>
