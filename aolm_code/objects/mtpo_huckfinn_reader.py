@@ -31,9 +31,14 @@ class MTPOHuckFinnReader(AOLMTextReader):
     # Properties
 
     @property
+    def body(self):
+        body_lines = []
+        for index in range(1, self.chapter_count + 1):  # Fix the range to include the last chapter
+            body_lines.extend(self.get_chapter(index))
+        return body_lines
+    @property
     def chapter_count(self):
         return len(self.m_aolm_text.m_body.find_all("div1", attrs={"type": "chapter"}))
-
     @property
     def soup(self):
         return self.m_tei_soup
@@ -69,6 +74,10 @@ class MTPOHuckFinnReader(AOLMTextReader):
 
         return text_lines
 
+    def has_chapter(self, p_chapter_number):
+
+        return len(self.get_chapter(p_chapter_number)) > 0
+    
     def read(self):
 
         with open(self.filepath, "r") as tei_file:
