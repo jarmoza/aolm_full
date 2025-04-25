@@ -96,6 +96,11 @@ UR_EDITION = aolm_data_reading.MTPO
 PG = aolm_data_reading.PG
 WORK_TITLE = "Adventures of Huckleberry Finn"
 
+# Variables
+
+# Used to store already read Adventures of Huckleberry Finn editions
+huckfinn_textdata = {}
+coha_lexicon = None
 
 # For output and plotting after metric evaluation
 
@@ -161,31 +166,43 @@ ur_metrics = { UR_EDITION: {
 
 # Metric run helper functions
 
+def select_huckfinn_textdata(p_source_id, p_edition_filenames=None):
+
+    if p_edition_filenames:
+        return { edition_filename: huckfinn_textdata[p_source_id][edition_filename] for edition_filename in p_edition_filenames }
+    else:
+        return huckfinn_textdata[p_source_id]
+
 def run_huckfinn_dq_lexicalvalidity(p_source_id, p_edition_filenames=None):
+
+    global coha_lexicon
 
     # 0. Test setup
 
     # A. Load Corpus of Historical American English lexicon
     lexicon_filepath = "/Users/weirdbeard/Documents/school/aolm_full/data/lexicon/coha/lexicon.txt"
-    coha_lexicon = read_coha(lexicon_filepath)
+    if not coha_lexicon:
+        coha_lexicon = read_coha(lexicon_filepath)
     
     # B. Read the editions to be examined
-    print(f"Reading text of editions of {WORK_TITLE} from {aolm_data_reading.huckfinn_source_fullnames[p_source_id]}...")
-    pg_huckfinn_texts = aolm_data_reading.read_huckfinn_text(p_source_id, p_edition_filenames)
+    # pg_huckfinn_texts = aolm_data_reading.read_huckfinn_text(p_source_id, p_edition_filenames)
+    huckfinn_texts = select_huckfinn_textdata(p_source_id, p_edition_filenames)
 
     # 1. Compute the data quality metrics and evaluate them
     edition_str = "all editions" if None == p_edition_filenames else "editions " + ", ".join(p_edition_filenames)
     print(f"Computing '{LV_METRIC_NAME}' for {edition_str} of {WORK_TITLE} from {aolm_data_reading.huckfinn_source_fullnames[p_source_id]}...")
     validity_metric = DatasetValidity_LexicalValidity(
         f"HuckFinn_{p_source_id}_LexicalValidity",
-        pg_huckfinn_texts,
+        huckfinn_texts,
         p_source_id,
         WORK_TITLE,
         aolm_data_reading.huckfinn_source_fullnames[p_source_id],
         aolm_data_reading.huckfinn_directories[p_source_id]["txt"],
         coha_lexicon
     )
-    validity_metric.compute()
+    # NOTE: Special carveout for MTPO compute because its aolm_text's body is a BeautifulSoup object for the TEI <body> tag.
+    # MTPO Reader contains a more typical body property that returns lines of the full text's body
+    validity_metric.compute(p_use_reader_body=p_source_id is UR_EDITION)
 
     return validity_metric
 
@@ -224,10 +241,11 @@ def run_huckfinn_dq_textrecordcounts(p_source_id, p_edition_filenames=None):
     # NOTE: Make sure p_huckfinn_textdata matches the edition filenames passed in
 
     # 1. Read ur text and subject texts
-    print(f"Reading text of editions of {WORK_TITLE} from {aolm_data_reading.huckfinn_source_fullnames[p_source_id]}...")
-    huckfinn_textdata = aolm_data_reading.read_huckfinn_text(p_source_id, p_edition_filenames)
-    print(f"Reading text of edition of {WORK_TITLE} from {aolm_data_reading.huckfinn_source_fullnames[aolm_data_reading.MTPO]} as the control record...")
-    huckfinn_textdata[aolm_data_reading.MTPO] = aolm_data_reading.read_marktwain_project_online_text()
+    # huckfinn_textdata = aolm_data_reading.read_huckfinn_text(p_source_id, p_edition_filenames)
+    huckfinn_texts = {}
+    huckfinn_texts = select_huckfinn_textdata(p_source_id, p_edition_filenames)
+    # huckfinn_textdata[aolm_data_reading.MTPO] = aolm_data_reading.read_huckfinn_text(aolm_data_reading.MTPO)
+    huckfinn_texts.update(select_huckfinn_textdata(aolm_data_reading.MTPO))
 
     # 2. Create the data quality metric
     edition_str = "all editions" if None == p_edition_filenames else "editions " + ", ".join(p_edition_filenames)
@@ -237,7 +255,7 @@ def run_huckfinn_dq_textrecordcounts(p_source_id, p_edition_filenames=None):
         edition_path += p_edition_filenames[0]
     huckfinn_text_recordcounts = DatasetCompleteness_RecordCountsToControlRecords(
         f"HuckFinn_MTPOv{p_source_id}_TextRecordCounts",
-        huckfinn_textdata,
+        huckfinn_texts,
         p_source_id,
         WORK_TITLE,
         aolm_data_reading.huckfinn_source_fullnames[p_source_id],
@@ -256,13 +274,21 @@ def run_huckfinn_dq_textrecordcounts(p_source_id, p_edition_filenames=None):
 
 # Main script
 
-def read_and_compute_metrics():
+def read_texts():
+
+    for source_id in aolm_data_reading.huckfinn_source_fullnames:
+        print(f"Reading text of editions of {WORK_TITLE} from {aolm_data_reading.huckfinn_source_fullnames[source_id]}...")
+        huckfinn_textdata[source_id] = aolm_data_reading.read_huckfinn_text(source_id)
+
+def compute_metrics():
 
     for source_id in aolm_data_reading.huckfinn_source_fullnames:
 
         # Skip ur edition
         if UR_EDITION == source_id:
             continue
+
+        print_debug_header(f"Computing {source_id} metrics")
 
         huckfinn_textdata = None
 
@@ -289,6 +315,8 @@ def evaluate_metrics():
         # Skip ur edition
         if UR_EDITION == source_id:
             continue
+
+        print(f"Evaluating {source_id} metrics")
 
         source_fullname = aolm_data_reading.huckfinn_source_fullnames[source_id]
 
@@ -334,7 +362,7 @@ def output_results(p_script_run_time):
     # 1. Output evaluation details
 
     # A. Lexical validity
-    eval_lv_output_filepath = output_filepath.replace(".json", f"_eval_{LV_METRIC_NAME}.json")
+    eval_lv_output_filepath = output_filepath.replace(".csv", f"_eval_{LV_METRIC_NAME}.json")
 
     lv_eval_output = { source_id: experiment_metrics[source_id][LV_METRIC_NAME]["metric"].eval_output \
         for source_id in aolm_data_reading.huckfinn_source_fullnames if UR_EDITION != source_id }
@@ -344,17 +372,17 @@ def output_results(p_script_run_time):
         json.dump(lv_eval_output, eval_output_file, indent=4)
 
     # B. Metadata sufficiency 
-    eval_ms_output_filepath = output_filepath.replace(".json", f"_eval_{MS_METRIC_NAME}.json")
+    eval_ms_output_filepath = output_filepath.replace(".csv", f"_eval_{MS_METRIC_NAME}.json")
 
     ms_eval_output = { source_id: experiment_metrics[source_id][MS_METRIC_NAME]["metric"].eval_output \
         for source_id in aolm_data_reading.huckfinn_source_fullnames if UR_EDITION != source_id }
     
-    print(f"Outputting {MS_METRIC_NAME} results to: {eval_lv_output_filepath}")
+    print(f"Outputting {MS_METRIC_NAME} results to: {eval_ms_output_filepath}")
     with open(eval_ms_output_filepath, "w") as eval_output_file:
         json.dump(ms_eval_output, eval_output_file, indent=4)
 
     # C. Text record counts to control records
-    eval_tr_output_filepath = output_filepath.replace(".json", f"_eval_{TR_METRIC_NAME}.json")
+    eval_tr_output_filepath = output_filepath.replace(".csv", f"_eval_{TR_METRIC_NAME}.json")
 
     # I. Merge all json evaluation data from text record counts to control record metrics
     tr_eval_output = {}
@@ -375,9 +403,9 @@ def output_results(p_script_run_time):
         }
 
     # II. Output all metric evaluation data to a single file
-    print(f"Outputting {TR_METRIC_NAME} results to: {eval_lv_output_filepath}")
+    print(f"Outputting {TR_METRIC_NAME} results to: {eval_tr_output_filepath}")
     with open(eval_tr_output_filepath, "w") as eval_output_file:
-        json.dump(tr_eval_output, eval_tr_output_filepath, indent=4)
+        json.dump(tr_eval_output, eval_output_file, indent=4)
 
     # 2. Output top level stats
     print(f"Outputting overall data quality results to: {output_filepath}")
@@ -559,15 +587,19 @@ def main():
         # Run time saved for output file
         script_run_time = datetime.now().strftime("%d%m%Y_%H%M%S")
 
-        # 1. Read dataset(s)/Compute metrics
-        print_debug_header("Reading datasets and computing data quality metrics")
-        read_and_compute_metrics()
+        # 1. Read dataset
+        print_debug_header("Reading datasets")
+        read_texts()
 
-        # 2. Evaluate (submetrics and overall metrics)
+        # 2. Read dataset(s)/Compute metrics
+        print_debug_header("Computing data quality metrics")
+        compute_metrics()
+
+        # 3. Evaluate (submetrics and overall metrics)
         print_debug_header("Evaluating data quality metric results")
         evaluate_metrics()
 
-        # 3. Output results for data quality metrics to csv file
+        # 4. Output results for data quality metrics to csv file
         print_debug_header("Outputting metric results")
         output_results(script_run_time)
     
@@ -578,6 +610,11 @@ def main():
     # 2. Run data quality metrics over ur edition
     # NOTE: Since some metrics require comparison against ur edition
     # so if that's the case the ur edition would naturally get 100% for that metric
+
+    # NOTE: For ur edition lexical compute needs to access aolm_text.body.values() differently
+
+    print_debug_header(f"Computing data quality for {aolm_data_reading.MTPO} ur edition of {WORK_TITLE} and evaluating results")
+    # read_texts()
     compute_and_evaluate_ur_edition()
 
 
