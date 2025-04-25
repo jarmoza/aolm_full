@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ScrivenerProject Identifier="9D1E41B9-1E5B-4BD0-A880-FE062B9FE6E8" Version="2.0" Creator="SCRMAC-3.4-16639" Device="SturgeonHome" Author="" Modified="2025-04-17 11:36:38 -0400" ModID="19186CC5-FF13-47CA-8FEF-BB58208B6C2D">
+<ScrivenerProject Identifier="9D1E41B9-1E5B-4BD0-A880-FE062B9FE6E8" Version="2.0" Creator="SCRMAC-3.4-16639" Device="SturgeonHome" Author="" Modified="2025-04-25 10:24:46 -0400" ModID="E8AD2F8A-2B0E-460C-8E0A-A5FFD9FAE47C">
     <Binder>
         <BinderItem UUID="006C1C4A-133E-4CCD-8FF7-6E63A65FE10C" Type="Folder" Created="2021-01-22 16:13:57 -0500" Modified="2021-01-22 16:29:55 -0500">
             <Title>Daily Notes</Title>
@@ -123,7 +123,7 @@
                                 </CustomMetaData>
                             </MetaData>
                             <TextSettings>
-                                <TextSelection>120,0</TextSelection>
+                                <TextSelection>199,27</TextSelection>
                             </TextSettings>
                             <Keywords>
                                 <KeywordID>17</KeywordID>
@@ -978,7 +978,7 @@
                                 <IncludeInCompile>Yes</IncludeInCompile>
                             </MetaData>
                             <TextSettings>
-                                <TextSelection>198,0</TextSelection>
+                                <TextSelection>461,0</TextSelection>
                             </TextSettings>
                         </BinderItem>
                         <BinderItem UUID="05CA0104-0AED-40AF-BB73-4D2881624A9E" Type="Text" Created="2025-03-31 12:16:55 -0400" Modified="2025-03-31 13:27:50 -0400">
@@ -1017,13 +1017,22 @@
                                 <TextSelection>38,0</TextSelection>
                             </TextSettings>
                         </BinderItem>
-                        <BinderItem UUID="12B9DF36-0BCE-423A-A1E0-EE499C694A42" Type="Text" Created="2025-04-16 13:04:19 -0400" Modified="2025-04-16 13:50:19 -0400">
+                        <BinderItem UUID="12B9DF36-0BCE-423A-A1E0-EE499C694A42" Type="Text" Created="2025-04-16 13:04:19 -0400" Modified="2025-04-19 18:18:10 -0400">
                             <Title>April 16, 2025</Title>
                             <MetaData>
                                 <IncludeInCompile>Yes</IncludeInCompile>
                             </MetaData>
                             <TextSettings>
-                                <TextSelection>0,0</TextSelection>
+                                <TextSelection>266,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="35574BC4-E354-47B7-BEBB-EF326CFD7C83" Type="Text" Created="2025-04-22 13:10:38 -0400" Modified="2025-04-23 02:50:51 -0400">
+                            <Title>April 22, 2025</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>545,0</TextSelection>
                             </TextSettings>
                         </BinderItem>
                         <BinderItem UUID="4C012669-0C9D-46AD-9433-A9C8A4856D6E" Type="Text" Created="2025-04-08 19:46:18 -0400" Modified="2025-04-08 19:48:10 -0400">
@@ -2304,25 +2313,6 @@ Process for producing initial data quality assessment
             <MetaData>
                 <IncludeInCompile>Yes</IncludeInCompile>
             </MetaData>
-            <Children>
-                <BinderItem UUID="C48FB621-C1D9-45F4-850B-C9E92ABF91C0" Type="Text" Created="2023-01-29 12:36:08 -0500" Modified="2023-01-29 12:36:08 -0500">
-                    <MetaData>
-                        <IncludeInCompile>Yes</IncludeInCompile>
-                    </MetaData>
-                    <TextSettings>
-                        <TextSelection>0,0</TextSelection>
-                    </TextSettings>
-                </BinderItem>
-                <BinderItem UUID="F1808EE7-7CB2-4F57-BEF6-269F47B83B71" Type="Text" Created="2023-04-06 11:13:16 -0400" Modified="2023-04-07 14:51:45 -0400">
-                    <Title>Ewa</Title>
-                    <MetaData>
-                        <IncludeInCompile>Yes</IncludeInCompile>
-                    </MetaData>
-                    <TextSettings>
-                        <TextSelection>0,0</TextSelection>
-                    </TextSettings>
-                </BinderItem>
-            </Children>
         </BinderItem>
         <BinderItem UUID="10714206-431A-44C7-A8E1-3473024D691E" Type="Folder" Created="2021-03-06 14:17:53 -0500" Modified="2021-03-06 14:19:17 -0500">
             <Title>Summer 2021 Fellowship</Title>
@@ -2461,7 +2451,7 @@ Process for producing initial data quality assessment
         </Collection>
         <Collection Type="RecentSearch" ID="9E9EEFBB-7DE0-4FF8-856A-D68686F8C450" Color="0.922173 0.818612 0.999627">
             <Title>Search Results</Title>
-            <SearchSettings Operator="Any" Type="All" CaseSensitive="No" IgnoreDiacritics="No">"site for modeling"</SearchSettings>
+            <SearchSettings Operator="Any" Type="All" CaseSensitive="No" IgnoreDiacritics="No">lofty</SearchSettings>
         </Collection>
     </Collections>
     <Keywords>
@@ -2938,10 +2928,10 @@ Process for producing initial data quality assessment
     </CustomMetaDataSettings>
     <ProjectTargets Notify="No">
         <DraftTarget Type="Words" CountIncludedOnly="Yes" CurrentCompileGroupOnly="No" Deadline="2019-01-03 11:33:22 -0500" IgnoreDeadline="Yes">0</DraftTarget>
-        <SessionTarget Type="Words" CountDraftOnly="Yes" AllowNegatives="Yes" NextResetDate="2025-04-18 01:00:00 -0400" ResetType="Time" ResetTime="00:00" DeterminedFromDeadline="No" WritingDays="" CanWriteOnDeadlineDate="No">0</SessionTarget>
-        <PreviousSession Words="0" Characters="0" Date="2025-04-17 11:36:36 -0400"/>
+        <SessionTarget Type="Words" CountDraftOnly="Yes" AllowNegatives="Yes" NextResetDate="2025-04-26 01:00:00 -0400" ResetType="Time" ResetTime="00:00" DeterminedFromDeadline="No" WritingDays="" CanWriteOnDeadlineDate="No">0</SessionTarget>
+        <PreviousSession Words="0" Characters="0" Date="2025-04-25 10:07:55 -0400"/>
     </ProjectTargets>
-    <RecentWritingHistory Date="2025-04-17 00:00:00 -0400">
+    <RecentWritingHistory Date="2025-04-25 00:00:00 -0400">
         <DraftWordCount>0</DraftWordCount>
         <DraftCharCount>0</DraftCharCount>
         <OtherWordCount>0</OtherWordCount>

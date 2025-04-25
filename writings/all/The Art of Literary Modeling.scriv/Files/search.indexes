@@ -951,6 +951,24 @@ Developing validity dq code
 Downloaded COHA lexicon to use with validity check - for 19th century American English
 Reassess integrity/consistency code</Text>
         </Document>
+        <Document ID="12B9DF36-0BCE-423A-A1E0-EE499C694A42">
+            <Title>April 16, 2025</Title>
+            <Text>Table for project progress
+
+Columns: Project (or subproject/task), Status, Next Deadline
+
+Upenn list of publications
+
+Citing : cnanonical, widely cited, articles from journal you submitting to
+Following same organization of target journal
+Intro and conclusion last!
+
+Different chapters - instead of data and model quality, introductory with natural flow and more integrated?
+
+This summer Mel publication workshop - from paper to journal article - you can participate!
+
+NOTE: MTPO needs to be read correctly in via compute_and_evaluate_ur_edition</Text>
+        </Document>
         <Document ID="50F5ADC1-A14B-4C2F-B3F2-2707E7EEE54E">
             <Title>April 20,2023</Title>
             <Text>Old Outline
@@ -1018,6 +1036,21 @@ List with # times downloaded
 
 Computer scientists (etc.) will be creating models of what we refer to as literature (a.k.a. Humanities data) so that chatbots/LLMs can summarize and interpret that for the public in search of information about it. What is the role of humanities in this future? There are several, but one of them will be to work on defining and sustaining high quality versions of datasets for such models. While it’s true that statistically sometimes errata in a transcription or errata from a particular edition might not matter, as humanists know small changes often make differences in things like summaries and interpretations.
 Furthermore, if humanities scholars wish to produce research based on computational models of their textual subjects they too will want to have a well-defined quality standards for those subjects so that their own, more traditional research findings have sound bases</Text>
+        </Document>
+        <Document ID="35574BC4-E354-47B7-BEBB-EF326CFD7C83">
+            <Title>April 22, 2025</Title>
+            <Text>Todo
+Fixing output for huckfinn_dataquality.py
+
+Notes
+
+A stage in data quality analysis: The precursory examination, rough modification data work before data quality assessment can be started
+
+The idea of comparing the dynamics of certain measurements found in subsets of a text. Which part of the text is contributing the most to which force component (or partial of the scalar value) of the data quality metric for this overall dataset (text).
+
+Ted committee alternate suggestions: Travis Wagner (cultural heritage), Emily Maemra, Ryan Cordell
+
+</Text>
         </Document>
         <Document ID="90A512AB-4665-49B8-A5DA-5934B254A11E">
             <Title>Huckleberry Finn text editions metadata</Title>
@@ -1444,6 +1477,23 @@ Topic analysis</Text>
         <Document ID="1F334A32-A877-410D-9EE5-E995879929A9">
             <Title>Notes</Title>
         </Document>
+        <Document ID="6A835642-069A-49E4-AFE5-F97F2213F50B">
+            <Title>April 15, 2025</Title>
+            <Text>TODO:
+
+PENDING - Finishing conversion of Huck Finn experiment output from csv to json
+- Finish analyzing if earlier consistency and integrity metrics are salvagable or if they were simple merged conceptually with the new completeness and validity metrics
+- Put recent prose into context of the Chapter 1 outline
+
+Current Issues:
+
+- One of the DNI HuckFinn’s is not computing edition chapter validity for the lexical validity metric.
+
+============================</Text>
+        </Document>
+        <Document ID="2CEF044D-4177-4F1F-B71E-720B068C2C07">
+            <Title>Chapter 2: Model Quality</Title>
+        </Document>
         <Document ID="6EB6BE00-C0E2-4DAF-93C5-2F398CEFD0B9">
             <Text>
 In Search of the Canonical Digital Edition
@@ -1454,8 +1504,24 @@ How this relates to the notion of digital edition is that we are often consideri
 Canon formation includes the work involved in creating an edition, but it is an antecedent process and rarely viewed as transfigurative toward canonization of the work. For digital editions, this is not the case. This could be said of both analog and digital editions of a work, but given the mode and often less tangential transformations and sites a digital work visits, especially the latter. 
 We also have no formalized systems for preserving this metadata - just ones piecemeal across sites of work and archive. There are however means of measuring </Text>
         </Document>
-        <Document ID="2CEF044D-4177-4F1F-B71E-720B068C2C07">
-            <Title>Chapter 2: Model Quality</Title>
+        <Document ID="AA091AC3-8F10-47AE-9E09-7C3ED675ED7B">
+            <Title>May 13, 2019</Title>
+            <Text>Source Notes
+Sebastian Coleman on Data and Architecture
+
+	⁃	“In architectural drawings, the house will be depicted in a set of views showing the size, shape, and details of its structure. The purpose of an architectural drawing is to enable people to see what the house would look like and to make decisions about how it will be built. The accompanying floor plan, another model of the house, contributes to the process of understanding the size and shape of the house and is also necessary input to building the house. It contains details such as room size, the number of windows and doors, and the like that will influence the construction of the house. None of these models is the house itself, but all of them depict the house. Each represents a subset of characteristics important to the purpose of the representation. The same idea applies to data models.
+	⁃	“When working with data models, it is important to recognize that there is not one-and-only-one way to model any given dataset. Put this way, models present a kind of chicken-and-egg problem: Do data define models, or do models define data? The answer is both. To be understandable at all, data require context and structure. Data models provide a means of understanding this context. In doing so, they also create context. If data stakeholders find that models are understandable representations of data, then they can become a primary means of defining data.
+	⁃	“For most databases, especially data warehouses, models are critical to data management. The conceptual and logical models allow data managers to know what data resides in the data asset. The physical model has a direct bearing on how data is moved within the database, as well as how it is accessed.”
+	⁃	from just before “Physical Characteristics of Data”</Text>
+        </Document>
+        <Document ID="4F4BBC1C-CDE0-473D-884B-7F6DAD13C1B8">
+            <Title>Source List from Readings</Title>
+            <Text>from Schöch - Big? Smart? Clean? Messy? Data in the Humanities
+	◆	Borgman: Scholarship in the Digital Age: Information, Infrastructure, and the Internet. Cambridge &amp; London: MIT Press, 2010. 
+	◆	Borgman: “The Digital Future Is Now: A Call to Action for the Humanities.” Digital Humanities Quarterly 3.4, 2009, §1-82.
+	◆	Floridi: Information. A Very Short Introduction. Oxford: Oxford Univ. Press, 2010, 22-25.
+	◆	Mehta and Sahni (eds.): Handbook of Data Structures and Applications. Boca Raton: Chapman &amp; Hall/CRC, 2005, section “Basic Structures.”
+</Text>
         </Document>
         <Document ID="E54A0184-4ED4-4A9E-95B2-5B0E4D3B0BDF">
             <Title>March 5, 2021</Title>
@@ -1493,39 +1559,6 @@ For example
 	•	Extended Bayesian Information Criterion (EBIC) is an extension of ordinary Bayesian information criterion (BIC) for models with high parameter spaces.
 	•	Extended Fisher Information Criterion (EFIC) is a model selection criterion for linear regression models.
 </Text>
-        </Document>
-        <Document ID="AA091AC3-8F10-47AE-9E09-7C3ED675ED7B">
-            <Title>May 13, 2019</Title>
-            <Text>Source Notes
-Sebastian Coleman on Data and Architecture
-
-	⁃	“In architectural drawings, the house will be depicted in a set of views showing the size, shape, and details of its structure. The purpose of an architectural drawing is to enable people to see what the house would look like and to make decisions about how it will be built. The accompanying floor plan, another model of the house, contributes to the process of understanding the size and shape of the house and is also necessary input to building the house. It contains details such as room size, the number of windows and doors, and the like that will influence the construction of the house. None of these models is the house itself, but all of them depict the house. Each represents a subset of characteristics important to the purpose of the representation. The same idea applies to data models.
-	⁃	“When working with data models, it is important to recognize that there is not one-and-only-one way to model any given dataset. Put this way, models present a kind of chicken-and-egg problem: Do data define models, or do models define data? The answer is both. To be understandable at all, data require context and structure. Data models provide a means of understanding this context. In doing so, they also create context. If data stakeholders find that models are understandable representations of data, then they can become a primary means of defining data.
-	⁃	“For most databases, especially data warehouses, models are critical to data management. The conceptual and logical models allow data managers to know what data resides in the data asset. The physical model has a direct bearing on how data is moved within the database, as well as how it is accessed.”
-	⁃	from just before “Physical Characteristics of Data”</Text>
-        </Document>
-        <Document ID="4F4BBC1C-CDE0-473D-884B-7F6DAD13C1B8">
-            <Title>Source List from Readings</Title>
-            <Text>from Schöch - Big? Smart? Clean? Messy? Data in the Humanities
-	◆	Borgman: Scholarship in the Digital Age: Information, Infrastructure, and the Internet. Cambridge &amp; London: MIT Press, 2010. 
-	◆	Borgman: “The Digital Future Is Now: A Call to Action for the Humanities.” Digital Humanities Quarterly 3.4, 2009, §1-82.
-	◆	Floridi: Information. A Very Short Introduction. Oxford: Oxford Univ. Press, 2010, 22-25.
-	◆	Mehta and Sahni (eds.): Handbook of Data Structures and Applications. Boca Raton: Chapman &amp; Hall/CRC, 2005, section “Basic Structures.”
-</Text>
-        </Document>
-        <Document ID="6A835642-069A-49E4-AFE5-F97F2213F50B">
-            <Title>April 15, 2025</Title>
-            <Text>TODO:
-
-PENDING - Finishing conversion of Huck Finn experiment output from csv to json
-- Finish analyzing if earlier consistency and integrity metrics are salvagable or if they were simple merged conceptually with the new completeness and validity metrics
-- Put recent prose into context of the Chapter 1 outline
-
-Current Issues:
-
-- One of the DNI HuckFinn’s is not computing edition chapter validity for the lexical validity metric.
-
-============================</Text>
         </Document>
         <Document ID="910FA819-842F-457F-8255-050A41E87DB1">
             <Title>Knowledge Organization and Data Modeling in the Humanities - White Paper</Title>
