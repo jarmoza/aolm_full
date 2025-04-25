@@ -110,7 +110,7 @@ class DatasetValidity_LexicalValidity(DataQualityMetric):
     def output(self):
         return self.__build_output_line__()
 
-    def compute(self):
+    def compute(self, p_use_reader_body=False):
         
         # Experiment 3 - Lexical Validity
         # DQ Metric Dataset Validity - Lexicon
@@ -124,6 +124,8 @@ class DatasetValidity_LexicalValidity(DataQualityMetric):
                 "edition_work_validity": 0
             } for reader_name in self.m_input
         }
+
+        # NOTE: Check out why one of the DNI editions is not getting lexical validity score for its chapters
 
         # 1. Calculate chapter lexical validities for each edition
         for reader_name in self.m_input:
@@ -144,7 +146,10 @@ class DatasetValidity_LexicalValidity(DataQualityMetric):
                         DatasetValidity_LexicalValidity.lexical_validity(chapter_text, self.m_lexicon)
 
             # B. Get total lexical validity of work
-            full_text = [AOLMTextUtilities.create_string_from_lines(chapter_lines) for chapter_lines in reader.aolm_text.body.values()]
+            if p_use_reader_body:
+                full_text = reader.body
+            else:
+                full_text = [AOLMTextUtilities.create_string_from_lines(chapter_lines) for chapter_lines in reader.aolm_text.body.values()]
             full_text = "\n".join(full_text)
             self.m_results[reader_name]["edition_work_validity"] = \
                 DatasetValidity_LexicalValidity.lexical_validity(full_text, self.m_lexicon)
@@ -232,7 +237,7 @@ class DatasetValidity_LexicalValidity(DataQualityMetric):
         percent_oov = len(oov_words) / len(unique_words)
 
         # B. Lexical validity is percent of unique words that are in-vocabulary
-        lexical_validity = 1.0 - percent_oov
+        lexical_validity = 100 * (1.0 - percent_oov)
 
         return lexical_validity        
 
