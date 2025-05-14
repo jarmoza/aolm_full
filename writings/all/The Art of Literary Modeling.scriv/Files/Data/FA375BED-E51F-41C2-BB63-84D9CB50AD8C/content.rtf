@@ -1,0 +1,55 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2821
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\froman\fcharset0 Palatino-Bold;\f1\froman\fcharset0 Palatino-Roman;\f2\froman\fcharset0 Palatino-Italic;
+\f3\froman\fcharset0 Palatino-BoldItalic;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}}
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2880\tx3600\tx4320\fi360\sl264\slmult1\pardirnatural\partightenfactor0
+
+\f0\b\fs26 \cf0 Chapter 1 - Part 1 - Data quality and assessment framework explanation\
+Github issue: {\field{\*\fldinst{HYPERLINK "https://github.com/jarmoza/aolm_full/issues/14"}}{\fldrslt https://github.com/jarmoza/aolm_full/issues/14}}\
+\
+Topics to Discuss
+\f1\b0 \
+\
+\pard\tx220\tx720\tx1080\tx1440\tx1800\tx2160\tx2880\tx3600\tx4320\li720\fi-720\sl264\slmult1\pardirnatural\partightenfactor0
+\ls1\ilvl0\cf0 {\listtext	\uc0\u8226 	}Inaccurate transcription\
+{\listtext	\uc0\u8226 	}Overrepresented portions of a dataset (and thus underrepresented portions of it)\
+{\listtext	\uc0\u8226 	}Overrepresented datasets\
+{\listtext	\uc0\u8226 	}Hapax legomena ignored by CDF (statistics)\
+{\listtext	\uc0\u8226 	}Inconsistent transcription across editions/versions of the same/similar text\
+{\listtext	\uc0\u8226 	}Different editions - which to consider\
+{\listtext	\uc0\u8226 	}Access to datasets - public/private\
+{\listtext	\uc0\u8226 	}The size of a individual set/the amount of datasets available - is this enough to be modeled on its own\
+{\listtext	\uc0\u8226 	}What is the best version of an individual text/the most suitable version of a text for modeling?\
+{\listtext	\uc0\u8226 	}The challenge of difference in kind when it comes to evaluation: quantitative versus qualitative (and the mindsets that make this distinction as translated into modeling/anlaysis/interpretation/criticism)\
+\pard\tx560\tx1080\tx1440\tx1800\tx2160\tx2880\tx3600\tx4320\sl264\slmult1\pardirnatural\partightenfactor0
+\cf0 \
+
+\f0\b Body Text\
+\
+The measuring tools - Discussion of the tools we make and use to measure data quality\
+\
+
+\f1\b0 Of course, we can look to the accuracy of our measuring tools when we think of data quality. A measurement is, after all, only as good as its tool. (Cite Rockwell\'92s source on tools in his DH making book.)
+\f0\b \
+\
+Inaccurate Transcription
+\f1\b0 \
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2880\tx3600\tx4320\fi360\sl264\slmult1\pardirnatural\partightenfactor0
+\cf0 \
+When we think about specific issues with \'93quality\'94 in literary studies more typical concerns are for the fidelity of an edition to the source material \'96 if that source material exists at all. That idea of moving closer and closer to authorial intention has been tested over the years, but the idea of accuracy has mostly been left to authorial experts and the artisans involved in the practices of publishing. The digital edition has troubled this concept of accuracy in that the means by which a text (i.e. a novel, poem, letter, etc.) is transformed from a physical book into a digital format are typically far more opaque. Like book publishing practices before it, the less opaque we want our digital transcription processes to be the more expensive they become to produce and, in turn, receive. The early promises of free information on the \'93information superhighway\'94 loom large over our conceptions about access to digital texts. In the past few decades, we have had to reapproach our relationships between digital information and the costs of its production. Paywalls, old and new, spring up before us barring access. In reaction, demands for open access to data from both the public and from a private industry hungry for more and more digital information have also arisen. This level of access too therefore must be part of our considerations when we think about data quality in the humanities. Getting back to the idea of accuracy in a digital edition though we see that errors arise from at least two disaparate sources: human transcription and machine reading. Sometimes the best way to transcribe an edition into digital form is to sit with a physical book and simply copy. If you picture a medieval scribe looking from one copy of an illuminated tome to another one as they copy word by word, this is not far off from the modern version. And like the scribe, modern humans are subject to the same foibles of copying: omission and misperception. This sits in the high cost end of digital transcription. After all, unless a person is volunteering (more on that later) someone must pay a person to sit and transcribe a book from its physical form. And machine reading, also known as \'91optical character recognition\'92, may consistently produce the same error over and over again since its recognition mechanisms are interested in pattern recognition whereas a human may only make that mistake a handful of times. All that is to say, that if inaccuracies in transcribing have changed slightly they have only been compounded. The difference in error rate of manual transcription versus machine reading is not consistent and is dependent upon the human, the algorithms/machine learning, and the texts themselves.\
+\
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2880\tx3600\tx4320\sl264\slmult1\pardirnatural\partightenfactor0
+
+\f0\b \cf0 Overrepresented portions of a dataset (and thus underrepresented portions of it)\
+\
+	
+\f1\b0 Repeatedly throughout literary studies and beyond into other knowledge domains we see researchers repeat citations of famous sources. This mimics the behavior and phenomenon of oft cited passages of literature. (Cite Columbia Jonathan heatmap study). Of course, there are obvious pitfalls of repeatedly citing one source or one section of one source over another source or another section of even the same source. No sociologist would be surprised that a nice statistical curve could fit well the numbers of these citations by areas in a book. (A small study? A citation?) This uneven citation phenomenon however also doubles in when it comes to errors and error correction for digital editions of texts. The question has always been how much this kind of disparate error correction affects the data (digital text) and any model made from it. The assumption and and overlying corrective (not quite the right word) has been that the central tendency principle involved with statistical modeling will render such small sets of errors as long-tail statistical noise and will affect the greater statistical shapes at play within the modeled text. But this assumption/corrective is directly opposed to the tendency of literary studies to find meaning and even great significance in small words and phrases within a text. For literary studies these small errors 
+\f2\i do
+\f1\i0  matter a great deal. While efforts oftened likened as close reading (etc.) can easily focus on small pieces of the text, it is important to retain this ability and view of the text even as we model its large statistical tendencies. Therefore for many literary scholars what would otherwise be characterized as long-tail noise is, if missing from the model, a significant loss of data quality \'96 and in turn, model quality. Our perspectives on what texts are matters. If the person or program doing natural language processing considers as digital text to be a series of natural language phrases to be measured and counted then 3% error in that measurement and counting may be neglible and deemed reasonable. If a text is something that is full of meaningful words and phrases that are invaluable to the overall work then 3% error could be the difference between a classic novel and a flawed one. Therefore when we model texts for the purpose of literary studies it 
+\f2\i could
+\f3\b  
+\f1\i0\b0 be an important concern to ensure that that 3% error is eliminated. And while these concerns could ultimately be regarded as epistemological and meaningless to a statistical model, with meaningful error in place it renders a computational model of a text for literary studies significantly lower quality by the standards of literary studies.\
+	Taking the same idea of the heatmap of citation and reference, we can too apply it to data quality. Depending on the metric and its relevance, we can quickly see how data quality when measured is not just a summary measure but something that stretches over the entire body of a work. We can also take this notion and extend it further if we have multiple digital editions that are under consideration for further use down the research chain \'96  either reading or modeling, for example.}
