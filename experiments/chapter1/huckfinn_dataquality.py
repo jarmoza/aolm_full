@@ -364,8 +364,12 @@ def output_results(p_script_run_time):
     # A. Lexical validity
     eval_lv_output_filepath = output_filepath.replace(".csv", f"_eval_{LV_METRIC_NAME}.json")
 
+    # I. Experiment editions
     lv_eval_output = { source_id: experiment_metrics[source_id][LV_METRIC_NAME]["metric"].eval_output \
         for source_id in aolm_data_reading.huckfinn_source_fullnames if UR_EDITION != source_id }
+    
+    # II. Ur edition
+    lv_eval_output[UR_EDITION] = ur_metrics[UR_EDITION][LV_METRIC_NAME]["metric"].eval_output
 
     print(f"Outputting {LV_METRIC_NAME} results to: {eval_lv_output_filepath}")
     with open(eval_lv_output_filepath, "w") as eval_output_file:
@@ -374,8 +378,12 @@ def output_results(p_script_run_time):
     # B. Metadata sufficiency 
     eval_ms_output_filepath = output_filepath.replace(".csv", f"_eval_{MS_METRIC_NAME}.json")
 
+    # I. Experiment editions
     ms_eval_output = { source_id: experiment_metrics[source_id][MS_METRIC_NAME]["metric"].eval_output \
         for source_id in aolm_data_reading.huckfinn_source_fullnames if UR_EDITION != source_id }
+    
+    # II. Ur editions
+    ms_eval_output[UR_EDITION] = ur_metrics[UR_EDITION][MS_METRIC_NAME]["metric"].eval_output
     
     print(f"Outputting {MS_METRIC_NAME} results to: {eval_ms_output_filepath}")
     with open(eval_ms_output_filepath, "w") as eval_output_file:
@@ -402,7 +410,14 @@ def output_results(p_script_run_time):
             "overall": experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["metric"].eval_output
         }
 
-    # II. Output all metric evaluation data to a single file
+    # II. Ur edition
+    tr_eval_output[UR_EDITION] = {
+        
+        "individual_editions": {},
+        "overall": ur_metrics[UR_EDITION][TR_METRIC_NAME]["metric"].eval_output
+    }
+
+    # III. Output all metric evaluation data to a single file
     print(f"Outputting {TR_METRIC_NAME} results to: {eval_tr_output_filepath}")
     with open(eval_tr_output_filepath, "w") as eval_output_file:
         json.dump(tr_eval_output, eval_output_file, indent=4)
@@ -411,32 +426,51 @@ def output_results(p_script_run_time):
     print(f"Outputting overall data quality results to: {output_filepath}")
     with open(output_filepath, "w") as output_file:
 
-        # Output csv header
+        # A. Output csv header
         DataQualityMetric.write_output_header(output_file)
 
+        # B. Experiment editions
         for source_id in aolm_data_reading.huckfinn_source_fullnames:
 
             # Skip ur edition
             if UR_EDITION == source_id:
                 continue
 
-            # A. Lexical validity
+            # I. Lexical validity
             output_file.write(experiment_metrics[source_id][LV_METRIC_NAME]["metric"].output)
 
-            # B. Metadata sufficiency
+            # II. Metadata sufficiency
             output_file.write(experiment_metrics[source_id][MS_METRIC_NAME]["metric"].output)
 
-            # C. Text record counts to control records
+            # III. Text record counts to control records
 
-            # I. Individual editions vs. ur edition
+            # a. Individual editions vs. ur edition
             for edition_name in aolm_data_reading.huckfinn_edition_names[source_id]:
                 output_file.write(experiment_metrics[source_id][TR_METRIC_NAME]["individual_editions"][edition_name]["metric"].output)
 
-            # II. Overall text record counts to control record of all editions from this source
+            # b. Overall text record counts to control record of all editions from this source
             output_file.write(experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["metric"].output)
 
-            # D. Overall data quality measurement of the source_id editions vs. ur edition
+            # c. Overall data quality measurement of the source_id editions vs. ur edition
             output_file.write(f"Overall Quality:,{experiment_metrics[source_id]["overall_data_quality"]}\n")
+
+        # C. Ur edition
+
+        # I. Lexical validity
+        output_file.write(ur_metrics[UR_EDITION][LV_METRIC_NAME]["metric"].output)
+
+        # II. Metadata sufficiency
+        output_file.write(ur_metrics[UR_EDITION][MS_METRIC_NAME]["metric"].output)
+
+        # III. Text record counts to control records
+
+        # a. Overall text record counts to control record of all editions from this source
+        output_file.write(ur_metrics[UR_EDITION][TR_METRIC_NAME]["metric"].output)
+
+        # b. Overall data quality measurement of the source_id editions vs. ur edition
+        output_file.write(f"Overall Quality:,{ur_metrics[UR_EDITION]["overall_data_quality"]}\n")
+
+
 
 def plot_results(p_output_filepath):
 
@@ -472,16 +506,33 @@ def compute_and_evaluate_ur_edition():
         ur_metrics[UR_EDITION][LV_METRIC_NAME]["metric"].evaluate()
 
     # 2. Since there is no other edition to compare to metadata suffiency is 100%
-    ur_metrics[UR_EDITION][MS_METRIC_NAME]["metric"] = 1.0
+    ur_metrics[UR_EDITION][MS_METRIC_NAME]["metric"] = DatasetCompleteness_MetadataSufficiency(
+        f"HuckFinn_{UR_EDITION}_MetadataSufficiency",
+        {},
+        UR_EDITION,
+        WORK_TITLE,
+        aolm_data_reading.huckfinn_source_fullnames[UR_EDITION],
+        "")
+    ur_metrics[UR_EDITION][MS_METRIC_NAME]["metric"].set_evalmetric_value(100.0)
+    ur_metrics[UR_EDITION][MS_METRIC_NAME]["evaluation"] = ur_metrics[UR_EDITION][MS_METRIC_NAME]["metric"].evaluations["metric"]
 
     # 3. Since there is no other edition to compare to text records to control records is 100%
-    ur_metrics[UR_EDITION][TR_METRIC_NAME]["metric"] = 1.0
+    ur_metrics[UR_EDITION][TR_METRIC_NAME]["metric"] = DatasetCompleteness_RecordCountsToControlRecords(
+        f"HuckFinn_MTPOv{UR_EDITION}_TextRecordCounts",
+        select_huckfinn_textdata(UR_EDITION),
+        UR_EDITION,
+        WORK_TITLE,
+        aolm_data_reading.huckfinn_source_fullnames[UR_EDITION],
+        aolm_data_reading.huckfinn_directories[UR_EDITION]["txt"],
+        aolm_data_reading.MTPO)
+    ur_metrics[UR_EDITION][TR_METRIC_NAME]["metric"].set_evalmetric_value(100.0)
+    ur_metrics[UR_EDITION][TR_METRIC_NAME]["evaluation"] = ur_metrics[UR_EDITION][TR_METRIC_NAME]["metric"].evaluations["metric"]
 
     # 4. Compute overall data quality for the ur edition
     ur_metrics[UR_EDITION]["overall_data_quality"] = \
         (metric_weights[LV_METRIC_NAME] * ur_metrics[UR_EDITION][LV_METRIC_NAME]["evaluation"]) + \
-        (metric_weights[MS_METRIC_NAME] * ur_metrics[UR_EDITION][MS_METRIC_NAME]["metric"]) + \
-        (metric_weights[TR_METRIC_NAME] * ur_metrics[UR_EDITION][TR_METRIC_NAME]["metric"])
+        (metric_weights[MS_METRIC_NAME] * ur_metrics[UR_EDITION][MS_METRIC_NAME]["evaluation"]) + \
+        (metric_weights[TR_METRIC_NAME] * ur_metrics[UR_EDITION][TR_METRIC_NAME]["evaluation"])
     print(f"Overall {source_fullname} data quality for ur edition: {ur_metrics[UR_EDITION]["overall_data_quality"]}")
 
     
@@ -599,23 +650,22 @@ def main():
         print_debug_header("Evaluating data quality metric results")
         evaluate_metrics()
 
-        # 4. Output results for data quality metrics to csv file
+        # 4. Run data quality metrics over ur edition
+        # NOTE: Since some metrics require comparison against ur edition
+        # so if that's the case the ur edition would naturally get 100% for that metric
+
+        # NOTE: For ur edition lexical compute needs to access aolm_text.body.values() differently
+        print_debug_header(f"Computing data quality for {aolm_data_reading.MTPO} ur edition of {WORK_TITLE} and evaluating results")
+        # read_texts()
+        compute_and_evaluate_ur_edition()        
+
+        # 5. Output results for data quality metrics to csv file
         print_debug_header("Outputting metric results")
         output_results(script_run_time)
     
-    # 4. Visualize metric with metric min falloff chart
+    # 6. Visualize metric with metric min falloff chart
     # print_debug_header("Plotting results")
     # plot_results(output_filepath)
-
-    # 2. Run data quality metrics over ur edition
-    # NOTE: Since some metrics require comparison against ur edition
-    # so if that's the case the ur edition would naturally get 100% for that metric
-
-    # NOTE: For ur edition lexical compute needs to access aolm_text.body.values() differently
-
-    print_debug_header(f"Computing data quality for {aolm_data_reading.MTPO} ur edition of {WORK_TITLE} and evaluating results")
-    # read_texts()
-    compute_and_evaluate_ur_edition()
 
 
 if "__main__" == __name__:
