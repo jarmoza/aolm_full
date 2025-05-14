@@ -25,7 +25,7 @@ class DatasetCompleteness_RecordCountsToControlRecords(DataQualityMetric):
                          p_path=p_text_json_filepath,
                          p_baseline_source_id=p_baseline_source_id)
         
-    def __build_eval_output_line__(self, p_return_dict=False):
+    def __build_eval_output_line__(self):
 
         key_value_map = { key: None for key in DataQualityMetric.s_build_output_line_keys }
 
