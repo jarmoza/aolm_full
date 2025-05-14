@@ -170,6 +170,8 @@ class DataQualityMetric:
     def run(self, p_show_explanations=False):
         self.compute()
         self.show_results(p_show_explanations=p_show_explanations)
+    def set_evalmetric_value(self, p_evalmetric_value):
+        self.m_evaluations["metric"] = p_evalmetric_value
     def show_results(self, p_show_explanations=False):
         for key in self.m_results:
             print("=" * 80)
