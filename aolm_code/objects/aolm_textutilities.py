@@ -405,3 +405,13 @@ class AOLMTextUtilities:
     def weighted_mean_from_dict(p_dict):
 
         return mean([p_dict[key] * 1.0 / len(p_dict.keys()) for key in p_dict])
+    
+    @staticmethod
+    def word_count_from_string(p_text):
+
+        word_counts = {}
+        words = p_text.split()
+        for word in words:
+            word = word.lower().strip(".,!?;:\"'()[]{}")  # Normalize words by removing punctuation and converting to lowercase
+            word_counts[word] = word_counts.get(word, 0) + 1
+        return word_counts    
