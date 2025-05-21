@@ -31,6 +31,13 @@ class COHA(Enum):
     LEMMA = "lemma"
     POS = "PoS"
 
+# Herman Melville
+
+melville_source_directory = {
+    
+    "collected": "{0}{1}data{1}melville{1}collected{1}body_text{1}".format(ROOT_DIR, os.sep),
+    "moby-dick": "{0}{1}data{1}melville{1}moby-dick{1}".format(ROOT_DIR, os.sep)
+}
 
 # Adventures of Huckleberry Finn
 
