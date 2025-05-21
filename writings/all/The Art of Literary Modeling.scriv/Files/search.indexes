@@ -1,20 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <SearchIndexes Version="1.0">
     <Documents>
-        <Document ID="BF0B4750-DD1C-4E97-8900-3CADEF87F334">
-            <Title>February 12, 2019</Title>
-            <Text>Done
-	1.	Implementing data quality profile script and testing on 19cAm volumes from New York Public Library
-	2.	dq_initial_assessment.py - data quality profile script
-	⁃	dq_initial_assessment_nyp.py - nyp metadata schema
-	⁃	htrc_ef_metadata_lens_nyp.py - Adapts HTRC feature reader to pull metadata for dq assessment
-	⁃	nyp_dq_profile.json - profile of 22,796 19cAm volumes from New York Public library
-To do
-	1.	Refine script and data profiling
-	2.	Test on smaller data set
-	3.	Implement the difference between profiling and assessment
-	4.	Refine the profiling schema for issues addresses in Coleman book like granularity
+        <Document ID="61C6E575-5D78-4D89-AFFC-A06DD6CB9328">
+            <Title>Draft/Ch1DQ/Prose/On frequency analysis</Title>
+            <Text>Next Steps/Prose
 
+	1.	Prose explaining Bolts of Melody vs Emily Dickinson Archive 
+	⁃	Token frequency comparison as component of data quality
+	⁃	Unitary frequency analysis quality(ies) vs quality from comparative frequency analysis
+	2.	Code up comparisons
+	⁃	Explain the work and the thought process behind the work
+	⁃	What’s are its goal(s)?
+	3.	Prose and examples of more advanced frequency measures
+	⁃	Mendenhall’s Characteristic Curves of Composition
+	⁃	Kilgariff’s Chi-Squared Method
+	⁃	John Burrows’ Delta Method
+	⁃	See Laramee’s stylometry intro for details
+	⁃	Why use them and how they are related to data quality in this context
+
+
+Fuzzy string matching techniques
+
+	1.	Character overlap
+	⁃	Jaccard measure
+	⁃	"the percentage of unique characters that two strings share when compared to the total number of unique characters in both strings” (Taming Text, FSM, 4.1.1.)
+	⁃	Jaro-Winkler distance
 </Text>
         </Document>
         <Document ID="E502BE76-97E3-41BD-8CC1-CE2675455F4E">
@@ -2003,6 +2013,44 @@ That shaky question, as it turns out, is not just whether or not there is a diff
 
 Why is this important? It goes to the heart of the current questions before many different types of researchers considering how to use computational tools to accurately extract meaning from passages of text, and for literary scholars, whether or not they’re usable at all for the questions that have traditionally been asked by their field(s). And if quality is more indicative of inattention than not, or at least of the comforting “good enough” soup in which we navigate our everyday lives, then quality must be revisited, redefined, and reconfigured for the purposes of digital literary study.</Text>
         </Document>
+        <Document ID="FA375BED-E51F-41C2-BB63-84D9CB50AD8C">
+            <Title>Part 1</Title>
+            <Text>Chapter 1 - Part 1 - Data quality and assessment framework explanation
+Github issue: https://github.com/jarmoza/aolm_full/issues/14
+
+Topics to Discuss
+
+	•	Inaccurate transcription
+	•	Overrepresented portions of a dataset (and thus underrepresented portions of it)
+	•	Overrepresented datasets
+	•	Hapax legomena ignored by CDF (statistics)
+	•	Inconsistent transcription across editions/versions of the same/similar text
+	•	Different editions - which to consider
+	•	Access to datasets - public/private
+	•	The size of a individual set/the amount of datasets available - is this enough to be modeled on its own
+	•	What is the best version of an individual text/the most suitable version of a text for modeling?
+	•	The challenge of difference in kind when it comes to evaluation: quantitative versus qualitative (and the mindsets that make this distinction as translated into modeling/anlaysis/interpretation/criticism)
+	•	The need for DataLad-like documenting of digital text datasets
+
+Body Text
+
+The measuring tools - Discussion of the tools we make and use to measure data quality
+
+Of course, we can look to the accuracy of our measuring tools when we think of data quality. A measurement is, after all, only as good as its tool. (Cite Rockwell’s source on tools in his DH making book.)
+
+Inaccurate Transcription
+
+When we think about specific issues with “quality” in literary studies more typical concerns are for the fidelity of an edition to the source material – if that source material exists at all. That idea of moving closer and closer to authorial intention has been tested over the years, but the idea of accuracy has mostly been left to authorial experts and the artisans involved in the practices of publishing. The digital edition has troubled this concept of accuracy in that the means by which a text (i.e. a novel, poem, letter, etc.) is transformed from a physical book into a digital format are typically far more opaque. Like book publishing practices before it, the less opaque we want our digital transcription processes to be the more expensive they become to produce and, in turn, receive. The early promises of free information on the “information superhighway” loom large over our conceptions about access to digital texts. In the past few decades, we have had to reapproach our relationships between digital information and the costs of its production. Paywalls, old and new, spring up before us barring access. In reaction, demands for open access to data from both the public and from a private industry hungry for more and more digital information have also arisen. This level of access too therefore must be part of our considerations when we think about data quality in the humanities. Getting back to the idea of accuracy in a digital edition though we see that errors arise from at least two disaparate sources: human transcription and machine reading. Sometimes the best way to transcribe an edition into digital form is to sit with a physical book and simply copy. If you picture a medieval scribe looking from one copy of an illuminated tome to another one as they copy word by word, this is not far off from the modern version. And like the scribe, modern humans are subject to the same foibles of copying: omission and misperception. This sits in the high cost end of digital transcription. After all, unless a person is volunteering (more on that later) someone must pay a person to sit and transcribe a book from its physical form. And machine reading, also known as ‘optical character recognition’, may consistently produce the same error over and over again since its recognition mechanisms are interested in pattern recognition whereas a human may only make that mistake a handful of times. All that is to say, that if inaccuracies in transcribing have changed slightly they have only been compounded. The difference in error rate of manual transcription versus machine reading is not consistent and is dependent upon the human, the algorithms/machine learning, and the texts themselves.
+
+Overrepresented portions of a dataset (and thus underrepresented portions of it)
+
+	Repeatedly throughout literary studies and beyond into other knowledge domains we see researchers repeat citations of famous sources. This mimics the behavior and phenomenon of oft cited passages of literature. (Cite Columbia Jonathan heatmap study). Of course, there are obvious pitfalls of repeatedly citing one source or one section of one source over another source or another section of even the same source. No sociologist would be surprised that a nice statistical curve could fit well the numbers of these citations by areas in a book. (A small study? A citation?) This uneven citation phenomenon however also doubles in when it comes to errors and error correction for digital editions of texts. The question has always been how much this kind of disparate error correction affects the data (digital text) and any model made from it. The assumption and and overlying corrective (not quite the right word) has been that the central tendency principle involved with statistical modeling will render such small sets of errors as long-tail statistical noise and will affect the greater statistical shapes at play within the modeled text. But this assumption/corrective is directly opposed to the tendency of literary studies to find meaning and even great significance in small words and phrases within a text. For literary studies these small errors do matter a great deal. While efforts oftened likened as close reading (etc.) can easily focus on small pieces of the text, it is important to retain this ability and view of the text even as we model its large statistical tendencies. Therefore for many literary scholars what would otherwise be characterized as long-tail noise is, if missing from the model, a significant loss of data quality – and in turn, model quality. Our perspectives on what texts are matters. If the person or program doing natural language processing considers as digital text to be a series of natural language phrases to be measured and counted then 3% error in that measurement and counting may be neglible and deemed reasonable. If a text is something that is full of meaningful words and phrases that are invaluable to the overall work then 3% error could be the difference between a classic novel and a flawed one. Therefore when we model texts for the purpose of literary studies it could be an important concern to ensure that that 3% error is eliminated. And while these concerns could ultimately be regarded as epistemological and meaningless to a statistical model, with meaningful error in place it renders a computational model of a text for literary studies significantly lower quality by the standards of literary studies.
+	Taking the same idea of the heatmap of citation and reference, we can apply it to data quality. Depending on the metric and its relevance, we can quickly see how data quality when measured is not just a summary measure but something that stretches over the entire body of a work. We can also take this notion and extend it further if we have multiple digital editions that are under consideration for further use down the research chain –  either reading or modeling, for example. Ultimately, how data quality measures depends on the aims of the research project, not just in which measures are selected as quality criteria but also how those measures are used. By exploding the points of data quality measurement within a work across logical divisions (whatever ‘logical’ may mean for a particular researcher), we can do more than compare data quality of editions, but we can do what would otherwise seem unthinkable: compose the highest quality digital edition of a work from several works. Again, such an action would depend on the aims and ethics of the researcher. Do we require the model of a digital edition of a work to be as true to its physical source as possible? If not, then what would be the difference between composing a high quality Frankenstein edition and going through an scanned work and correcting flawed results of optical character recognition?
+
+Overrepresented datasets
+
+Data quality measures can be taken beyond mere counting of words to do something more complex and elegant. Take for example the kind of work that has been done in authorship attribution studies for decades. One could take the linguistic signs of an author’s writing and measure how well there is a match between a particular work and the authorial signature – or as previously mentioned sections of a digital work that match more than others.. If authorship of works are in question, once a data quality measurement for that authorial signature is in place, there is a clear reason that can be pointed to as to why one work might be more suited for modeling and study than another work. And by using a data quality assessment framework, researchers can also ensure that that signature-as-metric does not become an overriding principle by which to make such an assessment of the suitability for assigning the probability of authorship, modeling, and study of one work over another. Taking a step back from the perspective of a prospective study, one can imagine this approach to understanding the data quality of literary datasets to be adapted in retrospect. If previous research has looked to digital works, perhaps in a seeming overrepresented fashion (see Columbia Jonathan’s heatmap) what can new understandings of the data qualities of the textual datasets used in those studies tell us about their findings? Perhaps some digital work of poorer data quality shaped the project’s overall model so as to skew its results. Or vice-versa, perhaps some work of higher data quality considered by the project was overlooked and undervalued with a data quality framework in mind. Without defined measurements of the qualities of those digital works such understandings are left undiscovered.</Text>
+        </Document>
         <Document ID="D7846FA2-8777-43FA-8CDB-06320642D819">
             <Title>January 9, 2025</Title>
             <Text>Once results are computed for each overarching metric (including its submetrics), an evaluation function is called to combine the results in a logical way in order to produce one, unidimensional number for the metric
@@ -3202,16 +3250,6 @@ In the deep bosom of the ocean buried.
         <Document ID="7834BFF1-148F-4424-9C56-805C61D724CE">
             <Title>Outline + Sections April 2025</Title>
         </Document>
-        <Document ID="ADB6DD7C-F28D-4201-A7FC-2642D018C13E">
-            <Title>Tom Augst - October 16</Title>
-            <Text>To do
-	1.	Work on Mark Twain in data quality chapter regardless of scholarship
-	2.	Get back to him in 2 weeks
-	3.	Talk to David or Ted if I feel they could help with data set work
-	4.	Pick up reading McCarty on Modeling
-
-</Text>
-        </Document>
         <Document ID="1FD1D2F6-CB89-40A3-AB93-36A7C507FE83">
             <Title>May 12, 2025</Title>
             <Text>Done:
@@ -3226,6 +3264,16 @@ In the deep bosom of the ocean buried.
 
 NEXT: 
 Prose for part 1 of chapter 1 (intro to data quality, DQAF, and its concepts via information science)</Text>
+        </Document>
+        <Document ID="ADB6DD7C-F28D-4201-A7FC-2642D018C13E">
+            <Title>Tom Augst - October 16</Title>
+            <Text>To do
+	1.	Work on Mark Twain in data quality chapter regardless of scholarship
+	2.	Get back to him in 2 weeks
+	3.	Talk to David or Ted if I feel they could help with data set work
+	4.	Pick up reading McCarty on Modeling
+
+</Text>
         </Document>
         <Document ID="AE2350A5-5516-4E22-B2D2-EEE270D9AC9B">
             <Title>Prose</Title>
@@ -3554,30 +3602,20 @@ Some processing/cleanup from the raw Project Gutenberg text files is necessary. 
             <Title>Abstract - Working Draft</Title>
             <Text>The publication of Mark Twain’s autobiography 100 years after his death presents a difficult proposition for the reading public with an unwieldy size of over 2000 pages. The work also presents an opportunity for computational text analysis to provide insights where more traditional close readings of it might prove difficult. My dissertation, “The Art of Literary Modeling”, demonstrates new scholarly activities that provide context-sensitive, evidentiary bases for making interpretive claims from computational models of literature. Its first chapter answers the question, "What does it mean to read literature as data?" That chapter's discussion of "literary" data quality looks to versions of Emily Dickinson's poetry amid her multiple, posthumous publications. It adapts data quality metrics from information science to provide an overall assessment of those digital versions, and produces a new collection of poems that reflect their data quality with respect to her oeuvre. This next chapter will answer the followup question: "What does it mean to model literature as data?" Applying standards for model selection and quality analysis from statistics known as "information criterion" reveals differences between various models of a work. That comparison made possible by information criteria presents a new, qualitative decision point for the study of literature as data. By looking to passages of Twain’s autobiography noted by high quality models of it and then further assessing them with scholarly understandings of those passages, it becomes possible to produce new findings on the autobiography and sound methodology for model quality generalizable to humanities research beyond this project.</Text>
         </Document>
-        <Document ID="61C6E575-5D78-4D89-AFFC-A06DD6CB9328">
-            <Title>Draft/Ch1DQ/Prose/On frequency analysis</Title>
-            <Text>Next Steps/Prose
+        <Document ID="BF0B4750-DD1C-4E97-8900-3CADEF87F334">
+            <Title>February 12, 2019</Title>
+            <Text>Done
+	1.	Implementing data quality profile script and testing on 19cAm volumes from New York Public Library
+	2.	dq_initial_assessment.py - data quality profile script
+	⁃	dq_initial_assessment_nyp.py - nyp metadata schema
+	⁃	htrc_ef_metadata_lens_nyp.py - Adapts HTRC feature reader to pull metadata for dq assessment
+	⁃	nyp_dq_profile.json - profile of 22,796 19cAm volumes from New York Public library
+To do
+	1.	Refine script and data profiling
+	2.	Test on smaller data set
+	3.	Implement the difference between profiling and assessment
+	4.	Refine the profiling schema for issues addresses in Coleman book like granularity
 
-	1.	Prose explaining Bolts of Melody vs Emily Dickinson Archive 
-	⁃	Token frequency comparison as component of data quality
-	⁃	Unitary frequency analysis quality(ies) vs quality from comparative frequency analysis
-	2.	Code up comparisons
-	⁃	Explain the work and the thought process behind the work
-	⁃	What’s are its goal(s)?
-	3.	Prose and examples of more advanced frequency measures
-	⁃	Mendenhall’s Characteristic Curves of Composition
-	⁃	Kilgariff’s Chi-Squared Method
-	⁃	John Burrows’ Delta Method
-	⁃	See Laramee’s stylometry intro for details
-	⁃	Why use them and how they are related to data quality in this context
-
-
-Fuzzy string matching techniques
-
-	1.	Character overlap
-	⁃	Jaccard measure
-	⁃	"the percentage of unique characters that two strings share when compared to the total number of unique characters in both strings” (Taming Text, FSM, 4.1.1.)
-	⁃	Jaro-Winkler distance
 </Text>
         </Document>
     </Documents>
