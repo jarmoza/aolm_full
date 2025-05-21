@@ -39,6 +39,20 @@ melville_source_directory = {
     "moby-dick": "{0}{1}data{1}melville{1}moby-dick{1}".format(ROOT_DIR, os.sep)
 }
 
+melville_filename_to_title = {
+
+    "confidence_man_2022_body_text.txt": "The Confidence-Man",
+    "israel_potter_2022_body_text.txt": "Israel Potter",
+    "mardi_vol1_2024_body_text.txt": "Mardi, Vol.1",
+    "mardi_vol2_2024_body_text.txt": "Mardi, Vol.2",
+    "moby_dick_2024_body_text.txt": "Moby-Dick",
+    "omoo_2024_body_text.txt": "Omoo",
+    "pierre_2022_body_text.txt": "Pierre",
+    "redburn_2021_body_text.txt": "Redburn",
+    "typee_2022_body_text.txt": "Typee",
+    "white_jacket_2025_body_text.txt": "White Jacket"
+}
+
 # Adventures of Huckleberry Finn
 
 # Abbreviation constants
