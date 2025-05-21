@@ -19,6 +19,7 @@ add_lib_paths(sys)
 # Custom
 
 import aolm_data_reading
+from aolm_utilities import bar_plot
 from dq_metrics.dataset_signature.authorial_signature import DatasetSignature_AuthorialSignature
 
 
@@ -47,7 +48,16 @@ def main():
     print("Text distance from author signature ranked (least to most)")
     source_signature_distances = signature_metric.signature_distances
     for index in range(len(source_signature_distances)):
-        print(f"#{index + 1}. {source_signature_distances[index][0]}: {source_signature_distances[index][1]}") 
+        print(f"#{index + 1}. {source_signature_distances[index][0]}: {source_signature_distances[index][1]}")
+
+    # Plot the ranked distances
+    bar_plot(
+        [aolm_data_reading.melville_filename_to_title[sig_dist[0]] for sig_dist in source_signature_distances],
+        "Title",
+        [1 - float(sig_dist[1]) for sig_dist in source_signature_distances],
+        "Distance",
+        "Distance from Melville's Authorial Signature [0,1]"
+    )
 
 if "__main__" == __name__:
     main()
