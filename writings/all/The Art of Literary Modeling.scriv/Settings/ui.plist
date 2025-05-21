@@ -21,8 +21,8 @@
 	<false/>
 	<key>binderSplitFrames</key>
 	<array>
-		<string>{{0, 0}, {230, 1035}}</string>
-		<string>{{231, 0}, {1689, 1035}}</string>
+		<string>{{0, 0}, {175, 900}}</string>
+		<string>{{176, 0}, {1336, 900}}</string>
 	</array>
 	<key>binderWidth</key>
 	<real>281.5</real>
@@ -1051,7 +1051,7 @@
 		<real>1.5</real>
 	</dict>
 	<key>mainWindowFrame</key>
-	<string>0 53 1130 650 0 0 1920 1055 </string>
+	<string>0 47 1130 650 0 0 1512 944 </string>
 	<key>projectStatsSheet</key>
 	<dict>
 		<key>countDraftFootnotes</key>

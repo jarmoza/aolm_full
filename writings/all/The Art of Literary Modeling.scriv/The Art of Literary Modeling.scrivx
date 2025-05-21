@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ScrivenerProject Identifier="9D1E41B9-1E5B-4BD0-A880-FE062B9FE6E8" Version="2.0" Creator="SCRMAC-3.4-16639" Device="SturgeonHome" Author="" Modified="2025-05-21 18:15:27 -0400" ModID="AB5F6D82-9E05-4555-B0E9-82E24777DB71">
+<ScrivenerProject Identifier="9D1E41B9-1E5B-4BD0-A880-FE062B9FE6E8" Version="2.0" Creator="SCRMAC-3.4-16639" Device="SturgeonHome" Author="" Modified="2025-05-21 19:22:15 -0400" ModID="18C46BB8-E1A6-452A-B550-781764240E31">
     <Binder>
         <BinderItem UUID="006C1C4A-133E-4CCD-8FF7-6E63A65FE10C" Type="Folder" Created="2021-01-22 16:13:57 -0500" Modified="2021-01-22 16:29:55 -0500">
             <Title>Daily Notes</Title>
@@ -1971,7 +1971,7 @@ Process for producing initial data quality assessment
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
                             <Children>
-                                <BinderItem UUID="FA375BED-E51F-41C2-BB63-84D9CB50AD8C" Type="Text" Created="2025-05-13 13:28:25 -0400" Modified="2025-05-19 11:12:19 -0400">
+                                <BinderItem UUID="FA375BED-E51F-41C2-BB63-84D9CB50AD8C" Type="Text" Created="2025-05-13 13:28:25 -0400" Modified="2025-05-21 19:22:15 -0400">
                                     <Title>Part 1</Title>
                                     <MetaData>
                                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -3085,11 +3085,11 @@ Process for producing initial data quality assessment
     <ProjectTargets Notify="No">
         <DraftTarget Type="Words" CountIncludedOnly="Yes" CurrentCompileGroupOnly="No" Deadline="2019-01-03 11:33:22 -0500" IgnoreDeadline="Yes">0</DraftTarget>
         <SessionTarget Type="Words" CountDraftOnly="Yes" AllowNegatives="Yes" NextResetDate="2025-05-22 01:00:00 -0400" ResetType="Time" ResetTime="00:00" DeterminedFromDeadline="No" WritingDays="" CanWriteOnDeadlineDate="No">0</SessionTarget>
-        <PreviousSession Words="0" Characters="0" Date="2025-05-21 18:15:22 -0400"/>
+        <PreviousSession Words="380" Characters="2332" Date="2025-05-21 18:15:22 -0400"/>
     </ProjectTargets>
     <RecentWritingHistory Date="2025-05-21 00:00:00 -0400">
-        <DraftWordCount>0</DraftWordCount>
-        <DraftCharCount>0</DraftCharCount>
+        <DraftWordCount>380</DraftWordCount>
+        <DraftCharCount>2332</DraftCharCount>
         <OtherWordCount>0</OtherWordCount>
         <OtherCharCount>0</OtherCharCount>
     </RecentWritingHistory>
