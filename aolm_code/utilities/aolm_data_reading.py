@@ -36,7 +36,8 @@ class COHA(Enum):
 melville_source_directory = {
     
     "collected": "{0}{1}data{1}melville{1}collected{1}body_text{1}".format(ROOT_DIR, os.sep),
-    "moby-dick": "{0}{1}data{1}melville{1}moby-dick{1}".format(ROOT_DIR, os.sep)
+    "moby-dick": "{0}{1}data{1}melville{1}moby-dick{1}".format(ROOT_DIR, os.sep),
+    "novels_json": "{0}{1}data{1}melville{1}collected{1}demarcated{1}".format(ROOT_DIR, os.sep)
 }
 
 melville_filename_to_title = {
