@@ -1,30 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <SearchIndexes Version="1.0">
     <Documents>
-        <Document ID="61C6E575-5D78-4D89-AFFC-A06DD6CB9328">
-            <Title>Draft/Ch1DQ/Prose/On frequency analysis</Title>
-            <Text>Next Steps/Prose
+        <Document ID="BF0B4750-DD1C-4E97-8900-3CADEF87F334">
+            <Title>February 12, 2019</Title>
+            <Text>Done
+	1.	Implementing data quality profile script and testing on 19cAm volumes from New York Public Library
+	2.	dq_initial_assessment.py - data quality profile script
+	⁃	dq_initial_assessment_nyp.py - nyp metadata schema
+	⁃	htrc_ef_metadata_lens_nyp.py - Adapts HTRC feature reader to pull metadata for dq assessment
+	⁃	nyp_dq_profile.json - profile of 22,796 19cAm volumes from New York Public library
+To do
+	1.	Refine script and data profiling
+	2.	Test on smaller data set
+	3.	Implement the difference between profiling and assessment
+	4.	Refine the profiling schema for issues addresses in Coleman book like granularity
 
-	1.	Prose explaining Bolts of Melody vs Emily Dickinson Archive 
-	⁃	Token frequency comparison as component of data quality
-	⁃	Unitary frequency analysis quality(ies) vs quality from comparative frequency analysis
-	2.	Code up comparisons
-	⁃	Explain the work and the thought process behind the work
-	⁃	What’s are its goal(s)?
-	3.	Prose and examples of more advanced frequency measures
-	⁃	Mendenhall’s Characteristic Curves of Composition
-	⁃	Kilgariff’s Chi-Squared Method
-	⁃	John Burrows’ Delta Method
-	⁃	See Laramee’s stylometry intro for details
-	⁃	Why use them and how they are related to data quality in this context
-
-
-Fuzzy string matching techniques
-
-	1.	Character overlap
-	⁃	Jaccard measure
-	⁃	"the percentage of unique characters that two strings share when compared to the total number of unique characters in both strings” (Taming Text, FSM, 4.1.1.)
-	⁃	Jaro-Winkler distance
 </Text>
         </Document>
         <Document ID="E502BE76-97E3-41BD-8CC1-CE2675455F4E">
@@ -1918,32 +1908,60 @@ That tag’s head.string value should match the string Chapter &lt;chapter roman
 
 Chapter 18 had no dot suffix, causing an error</Text>
         </Document>
+        <Document ID="FA375BED-E51F-41C2-BB63-84D9CB50AD8C">
+            <Title>Part 1</Title>
+            <Text>Chapter 1 - Part 1 - Data quality and assessment framework explanation
+Github issue: https://github.com/jarmoza/aolm_full/issues/14
+
+Topics to Discuss
+
+	•	Data Quality and Laura Sebastian Coleman's 'Data Quality Assessment Framework'
+	•	Inaccurate transcription
+	•	Overrepresented portions of a dataset (and thus underrepresented portions of it)
+	•	Overrepresented datasets
+	•	Hapax legomena ignored by CDF (statistics)
+	•	Inconsistent transcription across editions/versions of the same/similar text
+	•	Different editions - which to consider
+	•	Access to datasets - public/private
+	•	The size of a individual set/the amount of datasets available - is this enough to be modeled on its own
+	•	What is the best version of an individual text/the most suitable version of a text for modeling?
+	•	The challenge of difference in kind when it comes to evaluation: quantitative versus qualitative (and the mindsets that make this distinction as translated into modeling/anlaysis/interpretation/criticism)
+	•	The need for DataLad-like documenting of digital text datasets
+
+Body Text
+
+Data Quality and Laura Sebastian Coleman's 'Data Quality Assessment Framework'
+
+
+
+The measuring tools - Discussion of the tools we make and use to measure data quality
+
+Of course, we can look to the accuracy of our measuring tools when we think of data quality. A measurement is, after all, only as good as its tool. (Cite Rockwell’s source on tools in his DH making book.)
+
+Inaccurate Transcription
+
+When we think about specific issues with “quality” in literary studies more typical concerns are for the fidelity of an edition to the source material – if that source material exists at all. That idea of moving closer and closer to authorial intention has been tested over the years, but the idea of accuracy has mostly been left to authorial experts and the artisans involved in the practices of publishing. The digital edition has troubled this concept of accuracy in that the means by which a text (i.e. a novel, poem, letter, etc.) is transformed from a physical book into a digital format are typically far more opaque. Like book publishing practices before it, the less opaque we want our digital transcription processes to be the more expensive they become to produce and, in turn, receive. The early promises of free information on the “information superhighway” loom large over our conceptions about access to digital texts. In the past few decades, we have had to reapproach our relationships between digital information and the costs of its production. Paywalls, old and new, spring up before us barring access. In reaction, demands for open access to data from both the public and from a private industry hungry for more and more digital information have also arisen. This level of access too therefore must be part of our considerations when we think about data quality in the humanities. Getting back to the idea of accuracy in a digital edition though we see that errors arise from at least two disaparate sources: human transcription and machine reading. Sometimes the best way to transcribe an edition into digital form is to sit with a physical book and simply copy. If you picture a medieval scribe looking from one copy of an illuminated tome to another one as they copy word by word, this is not far off from the modern version. And like the scribe, modern humans are subject to the same foibles of copying: omission and misperception. This sits in the high cost end of digital transcription. After all, unless a person is volunteering (more on that later) someone must pay a person to sit and transcribe a book from its physical form. And machine reading, also known as ‘optical character recognition’, may consistently produce the same error over and over again since its recognition mechanisms are interested in pattern recognition whereas a human may only make that mistake a handful of times. All that is to say, that if inaccuracies in transcribing have changed slightly they have only been compounded. The difference in error rate of manual transcription versus machine reading is not consistent and is dependent upon the human, the algorithms/machine learning, and the texts themselves.
+
+Overrepresented portions of a dataset (and thus underrepresented portions of it)
+
+	Repeatedly throughout literary studies and beyond into other knowledge domains we see researchers repeat citations of famous sources. This mimics the behavior and phenomenon of oft cited passages of literature. (Cite Columbia Jonathan heatmap study). Of course, there are obvious pitfalls of repeatedly citing one source or one section of one source over another source or another section of even the same source. No sociologist would be surprised that a nice statistical curve could fit well the numbers of these citations by areas in a book. (A small study? A citation?) This uneven citation phenomenon however also doubles in when it comes to errors and error correction for digital editions of texts. The question has always been how much this kind of disparate error correction affects the data (digital text) and any model made from it. The assumption and and overlying corrective (not quite the right word) has been that the central tendency principle involved with statistical modeling will render such small sets of errors as long-tail statistical noise and will affect the greater statistical shapes at play within the modeled text. But this assumption/corrective is directly opposed to the tendency of literary studies to find meaning and even great significance in small words and phrases within a text. For literary studies these small errors do matter a great deal. While efforts oftened likened as close reading (etc.) can easily focus on small pieces of the text, it is important to retain this ability and view of the text even as we model its large statistical tendencies. Therefore for many literary scholars what would otherwise be characterized as long-tail noise is, if missing from the model, a significant loss of data quality – and in turn, model quality. Our perspectives on what texts are matters. If the person or program doing natural language processing considers as digital text to be a series of natural language phrases to be measured and counted then 3% error in that measurement and counting may be neglible and deemed reasonable. If a text is something that is full of meaningful words and phrases that are invaluable to the overall work then 3% error could be the difference between a classic novel and a flawed one. Therefore when we model texts for the purpose of literary studies it could be an important concern to ensure that that 3% error is eliminated. And while these concerns could ultimately be regarded as epistemological and meaningless to a statistical model, with meaningful error in place it renders a computational model of a text for literary studies significantly lower quality by the standards of literary studies.
+	Taking the same idea of the heatmap of citation and reference, we can apply it to data quality. Depending on the metric and its relevance, we can quickly see how data quality when measured is not just a summary measure but something that stretches over the entire body of a work. We can also take this notion and extend it further if we have multiple digital editions that are under consideration for further use down the research chain –  either reading or modeling, for example. Ultimately, how data quality measures depends on the aims of the research project, not just in which measures are selected as quality criteria but also how those measures are used. By exploding the points of data quality measurement within a work across logical divisions (whatever ‘logical’ may mean for a particular researcher), we can do more than compare data quality of editions, but we can do what would otherwise seem unthinkable: compose the highest quality digital edition of a work from several works. Again, such an action would depend on the aims and ethics of the researcher. Do we require the model of a digital edition of a work to be as true to its physical source as possible? If not, then what would be the difference between composing a high quality Frankenstein edition and going through an scanned work and correcting flawed results of optical character recognition? What if, to provide the converse of overrepresentation, or, at least a different textual form, we only provided the sections of a text that met the highest of quality standards under our assessment framework?
+
+Overrepresented datasets
+
+Data quality measures can be taken beyond mere counting of words to do something more complex and elegant. Take for example the kind of work that has been done for decades with authorship attribution studies &lt;citation&gt; that compares word usage frequency among their writings. One could take the linguistic signs of an author’s writing and measure how well there is a match between a particular work and the authorial signature – or, as previously mentioned, sections of a digital work that match more than others. If authorship of works are in question, once a data quality measurement for that authorial signature is in place, there is a well-defined reason that can be pointed to as to why one work might be more suited for modeling and study than another work. And by using a data quality assessment framework, researchers can also ensure that that signature-as-metric does not become an overriding principle by which to make such an assessment of the suitability for assigning the probability of authorship, modeling, or study of one work over another. Taking a step back from the perspective of a prospective study, one can imagine this approach to understanding the data quality of literary datasets to be adapted in retrospect. If previous research has looked to digital works, perhaps in a seeming overrepresented fashion (see Columbia Jonathan’s heatmap) what can new understandings of the data qualities of the textual datasets used in those studies tell us about their findings? Perhaps some digital work of poorer data quality shaped the project’s overall model so as to skew its results. Or vice-versa, perhaps there was some work of higher data quality considered by the project but was overlooked in part because there was no data quality framework at hand to make those decisions. Without defined measurements of the qualities of digital works such understandings can be left undiscovered.
+
+#
+
+Implementing a basic authorial signature above for the novels of Herman Melville taken via Project Gutenberg
+And this measurement coud be tailored to the needs of the project and the subject matter expertise of the researcher.
+Depending on the purpose of the model you are building after your data quality assessment, one can imagine a number of questions such a data quality assessment would answer. What is the most Melvillian novel? What is the least? Which novels are most like a particular novel? Combining such typical digital humanities findings with an overall data quality assessment we can see that not only can such an assessment be used to report on the current quality of the digital editions present within a literary dataset, but also how the assessment can be used to reconfigure the dataset itself presuming a researcher might want editions within the dataset to skew towards a certain characteristic. Using the above example of all of Melville’s novels, the metric easily answers those questions. What is the most Melvillian novel? Perhaps unsurprisingly it’s Moby-Dick – a tragic sea yarn mixed with metaphor-dense prose. What is the least Melvillian novel? Also, in what would not be a surprise for those versed in his novels, the least Melvillian novel is The Confidence Man – an otherworldy voyage down the Mississippi by boat with a large cast of esoteric American characters. There all sorts of investigative vectors one could take and further decision points from there regarding the refinement and curation of the dataset. For example, later novels, Pierre and The Confidence-Man are close in vocabulary and word usage while much of his sea tales are closer to Moby-Dick with White Jacket and Mardi, Volume 1 being closest. Curiously, Mardi, Volume 2 is notably further from the first volume and certainly from Moby-Dick. Why is that? Perhaps there is something amiss with its digital edition? Or perhaps the reason is more thematic in nature? In any case, this kind of work can be extended to multi-author datasets looking to isolate particular categories of works, genres, etc. By including both general and specific data quality metrics within the assessment framework, it can become a frequented tool for both stating the quality of a dataset to be modeled and a means of tailoring the model itself. Though it produces summary figures, one specific aim of a data quality assessment framework for digital texts is to provide an array of information about them for practitioners and researchers.</Text>
+        </Document>
         <Document ID="5B38F7ED-7CF8-4ECE-B0DF-A2FDC66B4DE6">
             <Title>Why 'Literary'?</Title>
             <Text>Introductions
 
 Those reading this may be forgiven for the assumption that my title’s term ‘literary’ necessarily refers to the qualities of the works that are modeled in the following pages. While the term itself is already loaded with meanings (as well as connotations both positive and negative), I wish to encumber it with another definition. The subject of this work is the modeling of humanities’ data (more on that in the first chapter), and thus the models will be created with the intent of harboring the goals of humanities scholarship. Those goals vary from field to field and even individual to individual, but, as we will see, humanities data modeling infers some other qualities not typically considered in more historically mathematical fields of study. A “literary model” is therefore something imbued with a high quality, but not necessarily one just of statistical rigor. Rather, just as “literary” can refer to the values both within a work and the external forces that elevate that work to a high status, so too will that extend to a humanities model of cultural objects  – in this case of text and images. A “literary model” is still a model that quantifies and reduces in representation of its underlying objects, but it is more aesthetically rich, and one that is more sound because of that richness.</Text>
-        </Document>
-        <Document ID="C96AF56F-82EE-4920-9D6A-DE2DFE9B79CB">
-            <Title>January 14, 2021</Title>
-            <Text>Introduction prose
-Borderline
-
-	One summer I drove up the pine-lined coast of Vancouver Island in British Columbia. I didn’t have any particular destination in mind. The prospect of Tofino had occurred to me, but that would be several hours further along the coast. The region, what Americans refer to as the Pacific Northwest, is somewhat lesser known in the American imaginary. To describe the landscape briefly, it is a place where mountains and large coniferous forests directly meet the Pacific ocean. The beaches of this place are also comparatively alien, particularly to someone who has spent their life in the east, where fine sand beaches are more common. In the northwest, one finds rocky beaches composed of small to medium sized stones. The colors are extraordinary. Amid the giant sea stacks and escarpments, the foamy surf of the water washes up and recedes upon these stones that glisten in pinks, greens, oranges, blues, and purples – products of volcanism, water, wind, and time. Even the more common basalt grey ones shine under a typical cloudy day. The summer time however brings long spells of sunshine. I stopped my car at a small, nameless beach park where only a few travelers or area residents were sitting and begin to hike toward one of the bordering escarpments where a giant pine was perched. The erosion had exposed some of its finer roots the saltwater and air. I clambered over the boulders at the base of this outcropping, as best as a non-native could. These types of giant rocks, immediately adjacent to the place where water greets the land, are notorious for their danger, covered in slick seaweed, anemones and razor-sharp, black mussels. Further along and closer to the escarpment, I entered a small cave – really more of an arbor considering the tree’s roots jutted down from overhead. This was a calm place, sequestered away from even the scant amount of people a few dozen yards away. The cave cut underneath the escarpment and continued around away from the beach. To my surprise, I found the path led upward through the soil and to the small, grass and moss covered area around the tree. From this vantage, I saw the boulders below, the stone beach, the people, but now even more: the coastline leading northward, oceangoing vessels, more pine-covered islands and mountains in the far distance.
-	These kinds of perspectives – on the beach, over top the boulders, inside the cave, above on the tree’s perch – all inform an experience of what would be considered the world outside our interior spaces – our homes, office buildings, and the rooms and spaces inside them. As we venture into more metaphorical (and metaphysical) spaces provided by computers, the contrast with the exterior space has been extended, one step further removed from such a wild, if serene scene. The computer itself acts a technological extension of our mind’s interiority. The subsequent virtual spaces on it reflect as such (desktops, windows, bins, folders, file systems, and on).  But the metaphors we use to move in and comprehend any of these spaces turn out to be universal. Grasping to understand a concept within a virtual, interior, or exterior space follows a similar heuristic:
-
-	1.	We situate ourselves from a particular position in that space.
-	2.	We observe objects from that vantage.
-	3.	We measure them.
-	4.	We produce determinations, comparisons, and inferences.
-
-	From the tree’s perch, I observe the pine-topped island across the water, a gigantic ferry slowly moving away from shore, the miniscule person reading on the beach. The relationships between these objects produce a sense of space and perhaps quietude. They are less tangible in the moment, but I know that with some effort I could proceed towards them, albeit with some considerable effort. Yet, during and by journey’s end, my perspective on them will have changed. In my office, the scale of the space and my conception of it circumscribes that kind of physical possibility. Yet, as it does so, the possibilities for heightened attention and exploration of the objects in the room become more possible. These choices of space and perspective then become generative of the perceptions and conceptions that are produced from them.
-
-Further thoughts
-
-	1.	Spaces and objects with relationships forming the theoretically possible
-	2.	Why do we build big windows looking out onto that exteriority - the fear of the loss of perspective when moving indoors. The desire to be able to have large perspective while being interior, occuping interior physical, psychological, virtual spaces
-</Text>
         </Document>
         <Document ID="D2595764-DDC7-4286-AB49-A542123A151A">
             <Title>Body (w/ outline)</Title>
@@ -1985,6 +2003,27 @@ These readings/measures of model quality can be also thought of as a new form of
 
 </Text>
         </Document>
+        <Document ID="C96AF56F-82EE-4920-9D6A-DE2DFE9B79CB">
+            <Title>January 14, 2021</Title>
+            <Text>Introduction prose
+Borderline
+
+	One summer I drove up the pine-lined coast of Vancouver Island in British Columbia. I didn’t have any particular destination in mind. The prospect of Tofino had occurred to me, but that would be several hours further along the coast. The region, what Americans refer to as the Pacific Northwest, is somewhat lesser known in the American imaginary. To describe the landscape briefly, it is a place where mountains and large coniferous forests directly meet the Pacific ocean. The beaches of this place are also comparatively alien, particularly to someone who has spent their life in the east, where fine sand beaches are more common. In the northwest, one finds rocky beaches composed of small to medium sized stones. The colors are extraordinary. Amid the giant sea stacks and escarpments, the foamy surf of the water washes up and recedes upon these stones that glisten in pinks, greens, oranges, blues, and purples – products of volcanism, water, wind, and time. Even the more common basalt grey ones shine under a typical cloudy day. The summer time however brings long spells of sunshine. I stopped my car at a small, nameless beach park where only a few travelers or area residents were sitting and begin to hike toward one of the bordering escarpments where a giant pine was perched. The erosion had exposed some of its finer roots the saltwater and air. I clambered over the boulders at the base of this outcropping, as best as a non-native could. These types of giant rocks, immediately adjacent to the place where water greets the land, are notorious for their danger, covered in slick seaweed, anemones and razor-sharp, black mussels. Further along and closer to the escarpment, I entered a small cave – really more of an arbor considering the tree’s roots jutted down from overhead. This was a calm place, sequestered away from even the scant amount of people a few dozen yards away. The cave cut underneath the escarpment and continued around away from the beach. To my surprise, I found the path led upward through the soil and to the small, grass and moss covered area around the tree. From this vantage, I saw the boulders below, the stone beach, the people, but now even more: the coastline leading northward, oceangoing vessels, more pine-covered islands and mountains in the far distance.
+	These kinds of perspectives – on the beach, over top the boulders, inside the cave, above on the tree’s perch – all inform an experience of what would be considered the world outside our interior spaces – our homes, office buildings, and the rooms and spaces inside them. As we venture into more metaphorical (and metaphysical) spaces provided by computers, the contrast with the exterior space has been extended, one step further removed from such a wild, if serene scene. The computer itself acts a technological extension of our mind’s interiority. The subsequent virtual spaces on it reflect as such (desktops, windows, bins, folders, file systems, and on).  But the metaphors we use to move in and comprehend any of these spaces turn out to be universal. Grasping to understand a concept within a virtual, interior, or exterior space follows a similar heuristic:
+
+	1.	We situate ourselves from a particular position in that space.
+	2.	We observe objects from that vantage.
+	3.	We measure them.
+	4.	We produce determinations, comparisons, and inferences.
+
+	From the tree’s perch, I observe the pine-topped island across the water, a gigantic ferry slowly moving away from shore, the miniscule person reading on the beach. The relationships between these objects produce a sense of space and perhaps quietude. They are less tangible in the moment, but I know that with some effort I could proceed towards them, albeit with some considerable effort. Yet, during and by journey’s end, my perspective on them will have changed. In my office, the scale of the space and my conception of it circumscribes that kind of physical possibility. Yet, as it does so, the possibilities for heightened attention and exploration of the objects in the room become more possible. These choices of space and perspective then become generative of the perceptions and conceptions that are produced from them.
+
+Further thoughts
+
+	1.	Spaces and objects with relationships forming the theoretically possible
+	2.	Why do we build big windows looking out onto that exteriority - the fear of the loss of perspective when moving indoors. The desire to be able to have large perspective while being interior, occuping interior physical, psychological, virtual spaces
+</Text>
+        </Document>
         <Document ID="6089098D-8FE4-4295-8757-03A9D86492A7">
             <Title>July 16, 2019</Title>
             <Text>Notes
@@ -2012,44 +2051,6 @@ Person 2: Now you’ve just gone too far.
 That shaky question, as it turns out, is not just whether or not there is a difference between a quality and quantity, it’s if the notion quality arises from cursory attention to detail.
 
 Why is this important? It goes to the heart of the current questions before many different types of researchers considering how to use computational tools to accurately extract meaning from passages of text, and for literary scholars, whether or not they’re usable at all for the questions that have traditionally been asked by their field(s). And if quality is more indicative of inattention than not, or at least of the comforting “good enough” soup in which we navigate our everyday lives, then quality must be revisited, redefined, and reconfigured for the purposes of digital literary study.</Text>
-        </Document>
-        <Document ID="FA375BED-E51F-41C2-BB63-84D9CB50AD8C">
-            <Title>Part 1</Title>
-            <Text>Chapter 1 - Part 1 - Data quality and assessment framework explanation
-Github issue: https://github.com/jarmoza/aolm_full/issues/14
-
-Topics to Discuss
-
-	•	Inaccurate transcription
-	•	Overrepresented portions of a dataset (and thus underrepresented portions of it)
-	•	Overrepresented datasets
-	•	Hapax legomena ignored by CDF (statistics)
-	•	Inconsistent transcription across editions/versions of the same/similar text
-	•	Different editions - which to consider
-	•	Access to datasets - public/private
-	•	The size of a individual set/the amount of datasets available - is this enough to be modeled on its own
-	•	What is the best version of an individual text/the most suitable version of a text for modeling?
-	•	The challenge of difference in kind when it comes to evaluation: quantitative versus qualitative (and the mindsets that make this distinction as translated into modeling/anlaysis/interpretation/criticism)
-	•	The need for DataLad-like documenting of digital text datasets
-
-Body Text
-
-The measuring tools - Discussion of the tools we make and use to measure data quality
-
-Of course, we can look to the accuracy of our measuring tools when we think of data quality. A measurement is, after all, only as good as its tool. (Cite Rockwell’s source on tools in his DH making book.)
-
-Inaccurate Transcription
-
-When we think about specific issues with “quality” in literary studies more typical concerns are for the fidelity of an edition to the source material – if that source material exists at all. That idea of moving closer and closer to authorial intention has been tested over the years, but the idea of accuracy has mostly been left to authorial experts and the artisans involved in the practices of publishing. The digital edition has troubled this concept of accuracy in that the means by which a text (i.e. a novel, poem, letter, etc.) is transformed from a physical book into a digital format are typically far more opaque. Like book publishing practices before it, the less opaque we want our digital transcription processes to be the more expensive they become to produce and, in turn, receive. The early promises of free information on the “information superhighway” loom large over our conceptions about access to digital texts. In the past few decades, we have had to reapproach our relationships between digital information and the costs of its production. Paywalls, old and new, spring up before us barring access. In reaction, demands for open access to data from both the public and from a private industry hungry for more and more digital information have also arisen. This level of access too therefore must be part of our considerations when we think about data quality in the humanities. Getting back to the idea of accuracy in a digital edition though we see that errors arise from at least two disaparate sources: human transcription and machine reading. Sometimes the best way to transcribe an edition into digital form is to sit with a physical book and simply copy. If you picture a medieval scribe looking from one copy of an illuminated tome to another one as they copy word by word, this is not far off from the modern version. And like the scribe, modern humans are subject to the same foibles of copying: omission and misperception. This sits in the high cost end of digital transcription. After all, unless a person is volunteering (more on that later) someone must pay a person to sit and transcribe a book from its physical form. And machine reading, also known as ‘optical character recognition’, may consistently produce the same error over and over again since its recognition mechanisms are interested in pattern recognition whereas a human may only make that mistake a handful of times. All that is to say, that if inaccuracies in transcribing have changed slightly they have only been compounded. The difference in error rate of manual transcription versus machine reading is not consistent and is dependent upon the human, the algorithms/machine learning, and the texts themselves.
-
-Overrepresented portions of a dataset (and thus underrepresented portions of it)
-
-	Repeatedly throughout literary studies and beyond into other knowledge domains we see researchers repeat citations of famous sources. This mimics the behavior and phenomenon of oft cited passages of literature. (Cite Columbia Jonathan heatmap study). Of course, there are obvious pitfalls of repeatedly citing one source or one section of one source over another source or another section of even the same source. No sociologist would be surprised that a nice statistical curve could fit well the numbers of these citations by areas in a book. (A small study? A citation?) This uneven citation phenomenon however also doubles in when it comes to errors and error correction for digital editions of texts. The question has always been how much this kind of disparate error correction affects the data (digital text) and any model made from it. The assumption and and overlying corrective (not quite the right word) has been that the central tendency principle involved with statistical modeling will render such small sets of errors as long-tail statistical noise and will affect the greater statistical shapes at play within the modeled text. But this assumption/corrective is directly opposed to the tendency of literary studies to find meaning and even great significance in small words and phrases within a text. For literary studies these small errors do matter a great deal. While efforts oftened likened as close reading (etc.) can easily focus on small pieces of the text, it is important to retain this ability and view of the text even as we model its large statistical tendencies. Therefore for many literary scholars what would otherwise be characterized as long-tail noise is, if missing from the model, a significant loss of data quality – and in turn, model quality. Our perspectives on what texts are matters. If the person or program doing natural language processing considers as digital text to be a series of natural language phrases to be measured and counted then 3% error in that measurement and counting may be neglible and deemed reasonable. If a text is something that is full of meaningful words and phrases that are invaluable to the overall work then 3% error could be the difference between a classic novel and a flawed one. Therefore when we model texts for the purpose of literary studies it could be an important concern to ensure that that 3% error is eliminated. And while these concerns could ultimately be regarded as epistemological and meaningless to a statistical model, with meaningful error in place it renders a computational model of a text for literary studies significantly lower quality by the standards of literary studies.
-	Taking the same idea of the heatmap of citation and reference, we can apply it to data quality. Depending on the metric and its relevance, we can quickly see how data quality when measured is not just a summary measure but something that stretches over the entire body of a work. We can also take this notion and extend it further if we have multiple digital editions that are under consideration for further use down the research chain –  either reading or modeling, for example. Ultimately, how data quality measures depends on the aims of the research project, not just in which measures are selected as quality criteria but also how those measures are used. By exploding the points of data quality measurement within a work across logical divisions (whatever ‘logical’ may mean for a particular researcher), we can do more than compare data quality of editions, but we can do what would otherwise seem unthinkable: compose the highest quality digital edition of a work from several works. Again, such an action would depend on the aims and ethics of the researcher. Do we require the model of a digital edition of a work to be as true to its physical source as possible? If not, then what would be the difference between composing a high quality Frankenstein edition and going through an scanned work and correcting flawed results of optical character recognition?
-
-Overrepresented datasets
-
-Data quality measures can be taken beyond mere counting of words to do something more complex and elegant. Take for example the kind of work that has been done in authorship attribution studies for decades. One could take the linguistic signs of an author’s writing and measure how well there is a match between a particular work and the authorial signature – or as previously mentioned sections of a digital work that match more than others.. If authorship of works are in question, once a data quality measurement for that authorial signature is in place, there is a clear reason that can be pointed to as to why one work might be more suited for modeling and study than another work. And by using a data quality assessment framework, researchers can also ensure that that signature-as-metric does not become an overriding principle by which to make such an assessment of the suitability for assigning the probability of authorship, modeling, and study of one work over another. Taking a step back from the perspective of a prospective study, one can imagine this approach to understanding the data quality of literary datasets to be adapted in retrospect. If previous research has looked to digital works, perhaps in a seeming overrepresented fashion (see Columbia Jonathan’s heatmap) what can new understandings of the data qualities of the textual datasets used in those studies tell us about their findings? Perhaps some digital work of poorer data quality shaped the project’s overall model so as to skew its results. Or vice-versa, perhaps some work of higher data quality considered by the project was overlooked and undervalued with a data quality framework in mind. Without defined measurements of the qualities of those digital works such understandings are left undiscovered.</Text>
         </Document>
         <Document ID="D7846FA2-8777-43FA-8CDB-06320642D819">
             <Title>January 9, 2025</Title>
@@ -2595,34 +2596,177 @@ The following tasks are yet to be done to achieve those 3 components:
         <Document ID="3B116937-F8ED-4618-9C42-921840D97210">
             <Title>Project Organization</Title>
         </Document>
-        <Document ID="CF76BE91-776D-4E35-9929-396070514132">
-            <Title>Outline &amp; Notes</Title>
-            <Text>Model quality/qualities of/for literary modeling
+        <Document ID="14669E50-5A01-48A6-91F8-AD7DFB44BBEA">
+            <Text>Q: Can you compare your abilities to that of an LDA topic model?
 
-Mark Twain autobiography
+Absolutely — comparing my abilities (as an advanced large language model like GPT-4) to those of an LDA topic model (Latent Dirichlet Allocation) is a great way to highlight the differences between classic statistical NLP and modern neural NLP. Here's a clear side-by-side comparison:
 
-Resources
+⚖️ GPT-4 (Me) vs. LDA (Latent Dirichlet Allocation)
+Feature / Ability
+GPT-4 (Large Language Model)
+LDA Topic Model (Statistical NLP)
+Architecture
+Deep neural network (Transformer-based, autoregressive)
+Probabilistic generative model
+Understanding of Context
+Very high — understands words in full sentence and document context
+Limited — treats documents as bags of words (word order ignored)
+Topic Representation
+Can dynamically infer and explain topics, adapting to new language use
+Produces static topic-word distributions learned during training
+Word Sense Disambiguation
+Handles polysemy (e.g., "bank" as river vs. finance) using surrounding context
+Cannot distinguish meaning — "bank" is treated the same in all uses
+Language Fluency
+Generates coherent, natural-sounding text
+Cannot generate fluent text — only lists word probabilities
+Interpretability
+Human-like responses but not always transparent in how topics are inferred
+Highly interpretable — topics are clear lists of top words
+Flexibility / Generalization
+Can handle any text domain, reason across topics, and apply real-world knowledge
+Limited to the corpus it was trained on and domain-specific patterns
+Multilingual Capability
+Can handle and compare texts across many languages
+Requires retraining on multilingual corpora
+Training Data
+Trained on a massive, diverse dataset (web, books, articles, etc.)
+Trained on a specific set of documents you provide
+Use Cases
+Summarization, dialogue, question answering, topic inference, writing, translation, etc.
+Document clustering, topic discovery, search indexing, trend analysis
 
-Twain reviews/criticisms
-Info sci - look for model quality scholars to reference from your notes
+🧠 What GPT-4 Does Better
+	•	Understands nuance, context, and semantics.
+	•	Explains or reasons about why a topic is relevant.
+	•	Handles complex or ambiguous language.
+	•	Can generate coherent summaries or reformulations of text topics.
+	•	Learns to generalize from many domains and task types.
 
-Vol 1. 760 pages
-Vol 2. 776 pages
-Vol 3. 792 pages
+📈 What LDA Still Does Well
+	•	Fast, lightweight, and interpretable for unsupervised topic discovery.
+	•	Works well for exploratory data analysis on large corpora.
+	•	No training on huge datasets required — easier to deploy on custom data.
+	•	Topics are transparent, e.g., Topic 3 = [“market”, “price”, “stock”, “invest”].
 
-1000 words
+🎯 Example: Analyzing a News Article
+Input article: A piece about electric vehicles, Tesla, and environmental policy.
+	•	LDA might output topics like:
+	◦	Topic 1: [“tesla”, “car”, “battery”, “elon”, “model”]
+	◦	Topic 2: [“climate”, “emissions”, “policy”, “green”]
+	•	GPT-4 would say: "This article focuses on how Tesla’s innovation in electric vehicle technology intersects with broader environmental policy efforts to reduce emissions and fight climate change. It discusses the role of private industry in advancing sustainable transportation." 
 
-	1.	Mark Twain autiobiography description - popular response
-	2.	This sets up the problem of a large, opaque work
-	3.	The problem of model selection for computational modeling of literature
-	4.	Project proposition on model selection via model quality assessment for project/humanities
-	5.	Description of previous chapter on data quality and overall dissertation
-	6.	Discussion of adaptation of information science methods for humanities purposes (dq metrics, dq assessment, new “literary” data quality valuation)
-	7.	“Information criteria” for selected model as means of quality estimation of model output
-	8.	Combining IC with proofing via humanities qualitative assessment
-	⁃	close reading sections highlighted by the model and producing valuation kind of like an annotated bibliography for these highlighted sections of the model/underlying text
-	9.	Prospects for new insights about the Twain autobiography and new notion of sound evidentiary basis for the highlighting/selection of sections for analysis/comparison/contrast/etc.
-	10.	Prospects for other researchers to use these model metrics and heuristic to make assessments of their own models and use of those assessments as (part) basis for the interpretive claims made
+🧩 Final Verdict
+	•	LDA is excellent for unsupervised topic clustering in large corpora and when you need explainable, fast results.
+	•	GPT-4 is superior when you need deep understanding, reasoning, or human-like language generation, especially in tasks requiring nuance, abstraction, or contextual sensitivity.
+They're best seen as complementary tools: LDA for structural topic discovery, GPT for semantic interpretation and generation.
+
+Q: Interesting. So for use cases like digital humanities, would you say that a model such as yourself are actually more limited because researchers in that field require more explainability of model data?
+
+That’s an excellent and very insightful point — and yes, you're absolutely right to question how explainability affects the usefulness of a model like me in digital humanities.
+Here's a nuanced answer:
+
+🧠 Yes — for many digital humanities use cases, my outputs can be more limited in terms of explainability compared to simpler models like LDA.
+Digital humanities scholars often prioritize:
+	•	Transparency: They want to see and interpret the inner workings of a model.
+	•	Traceability: They need to connect results back to specific texts, passages, or corpora.
+	•	Methodological clarity: Research in the humanities is deeply tied to how conclusions are reached — not just what those conclusions are.
+
+⚖️ Let’s Compare Again, This Time for Digital Humanities
+Capability
+LDA / Rule-Based Tools
+GPT (Large Language Models)
+Explainability
+High: Topic-word distributions are clearly visible
+Low: Internal representations (embeddings, attention weights) are opaque
+Reproducibility
+High: Deterministic with same parameters
+Lower: Generative and stochastic, influenced by hidden variables
+Control over output
+High: You define number of topics, stopwords, thresholds
+Lower: You prompt, but results may vary and are harder to constrain
+Citation &amp; Academic Rigor
+Strong: Outputs are measurable and easily referenced
+Weak: Harder to cite “how” an output was derived unless heavily constrained
+Interpretive Methodology
+Fits well with hermeneutics, close reading, thematic analysis
+More aligned with applied tasks, summarization, or creative writing
+
+🧩 Why GPT-Style Models Can Still Be Useful in Digital Humanities
+Despite limitations in transparency, I can still contribute meaningfully:
+✅ For exploratory or hypothesis-generating work:
+	•	Summarizing large corpora
+	•	Suggesting thematic groupings
+	•	Proposing metaphorical or semantic patterns
+	•	Answering queries across a corpus to identify patterns
+✅ For human-in-the-loop workflows:
+	•	Scholars can prompt me, then critically assess and annotate what I return.
+	•	I can assist with surface-level interpretation, while the researcher handles deeper reading.
+
+🔍 A Cautionary Note
+Digital humanities emphasizes epistemological humility — knowing how we know what we know. Large language models, including myself, currently fall short in offering:
+	•	Full auditability
+	•	Complete control over inferencing paths
+	•	The ability to back claims with line-by-line textual evidence automatically
+Until these limitations are mitigated, researchers in digital humanities should treat my outputs as suggestive, not authoritative — useful tools in interpretive inquiry, but not substitutes for methodologically rigorous analysis.
+
+🧠 Final Thought
+So yes: for digital humanities, simpler models like LDA, TF-IDF, or even manual tagging with human curation may still be preferred in many contexts because of their interpretability and traceability.
+That said, if paired thoughtfully — with clear methodological framing — a model like me can serve as a collaborative assistant, not a black-box oracle.
+
+Q: Thank you. You've given me some things to think about on that topic. In your opinion, how far out are humans from producing a large language model with responses that are fully auditable? Given the billions of parameters involved in, say your own model, it seems like a fairly computationally intractable problem to reverse course, so to speak, and trace the answer back to the mathematical evidence in you that supplied it.
+
+You're very welcome — and your question cuts right to the heart of one of the most pressing frontiers in AI research: auditability and interpretability of large language models (LLMs). You're absolutely right that the challenge is not just conceptual, but deeply entangled with scale, complexity, and computational feasibility.
+Let’s unpack this in a grounded way.
+
+🧩 Why Current LLMs Are Not Auditable in a Traditional Sense
+You're spot on: tracing a GPT-style model’s output “back” to specific mathematical evidence inside its billions of parameters is, in practice, nearly impossible with current tools. Here's why:
+1. Scale and Entanglement
+	•	Models like GPT-4 have hundreds of layers and billions of parameters, all interacting in highly non-linear ways.
+	•	Meaning isn't stored discretely. It's distributed across many neurons, meaning there's no “Tesla neuron” or “Israel-Palestine conflict neuron.”
+	•	Even seemingly straightforward outputs are the result of dense vector algebra across layers, not symbolic reasoning.
+2. Non-symbolic Representation
+	•	Unlike symbolic systems (e.g., logic trees or decision rules), LLMs encode knowledge in statistical relationships, which don’t map cleanly to human-understandable rules.
+3. Stochastic Generation
+	•	LLMs sample outputs probabilistically, which adds another layer of indeterminacy.
+	•	Even the same prompt can yield multiple outputs, complicating traceability.
+
+🔭 So How Far Away Are We from Auditable LLMs?
+Here’s a reasoned estimate based on current research trajectories:
+⏳ Short-term (1–3 years):
+	•	Some progress on partial interpretability:
+	◦	Tools like mechanistic interpretability (e.g., work by Anthropic, OpenAI, and DeepMind) are beginning to map out neuron roles and intermediate representations.
+	◦	Projects like “Circuits” and “TransformerLens” aim to reverse-engineer specific pathways in models.
+	◦	We may soon be able to audit narrow behaviors or track influence of certain training data.
+But these are mostly toy-scale or isolated findings, not scalable yet to full-model behavior.
+
+⏳ Medium-term (3–10 years):
+	•	We may see models architected from the ground up to support auditable reasoning — e.g., hybrid systems combining:
+	◦	Symbolic logic + neural networks
+	◦	Structured memory and modular reasoning components
+	◦	Explicit reasoning traces (like how some planning agents log their decision trees)
+These approaches could enable explainable-by-design LLMs, at least in restricted domains like law, medicine, or policy.
+
+⏳ Long-term (10+ years):
+	•	Full auditability at GPT-4-scale may require a paradigm shift, not just better tooling.
+	•	It might involve:
+	◦	New model architectures that make internal reasoning legible
+	◦	Training methods that explicitly encourage explainability
+	◦	Mathematical frameworks that bridge the gap between statistical and symbolic representation
+This is akin to reverse-engineering cognition: understanding not just what a model knows, but how it knows and why it generates specific outputs.
+
+🧠 Philosophical Footnote
+You’ve also touched on a deeper issue: What kind of explanation is meaningful to humans?
+Even if we could say, “Neuron 24892 fired because of a 0.82 activation in Layer 53, due to token vector 12032,” that’s not helpful unless we can abstract that into human-level terms like:
+“The model made this inference because it has observed, across many texts, that when A and B co-occur, C usually follows.”
+So the goal isn’t just auditability — it’s cognitive legibility.
+
+🧭 Summary
+	•	We’re still far from full auditability, but progress is happening, especially in understanding parts of these systems in narrow settings.
+	•	Next-gen models may be designed for interpretability from the ground up, not as a patch afterward.
+	•	Hybrid approaches—combining neural and symbolic reasoning—may bridge the gap.
+	•	For now, models like me should be treated as useful but epistemologically opaque collaborators, not black boxes with legal-grade traceability.
+You're thinking along precisely the right lines. Auditability may eventually be one of the defining criteria for trustworthy AI — especially in sensitive fields like law, science, and public policy.
 </Text>
         </Document>
         <Document ID="02F0DB45-339B-49C1-9E87-FD047385D293">
@@ -2661,6 +2805,36 @@ Let’s break out the measurements here for the sake of the example. As we can s
 
 
  The MTPO edition is in TEI XML format</Text>
+        </Document>
+        <Document ID="CF76BE91-776D-4E35-9929-396070514132">
+            <Title>Outline &amp; Notes</Title>
+            <Text>Model quality/qualities of/for literary modeling
+
+Mark Twain autobiography
+
+Resources
+
+Twain reviews/criticisms
+Info sci - look for model quality scholars to reference from your notes
+
+Vol 1. 760 pages
+Vol 2. 776 pages
+Vol 3. 792 pages
+
+1000 words
+
+	1.	Mark Twain autiobiography description - popular response
+	2.	This sets up the problem of a large, opaque work
+	3.	The problem of model selection for computational modeling of literature
+	4.	Project proposition on model selection via model quality assessment for project/humanities
+	5.	Description of previous chapter on data quality and overall dissertation
+	6.	Discussion of adaptation of information science methods for humanities purposes (dq metrics, dq assessment, new “literary” data quality valuation)
+	7.	“Information criteria” for selected model as means of quality estimation of model output
+	8.	Combining IC with proofing via humanities qualitative assessment
+	⁃	close reading sections highlighted by the model and producing valuation kind of like an annotated bibliography for these highlighted sections of the model/underlying text
+	9.	Prospects for new insights about the Twain autobiography and new notion of sound evidentiary basis for the highlighting/selection of sections for analysis/comparison/contrast/etc.
+	10.	Prospects for other researchers to use these model metrics and heuristic to make assessments of their own models and use of those assessments as (part) basis for the interpretive claims made
+</Text>
         </Document>
         <Document ID="BF8D1EF3-16EC-4395-B331-6724F9EE5123">
             <Title>Schöch - Big? Smart? Clean? Messy? Data in the Humanities</Title>
@@ -3350,6 +3524,27 @@ Thoughts on the above excerpts
         <Document ID="9DF4E8CC-FFB2-4735-8AA9-B09B61C6BD12">
             <Title>Chapter 3: Visualization Quality</Title>
         </Document>
+        <Document ID="5746C13C-7AED-4BDD-81B0-80DD0E6FCFFD">
+            <Text>May 28, 2025
+
+Read and note Coleman’s Chapter 2 on the roles of people and machines in the production and consumption of data. 
+
+Re: Borges intro quote on Tlon
+
+The significance, profundity, and effect of each person and their role in capturing, preserving, and transforming, etc. data must be noted by those using it for research/modeling. Those “agents” inevitably affect those further research/modeling decisions and products.
+
+NOTE: 1939 MIT Weizenbaum’s distinction of decision and choce – how it relates to algorithms and LLLMs/AI – but also, relevantly how it relates to those of us handling and using data, creating models from data and forming interpretations and and analyses from it.
+
+Borges’ role as metaphor in these considerations: How do the ‘resonances’ of these foundational ideas inform our decisions, products, and future iterations of each?
+
+See Labrynths’ introduction for further discussion
+
+Is the Art of Literary Modeling “labrynthian”?
+
+Where does data end and where does the model begin? When is a model data or a data a model?
+
+</Text>
+        </Document>
         <Document ID="A0586148-6C52-46BE-BD4E-1C9A6A48E656">
             <Title>Chapter 1 Draft</Title>
             <Text>Art of Literary Modeling
@@ -3602,20 +3797,30 @@ Some processing/cleanup from the raw Project Gutenberg text files is necessary. 
             <Title>Abstract - Working Draft</Title>
             <Text>The publication of Mark Twain’s autobiography 100 years after his death presents a difficult proposition for the reading public with an unwieldy size of over 2000 pages. The work also presents an opportunity for computational text analysis to provide insights where more traditional close readings of it might prove difficult. My dissertation, “The Art of Literary Modeling”, demonstrates new scholarly activities that provide context-sensitive, evidentiary bases for making interpretive claims from computational models of literature. Its first chapter answers the question, "What does it mean to read literature as data?" That chapter's discussion of "literary" data quality looks to versions of Emily Dickinson's poetry amid her multiple, posthumous publications. It adapts data quality metrics from information science to provide an overall assessment of those digital versions, and produces a new collection of poems that reflect their data quality with respect to her oeuvre. This next chapter will answer the followup question: "What does it mean to model literature as data?" Applying standards for model selection and quality analysis from statistics known as "information criterion" reveals differences between various models of a work. That comparison made possible by information criteria presents a new, qualitative decision point for the study of literature as data. By looking to passages of Twain’s autobiography noted by high quality models of it and then further assessing them with scholarly understandings of those passages, it becomes possible to produce new findings on the autobiography and sound methodology for model quality generalizable to humanities research beyond this project.</Text>
         </Document>
-        <Document ID="BF0B4750-DD1C-4E97-8900-3CADEF87F334">
-            <Title>February 12, 2019</Title>
-            <Text>Done
-	1.	Implementing data quality profile script and testing on 19cAm volumes from New York Public Library
-	2.	dq_initial_assessment.py - data quality profile script
-	⁃	dq_initial_assessment_nyp.py - nyp metadata schema
-	⁃	htrc_ef_metadata_lens_nyp.py - Adapts HTRC feature reader to pull metadata for dq assessment
-	⁃	nyp_dq_profile.json - profile of 22,796 19cAm volumes from New York Public library
-To do
-	1.	Refine script and data profiling
-	2.	Test on smaller data set
-	3.	Implement the difference between profiling and assessment
-	4.	Refine the profiling schema for issues addresses in Coleman book like granularity
+        <Document ID="61C6E575-5D78-4D89-AFFC-A06DD6CB9328">
+            <Title>Draft/Ch1DQ/Prose/On frequency analysis</Title>
+            <Text>Next Steps/Prose
 
+	1.	Prose explaining Bolts of Melody vs Emily Dickinson Archive 
+	⁃	Token frequency comparison as component of data quality
+	⁃	Unitary frequency analysis quality(ies) vs quality from comparative frequency analysis
+	2.	Code up comparisons
+	⁃	Explain the work and the thought process behind the work
+	⁃	What’s are its goal(s)?
+	3.	Prose and examples of more advanced frequency measures
+	⁃	Mendenhall’s Characteristic Curves of Composition
+	⁃	Kilgariff’s Chi-Squared Method
+	⁃	John Burrows’ Delta Method
+	⁃	See Laramee’s stylometry intro for details
+	⁃	Why use them and how they are related to data quality in this context
+
+
+Fuzzy string matching techniques
+
+	1.	Character overlap
+	⁃	Jaccard measure
+	⁃	"the percentage of unique characters that two strings share when compared to the total number of unique characters in both strings” (Taming Text, FSM, 4.1.1.)
+	⁃	Jaro-Winkler distance
 </Text>
         </Document>
     </Documents>
