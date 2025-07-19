@@ -87,6 +87,7 @@ class PGMelvilleReader(AOLMTextReader):
     def __init__(self, p_filepath):
 
         super().__init__(p_filepath, READER_FILETYPE_JSON)
+        self.read()
 
     # Properties
 
@@ -125,10 +126,7 @@ class PGMelvilleReader(AOLMTextReader):
             self.m_json = json.loads(self.m_aolm_text.m_raw_file_contents)
 
             # C. Separate metadata and body text tags
-            self.m_aolm_text.m_metadata = self.m_json["components"]["header"] if "header" in self.m_json["components"] else None
-            self.m_front = self.m_json["components"]["frontmatter"] if "frontmatter" in self.m_json["components"] else None
             self.m_aolm_text.m_body = self.m_json["components"]["body"]
-            self.m_back = self.m_json["components"]["footer"] if "footer" in self.m_json["components"] else None
 
 
 # Test script
