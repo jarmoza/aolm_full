@@ -28,7 +28,7 @@ from dq_metrics.dataset_signature.authorial_signature import DatasetSignature_Au
 def main():
 
     # 0. Setup
-    source_path = aolm_data_reading.melville_source_directory["collected"]
+    source_path = aolm_data_reading.melville_source_directory["collected"] + f"body_text{os.sep}"
     source_files = [filepath for filepath in glob.glob(source_path + "*.txt")]
 
     # 1. Calculate the author's signature
