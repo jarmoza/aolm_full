@@ -54,6 +54,9 @@ class DatasetSignature_HapaxLegomenon(DataQualityMetric):
     @property
     def hapax_ceiling(self):
         return self.m_hapax_ceiling
+    @property
+    def filepaths(self):
+        return [reader.filepath for reader in self.m_readers]
     def reader(self, p_filepath):
         for reader in self.m_readers:
             if p_filepath == reader.filepath:
@@ -62,6 +65,17 @@ class DatasetSignature_HapaxLegomenon(DataQualityMetric):
     @property
     def work_count(self):
         return len(self.m_readers)
+    
+    # Evaluations
+
+    @property
+    def avg_hapax_count(self):
+        return self.m_evaluations["metric"]
+    def avg_chapter_hapax_for_work(self, filepath):
+        return self.m_evaluations["submetric"]["avg_chapter_hapax"].get(filepath, 0)
+    def hapax_total_for_work(self, filepath):
+        return self.m_evaluations["submetric"]["hapax_totals_by_work"].get(filepath, 0)
+    
 
     # Public methods
 
@@ -115,6 +129,25 @@ class DatasetSignature_HapaxLegomenon(DataQualityMetric):
             avg_sum += self.m_evaluations["submetric"]["hapax_totals_by_work"][filepath]
         self.m_evaluations["metric"] = avg_sum / self.work_count
 
+    def to_csv(self, p_output_filepath):
+
+        columns = [
+
+            "filename",
+            "hapax_totals_by_work",
+            "avg_chapter_hapax"
+        ]
+
+        with open(p_output_filepath, "w") as output_file:
+            output_file.write(",".join(columns) + "\n")
+            for reader in self.m_readers:
+                output_file.write(",".join([
+                    str(os.path.basename(reader.filepath)),
+                    str(self.m_evaluations["submetric"]["hapax_totals_by_work"][reader.filepath]),
+                    str(self.m_evaluations["submetric"]["avg_chapter_hapax"][reader.filepath])
+                ]) + "\n"
+                )
+
     # Static fields and methods
 
     @staticmethod
@@ -144,6 +177,6 @@ class DatasetSignature_HapaxLegomenon(DataQualityMetric):
         # 2. Create a word vector (in dict form) based off of the vocabulary of the text file
         return DatasetSignature_HapaxLegomenon.get_signature(body_text)
 
-    
+
 
 
