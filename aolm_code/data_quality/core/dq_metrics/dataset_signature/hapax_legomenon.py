@@ -72,9 +72,9 @@ class DatasetSignature_HapaxLegomenon(DataQualityMetric):
     def avg_hapax_count(self):
         return self.m_evaluations["metric"]
     def avg_chapter_hapax_for_work(self, filepath):
-        return self.m_evaluations["submetric"]["avg_chapter_hapax"].get(filepath, 0)
+        return self.m_evaluations["submetric"]["avg_chapter_hapax"][filepath]
     def hapax_total_for_work(self, filepath):
-        return self.m_evaluations["submetric"]["hapax_totals_by_work"].get(filepath, 0)
+        return self.m_evaluations["submetric"]["hapax_totals_by_work"][filepath]
     
 
     # Public methods
