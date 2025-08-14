@@ -1,12 +1,13 @@
 # Author: Jonathan Armoza
 # Created: July 7, 2025
-# Purpose: Measure the data quality of Melville's works in terms of hapax legomenon
+# Purpose: Measure the data quality of Melville's works in terms of n-legomena
 
 # Imports
 
 # Built-ins
 
 import glob
+from math import ceil
 import os
 import sys
 
@@ -26,7 +27,7 @@ import pandas as pd
 import aolm_data_reading
 from aolm_utilities import bar_plot
 from pg_melville_reader import PGMelvilleReader
-from dq_metrics.dataset_signature.hapax_legomenon import DatasetSignature_HapaxLegomenon
+from dq_metrics.dataset_signature.legomena import DatasetSignature_Legomena
 
 
 # Globals
@@ -69,14 +70,14 @@ def main():
     # Read each Melville novel into memory
     readers = [PGMelvilleReader(filepath) for filepath in demarcated_files]
 
-    # 1. Measure hapax by work and by chapter
-    dq_metric = DatasetSignature_HapaxLegomenon(readers)
+    # 1. Measure legomena by work and by chapter
+    dq_metric = DatasetSignature_Legomena(readers)
     dq_metric.compute()
     dq_metric.evaluate()
 
     # 2. Output evaluations and metrics to csv
     experiment_output_directory = f"{os.getcwd()}{os.sep}experiments{os.sep}outputs{os.sep}"
-    output_filepath = f"{experiment_output_directory}melville_novels_hapax_metric.csv"
+    output_filepath = f"{experiment_output_directory}melville_novels_legomena_metric.csv"
     dq_metric.to_csv(output_filepath)
 
     # 3. Data visualization
@@ -91,22 +92,22 @@ def main():
                 break
 
     # Evaluations
-    avg_chapter_hapax_for_works = { filepath: dq_metric.avg_chapter_hapax_for_work(filepath) for filepath in dq_metric.filepaths }
-    hapax_totals_for_works = { filepath: dq_metric.hapax_total_for_work(filepath) for filepath in dq_metric.filepaths }
-    avg_hapax_count = dq_metric.avg_hapax_count
+    avg_chapter_legomena_for_works = { filepath: ceil(dq_metric.avg_chapter_legomena_for_work(filepath)) for filepath in dq_metric.filepaths }
+    legomena_totals_for_works = { filepath: dq_metric.legomena_total_for_work(filepath) for filepath in dq_metric.filepaths }
+    avg_legomena_count = dq_metric.avg_legomena_count
 
-    hapax_list = []
+    legomena_list = []
 
     for filepath in demarcated_files:
 
         novel_name = file_to_novel_name_dict[filepath]
         publication_date = melville_novel_publication_dates[novel_name]
         label = f"{novel_name} ({publication_date})"
-        if label in hapax_list:
+        if label in legomena_list:
             label = f"{novel_name} vol. 2 ({publication_date})"
-        hapax_list.append(label)
+        legomena_list.append(label)
 
-    plot_counts_bar_chart(hapax_list, avg_chapter_hapax_for_works.values(), "Average Hapax per Chapter")
+    plot_counts_bar_chart(legomena_list, avg_chapter_legomena_for_works.values(), "Average Hapax per Chapter in the Novels of Herman Melville")
 
 
 if "__main__" == __name__:

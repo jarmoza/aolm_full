@@ -194,7 +194,7 @@ class HuckFinnVolumeComparer(TextMetricComparer):
     def most_frequent_words(self, p_tf_idf=False):
         return None
 
-    def hapax_legomena(self):
+    def legomena(self):
         return None
 
     def word_vector_distances(self, p_tf_idf=False):
@@ -321,7 +321,7 @@ def main():
     # most_frequent_words = comparer.most_frequent_words()
 
     # # D. Hapax Legomena
-    # hapax_legomena = comparer.hapax_legomena()
+    # legomena = comparer.legomena()
 
     # # E. Word vector distance
     # word_vector_distances = comparer.word_vector_distances()
