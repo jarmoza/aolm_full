@@ -47,31 +47,15 @@ melville_novel_publication_dates = {
 
 # Utility functions
 
-def plot_counts_bar_chart(p_labels, p_counts):
+def plot_counts_bar_chart(p_labels, p_counts, p_title):
 
-    # Token counts in the same order as chronological novels
-    token_counts = [85000, 78000, 95000, 72000, 76000, 210000, 98000, 67000, 89000]
-
-    # Build DataFrame from the dictionary and sort by year
-    df = pd.DataFrame(melville_novel_publication_dates.items(), columns=["Novel", "Year"])
-    df = df.sort_values("Year").reset_index(drop=True)
-
-    # Add token counts to DataFrame
-    df["Token Count"] = token_counts
-
-    # Format novel titles for readability
-    df["Novel"] = df["Novel"].str.replace("_", " ").str.title()
-
-    # Create vertical bar chart
+    df = pd.DataFrame({"Novel": p_labels, "Token Count": p_counts})
     fig = px.bar(df, x="Novel", y="Token Count",
-                title="Token Counts of Herman Melville's Novels (Chronological Order)",
-                labels={"Token Count": "Token Count", "Novel": "Novel"},
-                text="Token Count")
-
-    # Optional: improve appearance
-    fig.update_traces(marker_color='indigo', textposition='outside')
+                 title=p_title,
+                 labels={"Token Count": "Token Count", "Novel": "Novel"},
+                 text="Token Count")
+    fig.update_traces(marker_color="indigo", textposition="outside")
     fig.update_layout(xaxis_tickangle=-45)
-
     fig.show()
 
 # Main script
@@ -122,13 +106,7 @@ def main():
             label = f"{novel_name} vol. 2 ({publication_date})"
         hapax_list.append(label)
 
-    for label, count in zip(hapax_list, avg_chapter_hapax_for_works):
-        print(label, count)
-
-    if True:
-        return
-
-    plot_counts_bar_chart(hapax_list, avg_chapter_hapax_for_works)
+    plot_counts_bar_chart(hapax_list, avg_chapter_hapax_for_works.values(), "Average Hapax per Chapter")
 
 
 if "__main__" == __name__:
