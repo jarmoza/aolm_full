@@ -136,9 +136,10 @@ class AOLMTextUtilities:
             else:
                 compared_tally_percent = 100.0 * p_compared_dict[source_key] / p_source_dict[source_key]
                 if compared_tally_percent < 100.0:
-                    total_percent -= (100.0 - compared_tally_percent) * (percent_per_source_key / 100.0)
+                    deduction = min(percent_per_source_key, (100.0 - compared_tally_percent) * (percent_per_source_key / 100.0))
+                    total_percent -= deduction
 
-        return total_percent
+        return max(total_percent, 0.0)
 
     @staticmethod
     def create_string_from_lines(p_text_lines):
