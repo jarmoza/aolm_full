@@ -66,6 +66,22 @@ class DatasetCompleteness_RecordCountsToControlRecords(DataQualityMetric):
 
         return ",".join(map(str, line_str_array)) + "\n"
     
+    def __build_results_full_count_lines__(self, p_include_header):
+
+        results_header = ",".join(["edition_name", "chapter_name",  "count_type", "count"])
+        results_lines = [results_header] if p_include_header else []        
+
+        # Results chapter by chapter here for sentences and words
+        for reader_name in self.m_results:
+            for chapter_name in self.m_results[reader_name]["sentence_count"]["by_chapter"]:
+                sc_line = ",".join([reader_name, chapter_name, "sentences", str(self.m_results[reader_name]["sentence_count"]["by_chapter"][chapter_name])  ])
+                results_lines.append(sc_line)
+            for chapter_name in self.m_results[reader_name]["word_count"]["by_chapter"]:
+                wc_line = ",".join([reader_name, chapter_name, "words", str(self.m_results[reader_name]["word_count"]["by_chapter"][chapter_name])])
+                results_lines.append(wc_line)            
+
+        return results_lines
+
     @property
     def output(self):
         return self.__build_output_line__()
@@ -92,6 +108,8 @@ class DatasetCompleteness_RecordCountsToControlRecords(DataQualityMetric):
 
         return ",".join(column_names) + "\n"
 
+    def results_full_counts(self, p_include_header=False):
+        return self.__build_results_full_count_lines__(p_include_header)
 
     def compute(self):
 
