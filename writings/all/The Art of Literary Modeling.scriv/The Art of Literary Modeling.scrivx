@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ScrivenerProject Identifier="9D1E41B9-1E5B-4BD0-A880-FE062B9FE6E8" Version="2.0" Creator="SCRMAC-3.4-16639" Device="SturgeonHome" Author="" Modified="2025-08-01 12:31:42 -0400" ModID="6C692C8B-1771-4825-B32A-341A0358D181">
+<ScrivenerProject Identifier="9D1E41B9-1E5B-4BD0-A880-FE062B9FE6E8" Version="2.0" Creator="SCRMAC-3.4-16639" Device="SturgeonHome" Author="" Modified="2025-08-30 17:47:31 -0400" ModID="481AE622-6738-425D-B6D6-B808D5705434">
     <Binder>
         <BinderItem UUID="006C1C4A-133E-4CCD-8FF7-6E63A65FE10C" Type="Folder" Created="2021-01-22 16:13:57 -0500" Modified="2021-01-22 16:29:55 -0500">
             <Title>Daily Notes</Title>
@@ -1005,7 +1005,7 @@
                                 <IncludeInCompile>Yes</IncludeInCompile>
                             </MetaData>
                             <TextSettings>
-                                <TextSelection>0,507</TextSelection>
+                                <TextSelection>0,0</TextSelection>
                             </TextSettings>
                         </BinderItem>
                         <BinderItem UUID="6A835642-069A-49E4-AFE5-F97F2213F50B" Type="Text" Created="2025-04-15 14:57:25 -0400" Modified="2025-04-15 14:58:31 -0400">
@@ -1051,6 +1051,15 @@
                             </MetaData>
                             <TextSettings>
                                 <TextSelection>749,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="36129BE8-D9E5-4A90-89CE-647A80EE3225" Type="Text" Created="2025-08-14 14:06:01 -0400" Modified="2025-08-14 17:40:21 -0400">
+                            <Title>August 14, 2025</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>142,0</TextSelection>
                             </TextSettings>
                         </BinderItem>
                     </Children>
@@ -1415,7 +1424,7 @@ Process for producing initial data quality assessment
                                         </CustomMetaData>
                                     </MetaData>
                                     <TextSettings>
-                                        <TextSelection>0,1189</TextSelection>
+                                        <TextSelection>24,0</TextSelection>
                                     </TextSettings>
                                     <Keywords>
                                         <KeywordID>6</KeywordID>
@@ -1458,7 +1467,7 @@ Process for producing initial data quality assessment
                                         </CustomMetaData>
                                     </MetaData>
                                     <TextSettings>
-                                        <TextSelection>0,2191</TextSelection>
+                                        <TextSelection>15,0</TextSelection>
                                     </TextSettings>
                                     <Keywords>
                                         <KeywordID>6</KeywordID>
@@ -1775,7 +1784,7 @@ Process for producing initial data quality assessment
                                         <IncludeInCompile>Yes</IncludeInCompile>
                                     </MetaData>
                                     <TextSettings>
-                                        <TextSelection>0,13425</TextSelection>
+                                        <TextSelection>27,0</TextSelection>
                                     </TextSettings>
                                 </BinderItem>
                             </Children>
@@ -1977,7 +1986,7 @@ Process for producing initial data quality assessment
                                         <IncludeInCompile>Yes</IncludeInCompile>
                                     </MetaData>
                                     <TextSettings>
-                                        <TextSelection>10060,0</TextSelection>
+                                        <TextSelection>186,0</TextSelection>
                                     </TextSettings>
                                 </BinderItem>
                                 <BinderItem UUID="5746C13C-7AED-4BDD-81B0-80DD0E6FCFFD" Type="Text" Created="2025-06-02 16:40:48 -0400" Modified="2025-06-02 16:50:07 -0400">
@@ -2060,13 +2069,13 @@ Process for producing initial data quality assessment
                         </BinderItem>
                     </Children>
                 </BinderItem>
-                <BinderItem UUID="7ED0E743-FC6A-4005-905F-B42E27E37F3B" Type="Text" Created="2025-01-23 16:20:56 -0500" Modified="2025-01-27 12:51:47 -0500">
+                <BinderItem UUID="7ED0E743-FC6A-4005-905F-B42E27E37F3B" Type="Text" Created="2025-01-23 16:20:56 -0500" Modified="2025-08-14 09:55:04 -0400">
                     <Title>What I have 2025</Title>
                     <MetaData>
                         <IncludeInCompile>Yes</IncludeInCompile>
                     </MetaData>
                     <TextSettings>
-                        <TextSelection>8078,0</TextSelection>
+                        <TextSelection>65,0</TextSelection>
                     </TextSettings>
                 </BinderItem>
             </Children>
@@ -2424,7 +2433,7 @@ Process for producing initial data quality assessment
                                         <IncludeInCompile>Yes</IncludeInCompile>
                                     </MetaData>
                                     <TextSettings>
-                                        <TextSelection>0,1478</TextSelection>
+                                        <TextSelection>97,0</TextSelection>
                                     </TextSettings>
                                 </BinderItem>
                                 <BinderItem UUID="D2595764-DDC7-4286-AB49-A542123A151A" Type="Text" Created="2021-03-06 14:21:30 -0500" Modified="2021-03-06 17:09:55 -0500">
@@ -2433,7 +2442,7 @@ Process for producing initial data quality assessment
                                         <IncludeInCompile>Yes</IncludeInCompile>
                                     </MetaData>
                                     <TextSettings>
-                                        <TextSelection>0,7691</TextSelection>
+                                        <TextSelection>13,0</TextSelection>
                                     </TextSettings>
                                 </BinderItem>
                                 <BinderItem UUID="D0E9C586-D0D4-4266-833B-62F4FA85CCE9" Type="Text" Created="2021-03-06 17:06:43 -0500" Modified="2021-03-07 15:56:19 -0500">
@@ -2554,7 +2563,7 @@ Process for producing initial data quality assessment
                                 <IncludeInCompile>Yes</IncludeInCompile>
                             </MetaData>
                             <TextSettings>
-                                <TextSelection>28,20</TextSelection>
+                                <TextSelection>55,0</TextSelection>
                             </TextSettings>
                         </BinderItem>
                         <BinderItem UUID="1FD1D2F6-CB89-40A3-AB93-36A7C507FE83" Type="Text" Created="2025-05-12 17:48:01 -0400" Modified="2025-05-12 17:49:51 -0400">
@@ -2623,7 +2632,7 @@ Process for producing initial data quality assessment
         </Collection>
         <Collection Type="RecentSearch" ID="9E9EEFBB-7DE0-4FF8-856A-D68686F8C450" Color="0.922173 0.818612 0.999627">
             <Title>Search Results</Title>
-            <SearchSettings Operator="Any" Type="All" CaseSensitive="No" IgnoreDiacritics="No">lofty</SearchSettings>
+            <SearchSettings Operator="Any" Type="All" CaseSensitive="No" IgnoreDiacritics="No">Gutenberg</SearchSettings>
         </Collection>
     </Collections>
     <Keywords>
@@ -3100,10 +3109,10 @@ Process for producing initial data quality assessment
     </CustomMetaDataSettings>
     <ProjectTargets Notify="No">
         <DraftTarget Type="Words" CountIncludedOnly="Yes" CurrentCompileGroupOnly="No" Deadline="2019-01-03 11:33:22 -0500" IgnoreDeadline="Yes">0</DraftTarget>
-        <SessionTarget Type="Words" CountDraftOnly="Yes" AllowNegatives="Yes" NextResetDate="2025-08-02 01:00:00 -0400" ResetType="Time" ResetTime="00:00" DeterminedFromDeadline="No" WritingDays="" CanWriteOnDeadlineDate="No">0</SessionTarget>
-        <PreviousSession Words="0" Characters="0" Date="2025-08-01 12:31:37 -0400"/>
+        <SessionTarget Type="Words" CountDraftOnly="Yes" AllowNegatives="Yes" NextResetDate="2025-08-31 01:00:00 -0400" ResetType="Time" ResetTime="00:00" DeterminedFromDeadline="No" WritingDays="" CanWriteOnDeadlineDate="No">0</SessionTarget>
+        <PreviousSession Words="0" Characters="0" Date="2025-08-30 17:47:29 -0400"/>
     </ProjectTargets>
-    <RecentWritingHistory Date="2025-08-01 00:00:00 -0400">
+    <RecentWritingHistory Date="2025-08-30 00:00:00 -0400">
         <DraftWordCount>0</DraftWordCount>
         <DraftCharCount>0</DraftCharCount>
         <OtherWordCount>0</OtherWordCount>
