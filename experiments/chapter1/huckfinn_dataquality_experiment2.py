@@ -122,21 +122,6 @@ def run_huckfinn_dq_textrecordcounts(p_source_id, p_edition_filenames=None):
 
 # Main script
 
-def analyze_and_plot_results():
-
-    results_filepath = "/Users/weirdbeard/Documents/school/aolm_full/experiments/outputs/huckfinn_dq_experiment2_full_results.csv"
-    
-    with open(results_filepath, "r") as results_file:
-        csv_reader = csv.DictReader(results_file)
-        for row in csv_reader:
-            print(row)
-
-    # Isolate the best chapters according to the most accurate word count
-
-    # Isolate the best chapters according to the most accurate sentence count
-
-    # Merge the two calculation results to create a best chapters list
-
 def read_texts():
 
     for source_id in aolm_data_reading.huckfinn_source_fullnames:
@@ -329,95 +314,170 @@ def output_record_count_chapter_results(p_output_filepath):
         for line_set in results_lines:
             output_file.write(f"{"\n".join(line_set)}\n")
 
+def output_amalgamated_edition(p_results_filepath, p_ur_chapter_count):
+
+    class BestChapterInstance:
+
+        def __init__(self, p_count_type, p_chapter_number, p_count, p_edition_name):
+
+            self.m_count_type = p_count_type
+            self.m_chapter_number = p_chapter_number
+            self.m_count = p_count
+            self.m_edition_name = p_edition_name
+
+        @property
+        def count_type(self):
+            return self.m_count_type
+        @count_type.setter
+        def count_type(self, p_count_type):
+            self.m_count_type = p_count_type
+        @property
+        def chapter_number(self):
+            return self.m_chapter_number
+        @chapter_number.setter
+        def chapter_number(self, p_chapter_number):
+            self.m_chapter_number = p_chapter_number
+        @property
+        def count(self):
+            return self.m_count
+        @count.setter
+        def count(self, p_count):
+            self.m_count = p_count
+        @property
+        def edition_name(self):
+            return self.m_edition_name
+        @edition_name.setter
+        def edition_name(self, p_edition_name):
+            self.m_edition_name = p_edition_name                     
+    
+    with open(p_results_filepath, "r") as results_file:
+    
+        csv_reader = csv.DictReader(results_file)
+
+        best_sentence_dict = { str(index): BestChapterInstance("sentence", str(index), 0, "") for index in range(1, p_ur_chapter_count + 1) }
+        best_word_dict = { str(index): BestChapterInstance("word", str(index), 0, "") for index in range(1, p_ur_chapter_count + 1) }
+    
+        for row in csv_reader:
+
+            if "edition_name" == row["edition_name"]:
+                continue
+
+            # edition_name,chapter_name,count_type,count
+            edition_name = row["edition_name"]
+            chapter_name = row["chapter_name"]
+            count_type = row["count_type"]
+            count = float(row["count"])
+
+            # Isolate the best chapters according to the most accurate sentence count
+            if count_type == "sentences" and count > best_sentence_dict[chapter_name].count:
+                best_sentence_dict[chapter_name].edition_name = edition_name
+                best_sentence_dict[chapter_name].chapter_name = chapter_name
+                best_sentence_dict[chapter_name].count_type = count_type
+                best_sentence_dict[chapter_name].count = count
+
+            # Isolate the best chapters according to the most accurate word count
+            if count_type == "words" and count > best_word_dict[chapter_name].count:
+                best_word_dict[chapter_name].edition_name = edition_name
+                best_word_dict[chapter_name].chapter_name = chapter_name
+                best_word_dict[chapter_name].count_type = count_type
+                best_word_dict[chapter_name].count = count            
+
+    # Merge the two calculation results to create a best chapters list
+    output_filepath = p_results_filepath[0:p_results_filepath.find(".")] + "_amalgam.csv"
+    with open(output_filepath, "w") as output_file:
+
+        output_file.write("count_type,chapter_name,edition_name,count\n")
+
+        for index in range(1, p_ur_chapter_count + 1):
+            chapter_name = str(index)
+            output_file.write(f"{best_sentence_dict[chapter_name].count_type},{chapter_name},{best_sentence_dict[chapter_name].edition_name},{best_sentence_dict[chapter_name].count}\n")
+
+        for index in range(1, p_ur_chapter_count + 1):
+            chapter_name = str(index)
+            output_file.write(f"{best_word_dict[chapter_name].count_type},{chapter_name},{best_word_dict[chapter_name].edition_name},{best_word_dict[chapter_name].count}\n")            
+
 # Visualization
 
-def plot_results(p_output_filepath):
+def plot_heatmap(p_chart_title, p_metric_name, p_data):
 
-    # 1. Read in data quality metric results
-    with open(p_output_filepath, "r") as input_file:
-        results_reader = csv.DictReader(input_file.readlines())
+    import numpy as np
+    import matplotlib.pyplot as plt    
 
-    # 2. Read in metadata sufficiency metric evaluation
-    eval_ms_output_filepath = p_output_filepath.replace(".csv", f"_eval_{MS_METRIC_NAME}.csv")
-    with open(eval_ms_output_filepath, "r") as input_file:
-        ms_eval_reader = csv.DictReader(input_file.readlines())
+    # Editions of the novel
+    editions = list(p_data.keys())
+    n_editions = len(editions)
+    n_chapters = len(p_data[editions[0]])
 
-    # Read in record counts to control records metric evaluation
-    eval_tr_output_filepath = p_output_filepath.replace(".csv", f"_eval_{TR_METRIC_NAME}.csv")
-    with open(eval_tr_output_filepath, "r") as input_file:
-        tr_eval_reader = csv.DictReader(input_file.readlines())
+    # Fill in data
+    data = np.zeros((n_editions, n_chapters))
+    for index in range(n_editions):
+        for index2 in range(n_chapters):
+            data[index, index2] = p_data[editions[index]][index2]
 
-    # Multi Bar chart out each result across editions and sources
-    import plotly.express as px
-    df = px.data.tips()
-    fig = px.histogram(df, x="sex", y="total_bill",
-             color='smoker', barmode='group',
-             height=400)
-    fig.show()
+    # Plot heatmap
+    fig, ax = plt.subplots(figsize=(12, 6))
+    im = ax.imshow(data, aspect='auto')
 
-def plot_results2(p_output_filepath):
+    # Set axis labels
+    ax.set_xticks(np.arange(n_chapters))
+    ax.set_xticklabels(np.arange(1, n_chapters + 1))
+    ax.set_yticks(np.arange(n_editions))
+    ax.set_yticklabels(editions)
 
-    # # 1. Read in data quality metric results
-    # with open(p_output_filepath, "r") as input_file:
-    #     results_reader = csv.DictReader(input_file.readlines())
-    #     results_data = list(results_reader)
+    # Rotate x-axis labels for readability
+    plt.setp(ax.get_xticklabels(), rotation=90, ha="center")
 
-    # # 2. Read in metadata sufficiency metric evaluation
-    # eval_ms_output_filepath = p_output_filepath.replace(".csv", f"_eval_{MS_METRIC_NAME}.csv")
-    # with open(eval_ms_output_filepath, "r") as input_file:
-    #     ms_eval_reader = csv.DictReader(input_file.readlines())
-    #     ms_eval_data = list(ms_eval_reader)
+    # Add colorbar
+    cbar = plt.colorbar(im, ax=ax)
+    cbar.set_label(p_metric_name)
 
-    # 3. Read in record counts to control records metric evaluation
-    # eval_tr_output_filepath = p_output_filepath.replace(".csv", f"_eval_{TR_METRIC_NAME}.csv")
-    with open(p_output_filepath, "r") as input_file:
-        tr_eval_reader = csv.DictReader(input_file.readlines())
-        tr_eval_data = list(tr_eval_reader)
+    ax.set_title(p_chart_title)
+    ax.set_xlabel("Chapter")
+    ax.set_ylabel("Edition")
 
-    # Convert the evaluation data to DataFrames
-    # df_results = pd.DataFrame(results_data)
-    # df_ms_eval = pd.DataFrame(ms_eval_data)
-    df_tr_eval = pd.DataFrame(tr_eval_data)
+    plt.tight_layout()
+    plt.show()
 
-    # Remove rows with empty filenames
-    df_tr_eval = df_tr_eval[df_tr_eval["filename"].notna() & df_tr_eval["filename"].str.strip().astype(bool)]
+def plot_results(p_results_filepath, p_ur_chapter_count):
 
-    # source
-    # work_title
-    # edition_title
-    # metric
-    # value
-    # compared_against
-    # filename
-    # filepath
-    # path
-    # submetric__chapter_count
-    # submetric__sentence_count
-    # submetric__word_count
-    # subsubmetric__chapter_count
-    # subsubmetric__sentence_count
-    # subsubmetric__word_count
+    # 1. Store all edition record count to control records results for sentences and words by chapter
+    editions = {}
+    with open(p_results_filepath, "r") as results_file:
+    
+        csv_reader = csv.DictReader(results_file)
 
-    # Example: Plot histogram for a specific metric
-    # fig = px.histogram(
-    #     df_tr_eval,
-    #     x="value",
-    #     color="source",
-    #     facet_col="edition_title",
-    #     labels={"value": "Metric Value", "source": "Source"},
-    #     title="Metric Values by Source and Edition",
-    #     barmode='group',
-    #     height=600
-    # )
-    fig = px.bar(
-        df_tr_eval,
-        x="filename",
-        y="value",
-        title="Metric Values by Source and Edition",
-        barmode='group',
-        height=600
-    )    
-    fig.show()
+        for row in csv_reader:
+
+            # Skip header
+            if "edition_name" == row["edition_name"]:
+                continue
+
+            # edition_name,chapter_name,count_type,count
+            edition_name = row["edition_name"]
+            chapter_name = row["chapter_name"]
+            count_type = row["count_type"]
+            count = float(row["count"])
+
+            if edition_name not in editions:
+                editions[edition_name] = {
+                    "sentences": [0] * p_ur_chapter_count,
+                    "words": [0] * p_ur_chapter_count
+                }
+
+            editions[edition_name][count_type][int(chapter_name) - 1] = count
+
+        # 2. Plot a 2D heatmap of the chapters of each edition by sentence data quality
+        # plot_heatmap(
+        #     "Sentence Quality by Chapter in Editions of 'Adventures of Huckleberry Finn'",
+        #     "Record counts to control records data quality",
+        #     { edition_name: editions[edition_name]["sentences"] for edition_name in editions }
+        # )
+            
+        plot_heatmap(
+            "Word Quality by Chapter in Editions of 'Adventures of Huckleberry Finn'",
+            "Record counts to control records data quality",
+            { edition_name: editions[edition_name]["words"] for edition_name in editions }
+        )
 
 
 def main():
@@ -434,9 +494,13 @@ def main():
     # (A) Record Counts to Control Records (recordcounts_to_controlrecords.py)
 
     process_results = False
-
-    if process_results:
-        analyze_and_plot_results()
+    graph = False
+    results_filepath = "/Users/weirdbeard/Documents/school/aolm_full/experiments/outputs/huckfinn_dq_experiment2_full_results_29082025_192728.csv"
+    ur_chapter_count = 43
+    if graph:
+        plot_results(results_filepath, ur_chapter_count)
+    elif process_results:
+        output_amalgamated_edition(results_filepath, ur_chapter_count)
         return True
 
     # 0. Setup
