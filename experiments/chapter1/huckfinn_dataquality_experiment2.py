@@ -38,12 +38,19 @@ TR_METRIC_NAME = DatasetCompleteness_RecordCountsToControlRecords.s_metric_name
 UR_EDITION = aolm_data_reading.MTPO
 WORK_TITLE = "Adventures of Huckleberry Finn"
 
+# Paths
+
+paths = {
+
+    "edition_metadata_json": "/Users/weirdbeard/Documents/school/aolm_full/experiments/chapter1/huckfinneditions_filenames2fullnames.json",
+    "results": "/Users/weirdbeard/Documents/school/aolm_full/experiments/outputs/huckfinn_dq_experiment2_full_results_29082025_192728.csv"
+}
+
 # Variables
 
 # Used to store already read Adventures of Huckleberry Finn editions
 huckfinn_textdata = {}
 coha_lexicon = None
-
 
 # For output and plotting after metric evaluation
 experiment_metrics = { source_id: 
@@ -68,10 +75,77 @@ ur_metrics = {
     }
 }
 
+ur_chapter_count = 43
 
-# Experiments
+
+# Helper classes
+
+class BestChapterInstance:
+
+    def __init__(self, p_count_type, p_chapter_number, p_count, p_edition_name):
+
+        self.m_count_type = p_count_type
+        self.m_chapter_number = p_chapter_number
+        self.m_count = p_count
+        self.m_edition_name = p_edition_name
+
+    @property
+    def count_type(self):
+        return self.m_count_type
+    @count_type.setter
+    def count_type(self, p_count_type):
+        self.m_count_type = p_count_type
+    @property
+    def chapter_number(self):
+        return self.m_chapter_number
+    @chapter_number.setter
+    def chapter_number(self, p_chapter_number):
+        self.m_chapter_number = p_chapter_number
+    @property
+    def count(self):
+        return self.m_count
+    @count.setter
+    def count(self, p_count):
+        self.m_count = p_count
+    @property
+    def edition_name(self):
+        return self.m_edition_name
+    @edition_name.setter
+    def edition_name(self, p_edition_name):
+        self.m_edition_name = p_edition_name
+
+
+# Experiment
 
 # Metric run helper functions
+
+def get_edition_shortname_from_metadata(p_text_json_filename):
+
+    short_name = p_text_json_filename
+
+    with open(paths["edition_metadata_json"], "r") as input_file:
+        json_data = json.load(input_file)
+
+    for key in json_data:
+        if key in p_text_json_filename:
+            short_name = json_data[key]["short_name"]
+            break
+
+    return short_name
+
+def get_publication_year(p_edition_short_name):
+
+    publication_year = ""
+
+    if "gutenberg" in p_edition_short_name:
+        publication_year = p_edition_short_name[p_edition_short_name.rfind("_") + 1:]
+    else:
+        for index in range(0, len(p_edition_short_name)):
+            if p_edition_short_name[index].isdigit():
+                publication_year = p_edition_short_name[index:index + p_edition_short_name[index:].find("_")]
+                break
+
+    return publication_year
 
 def select_huckfinn_textdata(p_source_id, p_edition_filenames=None):
 
@@ -122,12 +196,6 @@ def run_huckfinn_dq_textrecordcounts(p_source_id, p_edition_filenames=None):
 
 # Main script
 
-def read_texts():
-
-    for source_id in aolm_data_reading.huckfinn_source_fullnames:
-        print(f"Reading text of editions of {WORK_TITLE} from {aolm_data_reading.huckfinn_source_fullnames[source_id]}...")
-        huckfinn_textdata[source_id] = aolm_data_reading.read_huckfinn_text(source_id)
-
 def compute_metrics():
 
     # Rate individual source_id editions based on text record counts vs. ur edition
@@ -142,7 +210,7 @@ def compute_metrics():
         for edition_name in aolm_data_reading.huckfinn_edition_names[source_id]:
             experiment_metrics[source_id][TR_METRIC_NAME]["individual_editions"][edition_name]["metric"] = \
                 run_huckfinn_dq_textrecordcounts(source_id, [f"{edition_name}-HuckFinn.json"])
-
+            
 def compute_and_evaluate_ur_edition():
 
     source_fullname = aolm_data_reading.huckfinn_source_fullnames[UR_EDITION]
@@ -177,178 +245,13 @@ def evaluate_metrics():
                 experiment_metrics[source_id][TR_METRIC_NAME]["individual_editions"][edition_name]["metric"].evaluate()
             print(f"{source_fullname} '{TR_METRIC_NAME}' metric for {edition_name}: {experiment_metrics[source_id][TR_METRIC_NAME]["individual_editions"][edition_name]["evaluation"]}")
 
-def output_results(p_script_run_time):
-
-    # Overall data quality results file
-    output_filepath = f"{os.getcwd()}{os.sep}experiments{os.sep}outputs{os.sep}huckfinn_dq_experiment_{p_script_run_time}.csv"
-
-    # 1. Output evaluation details
-
-    # A. Lexical validity
-    eval_lv_output_filepath = output_filepath.replace(".csv", f"_eval_{LV_METRIC_NAME}.json")
-
-    # I. Experiment editions
-    lv_eval_output = { source_id: experiment_metrics[source_id][LV_METRIC_NAME]["metric"].eval_output \
-        for source_id in aolm_data_reading.huckfinn_source_fullnames if UR_EDITION != source_id }
-    
-    # II. Ur edition
-    lv_eval_output[UR_EDITION] = ur_metrics[UR_EDITION][LV_METRIC_NAME]["metric"].eval_output
-
-    print(f"Outputting {LV_METRIC_NAME} results to: {eval_lv_output_filepath}")
-    with open(eval_lv_output_filepath, "w") as eval_output_file:
-        json.dump(lv_eval_output, eval_output_file, indent=4)
-
-    # B. Metadata sufficiency 
-    eval_ms_output_filepath = output_filepath.replace(".csv", f"_eval_{MS_METRIC_NAME}.json")
-
-    # I. Experiment editions
-    ms_eval_output = { source_id: experiment_metrics[source_id][MS_METRIC_NAME]["metric"].eval_output \
-        for source_id in aolm_data_reading.huckfinn_source_fullnames if UR_EDITION != source_id }
-    
-    # II. Ur editions
-    ms_eval_output[UR_EDITION] = ur_metrics[UR_EDITION][MS_METRIC_NAME]["metric"].eval_output
-    
-    print(f"Outputting {MS_METRIC_NAME} results to: {eval_ms_output_filepath}")
-    with open(eval_ms_output_filepath, "w") as eval_output_file:
-        json.dump(ms_eval_output, eval_output_file, indent=4)
-
-    # C. Text record counts to control records
-    eval_tr_output_filepath = output_filepath.replace(".csv", f"_eval_{TR_METRIC_NAME}.json")
-
-    # I. Merge all json evaluation data from text record counts to control record metrics
-    tr_eval_output = {}
-    for source_id in aolm_data_reading.huckfinn_source_fullnames:
-
-        # Skip ur edition
-        if UR_EDITION == source_id:
-            continue
-
-        # Individual edition and overall source metrics evaluation data
-        tr_eval_output[source_id] = {
-
-            "individual_editions": { 
-                edition_name: experiment_metrics[source_id][TR_METRIC_NAME]["individual_editions"][edition_name]["metric"].eval_output \
-                    for edition_name in aolm_data_reading.huckfinn_edition_names[source_id]
-            },
-            "overall": experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["metric"].eval_output
-        }
-
-    # II. Ur edition
-    tr_eval_output[UR_EDITION] = {
-        
-        "individual_editions": {},
-        "overall": ur_metrics[UR_EDITION][TR_METRIC_NAME]["metric"].eval_output
-    }
-
-    # III. Output all metric evaluation data to a single file
-    print(f"Outputting {TR_METRIC_NAME} results to: {eval_tr_output_filepath}")
-    with open(eval_tr_output_filepath, "w") as eval_output_file:
-        json.dump(tr_eval_output, eval_output_file, indent=4)
-
-    # 2. Output top level stats
-    print(f"Outputting overall data quality results to: {output_filepath}")
-    with open(output_filepath, "w") as output_file:
-
-        # A. Output csv header
-        DataQualityMetric.write_output_header(output_file)
-
-        # B. Experiment editions
-        for source_id in aolm_data_reading.huckfinn_source_fullnames:
-
-            # Skip ur edition
-            if UR_EDITION == source_id:
-                continue
-
-            # I. Lexical validity
-            output_file.write(experiment_metrics[source_id][LV_METRIC_NAME]["metric"].output)
-
-            # II. Metadata sufficiency
-            output_file.write(experiment_metrics[source_id][MS_METRIC_NAME]["metric"].output)
-
-            # III. Text record counts to control records
-
-            # a. Individual editions vs. ur edition
-            for edition_name in aolm_data_reading.huckfinn_edition_names[source_id]:
-                output_file.write(experiment_metrics[source_id][TR_METRIC_NAME]["individual_editions"][edition_name]["metric"].output)
-
-            # b. Overall text record counts to control record of all editions from this source
-            output_file.write(experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["metric"].output)
-
-            # c. Overall data quality measurement of the source_id editions vs. ur edition
-            output_file.write(f"Overall Quality:,{experiment_metrics[source_id]["overall_data_quality"]}\n")
-
-        # C. Ur edition
-
-        # I. Lexical validity
-        output_file.write(ur_metrics[UR_EDITION][LV_METRIC_NAME]["metric"].output)
-
-        # II. Metadata sufficiency
-        output_file.write(ur_metrics[UR_EDITION][MS_METRIC_NAME]["metric"].output)
-
-        # III. Text record counts to control records
-
-        # a. Overall text record counts to control record of all editions from this source
-        output_file.write(ur_metrics[UR_EDITION][TR_METRIC_NAME]["metric"].output)
-
-        # b. Overall data quality measurement of the source_id editions vs. ur edition
-        output_file.write(f"Overall Quality:,{ur_metrics[UR_EDITION]["overall_data_quality"]}\n")
-
-def output_record_count_chapter_results(p_output_filepath):
-
-    results_lines = []
+def read_texts():
 
     for source_id in aolm_data_reading.huckfinn_source_fullnames:
-
-        # Skip ur edition
-        if UR_EDITION == source_id:
-            continue
-
-        get_header = True
-
-        for edition_name in aolm_data_reading.huckfinn_edition_names[source_id]:
-            results_lines.append(experiment_metrics[source_id][TR_METRIC_NAME]["individual_editions"][edition_name]["metric"].results_full_counts(get_header))
-            if get_header:
-                get_header = False
-
-    with open(p_output_filepath, "w") as output_file:
-        for line_set in results_lines:
-            output_file.write(f"{"\n".join(line_set)}\n")
+        print(f"Reading text of editions of {WORK_TITLE} from {aolm_data_reading.huckfinn_source_fullnames[source_id]}...")
+        huckfinn_textdata[source_id] = aolm_data_reading.read_huckfinn_text(source_id)
 
 def output_amalgamated_edition(p_results_filepath, p_ur_chapter_count):
-
-    class BestChapterInstance:
-
-        def __init__(self, p_count_type, p_chapter_number, p_count, p_edition_name):
-
-            self.m_count_type = p_count_type
-            self.m_chapter_number = p_chapter_number
-            self.m_count = p_count
-            self.m_edition_name = p_edition_name
-
-        @property
-        def count_type(self):
-            return self.m_count_type
-        @count_type.setter
-        def count_type(self, p_count_type):
-            self.m_count_type = p_count_type
-        @property
-        def chapter_number(self):
-            return self.m_chapter_number
-        @chapter_number.setter
-        def chapter_number(self, p_chapter_number):
-            self.m_chapter_number = p_chapter_number
-        @property
-        def count(self):
-            return self.m_count
-        @count.setter
-        def count(self, p_count):
-            self.m_count = p_count
-        @property
-        def edition_name(self):
-            return self.m_edition_name
-        @edition_name.setter
-        def edition_name(self, p_edition_name):
-            self.m_edition_name = p_edition_name                     
     
     with open(p_results_filepath, "r") as results_file:
     
@@ -394,7 +297,28 @@ def output_amalgamated_edition(p_results_filepath, p_ur_chapter_count):
 
         for index in range(1, p_ur_chapter_count + 1):
             chapter_name = str(index)
-            output_file.write(f"{best_word_dict[chapter_name].count_type},{chapter_name},{best_word_dict[chapter_name].edition_name},{best_word_dict[chapter_name].count}\n")            
+            output_file.write(f"{best_word_dict[chapter_name].count_type},{chapter_name},{best_word_dict[chapter_name].edition_name},{best_word_dict[chapter_name].count}\n")
+
+def output_record_count_chapter_results(p_output_filepath):
+
+    results_lines = []
+
+    for source_id in aolm_data_reading.huckfinn_source_fullnames:
+
+        # Skip ur edition
+        if UR_EDITION == source_id:
+            continue
+
+        get_header = True
+
+        for edition_name in aolm_data_reading.huckfinn_edition_names[source_id]:
+            results_lines.append(experiment_metrics[source_id][TR_METRIC_NAME]["individual_editions"][edition_name]["metric"].results_full_counts(get_header))
+            if get_header:
+                get_header = False
+
+    with open(p_output_filepath, "w") as output_file:
+        for line_set in results_lines:
+            output_file.write(f"{"\n".join(line_set)}\n")        
 
 # Visualization
 
@@ -403,8 +327,11 @@ def plot_heatmap(p_chart_title, p_metric_name, p_data):
     import numpy as np
     import matplotlib.pyplot as plt    
 
-    # Editions of the novel
+    # Editions of the novel (sorted by publication year)
     editions = list(p_data.keys())
+    editions = [(get_publication_year(edition_short_name), edition_short_name) for edition_short_name in editions]
+    editions.sort(key=lambda x: x[0])
+    editions = [edition_tuple[1] for edition_tuple in editions]
     n_editions = len(editions)
     n_chapters = len(p_data[editions[0]])
 
@@ -453,7 +380,7 @@ def plot_results(p_results_filepath, p_ur_chapter_count):
                 continue
 
             # edition_name,chapter_name,count_type,count
-            edition_name = row["edition_name"]
+            edition_name = get_edition_shortname_from_metadata(row["edition_name"])
             chapter_name = row["chapter_name"]
             count_type = row["count_type"]
             count = float(row["count"])
@@ -467,17 +394,17 @@ def plot_results(p_results_filepath, p_ur_chapter_count):
             editions[edition_name][count_type][int(chapter_name) - 1] = count
 
         # 2. Plot a 2D heatmap of the chapters of each edition by sentence data quality
-        # plot_heatmap(
-        #     "Sentence Quality by Chapter in Editions of 'Adventures of Huckleberry Finn'",
-        #     "Record counts to control records data quality",
-        #     { edition_name: editions[edition_name]["sentences"] for edition_name in editions }
-        # )
-            
         plot_heatmap(
-            "Word Quality by Chapter in Editions of 'Adventures of Huckleberry Finn'",
+            "Sentence Quality by Chapter in Editions of 'Adventures of Huckleberry Finn'",
             "Record counts to control records data quality",
-            { edition_name: editions[edition_name]["words"] for edition_name in editions }
+            { edition_name: editions[edition_name]["sentences"] for edition_name in editions }
         )
+            
+        # plot_heatmap(
+        #     "Word Quality by Chapter in Editions of 'Adventures of Huckleberry Finn'",
+        #     "Record counts to control records data quality",
+        #     { edition_name: editions[edition_name]["words"] for edition_name in editions }
+        # )
 
 
 def main():
@@ -495,17 +422,17 @@ def main():
 
     process_results = False
     graph = False
-    results_filepath = "/Users/weirdbeard/Documents/school/aolm_full/experiments/outputs/huckfinn_dq_experiment2_full_results_29082025_192728.csv"
-    ur_chapter_count = 43
+    
     if graph:
-        plot_results(results_filepath, ur_chapter_count)
+        plot_results(paths["results"], ur_chapter_count)
+        return True
     elif process_results:
-        output_amalgamated_edition(results_filepath, ur_chapter_count)
+        output_amalgamated_edition(paths["results"], ur_chapter_count)
         return True
 
     # 0. Setup
 
-    # Run time saved for output file
+    # Runtime saved for output file
     script_run_time = datetime.now().strftime("%d%m%Y_%H%M%S")
 
     # 1. Read dataset
@@ -526,14 +453,12 @@ def main():
 
     # NOTE: For ur edition lexical compute needs to access aolm_text.body.values() differently
     print_debug_header(f"Computing data quality for {aolm_data_reading.MTPO} ur edition of {WORK_TITLE} and evaluating results")
-    # read_texts()
     compute_and_evaluate_ur_edition()        
 
     # 5. Output record counts to control records results for chapter by chapter breakdown
     print_debug_header(f"Outputting {TR_METRIC_NAME} chapter by chapter results")
     output_filepath = f"/Users/weirdbeard/Documents/school/aolm_full/experiments/outputs/huckfinn_dq_experiment2_full_results_{script_run_time}.csv"
     output_record_count_chapter_results(output_filepath)
-
 
 if "__main__" == __name__:
 
