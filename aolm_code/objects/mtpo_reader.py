@@ -54,12 +54,25 @@ class MTPOReader(AOLMTextReader):
 
 def main():
 
-    test_filepath = f"{os.getcwd()}{os.sep}..{os.sep}..{os.sep}data{os.sep}twain{os.sep}huckleberry_finn{os.sep}mtpo{os.sep}"
-    
+    # Add the project root to sys.path
+    ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+    import sys
+    sys.path.append(ROOT_DIR)
+    from definitions import add_lib_paths
+    add_lib_paths(sys)
+    import aolm_data_reading
+
+    test_filepath = aolm_data_reading.huckfinn_directories[aolm_data_reading.MTPO]["txt"]
     test_file = "MTDP10000_edited.xml"
+
+    # test_filepath = f"{os.getcwd()}{os.sep}..{os.sep}..{os.sep}data{os.sep}twain{os.sep}huckleberry_finn{os.sep}mtpo{os.sep}"
     # test_file = "chapter_example.xml"
+
+    # /Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/mtpo/MTDP10000_edited.xml
+
     reader = MTPOReader(test_filepath + test_file)
     reader.read()
+
     reader.print()
 
 
