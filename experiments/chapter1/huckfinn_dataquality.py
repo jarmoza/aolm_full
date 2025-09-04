@@ -470,8 +470,6 @@ def output_results(p_script_run_time):
         # b. Overall data quality measurement of the source_id editions vs. ur edition
         output_file.write(f"Overall Quality:,{ur_metrics[UR_EDITION]["overall_data_quality"]}\n")
 
-
-
 def plot_results(p_output_filepath):
 
     # 1. Read in data quality metric results
@@ -535,7 +533,6 @@ def compute_and_evaluate_ur_edition():
         (metric_weights[TR_METRIC_NAME] * ur_metrics[UR_EDITION][TR_METRIC_NAME]["evaluation"])
     print(f"Overall {source_fullname} data quality for ur edition: {ur_metrics[UR_EDITION]["overall_data_quality"]}")
 
-    
 
 # Test
 
@@ -659,18 +656,18 @@ def main():
         # read_texts()
         compute_and_evaluate_ur_edition()        
 
-        # 5. Output results for data quality metrics to csv file
-        print_debug_header("Outputting metric results")
+        # 5. Output evaluations for data quality metrics to csv file
+        print_debug_header("Outputting metric evaluations")
         output_results(script_run_time)
     
-    # 6. Visualize metric with metric min falloff chart
+    # 7. Visualize metric with metric min falloff chart
     # print_debug_header("Plotting results")
     # plot_results(output_filepath)
 
 
 if "__main__" == __name__:
 
-    main() 
+    main()
 
 
 
