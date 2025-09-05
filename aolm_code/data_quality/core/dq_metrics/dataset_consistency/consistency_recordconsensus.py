@@ -179,7 +179,8 @@ class DatasetConsistency_RecordConsensus(DataQualityMetric):
             for sentence in consensus_sentence_set:
                 frequency_list = []
                 for reader_name in self.m_input:
-                    frequency_list.append(self.m_results[reader_name]["sentence_count"]["by_chapter"][str(index)][sentence])
+                    if sentence in self.m_results[reader_name]["sentence_count"]["by_chapter"][str(index)]:
+                        frequency_list.append(self.m_results[reader_name]["sentence_count"]["by_chapter"][str(index)][sentence])
                 self.m_results["consensus_sentence_counts"][str(index)][sentence] = median(frequency_list)
 
         # C. Gather a set of word dictionaries for unique words of each chapter of each edition
@@ -217,7 +218,8 @@ class DatasetConsistency_RecordConsensus(DataQualityMetric):
             for word in consensus_word_set:
                 frequency_list = []
                 for reader_name in self.m_input:
-                    frequency_list.append(self.m_results[reader_name]["word_count"]["by_chapter"][str(index)][word])
+                    if word in self.m_results[reader_name]["word_count"]["by_chapter"][str(index)]:
+                        frequency_list.append(self.m_results[reader_name]["word_count"]["by_chapter"][str(index)][word])
                 self.m_results["consensus_word_counts"][str(index)][word] = median(frequency_list)
                 
         return self.m_results    
@@ -236,41 +238,66 @@ class DatasetConsistency_RecordConsensus(DataQualityMetric):
 
         self.m_evaluations = {}
 
+        # Calculate most number of chapters in all editions
+        max_chapter_count = 0
+        for reader_name in self.m_input:
+            if self.m_input[reader_name].chapter_count > max_chapter_count:
+                max_chapter_count = self.m_input[reader_name].chapter_count
+
         # NOTE: Consensus counts in results from compute may need to be split apart by reader_name/chapter in order to make sense below
 
-        # 1. Subsubsubmetrics - Variance of each chapter unit (sentence, word) frequency from consensus unit frequency
-        self.m_evaluations["subsubsubmetric"] = {
+        # 1. Subsubsubsubmetrics - Variance of each chapter unit (sentence, word) frequency from consensus unit frequency
+        self.m_evaluations["subsubsubsubmetric"] = {
 
             reader_name: {
                 
-                "variance_from_sentence_consensus__by_chapter": {},
-                "variance_from_word_consensus__by_chapter": {},
+                "variance_from_sentence_consensus__by_chapter": { str(index): {} for index in range(1, max_chapter_count + 1) },
+                "variance_from_word_consensus__by_chapter": { str(index): {} for index in range(1, max_chapter_count + 1) },
             }
             for reader_name in self.m_input
         }
         for reader_name in self.m_input:
             for index in range(1, self.m_results[reader_name]["chapter_count"] + 1):
                 for sentence in self.m_results["consensus_sentence_counts"][str(index)]:
-                    self.m_evaluations["subsubsubmetric"][reader_name]["variance_from_sentence_consensus__by_chapter"][str(index)] = \
-                        self.m_results[reader_name]["sentence_count"]["by_chapter"][str(index)][sentence] - self.m_results["consensus_sentence_counts"][str(index)][sentence] 
+                    if sentence in self.m_results[reader_name]["sentence_count"]["by_chapter"][str(index)]:
+                        self.m_evaluations["subsubsubsubmetric"][reader_name]["variance_from_sentence_consensus__by_chapter"][str(index)][sentence] = \
+                            self.m_results[reader_name]["sentence_count"]["by_chapter"][str(index)][sentence] - self.m_results["consensus_sentence_counts"][str(index)][sentence]  
                 for word in self.m_results["consensus_word_counts"][str(index)]:
-                    self.m_evaluations["subsubsubmetric"][reader_name]["variance_from_word_consensus__by_chapter"][str(index)] = \
-                        self.m_results[reader_name]["word_count"]["by_chapter"][str(index)][word] - self.m_results["consensus_word_counts"][str(index)][word]
+                    if word in self.m_results[reader_name]["word_count"]["by_chapter"][str(index)]:
+                        self.m_evaluations["subsubsubsubmetric"][reader_name]["variance_from_word_consensus__by_chapter"][str(index)][word] = \
+                            self.m_results[reader_name]["word_count"]["by_chapter"][str(index)][word] - self.m_results["consensus_word_counts"][str(index)][word]
+                    
+        # 2. Subsubsubmetrics - Mean of variances of sentences/words for each chapter in each edition
+        self.m_evaluations["subsubsubmetric"] = {
 
-        # 2. Subsubmetrics - Variance of edition chapter count from consensus chapter count, and mean unit variances for each edition
+            "mean_variance_from_sentence_consensus__by_chapter": {
+                reader_name: {
+                    str(index): mean(list(self.m_evaluations["subsubsubsubmetric"][reader_name]["variance_from_sentence_consensus__by_chapter"][str(index)].values())) if len(list(self.m_evaluations["subsubsubsubmetric"][reader_name]["variance_from_sentence_consensus__by_chapter"][str(index)].values())) else 0
+                        for index in range(1, max_chapter_count + 1)
+                } for reader_name in self.m_input
+            },
+
+            "mean_variance_from_word_consensus__by_chapter": {
+                reader_name: {
+                    str(index): mean(list(self.m_evaluations["subsubsubsubmetric"][reader_name]["variance_from_word_consensus__by_chapter"][str(index)].values()))  if len(list(self.m_evaluations["subsubsubsubmetric"][reader_name]["variance_from_word_consensus__by_chapter"][str(index)].values())) else 0
+                        for index in range(1, max_chapter_count + 1)
+                } for reader_name in self.m_input
+            }
+        }
+
+        # 3. Subsubmetrics - Variance of edition chapter count from consensus chapter count, and mean unit variances for each edition
         self.m_evaluations["subsubmetric"] = {
 
             reader_name: {
 
                 "variance_from_chapter_consensus__by_edition": self.m_input[reader_name].chapter_count - self.m_results["consensus_chapter_count"],
-                "mean_variance_from_sentence_consensus__by_edition": mean(list(self.m_evaluations["subsubsubmetric"][reader_name]["variance_from_sentence_consensus__by_chapter"].values())),
-                "mean_variance_from_word_consensus__by_edition": mean(list(self.m_evaluations["subsubsubmetric"][reader_name]["variance_from_word_consensus__by_chapter"].values()))
-
+                "mean_variance_from_sentence_consensus__by_edition": mean(list(self.m_evaluations["subsubsubmetric"]["mean_variance_from_sentence_consensus__by_chapter"][reader_name].values())),
+                "mean_variance_from_word_consensus__by_edition": mean(list(self.m_evaluations["subsubsubmetric"]["mean_variance_from_word_consensus__by_chapter"][reader_name].values()))
             }
             for reader_name in self.m_input
         }
 
-        # 3. Submetric - Mean of chapter variance of all editions, Mean of mean unit variances of all editions
+        # 4. Submetric - Mean of chapter variance of all editions, Mean of mean unit variances of all editions
         self.m_evaluations["submetric"] = {
 
             "mean_of_variance_from_chapter_consensus__by_edition": mean([self.m_evaluations["subsubmetric"][reader_name]["variance_from_chapter_consensus__by_edition"] for reader_name in self.m_input]),
@@ -278,7 +305,7 @@ class DatasetConsistency_RecordConsensus(DataQualityMetric):
             "mean_of_mean_variance_from_word_consensus__by_edition": mean([self.m_evaluations["subsubmetric"][reader_name]["mean_variance_from_word_consensus__by_edition"] for reader_name in self.m_input])
         }
 
-        # 4. Metric - Mean of all three submetrics (mostly to derive a single data quality percentage, each submetric is evenly weighted here)
+        # 5. Metric - Mean of all three submetrics (mostly to derive a single data quality percentage, each submetric is evenly weighted here)
         self.m_evaluations["metric"] = mean(list(self.m_evaluations["submetric"].values()))
 
         return self.metric_evaluation
