@@ -2,8 +2,9 @@
 # Created: September 3, 2025
 # Purpose: Metric for seeing how similar and different a group of editions of
 #          the same work are without the aid of an ur edition
+#          NOTE: The typical usage scenario for this metric is per collection of editions
 
-# Basis for consensus: the most expansive as agreed upon by a majority of the editions
+# Basis for consensus: the most expansive as agreed upon by a majority of the editions (Default: 50%)
 
 # Imports
 
@@ -11,7 +12,7 @@
 import os
 import sys
 from collections import Counter
-from math import ceil, floor
+from math import ceil
 from statistics import mean, median
 
 # Add the project root to sys.path
@@ -27,12 +28,6 @@ from aolm_utilities import print_debug_header
 from dq_metric import DataQualityMetric
 
 
-# Globals
-
-# Used to store already read Adventures of Huckleberry Finn editions
-huckfinn_textdata = {}
-
-
 class DatasetConsistency_RecordConsensus(DataQualityMetric):
 
     # Constructor and private methods
@@ -46,32 +41,6 @@ class DatasetConsistency_RecordConsensus(DataQualityMetric):
                          p_path=p_text_json_filepath)
         
         self.m_consistency_threshold = DatasetConsistency_RecordConsensus.s_consistency_threshold
-        
-    def __compute_consensus(self, p_count_dictionaries):
-
-        # 1. Gather counts of the unique keys in each edition
-        key_counts = {}
-        for edition in p_count_dictionaries:
-            for key in p_count_dictionaries[edition]:
-                if key not in key_counts:
-                    key_counts[key] = []
-                key_counts[key].append(p_count_dictionaries[edition][key])
-
-        # 2. Determine consensus counts for each key
-        consensus_key_counts = { key: ceil(mean(key_counts[key])) for key in key_counts }
-
-        return key_counts, consensus_key_counts
-    
-    def __evaluate_consensus(p_count_dictionaries, p_consensus_key_counts):
-
-        # 1. Determine positive or negative variance of edition key counts from the consensus (mean)
-        edition_variances = { edition_name: {} for edition_name in p_count_dictionaries }
-
-        for edition_name in p_count_dictionaries:
-            for key in p_count_dictionaries[edition_name]:
-                edition_variances[edition_name][key] = ceil(p_count_dictionaries[edition_name][key] - p_consensus_key_counts[key])
-
-        return edition_variances
 
     # Properties
     @property
@@ -94,10 +63,6 @@ class DatasetConsistency_RecordConsensus(DataQualityMetric):
 
     def compute(self):
 
-        # 0. Setup
-
-        # Idea is this metric is used per collection of editions
-
         # Compute 
         # (1) Tallies chapter counts,
         # (2) Calculates consensus for chapter count (ceiling of mean)
@@ -106,11 +71,19 @@ class DatasetConsistency_RecordConsensus(DataQualityMetric):
         # (5) Tallies word counts by chapter
         # (6) Calculates consensus for unique words per chapter (existence and mean frequency)
 
+        # 0. Setup
+
         # A. Calculate most number of chapters in all editions
         max_chapter_count = 0
         for reader_name in self.m_input:
             if self.m_input[reader_name].chapter_count > max_chapter_count:
                 max_chapter_count = self.m_input[reader_name].chapter_count
+
+        # B. Sentence and word consensus threshold
+        # NOTE: If self.m_consistency_threshold == 0.5 this is equivalent to consensus of
+        # if sentence_or_word_presence_counter[sentence_or_word] > floor(self.edition_count/2)]
+        # Or, in other words present in at least 50% of input editions
+        consensus_threshold = int(self.edition_count * self.m_consistency_threshold)
 
         # B. Reset results
         self.m_results = {
@@ -170,7 +143,7 @@ class DatasetConsistency_RecordConsensus(DataQualityMetric):
                 for reader_name in self.m_input:
                     if sentence in chapter_sentence_sets[reader_name]:
                         sentence_presence_counter[sentence] += 1
-            consensus_sentence_set = [sentence for sentence in sentence_presence_counter if sentence_presence_counter[sentence] > floor(self.edition_count/2)]
+            consensus_sentence_set = [sentence for sentence in sentence_presence_counter if sentence_presence_counter[sentence] > consensus_threshold]
             
             # Strict intersection for consensus set
             # consensus_sentence_set = set.intersection(*list(chapter_sentence_sets.values()))
@@ -209,7 +182,7 @@ class DatasetConsistency_RecordConsensus(DataQualityMetric):
                 for reader_name in self.m_input:
                     if word in chapter_word_sets[reader_name]:
                         word_presence_counter[word] += 1
-            consensus_word_set = [word for word in word_presence_counter if word_presence_counter[word] > floor(self.edition_count/2)]
+            consensus_word_set = [word for word in word_presence_counter if word_presence_counter[word] > consensus_threshold]
 
             # Strict interesection for consensus set
             # consensus_word_set = set.intersection(*list(chapter_word_sets.values()))
@@ -234,11 +207,13 @@ class DatasetConsistency_RecordConsensus(DataQualityMetric):
         # Submetric
         # (4) Calculates mean variance of each edition
         # Metric
-        # (5) Calculates mean of all edition variances      
+        # (5) Calculates mean of all edition variances
+
+        # 0. Setup
 
         self.m_evaluations = {}
 
-        # Calculate most number of chapters in all editions
+        # A. Calculate most number of chapters in all editions
         max_chapter_count = 0
         for reader_name in self.m_input:
             if self.m_input[reader_name].chapter_count > max_chapter_count:
@@ -312,7 +287,9 @@ class DatasetConsistency_RecordConsensus(DataQualityMetric):
     
     # Static fields and methods
     
+    # Default threshold for relaxed consensus is presence in at least half of input texts
     s_consistency_threshold = 0.5
+
     s_metric_name = "consistency_recordconsensus"
 
 
@@ -327,7 +304,7 @@ def main():
     
     # 1. Read in all Huckleberry finn editions from Internet Archive
     print_debug_header(f"Reading {COLLECTION_FULL_NAME} editions of {WORK_TITLE}...")
-    huckfinn_textdata[COLLECTION_ID] = aolm_data_reading.read_huckfinn_text(COLLECTION_ID)
+    huckfinn_textdata = { COLLECTION_ID: aolm_data_reading.read_huckfinn_text(COLLECTION_ID) }
 
     # 2. Compute metric
     print_debug_header(f"Computing record consensus metric for collection...")
