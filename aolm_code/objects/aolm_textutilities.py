@@ -7,7 +7,7 @@
 # Built-ins
 from collections import Counter
 from functools import reduce 
-from math import ceil
+from math import ceil, floor
 import os
 import re
 from statistics import mean
@@ -406,6 +406,10 @@ class AOLMTextUtilities:
     def weighted_mean_from_dict(p_dict):
 
         return mean([p_dict[key] * 1.0 / len(p_dict.keys()) for key in p_dict])
+    
+    @staticmethod
+    def whole_count(p_number):
+        return floor(p_number) if p_number < 0 else ceil(p_number)
     
     @staticmethod
     def word_count_from_string(p_text):
