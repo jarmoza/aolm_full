@@ -27,6 +27,10 @@ from aolm_textutilities import AOLMTextUtilities
 from aolm_utilities import print_debug_header
 from dq_metric import DataQualityMetric
 
+# Globals
+
+EXPERIMENT_PATH = ROOT_DIR + f"{os.sep}experiments{os.sep}outputs{os.sep}"
+
 
 class DatasetConsistency_RecordConsensus(DataQualityMetric):
 
@@ -41,6 +45,38 @@ class DatasetConsistency_RecordConsensus(DataQualityMetric):
                          p_path=p_text_json_filepath)
         
         self.m_consistency_threshold = DatasetConsistency_RecordConsensus.s_consistency_threshold
+
+    def __build_eval_output_line__(self):
+
+        # self.m_evaluations["subsubsubsubmetric"]
+        # edition_name,chapter,variance_from_sentence_consensus__by_chapter,variance_from_word_consensus__by_chapter
+
+        header = "edition_name,chapter,variance_from_sentence_consensus__by_chapter,variance_from_word_consensus__by_chapter"
+        output_lines = [f"{header}\n"]
+
+        for reader_name in self.m_input:
+            for index in range(1, self.m_input[reader_name].chapter_count + 1):
+                
+                edition_name = reader_name
+                chapter = str(index)
+                # sentence_variances = self.m_evaluations["subsubsubsubmetric"][reader_name]["variance_from_sentence_consensus__by_chapter"][str(index)]
+                # word_variances = self.m_evaluations["subsubsubsubmetric"][reader_name]["variance_from_word_consensus__by_chapter"][str(index)]
+
+                # avg_sentence_variance = 0 if not len(sentence_variances) else mean(sentence_variances.values())
+                # avg_word_variance = 0 if not len(word_variances) else mean(word_variances.values())
+
+                # output_lines.append(
+                #     f"{edition_name},{chapter},{avg_sentence_variance},{avg_word_variance}\n"
+                # )                
+
+                mean_sentence_variance = self.m_evaluations["subsubsubmetric"]["mean_variance_from_sentence_consensus__by_chapter"][edition_name][chapter]
+                mean_word_variance = self.m_evaluations["subsubsubmetric"]["mean_variance_from_word_consensus__by_chapter"][edition_name][chapter]
+
+                output_lines.append(
+                    f"{edition_name},{chapter},{mean_sentence_variance},{mean_word_variance}\n"
+                )                
+
+        return output_lines
 
     # Properties
     @property
@@ -163,6 +199,7 @@ class DatasetConsistency_RecordConsensus(DataQualityMetric):
 
                 compared_chapter = self.m_input[reader_name].get_chapter(index)
                 compared_words = AOLMTextUtilities.get_words_from_string(AOLMTextUtilities.create_string_from_lines(compared_chapter))
+                compared_words = [AOLMTextUtilities.clean_string(word) for word in compared_words]
                 compared_words = Counter(compared_words)
 
                 self.m_results[reader_name]["word_count"]["by_chapter"][str(index)] = compared_words
@@ -287,17 +324,149 @@ class DatasetConsistency_RecordConsensus(DataQualityMetric):
     
     # Static fields and methods
     
-    # Default threshold for relaxed consensus is presence in at least half of input texts
+    # Default threshold for relaxed consensus is presence in at least half of input texts [0,1]
     s_consistency_threshold = 0.5
 
     s_metric_name = "consistency_recordconsensus"
 
 
+# Test script helpers
+
+def get_edition_shortname_from_metadata(p_text_json_filename):
+
+    import json
+
+    short_name = p_text_json_filename
+
+    with open("/Users/weirdbeard/Documents/school/aolm_full/experiments/chapter1/huckfinneditions_filenames2fullnames.json", "r") as input_file:
+        json_data = json.load(input_file)
+
+    for key in json_data:
+        if key in p_text_json_filename:
+            short_name = json_data[key]["short_name"]
+            break
+
+    return short_name
+
+def get_publication_year(p_edition_short_name):
+
+    publication_year = ""
+
+    if "gutenberg" in p_edition_short_name:
+        publication_year = p_edition_short_name[p_edition_short_name.rfind("_") + 1:]
+    else:
+        for index in range(0, len(p_edition_short_name)):
+            if p_edition_short_name[index].isdigit():
+                publication_year = p_edition_short_name[index:index + p_edition_short_name[index:].find("_")]
+                break
+
+    return publication_year
+
+
+# Test script visualization
+
+def plot_heatmap(p_chart_title, p_metric_name, p_data):
+
+    import numpy as np
+    import matplotlib.pyplot as plt    
+
+    # Editions of the novel (sorted by publication year)
+    editions = list(p_data.keys())
+    editions = [(get_publication_year(edition_short_name), edition_short_name) for edition_short_name in editions]
+    editions.sort(key=lambda x: x[0])
+    editions = [edition_tuple[1] for edition_tuple in editions]
+    n_editions = len(editions)
+    n_chapters = len(p_data[editions[0]])
+
+    # Fill in data
+    data = np.zeros((n_editions, n_chapters))
+    for index in range(n_editions):
+        for index2 in range(n_chapters):
+            data[index, index2] = p_data[editions[index]][index2]
+
+    # Plot heatmap
+    fig, ax = plt.subplots(figsize=(12, 6))
+    im = ax.imshow(data, aspect='auto')
+
+    # Set axis labels
+    ax.set_xticks(np.arange(n_chapters))
+    ax.set_xticklabels(np.arange(1, n_chapters + 1))
+    ax.set_yticks(np.arange(n_editions))
+    ax.set_yticklabels(editions)
+
+    # Rotate x-axis labels for readability
+    plt.setp(ax.get_xticklabels(), rotation=90, ha="center")
+
+    # Add colorbar
+    cbar = plt.colorbar(im, ax=ax)
+    cbar.set_label(p_metric_name)
+
+    ax.set_title(p_chart_title)
+    ax.set_xlabel("Chapter")
+    ax.set_ylabel("Edition")
+
+    plt.tight_layout()
+    plt.show()
+
+def plot_results(p_results_filepath, p_ur_chapter_count, p_count_type, p_count_column):
+
+    import csv
+
+    # 1. Store all edition record count to control records results for sentences and words by chapter
+    editions = {}
+    with open(p_results_filepath, "r") as results_file:
+    
+        csv_reader = csv.DictReader(results_file)
+
+        for row in csv_reader:
+
+            # Skip header
+            if "edition_name" == row["edition_name"]:
+                continue
+
+            # edition_name,chapter_name,count_type,count
+            edition_name = get_edition_shortname_from_metadata(row["edition_name"])
+            chapter_name = row["chapter"]
+            count_type = p_count_type
+            count = float(row[p_count_column])
+
+            if edition_name not in editions:
+                editions[edition_name] = {
+                    "sentences": [0] * p_ur_chapter_count,
+                    "words": [0] * p_ur_chapter_count
+                }
+
+            editions[edition_name][count_type][int(chapter_name) - 1] = count
+
+        # 2. Plot a 2D heatmap of the chapters of each edition by sentence data quality
+        plot_heatmap(
+            "Mean Sentence Variance by Chapter in Internet Archive Editions of 'Adventures of Huckleberry Finn'",
+            "Record Consistency data quality",
+            { edition_name: editions[edition_name]["sentences"] for edition_name in editions }
+        )
+            
+        # plot_heatmap(
+        #     "Mean Word Varianbce by Chapter in Internet Archive Editions of 'Adventures of Huckleberry Finn'",
+        #     "Record consistency data quality",
+        #     { edition_name: editions[edition_name]["words"] for edition_name in editions }
+        # )
+
+
+# Main script
+
 def main():
+
+    plot_data = False
+    if plot_data:
+
+        # plot_results(EXPERIMENT_PATH + "huckfinn_ia_subx4metric.csv", 43, "sentences", "variance_from_sentence_consensus__by_chapter")
+        plot_results(EXPERIMENT_PATH + "huckfinn_ia_subx4metric.csv", 43, "sentences", "variance_from_sentence_consensus__by_chapter")
+
+        return
 
     # Test case: Internet Archive editions of 'Adventures of Huckleberry Finn'
 
-    COLLECTION_ID = aolm_data_reading.IA
+    COLLECTION_ID = aolm_data_reading.PG
     COLLECTION_FULL_NAME = aolm_data_reading.huckfinn_source_fullnames[COLLECTION_ID]
     EDITION_PATH = aolm_data_reading.huckfinn_directories[COLLECTION_ID]["txt"]
     WORK_TITLE = "Adventures of Huckleberry Finn"
@@ -322,8 +491,14 @@ def main():
     print_debug_header("Evaluating metric results...")
     huckfinn_recordconsensus.evaluate()
 
+    # 4. Output the metric evaluations
     print(f"Metric: {100 * huckfinn_recordconsensus.metric_evaluation}%")
     print(f"Submetrics: {huckfinn_recordconsensus.m_evaluations["submetric"]}")
+
+    output_lines = huckfinn_recordconsensus.__build_eval_output_line__()
+    with open(EXPERIMENT_PATH + "huckfinn_ia_subx4metric.csv", "w") as output_file:
+        for line in output_lines:
+            output_file.write(line)    
 
 
 if "__main__" == __name__:
