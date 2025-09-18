@@ -44,7 +44,12 @@ class DatasetConsistency_RecordConsensus(DataQualityMetric):
                          p_collection_title=p_collection_title,
                          p_path=p_text_json_filepath)
         
-        self.m_consistency_threshold = DatasetConsistency_RecordConsensus.s_consistency_threshold
+        self.m_consistency_threshold = DatasetConsistency_RecordConsensus.s_consistency_threshold      
+
+        self.m_weight_mean_of_variance_from_chapter_consensus__by_edition = DatasetConsistency_RecordConsensus.s_weight_mean_of_variance_from_chapter_consensus__by_edition
+        self.m_weight_mean_of_mean_variance_from_sentence_consensus__by_edition = DatasetConsistency_RecordConsensus.s_weight_mean_of_mean_variance_from_sentence_consensus__by_edition
+        self.m_mean_of_mean_variance_from_word_consensus__by_edition = DatasetConsistency_RecordConsensus.s_weight_mean_of_mean_variance_from_word_consensus__by_edition
+
 
     def __build_eval_output_line__(self):
 
@@ -94,6 +99,25 @@ class DatasetConsistency_RecordConsensus(DataQualityMetric):
     @property
     def eval_output(self):
         return self.__build_eval_output_line__()
+    
+    @property
+    def chapter_submetric_weight(self):
+        return self.m_weight_mean_of_variance_from_chapter_consensus__by_edition
+    @chapter_submetric_weight.setter
+    def chapter_submetric_weight(self, p_new_weight):
+        self.m_weight_mean_of_variance_from_chapter_consensus__by_edition = p_new_weight
+    @property
+    def sentence_submetric_weight(self):
+        return self.m_weight_mean_of_mean_variance_from_sentence_consensus__by_edition
+    @sentence_submetric_weight.setter
+    def sentence_submetric_weight(self, p_new_weight):
+        self.m_weight_mean_of_mean_variance_from_sentence_consensus__by_edition = p_new_weight
+    @property
+    def word_submetric_weight(self):
+        return self.m_weight_mean_of_mean_variance_from_word_consensus__by_edition
+    @word_submetric_weight.setter
+    def word_submetric_weight(self, p_new_weight):
+        self.m_weight_mean_of_mean_variance_from_word_consensus__by_edition = p_new_weight
 
     # Public methods
 
@@ -326,6 +350,11 @@ class DatasetConsistency_RecordConsensus(DataQualityMetric):
     
     # Default threshold for relaxed consensus is presence in at least half of input texts [0,1]
     s_consistency_threshold = 0.5
+
+    # Default weights for determining the metric value from the submetrics
+    s_weight_mean_of_variance_from_chapter_consensus__by_edition = 0.3,
+    s_weight_mean_of_mean_variance_from_sentence_consensus__by_edition = 0.25
+    s_weight_mean_of_mean_variance_from_word_consensus__by_edition = 0.45 
 
     s_metric_name = "consistency_recordconsensus"
 
