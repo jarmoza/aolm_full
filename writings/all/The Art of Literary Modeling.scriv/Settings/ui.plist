@@ -6,7 +6,7 @@
 	<dict>
 		<key>9E9EEFBB-7DE0-4FF8-856A-D68686F8C450</key>
 		<array>
-			<string>FA375BED-E51F-41C2-BB63-84D9CB50AD8C</string>
+			<string>7BA5F431-9325-4331-8B88-315BCBA7DED4</string>
 		</array>
 	</dict>
 	<key>CommentsScaleFactor</key>
@@ -17,12 +17,60 @@
 	<integer>0</integer>
 	<key>NotesScaleFactor</key>
 	<real>1</real>
+	<key>QRPanelSettings</key>
+	<dict>
+		<key>AA091AC3-8F10-47AE-9E09-7C3ED675ED7B</key>
+		<dict>
+			<key>BinderUUID</key>
+			<string>AA091AC3-8F10-47AE-9E09-7C3ED675ED7B</string>
+			<key>CurrentMetaData</key>
+			<integer>-1</integer>
+			<key>MainPaneWidth</key>
+			<real>475</real>
+			<key>ProjectBookmarksSplitInfo</key>
+			<array>
+				<string>{{0, 0}, {225, 495}}</string>
+				<string>{{235, 0}, {443, 495}}</string>
+			</array>
+			<key>ProjectBookmarksVisible</key>
+			<false/>
+			<key>ShowsFormatBar</key>
+			<true/>
+			<key>ShowsMetaData</key>
+			<false/>
+			<key>SplitInfo</key>
+			<array>
+				<string>{{0, 277}, {475, 167}}</string>
+			</array>
+			<key>TextSettings</key>
+			<dict>
+				<key>hasMultiplePages</key>
+				<false/>
+				<key>isRulerVisible</key>
+				<false/>
+				<key>lineNumberingInterval</key>
+				<integer>1</integer>
+				<key>showsLineNumbers</key>
+				<false/>
+				<key>textFocusMode</key>
+				<integer>0</integer>
+				<key>textScaleFactor</key>
+				<real>1</real>
+				<key>usesFacingPages</key>
+				<false/>
+				<key>usesTypewriterScrolling</key>
+				<false/>
+			</dict>
+			<key>WindowFrame</key>
+			<string>722 414 475 528 0 0 1512 950 </string>
+		</dict>
+	</dict>
 	<key>SuppressBookmarksFolderCheck</key>
 	<false/>
 	<key>binderSplitFrames</key>
 	<array>
-		<string>{{0, 0}, {305, 900}}</string>
-		<string>{{306, 0}, {1206, 900}}</string>
+		<string>{{0, 0}, {347, 900}}</string>
+		<string>{{348, 0}, {1164, 900}}</string>
 	</array>
 	<key>binderWidth</key>
 	<real>281.5</real>
@@ -205,6 +253,11 @@
 			<integer>-1</integer>
 		</dict>
 		<key>28A91101-275A-4DF9-9CB3-70C4D835DFA9</key>
+		<dict>
+			<key>Row</key>
+			<integer>-1</integer>
+		</dict>
+		<key>29BB3DE9-2A65-4758-A64A-31B96EC534F8</key>
 		<dict>
 			<key>Row</key>
 			<integer>-1</integer>
@@ -456,6 +509,11 @@
 			<key>Row</key>
 			<integer>-1</integer>
 		</dict>
+		<key>64E2948B-C183-4CDF-B40F-BF7A9503E0A5</key>
+		<dict>
+			<key>Row</key>
+			<integer>-1</integer>
+		</dict>
 		<key>6553BF9C-1978-4BBC-8AF7-D3DCBB93D564</key>
 		<dict>
 			<key>Row</key>
@@ -587,6 +645,11 @@
 			<integer>-1</integer>
 		</dict>
 		<key>8E933A1E-A2D5-4241-BB6D-FC14BCE33C46</key>
+		<dict>
+			<key>Row</key>
+			<integer>-1</integer>
+		</dict>
+		<key>8F260EDF-1860-4D12-B2C1-D5EDAD6AEBFD</key>
 		<dict>
 			<key>Row</key>
 			<integer>-1</integer>
@@ -737,6 +800,11 @@
 			<integer>-1</integer>
 		</dict>
 		<key>B1BA27BF-4F59-4470-B8B6-86D8FA6237A3</key>
+		<dict>
+			<key>Row</key>
+			<integer>-1</integer>
+		</dict>
+		<key>B45517E0-ACA2-4C2B-9937-04EA36578D67</key>
 		<dict>
 			<key>Row</key>
 			<integer>-1</integer>
@@ -1019,7 +1087,7 @@
 	</dict>
 	<key>collectionSelectionAutosaveName</key>
 	<array>
-		<integer>0</integer>
+		<integer>3</integer>
 	</array>
 	<key>collectionsRepresentedBinderDocumentsInfo</key>
 	<dict>
@@ -1030,7 +1098,7 @@
 	</dict>
 	<key>editorSplitFrames</key>
 	<array>
-		<string>{{823, 0}, {810, 1005}}</string>
+		<string>{{0, 0}, {1200, 435}}</string>
 	</array>
 	<key>exportFilesFormat</key>
 	<integer>3</integer>
@@ -1055,12 +1123,12 @@
 	<integer>2</integer>
 	<key>inspectorSplitFrames</key>
 	<array>
-		<string>{{0, 0}, {302, 772}}</string>
+		<string>{{0, 0}, {384, 772}}</string>
 	</array>
 	<key>inspectorWidth</key>
 	<real>227</real>
 	<key>lastDocumentSplitType</key>
-	<integer>1</integer>
+	<integer>0</integer>
 	<key>mainDocumentEditor.PDFAutoScales</key>
 	<false/>
 	<key>mainDocumentEditor.PDFScale</key>
@@ -1084,14 +1152,14 @@
 		<real>104</real>
 	</dict>
 	<key>mainDocumentEditor.scrollRect</key>
-	<string>{{0, -8.3333333333333321}, {804, 542.66666666666663}}</string>
+	<string>{{0, -21.333333333333332}, {776, 540}}</string>
 	<key>mainDocumentEditor.textEditorState</key>
 	<dict>
 		<key>textScaleFactor</key>
 		<real>1.5</real>
 	</dict>
 	<key>mainWindowFrame</key>
-	<string>1201 -845 1540 810 1201 -878 1352 843 </string>
+	<string>80 84 1352 810 0 0 1512 944 </string>
 	<key>projectStatsSheet</key>
 	<dict>
 		<key>countDraftFootnotes</key>
@@ -1122,7 +1190,7 @@
 		<key>widths</key>
 		<dict>
 			<key>TITLE</key>
-			<real>273</real>
+			<real>315</real>
 		</dict>
 	</dict>
 	<key>supportingDocumentEditor.PDFAutoScales</key>
@@ -1150,7 +1218,7 @@
 		<real>193</real>
 	</dict>
 	<key>supportingDocumentEditor.scrollRect</key>
-	<string>{{0, 0}, {621, 294}}</string>
+	<string>{{0, 0}, {621, 290}}</string>
 	<key>supportingDocumentEditor.textEditorState</key>
 	<dict>
 		<key>textScaleFactor</key>

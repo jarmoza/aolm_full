@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ScrivenerProject Identifier="9D1E41B9-1E5B-4BD0-A880-FE062B9FE6E8" Version="2.0" Creator="SCRMAC-3.4-16639" Device="SturgeonHome" Author="" Modified="2025-09-30 14:09:34 -0400" ModID="6087290A-D3FF-45E9-8E03-53C8B3EF9183">
+<ScrivenerProject Identifier="9D1E41B9-1E5B-4BD0-A880-FE062B9FE6E8" Version="2.0" Creator="SCRMAC-3.5-17311" Device="SturgeonHome" Author="" Modified="2025-10-23 09:39:54 -0400" ModID="8B83DF73-6A0B-4E94-9062-CCC0F7BA76B9">
     <Binder>
         <BinderItem UUID="006C1C4A-133E-4CCD-8FF7-6E63A65FE10C" Type="Folder" Created="2021-01-22 16:13:57 -0500" Modified="2021-01-22 16:29:55 -0500">
             <Title>Daily Notes</Title>
@@ -495,7 +495,7 @@
                                 <IncludeInCompile>Yes</IncludeInCompile>
                             </MetaData>
                             <TextSettings>
-                                <TextSelection>496,142</TextSelection>
+                                <TextSelection>835,0</TextSelection>
                             </TextSettings>
                             <Keywords>
                                 <KeywordID>17</KeywordID>
@@ -2081,7 +2081,7 @@ Process for producing initial data quality assessment
                         </CustomMetaData>
                     </MetaData>
                     <TextSettings>
-                        <TextSelection>4951,0</TextSelection>
+                        <TextSelection>3768,0</TextSelection>
                     </TextSettings>
                 </BinderItem>
                 <BinderItem UUID="2C07058D-20FF-46B8-B782-64B2D4A3B0E1" Type="Folder" Created="2023-01-29 12:36:24 -0500" Modified="2023-01-29 12:36:30 -0500">
@@ -2120,6 +2120,15 @@ Process for producing initial data quality assessment
                     </MetaData>
                     <TextSettings>
                         <TextSelection>65,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="29BB3DE9-2A65-4758-A64A-31B96EC534F8" Type="Text" Created="2025-09-30 14:41:41 -0400" Modified="2025-10-01 12:48:42 -0400">
+                    <Title>What I have - All prose - October 2025</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>185,0</TextSelection>
                     </TextSettings>
                 </BinderItem>
             </Children>
@@ -2388,6 +2397,33 @@ Process for producing initial data quality assessment
                                 <TextSelection>2621,110</TextSelection>
                             </TextSettings>
                         </BinderItem>
+                        <BinderItem UUID="B45517E0-ACA2-4C2B-9937-04EA36578D67" Type="Text" Created="2025-10-02 12:58:19 -0400" Modified="2025-10-02 12:58:29 -0400">
+                            <Title>Coleman</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>364,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="64E2948B-C183-4CDF-B40F-BF7A9503E0A5" Type="Text" Created="2025-10-03 14:56:38 -0400" Modified="2025-10-03 14:56:44 -0400">
+                            <Title>Flanders and Jannidis</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="8F260EDF-1860-4D12-B2C1-D5EDAD6AEBFD" Type="Text" Created="2025-10-08 13:31:12 -0400" Modified="2025-10-08 13:32:33 -0400">
+                            <Title>Moretti - Operationalizing</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>152,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
                     </Children>
                 </BinderItem>
                 <BinderItem UUID="4F4BBC1C-CDE0-473D-884B-7F6DAD13C1B8" Type="Text" Created="2019-03-19 09:45:53 -0400" Modified="2021-01-22 16:15:51 -0500">
@@ -2645,7 +2681,7 @@ Process for producing initial data quality assessment
                                 <IncludeInCompile>Yes</IncludeInCompile>
                             </MetaData>
                             <TextSettings>
-                                <TextSelection>7691,0</TextSelection>
+                                <TextSelection>5070,0</TextSelection>
                             </TextSettings>
                         </BinderItem>
                     </Children>
@@ -2684,7 +2720,7 @@ Process for producing initial data quality assessment
         </Collection>
         <Collection Type="RecentSearch" ID="9E9EEFBB-7DE0-4FF8-856A-D68686F8C450" Color="0.922173 0.818612 0.999627">
             <Title>Search Results</Title>
-            <SearchSettings Operator="Any" Type="All" CaseSensitive="No" IgnoreDiacritics="No">"liminal moment"</SearchSettings>
+            <SearchSettings Operator="Any" Type="All" CaseSensitive="No" IgnoreDiacritics="No">jannidis</SearchSettings>
         </Collection>
     </Collections>
     <Keywords>
@@ -3161,10 +3197,10 @@ Process for producing initial data quality assessment
     </CustomMetaDataSettings>
     <ProjectTargets Notify="No">
         <DraftTarget Type="Words" CountIncludedOnly="Yes" CurrentCompileGroupOnly="No" Deadline="2019-01-03 11:33:22 -0500" IgnoreDeadline="Yes">0</DraftTarget>
-        <SessionTarget Type="Words" CountDraftOnly="Yes" AllowNegatives="Yes" NextResetDate="2025-10-01 01:00:00 -0400" ResetType="Time" ResetTime="00:00" DeterminedFromDeadline="No" WritingDays="" CanWriteOnDeadlineDate="No">0</SessionTarget>
-        <PreviousSession Words="0" Characters="0" Date="2025-09-30 14:09:30 -0400"/>
+        <SessionTarget Type="Words" CountDraftOnly="Yes" AllowNegatives="Yes" NextResetDate="2025-10-24 01:00:00 -0400" ResetType="Time" ResetTime="00:00" DeterminedFromDeadline="No" WritingDays="" CanWriteOnDeadlineDate="No">0</SessionTarget>
+        <PreviousSession Words="0" Characters="0" Date="2025-10-23 09:39:52 -0400"/>
     </ProjectTargets>
-    <RecentWritingHistory Date="2025-09-30 00:00:00 -0400">
+    <RecentWritingHistory Date="2025-10-23 00:00:00 -0400">
         <DraftWordCount>0</DraftWordCount>
         <DraftCharCount>0</DraftCharCount>
         <OtherWordCount>0</OtherWordCount>
