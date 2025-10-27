@@ -116,7 +116,7 @@ class DatasetSignature_Legomena(DataQualityMetric):
             self.m_evaluations["submetric"]["avg_chapter_legomena"][filepath] /= \
                 self.reader(filepath).chapter_count
 
-        # Hapax counts for each work
+        # Legomena counts for each work
         for filepath in self.m_evaluations["submetric"]["legomena_totals_by_work"]:
             for legomena in self.m_results["legomena"][filepath]:
                 self.m_evaluations["submetric"]["legomena_totals_by_work"][filepath] += \
