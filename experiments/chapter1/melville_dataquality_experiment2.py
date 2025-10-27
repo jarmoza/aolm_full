@@ -59,21 +59,24 @@ publication_order = [
     ("israel_potter", 1855),
     ("confidence_man", 1857)
 ]
+publication_rank = { title: index for index, (title, year) in enumerate(publication_order) }
+label_to_novel = {}
+
 
 # Utility functions
 
+def extract_sort_key(p_label):
 
-def extract_sort_key(label):
+    novel_name = label_to_novel.get(p_label, "")
+    
+    # Volume number
+    vol_match = re.search(r"vol\. (\d+)", p_label)
+    volume = int(vol_match.group(1)) if vol_match else 0
 
-    # Extract year
-    year_match = re.search(r'\((\d{4})\)', label)
-    year = int(year_match.group(1)) if year_match else 0
+    # Rank from publication order
+    rank = publication_rank.get(novel_name, 999)
 
-    # Extract volume number (vol. X)
-    volume_no_match = re.search(r'vol\.\s*(\d+)', label, re.IGNORECASE)
-    volume = int(volume_no_match.group(1)) if volume_no_match else 1
-
-    return (year, volume)
+    return (rank, volume)
 
 def plot_counts_bar_chart(p_labels, p_counts, p_title):
 
@@ -146,6 +149,9 @@ def main():
         legomena_label_dict[label] = filepath
     legomena_label_dict["mardi vol. 1 (1849)"] = legomena_label_dict["mardi (1849)"]
     del legomena_label_dict["mardi (1849)"]
+
+    for label, filepath in legomena_label_dict.items():
+        label_to_novel[label] = file_to_novel_name_dict[filepath].lower()    
 
     # Build tuple list for graph data
     if plot_avg_chapter_legomena:
