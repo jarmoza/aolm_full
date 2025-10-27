@@ -65,6 +65,119 @@ label_to_novel = {}
 
 # Utility functions
 
+def plot_novel_words():
+
+    import plotly.express as px
+
+    # Data
+    novels = [
+        "Typee", "Omoo", "Mardi Vol. 1", "Mardi Vol. 2", "Redburn",
+        "White-Jacket", "Moby-Dick", "Pierre", "Israel Potter", "The Confidence-Man"
+    ]
+
+    words_in_body_text = [106775, 101141, 96024, 100194, 117915, 138171, 212131, 151731, 64483, 92840]
+
+    # Create DataFrame
+    import pandas as pd
+    df = pd.DataFrame({
+        "Novel": novels,
+        "Words in Body Text": words_in_body_text
+    })
+
+    # Simple bar chart
+    fig = px.bar(
+        df,
+        x="Novel",
+        y="Words in Body Text",
+        title="Words in Body Text Across Melville Novels",
+        labels={"Words in Body Text": "Words in Body Text", "Novel": "Novel"},
+        text="Words in Body Text"
+    )
+
+    # Increase font sizes
+    fig.update_traces(textfont_size=16)
+    fig.update_layout(
+        title_font=dict(size=22),
+        xaxis=dict(title_font=dict(size=20), tickfont=dict(size=16)),
+        yaxis=dict(title_font=dict(size=20), tickfont=dict(size=16))
+    )
+
+    fig.show()
+
+
+def plot_chapter_count_and_words():
+
+    import pandas as pd
+    import plotly.graph_objects as go
+
+    # Data
+    data = {
+        "Name": [
+            "Typee", "Omoo", "Mardi Vol. 1", "Mardi Vol. 2", "Redburn",
+            "White-Jacket", "Moby-Dick", "Pierre", "Israel Potter", "The Confidence-Man"
+        ],
+        "Chapter Count": [35, 82, 104, 91, 62, 93, 150, 114, 27, 46],
+        "Avg. Chapter Words": [3051, 1234, 923, 1101, 1902, 1485, 1414, 1331, 2388, 2018]
+    }
+
+    df = pd.DataFrame(data)
+
+    # Create figure
+    fig = go.Figure()
+
+    # Bar trace: Chapter Count
+    fig.add_trace(
+        go.Bar(
+            x=df["Name"],
+            y=df["Chapter Count"],
+            name="Chapter Count",
+            marker_color="lightblue"
+        )
+    )
+
+    # Line trace: Avg. Chapter Words
+    fig.add_trace(
+        go.Scatter(
+            x=df["Name"],
+            y=df["Avg. Chapter Words"],
+            name="Avg. Chapter Words",
+            yaxis="y2",
+            mode="lines+markers",
+            line=dict(color="red", width=3),
+            marker=dict(size=8)
+        )
+    )
+
+    # Layout with secondary y-axis
+
+    # Layout with larger fonts
+    fig.update_layout(
+        title="Melville Novels: Chapter Count vs. Average Chapter Words",
+        xaxis=dict(
+            title="Novel",
+            title_font=dict(size=20),
+            tickfont=dict(size=16)
+        ),
+        yaxis=dict(
+            title="Chapter Count",
+            title_font=dict(size=20),
+            tickfont=dict(size=16)
+        ),
+        yaxis2=dict(
+            title="Avg. Chapter Words",
+            title_font=dict(size=20),
+            tickfont=dict(size=16),
+            overlaying="y",
+            side="right"
+        ),
+        legend=dict(x=0.05, y=0.95, font=dict(size=16)),
+        bargap=0.4
+    )
+
+
+    fig.show()
+
+
 def extract_sort_key(p_label):
 
     novel_name = label_to_novel.get(p_label, "")
@@ -104,10 +217,15 @@ def plot_counts_bar_chart(p_labels, p_counts, p_title):
 
 def main():
 
+    # plot_chapter_count_and_words()
+    plot_novel_words()
+    if True:
+        return
+
     # 0. Setup
     source_path = aolm_data_reading.melville_source_directory["collected"] + f"demarcated{os.sep}"
     demarcated_files = [filepath for filepath in glob.glob(source_path + "*.json")]
-    plot_avg_chapter_legomena = False
+    plot_avg_chapter_legomena = True
 
     # Read each Melville novel into memory
     readers = [PGMelvilleReader(filepath) for filepath in demarcated_files]
