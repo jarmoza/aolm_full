@@ -298,10 +298,22 @@ class DatasetConsistency_RecordConsensus(DataQualityMetric):
                     if sentence in self.m_results[reader_name]["sentence_count"]["by_chapter"][str(index)]:
                         self.m_evaluations["subsubsubsubmetric"][reader_name]["variance_from_sentence_consensus__by_chapter"][str(index)][sentence] = \
                             self.m_results[reader_name]["sentence_count"]["by_chapter"][str(index)][sentence] - self.m_results["consensus_sentence_counts"][str(index)][sentence]  
+                    # actual_count = self.m_results[reader_name]["sentence_count"]["by_chapter"][str(index)].get(sentence, 0)
+                    # If you want to penalize missing sentences, use -median instead of 0:
+                    # actual_count = self.m_results[reader_name]["sentence_count"]["by_chapter"][str(index)].get(sentence, -self.m_results["consensus_sentence_counts"][str(index)][sentence])
+                    # self.m_evaluations["subsubsubsubmetric"][reader_name]["variance_from_sentence_consensus__by_chapter"][str(index)][sentence] = \
+                    #     actual_count - self.m_results["consensus_sentence_counts"][str(index)][sentence]                        
                 for word in self.m_results["consensus_word_counts"][str(index)]:
                     if word in self.m_results[reader_name]["word_count"]["by_chapter"][str(index)]:
                         self.m_evaluations["subsubsubsubmetric"][reader_name]["variance_from_word_consensus__by_chapter"][str(index)][word] = \
                             self.m_results[reader_name]["word_count"]["by_chapter"][str(index)][word] - self.m_results["consensus_word_counts"][str(index)][word]
+                    # actual_count = self.m_results[reader_name]["word_count"]["by_chapter"][str(index)].get(word, 0)
+                    # or penalize missing word with -median:
+                    # actual_count = self.m_results[reader_name]["word_count"]["by_chapter"][str(index)].get(word, -self.m_results["consensus_word_counts"][str(index)][word])
+
+                    # self.m_evaluations["subsubsubsubmetric"][reader_name]["variance_from_word_consensus__by_chapter"][str(index)][word] = \
+                    #     actual_count - self.m_results["consensus_word_counts"][str(index)][word]
+
                     
         # 2. Subsubsubmetrics - Mean of variances of sentences/words for each chapter in each edition
         self.m_evaluations["subsubsubmetric"] = {
@@ -468,28 +480,29 @@ def plot_results(p_results_filepath, p_ur_chapter_count, p_count_type, p_count_c
             editions[edition_name][count_type][int(chapter_name) - 1] = count
 
         # 2. Plot a 2D heatmap of the chapters of each edition by sentence data quality
-        plot_heatmap(
-            "Mean Sentence Variance by Chapter in Internet Archive Editions of 'Adventures of Huckleberry Finn'",
-            "Record Consistency data quality",
-            { edition_name: editions[edition_name]["sentences"] for edition_name in editions }
-        )
-            
-        # plot_heatmap(
-        #     "Mean Word Varianbce by Chapter in Internet Archive Editions of 'Adventures of Huckleberry Finn'",
-        #     "Record consistency data quality",
-        #     { edition_name: editions[edition_name]["words"] for edition_name in editions }
-        # )
+        if "sentences" == p_count_type:
+            plot_heatmap(
+                "Mean Sentence Variance by Chapter in Internet Archive Editions of 'Adventures of Huckleberry Finn'",
+                "Record Consistency data quality",
+                { edition_name: editions[edition_name]["sentences"] for edition_name in editions }
+            )
+        elif "words" == p_count_type:  
+            plot_heatmap(
+                "Mean Word Varianbce by Chapter in Internet Archive Editions of 'Adventures of Huckleberry Finn'",
+                "Record consistency data quality",
+                { edition_name: editions[edition_name]["words"] for edition_name in editions }
+            )
 
 
 # Main script
 
 def main():
 
-    plot_data = False
+    plot_data = True
     if plot_data:
 
+        plot_results(EXPERIMENT_PATH + "huckfinn_ia_subx4metric.csv", 43, "words", "variance_from_word_consensus__by_chapter")
         # plot_results(EXPERIMENT_PATH + "huckfinn_ia_subx4metric.csv", 43, "sentences", "variance_from_sentence_consensus__by_chapter")
-        plot_results(EXPERIMENT_PATH + "huckfinn_ia_subx4metric.csv", 43, "sentences", "variance_from_sentence_consensus__by_chapter")
 
         return
 
