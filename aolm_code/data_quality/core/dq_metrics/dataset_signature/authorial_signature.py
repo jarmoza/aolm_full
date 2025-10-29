@@ -130,6 +130,10 @@ class DatasetSignature_AuthorialSignature(DataQualityMetric):
                 np.dot(compared_vector, text_signature_vector.T) / (np.linalg.norm(compared_vector) * np.linalg.norm(text_signature_vector))
             ))
 
+        # Compute cosine distance for all cosine similarity values
+        for index in range(len(text_distances)):
+            text_distances[index] = 1 - text_distances[index]
+
         return sorted(text_distances, key=lambda item: item[1], reverse=True) if p_sorted else text_distances
 
     @staticmethod
@@ -150,6 +154,9 @@ class DatasetSignature_AuthorialSignature(DataQualityMetric):
 
             # Cosine similarity between vectors
             text_distances[filepath] = np.dot(compared_vector, text_signature_vector.T) / (np.linalg.norm(compared_vector) * np.linalg.norm(text_signature_vector))
+
+            # Calculate cosine distance
+            text_distances[filepath] = 1 - text_distances[filepath]
             
             if (p_lowest and text_distances[filepath] < distance[1]) or \
                 (not p_lowest and text_distances[filepath] > distance[1]):
