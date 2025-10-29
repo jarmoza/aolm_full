@@ -3,6 +3,8 @@
 # Purpose: Contains various web scraping functions for the Art of Literary Modeling
 
 def read_mtpo_huckleberry_finn_file(p_file_contents):
+
+    pass
     
 
 def get_mtpo_huckleberryfinn():
