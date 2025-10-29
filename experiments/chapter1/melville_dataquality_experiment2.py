@@ -191,41 +191,126 @@ def extract_sort_key(p_label):
 
     return (rank, volume)
 
-def plot_counts_bar_chart(p_labels, p_counts, p_title):
-
-    df = pd.DataFrame({"Novel": p_labels, "Token Count": p_counts})
-    fig = px.bar(df, x="Novel", y="Token Count",
-                 title=p_title,
-                 labels={"Token Count": "Token Count", "Novel": "Novel"},
-                 text="Token Count")
+def plot_counts_bar_chart(p_labels, p_counts, p_title, show_sales_overlay=False):
     
-    # Increase x-axis tick label font size
-    fig.update_xaxes(tickfont=dict(size=16))  # x-axis labels
-    fig.update_yaxes(tickfont=dict(size=16))  # y-axis labels (optional)
+    import pandas as pd
+    import plotly.graph_objects as go
 
-    # Increase font size of the text labels on bars
-    fig.update_traces(textfont=dict(size=14, color='black'))  # adjust size and color
+    # Base data
+    df = pd.DataFrame({
+        "Novel": p_labels,
+        "Hapax Count": p_counts
+    })
 
-    # Optionally move bar text above bars
-    fig.update_traces(textposition='outside')
+    # Sales figures (in publication order up to Pierre)
+    sales_data = {
+        "Typee": 16320,
+        "Omoo": 13335,
+        "Mardi Vol. 1": 3900,
+        "Mardi Vol. 2": 3900,  # apply same as Vol. 1
+        "Redburn": 5468,
+        "White-Jacket": 5922,
+        "Moby-Dick": 3715,
+        "Pierre": 1821,
+        "Israel Potter": None,
+        "The Confidence-Man": None
+    }
 
-    fig.update_traces(marker_color="indigo", textposition="outside")
-    fig.update_layout(xaxis_tickangle=-45)
+    # Create figure
+    fig = go.Figure()
+
+    # --- Primary axis: bar plot of hapax ---
+    fig.add_trace(
+        go.Bar(
+            x=df["Novel"],
+            y=df["Hapax Count"],
+            name="Total Hapax",
+            marker_color="indigo",
+            text=df["Hapax Count"],
+            textposition="outside"
+        )
+    )
+
+    # --- Optional secondary axis: line plot of sales ---
+    if show_sales_overlay:
+        sales_x = []
+        sales_y = []
+
+        for novel in df["Novel"]:
+            base_name = novel.split(" (")[0].replace("-", " ").replace("–", "-").title()
+            for k in sales_data:
+                if k.lower().replace("-", "").replace(" ", "") in base_name.lower().replace("-", "").replace(" ", ""):
+                    val = sales_data[k]
+                    if val is not None:
+                        sales_x.append(novel)
+                        sales_y.append(val)
+                    break
+
+        fig.add_trace(
+            go.Scatter(
+                x=sales_x,
+                y=sales_y,
+                name="Estimated Sales",
+                yaxis="y2",
+                mode="lines+markers",
+                line=dict(color="firebrick", width=3),
+                marker=dict(size=8)
+            )
+        )
+
+    # --- Layout ---
+    fig.update_layout(
+        title=p_title + (" (with Known Sales Overlay)" if show_sales_overlay else ""),
+        xaxis=dict(title="Novel", tickangle=-45, tickfont=dict(size=16)),
+        yaxis=dict(title=dict(text="Total Hapax",font=dict(size=18)), tickfont=dict(size=16)),
+        yaxis2=dict(title=dict(text="Estimated Sales", font=dict(size=18)), tickfont=dict(size=16),
+            overlaying="y",
+            side="right",
+            showgrid=False
+        ),
+        legend=dict(x=0.02, y=0.98, font=dict(size=14)),
+        bargap=0.4,
+        title_font=dict(size=22)
+    )
+
     fig.show()
+
+
+# def plot_counts_bar_chart(p_labels, p_counts, p_title):
+
+#     df = pd.DataFrame({"Novel": p_labels, "Token Count": p_counts})
+#     fig = px.bar(df, x="Novel", y="Token Count",
+#                  title=p_title,
+#                  labels={"Token Count": "Token Count", "Novel": "Novel"},
+#                  text="Token Count")
+    
+#     # Increase x-axis tick label font size
+#     fig.update_xaxes(tickfont=dict(size=16))  # x-axis labels
+#     fig.update_yaxes(tickfont=dict(size=16))  # y-axis labels (optional)
+
+#     # Increase font size of the text labels on bars
+#     fig.update_traces(textfont=dict(size=14, color='black'))  # adjust size and color
+
+#     # Optionally move bar text above bars
+#     fig.update_traces(textposition='outside')
+
+#     fig.update_traces(marker_color="indigo", textposition="outside")
+#     fig.update_layout(xaxis_tickangle=-45)
+#     fig.show()
 
 # Main script
 
 def main():
 
     # plot_chapter_count_and_words()
-    plot_novel_words()
-    if True:
-        return
+    # plot_novel_words()
+    # if True:
+    #     return
 
     # 0. Setup
     source_path = aolm_data_reading.melville_source_directory["collected"] + f"demarcated{os.sep}"
     demarcated_files = [filepath for filepath in glob.glob(source_path + "*.json")]
-    plot_avg_chapter_legomena = True
+    plot_avg_chapter_legomena = False
 
     # Read each Melville novel into memory
     readers = [PGMelvilleReader(filepath) for filepath in demarcated_files]
@@ -280,6 +365,7 @@ def main():
         graph_title = "Average Hapax per Chapter in the Novels of Herman Melville"
     # Plot total legomena for the works instead
     else:
+
         graph_data = sorted(
             [(label, legomena_totals_for_works[filepath]) for label, filepath in legomena_label_dict.items()],
             key=lambda x: extract_sort_key(x[0])
@@ -290,7 +376,10 @@ def main():
     label_list = list(label_list)   # ['Typee (1846)', 'Omoo (1847)']
     value_list = list(value_list)   # [12, 15]
 
-    plot_counts_bar_chart(label_list, value_list, graph_title)
+    # Whether or not you want to display sales data
+    show_sales_overlay = True
+
+    plot_counts_bar_chart(label_list, value_list, graph_title, show_sales_overlay=show_sales_overlay)
 
 
 if "__main__" == __name__:
