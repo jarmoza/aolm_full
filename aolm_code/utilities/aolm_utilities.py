@@ -190,6 +190,23 @@ def bar_plot(p_categories, p_category_label, p_values, p_value_label, p_title):
         x=p_category_label,
         y=p_value_label,
         title=p_title)
+    
+    # Update layout for fonts
+    title_font_size = 24
+    label_font_size = 18
+    tick_font_size = 14
+    textfont_size = 12
+    fig.update_layout(
+        title=dict(text=p_title, font=dict(size=title_font_size)),
+        xaxis=dict(title=dict(text=p_category_label, font=dict(size=label_font_size)),
+                   tickfont=dict(size=tick_font_size)),
+        yaxis=dict(title=dict(text=p_value_label, font=dict(size=label_font_size)),
+                   tickfont=dict(size=tick_font_size))
+    )
+    
+    # Optional: update text on bars
+    fig.update_traces(textfont_size=tick_font_size)
+
     fig.show()      
     
 
