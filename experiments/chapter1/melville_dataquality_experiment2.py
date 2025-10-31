@@ -276,28 +276,6 @@ def plot_counts_bar_chart(p_labels, p_counts, p_title, show_sales_overlay=False)
     fig.show()
 
 
-# def plot_counts_bar_chart(p_labels, p_counts, p_title):
-
-#     df = pd.DataFrame({"Novel": p_labels, "Token Count": p_counts})
-#     fig = px.bar(df, x="Novel", y="Token Count",
-#                  title=p_title,
-#                  labels={"Token Count": "Token Count", "Novel": "Novel"},
-#                  text="Token Count")
-    
-#     # Increase x-axis tick label font size
-#     fig.update_xaxes(tickfont=dict(size=16))  # x-axis labels
-#     fig.update_yaxes(tickfont=dict(size=16))  # y-axis labels (optional)
-
-#     # Increase font size of the text labels on bars
-#     fig.update_traces(textfont=dict(size=14, color='black'))  # adjust size and color
-
-#     # Optionally move bar text above bars
-#     fig.update_traces(textposition='outside')
-
-#     fig.update_traces(marker_color="indigo", textposition="outside")
-#     fig.update_layout(xaxis_tickangle=-45)
-#     fig.show()
-
 # Main script
 
 def main():
