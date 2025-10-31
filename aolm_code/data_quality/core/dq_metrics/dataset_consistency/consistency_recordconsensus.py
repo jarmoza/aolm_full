@@ -354,7 +354,8 @@ class DatasetConsistency_RecordConsensus(DataQualityMetric):
         }
 
         # 5. Metric - Mean of all three submetrics (mostly to derive a single data quality percentage, each submetric is evenly weighted here)
-        self.m_evaluations["metric"] = mean(list(self.m_evaluations["submetric"].values()))
+        # NOTE: Absolute value because variances can be negative
+        self.m_evaluations["metric"] = abs(mean(list(self.m_evaluations["submetric"].values())))
 
         return self.metric_evaluation
     
