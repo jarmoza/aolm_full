@@ -33,6 +33,8 @@ class DatasetSignature_AuthorialSignature(DataQualityMetric):
             "submetric": { "least_like": None, "most_like": None }
         }
 
+        self.m_sort_signature_distances = False
+
     # Public methods
 
     def compute(self):
@@ -61,7 +63,8 @@ class DatasetSignature_AuthorialSignature(DataQualityMetric):
         self.m_evaluations["submetric"]["signature_distances"] = \
             DatasetSignature_AuthorialSignature.get_signature_distances(
                 self.m_results["authorial_signature"],
-                self.m_source_files
+                self.m_source_files,
+                self.m_sort_signature_distances
             )
     
     # Properties
@@ -78,6 +81,10 @@ class DatasetSignature_AuthorialSignature(DataQualityMetric):
     @property
     def signature_distances(self):
         return self.m_evaluations["submetric"]["signature_distances"]
+    
+    # Members
+    def toggle_signature_distance_sort(self, p_sort_value):
+        self.m_sort_signature_distances = p_sort_value
 
     # Static fields and methods
 
@@ -125,14 +132,14 @@ class DatasetSignature_AuthorialSignature(DataQualityMetric):
             text_signature_vector = np.array([word_tuple[1] for word_tuple in text_signature_vector_as_tuple])
 
             # Cosine similarity between vectors
-            text_distances.append((
+            text_distances.append([
                 os.path.basename(filepath),
                 np.dot(compared_vector, text_signature_vector.T) / (np.linalg.norm(compared_vector) * np.linalg.norm(text_signature_vector))
-            ))
+            ])
 
         # Compute cosine distance for all cosine similarity values
         for index in range(len(text_distances)):
-            text_distances[index] = 1 - text_distances[index]
+            text_distances[index][1] = 1 - text_distances[index][1]
 
         return sorted(text_distances, key=lambda item: item[1], reverse=True) if p_sorted else text_distances
 
