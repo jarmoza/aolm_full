@@ -1,30 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <SearchIndexes Version="1.0">
     <Documents>
-        <Document ID="61C6E575-5D78-4D89-AFFC-A06DD6CB9328">
-            <Title>Draft/Ch1DQ/Prose/On frequency analysis</Title>
-            <Text>Next Steps/Prose
+        <Document ID="BF0B4750-DD1C-4E97-8900-3CADEF87F334">
+            <Title>February 12, 2019</Title>
+            <Text>Done
+	1.	Implementing data quality profile script and testing on 19cAm volumes from New York Public Library
+	2.	dq_initial_assessment.py - data quality profile script
+	⁃	dq_initial_assessment_nyp.py - nyp metadata schema
+	⁃	htrc_ef_metadata_lens_nyp.py - Adapts HTRC feature reader to pull metadata for dq assessment
+	⁃	nyp_dq_profile.json - profile of 22,796 19cAm volumes from New York Public library
+To do
+	1.	Refine script and data profiling
+	2.	Test on smaller data set
+	3.	Implement the difference between profiling and assessment
+	4.	Refine the profiling schema for issues addresses in Coleman book like granularity
 
-	1.	Prose explaining Bolts of Melody vs Emily Dickinson Archive 
-	⁃	Token frequency comparison as component of data quality
-	⁃	Unitary frequency analysis quality(ies) vs quality from comparative frequency analysis
-	2.	Code up comparisons
-	⁃	Explain the work and the thought process behind the work
-	⁃	What’s are its goal(s)?
-	3.	Prose and examples of more advanced frequency measures
-	⁃	Mendenhall’s Characteristic Curves of Composition
-	⁃	Kilgariff’s Chi-Squared Method
-	⁃	John Burrows’ Delta Method
-	⁃	See Laramee’s stylometry intro for details
-	⁃	Why use them and how they are related to data quality in this context
-
-
-Fuzzy string matching techniques
-
-	1.	Character overlap
-	⁃	Jaccard measure
-	⁃	"the percentage of unique characters that two strings share when compared to the total number of unique characters in both strings” (Taming Text, FSM, 4.1.1.)
-	⁃	Jaro-Winkler distance
 </Text>
         </Document>
         <Document ID="E502BE76-97E3-41BD-8CC1-CE2675455F4E">
@@ -86,8 +76,25 @@ Fuzzy string matching techniques
 	⁃	Jaro-Winkler distance
 </Text>
         </Document>
-        <Document ID="337AAC7C-8606-4C4F-8661-ACD6FA549C0C">
-            <Title>Moby-Dick</Title>
+        <Document ID="F194F9C9-E6AB-462C-87A6-B1ED0AC68142">
+            <Title>Draft/Ch1DQ/Gone Through/Prose/Chapter 1 - Full Draft (2025)</Title>
+            <Text>Introduction - Siting a site for modeling (the fundamental task of research)
+
+Ideas about data quality in the humanities
+
+Ideas about data quality in the sciences
+
+Hathi Trust data set (HTDS) and 19th century American Literature
+
+Bidirectional quality
+
+Data quality work thus far in the digital humanities
+
+Data quality frameworks from information science
+
+Application of Sebastian Coleman’s framework to HTDS
+
+Metrics for the foundation of data quality for the humanities</Text>
         </Document>
         <Document ID="B1BA27BF-4F59-4470-B8B6-86D8FA6237A3">
             <Title>Annotated Scriptography</Title>
@@ -108,8 +115,8 @@ Object-related
 
 </Text>
         </Document>
-        <Document ID="8E933A1E-A2D5-4241-BB6D-FC14BCE33C46">
-            <Title>Preparatory</Title>
+        <Document ID="337AAC7C-8606-4C4F-8661-ACD6FA549C0C">
+            <Title>Moby-Dick</Title>
         </Document>
         <Document ID="516192A7-2515-415A-B8BA-FAC259095283">
             <Title>Chapter 2 - Model Quality</Title>
@@ -141,25 +148,8 @@ Michael Pollan windows
 
 </Text>
         </Document>
-        <Document ID="F194F9C9-E6AB-462C-87A6-B1ED0AC68142">
-            <Title>Draft/Ch1DQ/Gone Through/Prose/Chapter 1 - Full Draft (2025)</Title>
-            <Text>Introduction - Siting a site for modeling (the fundamental task of research)
-
-Ideas about data quality in the humanities
-
-Ideas about data quality in the sciences
-
-Hathi Trust data set (HTDS) and 19th century American Literature
-
-Bidirectional quality
-
-Data quality work thus far in the digital humanities
-
-Data quality frameworks from information science
-
-Application of Sebastian Coleman’s framework to HTDS
-
-Metrics for the foundation of data quality for the humanities</Text>
+        <Document ID="8E933A1E-A2D5-4241-BB6D-FC14BCE33C46">
+            <Title>Preparatory</Title>
         </Document>
         <Document ID="DF4C8904-5C20-4DD0-AFD2-F0FA00CCC412">
             <Title>Sum2021Fell/Application/ProjDesc/Outline &amp; Notes</Title>
@@ -334,9 +324,6 @@ Health
 
 Starting in mid 2022 I began having some significant sleep issues. About the time of the pandemic it seems I had begun to (re)develop some significant environmental allergies that ended up or coincided with me also being diagnosed severe sleep apnea. This really disrupted my ability to work often having to take time off of even any part-time work, and had its own side effects associated with sleep loss. (Professor Augst had recommended that I request a pause in the PhD while I had health issues, but at the time I had wanted to try to continue working. In retrospect, he was quite correct.) In fall 2023, I moved down to Orlando, Florida for personal reasons and my allergies abated enough for me to continue working. However, in early 2024 I started having difficulty with my hands and arms – immobility, weakness, and pain. I began physical therapy for this but I was diagnosed as having a herniated disc in my neck. The effect of this was I not able to continue with any work on a computer keyboard as it seemed to be worsening my condition. Thankfully, the Carnegie Mellon position mentioned above included a form of disability insurance. I was put on short term disability beginning from June through September and though I did attempt to continue PhD work, the condition limited my ability to both work on the keyboard and concentrate for long periods of time. Shortly after that my doctor recommended I try a steroidal treatment for my neck as the more conservative approach of physical and occupational therapy was not having the desired effect. With one dose in October and then a successive dose in early December I have been able to get back to work on the dissertation.</Text>
         </Document>
-        <Document ID="EACF3D13-D2FB-4C26-9A4B-2BC018728415">
-            <Title>Prose</Title>
-        </Document>
         <Document ID="1DA8D6F2-E2CE-44CF-A895-3D763C963867">
             <Title>Sebastian-Coleman - Notes on Data Quality Initial Assessment</Title>
             <Text>Chapter 7: Initial Data Assessment
@@ -487,6 +474,9 @@ Supporting Sources
 
 What are the “salient aspects” of data that we choose? Why are they salient?</Notes>
         </Document>
+        <Document ID="EACF3D13-D2FB-4C26-9A4B-2BC018728415">
+            <Title>Prose</Title>
+        </Document>
         <Document ID="BA41AFF4-F6D4-418C-AE02-12B892D82316">
             <Title>All New Chapter 2 Notes</Title>
             <Text>Notes
@@ -611,8 +601,8 @@ In deep bosom of ocean buried.
 Let’s take a visual look at what has happened to the word counts.
 </Text>
         </Document>
-        <Document ID="9AE3F4C5-50CE-4DB6-9C46-A3B31375B16B">
-            <Title>Adventures of Huckleberry Finn</Title>
+        <Document ID="753282DC-013A-4FEC-A945-A673B35F96CD">
+            <Title>Chapter 2</Title>
         </Document>
         <Document ID="3F88FB9D-4A02-4271-9DD3-535DFF72BD3B">
             <Title>September 11, 2020</Title>
@@ -653,6 +643,9 @@ Seventh step
 
 Show how that new collection fares under/alters close readings and computational modeling of this new collection</Text>
         </Document>
+        <Document ID="9AE3F4C5-50CE-4DB6-9C46-A3B31375B16B">
+            <Title>Adventures of Huckleberry Finn</Title>
+        </Document>
         <Document ID="32B87E5D-DC77-4402-AF66-B1E8FC73BB6D">
             <Text>The questions I’m interested in answering
 
@@ -667,9 +660,6 @@ Further considerations
 	1.	Is this akin to a more manual approach to supervised learning? 
 	2.	Is this akin to (k-means) clustering?
 	3.	Furthermore, this value of this heuristic can be tested via cross validating approaches that test to see if good idea elements from the outside world model are successfully rated as good ideas when they are taken out of the sample good ideas set.</Text>
-        </Document>
-        <Document ID="753282DC-013A-4FEC-A945-A673B35F96CD">
-            <Title>Chapter 2</Title>
         </Document>
         <Document ID="5D6F3DE4-D9A9-4DE2-9531-AA9B2411920B">
             <Title>Model Quality</Title>
@@ -1713,13 +1703,13 @@ Consider a business that runs web services for their clients that relies on a a 
 Frequency analysis
 Topic analysis</Text>
         </Document>
-        <Document ID="64E2948B-C183-4CDF-B40F-BF7A9503E0A5">
-            <Title>Flanders and Jannidis</Title>
-        </Document>
         <Document ID="8D3BC7B2-AE86-4A56-B0A4-E1A5A3F60D65">
             <Title>Bio</Title>
             <Text>	Jonathan Armoza is an English PhD student at New York University where he works on the development and theorization of new text analysis and data visualization methods for digital humanities. His work focuses on nineteenth century American literature, most notably the poems of Emily Dickinson. His academic background includes degrees in computer science and literature from University of Maryland and University of Washington. He has worked as a software engineer, game programmer on titles such as 'Civilization' and 'Scribblenauts,' and as a technical consultant for Google where he began his digital humanities work volunteering on Google Books’ Ngram Viewer. Jonathan has been involved with the international digital humanities community over the last decade and has been invited to give talks on his research throughout the United States, Canada, and Europe. He is the recipient of the Canadian Society for Digital Humanities’ 2017 Ian Lancashire award for Outstanding Graduate Research for his introduction and application of matrix factorization modeling to literature. His visualization, "Topic Words in Context" (TWiC) is used by researchers and in classrooms. It allows users to spatially explore topic models of collections of texts in a web browser, showing how the model operates at the level of the collection and its individual texts. Its design and application in exploring Dickinson's fascicle poems were the subjects of his Master's thesis at McGill University. 
 	Jonathan’s recent projects include a collaboration at University of Edinburgh called “Working with Scraps”, a interactive and browsable reimagining of Scottish poet laureate Edwin Morgan’s scrapbooks. For the past several years, he has worked as part-time neuroscience researcher and developer at SimExp Lab in Montréal, designing and implementing AI language experiments for test subjects reading in MRI scanners. His ongoing dissertation, ‘The Art of Literary Modeling,’ demonstrates new scholarly activities that provide context-sensitive, evidentiary bases for making interpretive claims from computational models of literature. It borrows and adapts ideas from information science, statistics, and design to give humanities-centric understandings of quality for datasets, models, and visualizations.</Text>
+        </Document>
+        <Document ID="64E2948B-C183-4CDF-B40F-BF7A9503E0A5">
+            <Title>Flanders and Jannidis</Title>
         </Document>
         <Document ID="1F334A32-A877-410D-9EE5-E995879929A9">
             <Title>Notes</Title>
@@ -1768,53 +1758,6 @@ Sebastian Coleman on Data and Architecture
 	⁃	“For most databases, especially data warehouses, models are critical to data management. The conceptual and logical models allow data managers to know what data resides in the data asset. The physical model has a direct bearing on how data is moved within the database, as well as how it is accessed.”
 	⁃	from just before “Physical Characteristics of Data”</Text>
         </Document>
-        <Document ID="6EB6BE00-C0E2-4DAF-93C5-2F398CEFD0B9">
-            <Text>
-In Search of the Canonical Digital Edition
-
-I want to pose a question about the practice of literary modeling by paraphrasing and extending a question posed by John Guillory in his exploration of the cultural capital of literature. What is the relationship between the formal characteristics of a piece of writing and the institutional conditions that enable its composition and select it as the perfect text for use in research and pedagogy? Guillory identifies three “matrices” involved in canon building and literary criticism: “compositional”, “generic”, and “linguistic.” If we transpose these to the tasks of computational modeling and subsequent literary criticism, what gets laid bare is the site and foundation of those tasks: the digital edition. But what is a digital edition let alone a canonical one?
-So very often we are treated to familiar notions of canonicity considering a work and the nature of its representativeness - of an era, of a thematic, of an authorship, of its characters. Guillory notes that some of these senses can become conflated and confused, and often for political reasons – political meaning in reference to the norms of literary culture and as much as it relates to external social politics. Guillory hopes to instead insist on “the interrelation between representation and distribution” (vii-viii) and to tease apart the sense of representation as in “representative of a constituency” and representation as in the “relation between an image and what the image represents” (vii-viii). The reason he wants to do so is because of the “unfortunate” effect where those those fighting the “symbolic struggle” for the former sense of canonical representation overestimate its political effectiveness and distract from the latter sense, namely, the “social and institutional conditions of symbolic struggles” (vii-viii). Guillory feels this imbalance actually undercuts canonical representation because it only considers the surface - who works seem to be representing and not the reason why such representation comes to be in the first place.
-How this relates to the notion of digital edition is that we are often considering precisely the former sense of representation - that of representative of a constituency - when we include digital works for modeling. But we rarely we consider the who/what/how/when/where/why of the edition itself being used other than an often vague reference to the authority of its original creators. The closest we come to this is the quantitative representation that basic modeling can provide us: counting words in such a way that gets us to more of an “exact” or “good enough” measure between a digital edition and its analog counterpart. This uncertainty of data quality however creates a silent vacuum for the act of computational literary modeling and subsequent analysis and interprertation from it. For if we are not certain about the character of the bases of our models, we cannot be certain of the character of our models, analyses, or interpretations! We have to processes to consider: digital edition formation and digital canon formation – which digital works are selected for use: reading, modeling, and analysis.
-Canon formation includes the work involved in creating an edition, but it is an antecedent process and rarely viewed as transfigurative toward canonization of the work. For digital editions, this is not the case. This could be said of both analog and digital editions of a work, but given the mode and often less tangential transformations and sites a digital work visits, especially the latter. 
-We also have no formalized systems for preserving this metadata - just ones piecemeal across sites of work and archive. There are however means of measuring </Text>
-        </Document>
-        <Document ID="E54A0184-4ED4-4A9E-95B2-5B0E4D3B0BDF">
-            <Title>March 5, 2021</Title>
-            <Text>Model quality
-
-Two different directions/considerations for model selection:
-1) Inference
-2) Prediction
-
-https://en.wikipedia.org/wiki/Model_selection
-
-List of information criteria metrics:
-https://en.wikipedia.org/wiki/Model_selection#Criteria
-
-For example 
-
-	•	Akaike information criterion (AIC), a measure of the goodness fit of an estimated statistical model
-	•	Bayes factor
-	•	Bayesian information criterion (BIC), also known as the Schwarz information criterion, a statistical criterion for model selection
-	•	Bridge criterion (BC), a statistical criterion that can attain the better performance of AIC and BIC despite the appropriateness of model specification.[3]
-	•	Cross-validation
-	•	Deviance information criterion (DIC), another Bayesian oriented model selection criterion
-	•	False discovery rate
-	•	Focused information criterion (FIC), a selection criterion sorting statistical models by their effectiveness for a given focus parameter
-	•	Hannan–Quinn information criterion, an alternative to the Akaike and Bayesian criteria
-	•	Kashyap information criterion (KIC) is a powerful alternative to AIC and BIC, because KIC uses Fisher information matrix
-	•	Likelihood-ratio test
-	•	Mallows's Cp
-	•	Minimum description length
-	•	Minimum message length (MML)
-	•	PRESS statistic, also known as the PRESS criterion
-	•	Structural risk minimization
-	•	Stepwise regression
-	•	Watanabe–Akaike information criterion (WAIC), also called the widely applicable information criterion
-	•	Extended Bayesian Information Criterion (EBIC) is an extension of ordinary Bayesian information criterion (BIC) for models with high parameter spaces.
-	•	Extended Fisher Information Criterion (EFIC) is a model selection criterion for linear regression models.
-</Text>
-        </Document>
         <Document ID="4F4BBC1C-CDE0-473D-884B-7F6DAD13C1B8">
             <Title>Source List from Readings</Title>
             <Text>from Schöch - Big? Smart? Clean? Messy? Data in the Humanities
@@ -1822,38 +1765,6 @@ For example
 	◆	Borgman: “The Digital Future Is Now: A Call to Action for the Humanities.” Digital Humanities Quarterly 3.4, 2009, §1-82.
 	◆	Floridi: Information. A Very Short Introduction. Oxford: Oxford Univ. Press, 2010, 22-25.
 	◆	Mehta and Sahni (eds.): Handbook of Data Structures and Applications. Boca Raton: Chapman &amp; Hall/CRC, 2005, section “Basic Structures.”
-</Text>
-        </Document>
-        <Document ID="910FA819-842F-457F-8255-050A41E87DB1">
-            <Title>Knowledge Organization and Data Modeling in the Humanities - White Paper</Title>
-            <Text>Knowledge Organization and Data Modeling in the Humanities - White Paper
-
-	◆	“In computer science,  among both theorists working in the academy and those working in industry doing practical data modeling, most regard data modeling as a description of a real  and objective world (which includes the possibility of assessing the correctness of data models) while only a minority views it as a design process. However, in digital humanities there seems to be a general  understanding that a data model, like all models, is an interpretation of an object, either in real life or in  the digital realm.” (14)
-
-The notion of posing statistics vs qualitative understanding is flawed, and so is responding in the same mode. The
-problem with coming to terms with knowledge produced by statistical (or “mechanical”) insight isn’t the method, its 
-parameters, or even the underlying data. It’s a mature understanding of representation and the processes of 
-representing for a particular project/effort/endeavor.
-</Text>
-        </Document>
-        <Document ID="D0E9C586-D0D4-4266-833B-62F4FA85CCE9">
-            <Title>Body - Working Draft</Title>
-            <Text>
-
-	In fits and starts over the course of his life, Mark Twain attempted to write his autobiography. Toward the end, he dictated much of it to a stenographer. He also came to a peculiar agreement with his publisher and estate in which the work would not be published until 100 years after his death. He reasoned that this would grant him freedom to talk openly about contemporary people and subjects. By the time that anniversary came, the Mark Twain Project at University of California, Berkeley had been preparing the autobiography for years for its eventual publication. As a celebrated American author, it was met with commercial success. However, much to the initial confusion of readers, the entire autobiography would not be published fully until five years later, a volume meted out every two years. The final product was roughly 2,300 pages long. In effect, it was a book popularly bought but not as widely read.
-
-	My dissertation, ‘The Art of Literary Modeling’, describes and demonstrates new scholarly activities that provide context-sensitive, evidentiary bases for making interpretive claims from computational models of literature. Its first chapter answers the question, "What does it mean to read literature as data?" That chapter's discussion of "literary" data quality looks to Emily Dickinson's poetry and its complex publication history. My proposed project for the digital humanities summer graduate student fellowship is the programming, modeling experiments, and draft prose for a followup chapter on new means of qualitative and quantitative assessment of model quality for humanities researchers and application of those methods towards uncovering new insights about Twain’s sizable autobiography. The digital version of this material, in TEI form, has been supplied to me via the Mark Twain Project Online at University of California. 
-	
-	Approaching an unwieldy work for reading and interpretation is not a new problem for the humanities, and certainly not for the digital humanities. One might look to previous scholarship, lightly read the whole work while concentrating on a few sections, or, via computation, attempt to represent the work(s) with a model that can describe the entirety of the collection/object while giving insight on mathematically notable sections. For the computational approach there are a few significant decision points. There is the choice of models, sometimes driven by state of the field or by state of the art. And then there is the type of model analysis. How do we comprehend the model and how do we account for how well it represents the underlying textual data? These questions of model selection and estimation of quality are well-theorized in the field of statistics. The question of which model might be most appropriate to understand or discover new insights about Twain’s autobiography and works like it, is not though. 
-
-	That first chapter of my dissertation adapts a series of data quality metrics from information science scholar and career practitioner, Laura Sebastian Coleman, that are typically employed in environments where data sets are dynamic and have external concerns – legal, technical, financial, and otherwise. Newly derived metrics from Coleman’s examples concerning the textual consistency and lexical and thematic qualities across Dickinson's multiple, posthumous publications are brought about by analyzing and modeling those publications, ultimately filling out an overall quality assessment of those digital works. When taken into account alongside historical and bibliographic knowledge of the books, this produces a new, amalgam poetry collection from which to conduct future readings, modeling, and analysis.
-
-	Moving forward from that sensibility for data quality as foundation for modeling literature, this project attempts to answer the followup question: "What does it mean to model literature as data?" Whereas the previous work adapted data quality concepts from information science, this one looks to standards for model selection and quality analysis from statistics known as "information criterion." For instance, a set of information criteria measurements based on and related to one initially developed by Japanese statistician Hirotugu Akaike in the early 1970s, can provide a sense of the relative quality of models by reflecting the amount of information loss between a model and the original data set. While a mathematical description of data generation – in the case of literature, authorship – remains out of reach, Akaike’s information criterion measure (and other criteria produced by successive statisticians) allows us to at least understand the difference between the statistical distributions of a work’s words (i.e. their likelihood of being used together) according to various kinds of modeling techniques such as frequency analysis, topic models, regression analyses, matrix factorization methods, etc. This comparison made by information criteria presents a new qualitative decision point for the use of literary studies.
-
-	Of course, in the case of humanities scholars the quantitative outputs of such measurement can provide a befuddling endpoint. What to do with these numbers? The process of adaptation of such a measurement requires the incorporation of qualitative assessment of sections of a work as deemed notable (or perhaps very unnotable, e.g. hapax legomena) according to the various models being compared. Scholarly knowledge of Twain’s life and writings would be posed against the highlights of Twain’s autiobiography suggested by high quality models of it. Such comparisons are essentially close readings supported by qualified computation modeling and by the epistemological concerns of more traditional humanities approaches to textual scholarship. These readings/measures of model quality can be also thought of as a new form of annotated knowledge for readers and scholars of Twain’s autobiography. As such, they are also generalizable examples of how to engage in a thoughtful discourse between reading and the modeling of literature as data.
-
-
-
 </Text>
         </Document>
         <Document ID="A518B9B9-FF68-474A-A263-E1765DC0C758">
@@ -1890,6 +1801,85 @@ Coding Needed
 	•	Implementation of such an interface for a dataset
 	•	Derived classes of data quality object for the dataset/pieces of dataset
 
+</Text>
+        </Document>
+        <Document ID="6EB6BE00-C0E2-4DAF-93C5-2F398CEFD0B9">
+            <Text>
+In Search of the Canonical Digital Edition
+
+I want to pose a question about the practice of literary modeling by paraphrasing and extending a question posed by John Guillory in his exploration of the cultural capital of literature. What is the relationship between the formal characteristics of a piece of writing and the institutional conditions that enable its composition and select it as the perfect text for use in research and pedagogy? Guillory identifies three “matrices” involved in canon building and literary criticism: “compositional”, “generic”, and “linguistic.” If we transpose these to the tasks of computational modeling and subsequent literary criticism, what gets laid bare is the site and foundation of those tasks: the digital edition. But what is a digital edition let alone a canonical one?
+So very often we are treated to familiar notions of canonicity considering a work and the nature of its representativeness - of an era, of a thematic, of an authorship, of its characters. Guillory notes that some of these senses can become conflated and confused, and often for political reasons – political meaning in reference to the norms of literary culture and as much as it relates to external social politics. Guillory hopes to instead insist on “the interrelation between representation and distribution” (vii-viii) and to tease apart the sense of representation as in “representative of a constituency” and representation as in the “relation between an image and what the image represents” (vii-viii). The reason he wants to do so is because of the “unfortunate” effect where those those fighting the “symbolic struggle” for the former sense of canonical representation overestimate its political effectiveness and distract from the latter sense, namely, the “social and institutional conditions of symbolic struggles” (vii-viii). Guillory feels this imbalance actually undercuts canonical representation because it only considers the surface - who works seem to be representing and not the reason why such representation comes to be in the first place.
+How this relates to the notion of digital edition is that we are often considering precisely the former sense of representation - that of representative of a constituency - when we include digital works for modeling. But we rarely we consider the who/what/how/when/where/why of the edition itself being used other than an often vague reference to the authority of its original creators. The closest we come to this is the quantitative representation that basic modeling can provide us: counting words in such a way that gets us to more of an “exact” or “good enough” measure between a digital edition and its analog counterpart. This uncertainty of data quality however creates a silent vacuum for the act of computational literary modeling and subsequent analysis and interprertation from it. For if we are not certain about the character of the bases of our models, we cannot be certain of the character of our models, analyses, or interpretations! We have to processes to consider: digital edition formation and digital canon formation – which digital works are selected for use: reading, modeling, and analysis.
+Canon formation includes the work involved in creating an edition, but it is an antecedent process and rarely viewed as transfigurative toward canonization of the work. For digital editions, this is not the case. This could be said of both analog and digital editions of a work, but given the mode and often less tangential transformations and sites a digital work visits, especially the latter. 
+We also have no formalized systems for preserving this metadata - just ones piecemeal across sites of work and archive. There are however means of measuring </Text>
+        </Document>
+        <Document ID="910FA819-842F-457F-8255-050A41E87DB1">
+            <Title>Knowledge Organization and Data Modeling in the Humanities - White Paper</Title>
+            <Text>Knowledge Organization and Data Modeling in the Humanities - White Paper
+
+	◆	“In computer science,  among both theorists working in the academy and those working in industry doing practical data modeling, most regard data modeling as a description of a real  and objective world (which includes the possibility of assessing the correctness of data models) while only a minority views it as a design process. However, in digital humanities there seems to be a general  understanding that a data model, like all models, is an interpretation of an object, either in real life or in  the digital realm.” (14)
+
+The notion of posing statistics vs qualitative understanding is flawed, and so is responding in the same mode. The
+problem with coming to terms with knowledge produced by statistical (or “mechanical”) insight isn’t the method, its 
+parameters, or even the underlying data. It’s a mature understanding of representation and the processes of 
+representing for a particular project/effort/endeavor.
+</Text>
+        </Document>
+        <Document ID="D0E9C586-D0D4-4266-833B-62F4FA85CCE9">
+            <Title>Body - Working Draft</Title>
+            <Text>
+
+	In fits and starts over the course of his life, Mark Twain attempted to write his autobiography. Toward the end, he dictated much of it to a stenographer. He also came to a peculiar agreement with his publisher and estate in which the work would not be published until 100 years after his death. He reasoned that this would grant him freedom to talk openly about contemporary people and subjects. By the time that anniversary came, the Mark Twain Project at University of California, Berkeley had been preparing the autobiography for years for its eventual publication. As a celebrated American author, it was met with commercial success. However, much to the initial confusion of readers, the entire autobiography would not be published fully until five years later, a volume meted out every two years. The final product was roughly 2,300 pages long. In effect, it was a book popularly bought but not as widely read.
+
+	My dissertation, ‘The Art of Literary Modeling’, describes and demonstrates new scholarly activities that provide context-sensitive, evidentiary bases for making interpretive claims from computational models of literature. Its first chapter answers the question, "What does it mean to read literature as data?" That chapter's discussion of "literary" data quality looks to Emily Dickinson's poetry and its complex publication history. My proposed project for the digital humanities summer graduate student fellowship is the programming, modeling experiments, and draft prose for a followup chapter on new means of qualitative and quantitative assessment of model quality for humanities researchers and application of those methods towards uncovering new insights about Twain’s sizable autobiography. The digital version of this material, in TEI form, has been supplied to me via the Mark Twain Project Online at University of California. 
+	
+	Approaching an unwieldy work for reading and interpretation is not a new problem for the humanities, and certainly not for the digital humanities. One might look to previous scholarship, lightly read the whole work while concentrating on a few sections, or, via computation, attempt to represent the work(s) with a model that can describe the entirety of the collection/object while giving insight on mathematically notable sections. For the computational approach there are a few significant decision points. There is the choice of models, sometimes driven by state of the field or by state of the art. And then there is the type of model analysis. How do we comprehend the model and how do we account for how well it represents the underlying textual data? These questions of model selection and estimation of quality are well-theorized in the field of statistics. The question of which model might be most appropriate to understand or discover new insights about Twain’s autobiography and works like it, is not though. 
+
+	That first chapter of my dissertation adapts a series of data quality metrics from information science scholar and career practitioner, Laura Sebastian Coleman, that are typically employed in environments where data sets are dynamic and have external concerns – legal, technical, financial, and otherwise. Newly derived metrics from Coleman’s examples concerning the textual consistency and lexical and thematic qualities across Dickinson's multiple, posthumous publications are brought about by analyzing and modeling those publications, ultimately filling out an overall quality assessment of those digital works. When taken into account alongside historical and bibliographic knowledge of the books, this produces a new, amalgam poetry collection from which to conduct future readings, modeling, and analysis.
+
+	Moving forward from that sensibility for data quality as foundation for modeling literature, this project attempts to answer the followup question: "What does it mean to model literature as data?" Whereas the previous work adapted data quality concepts from information science, this one looks to standards for model selection and quality analysis from statistics known as "information criterion." For instance, a set of information criteria measurements based on and related to one initially developed by Japanese statistician Hirotugu Akaike in the early 1970s, can provide a sense of the relative quality of models by reflecting the amount of information loss between a model and the original data set. While a mathematical description of data generation – in the case of literature, authorship – remains out of reach, Akaike’s information criterion measure (and other criteria produced by successive statisticians) allows us to at least understand the difference between the statistical distributions of a work’s words (i.e. their likelihood of being used together) according to various kinds of modeling techniques such as frequency analysis, topic models, regression analyses, matrix factorization methods, etc. This comparison made by information criteria presents a new qualitative decision point for the use of literary studies.
+
+	Of course, in the case of humanities scholars the quantitative outputs of such measurement can provide a befuddling endpoint. What to do with these numbers? The process of adaptation of such a measurement requires the incorporation of qualitative assessment of sections of a work as deemed notable (or perhaps very unnotable, e.g. hapax legomena) according to the various models being compared. Scholarly knowledge of Twain’s life and writings would be posed against the highlights of Twain’s autiobiography suggested by high quality models of it. Such comparisons are essentially close readings supported by qualified computation modeling and by the epistemological concerns of more traditional humanities approaches to textual scholarship. These readings/measures of model quality can be also thought of as a new form of annotated knowledge for readers and scholars of Twain’s autobiography. As such, they are also generalizable examples of how to engage in a thoughtful discourse between reading and the modeling of literature as data.
+
+
+
+</Text>
+        </Document>
+        <Document ID="E54A0184-4ED4-4A9E-95B2-5B0E4D3B0BDF">
+            <Title>March 5, 2021</Title>
+            <Text>Model quality
+
+Two different directions/considerations for model selection:
+1) Inference
+2) Prediction
+
+https://en.wikipedia.org/wiki/Model_selection
+
+List of information criteria metrics:
+https://en.wikipedia.org/wiki/Model_selection#Criteria
+
+For example 
+
+	•	Akaike information criterion (AIC), a measure of the goodness fit of an estimated statistical model
+	•	Bayes factor
+	•	Bayesian information criterion (BIC), also known as the Schwarz information criterion, a statistical criterion for model selection
+	•	Bridge criterion (BC), a statistical criterion that can attain the better performance of AIC and BIC despite the appropriateness of model specification.[3]
+	•	Cross-validation
+	•	Deviance information criterion (DIC), another Bayesian oriented model selection criterion
+	•	False discovery rate
+	•	Focused information criterion (FIC), a selection criterion sorting statistical models by their effectiveness for a given focus parameter
+	•	Hannan–Quinn information criterion, an alternative to the Akaike and Bayesian criteria
+	•	Kashyap information criterion (KIC) is a powerful alternative to AIC and BIC, because KIC uses Fisher information matrix
+	•	Likelihood-ratio test
+	•	Mallows's Cp
+	•	Minimum description length
+	•	Minimum message length (MML)
+	•	PRESS statistic, also known as the PRESS criterion
+	•	Structural risk minimization
+	•	Stepwise regression
+	•	Watanabe–Akaike information criterion (WAIC), also called the widely applicable information criterion
+	•	Extended Bayesian Information Criterion (EBIC) is an extension of ordinary Bayesian information criterion (BIC) for models with high parameter spaces.
+	•	Extended Fisher Information Criterion (EFIC) is a model selection criterion for linear regression models.
 </Text>
         </Document>
         <Document ID="E9E8BF9D-B04D-4F48-9511-38DFD57346F3">
@@ -2090,6 +2080,46 @@ Depending on the purpose of the model you are building after your data quality a
 
 Those reading this may be forgiven for the assumption that my title’s term ‘literary’ necessarily refers to the qualities of the works that are modeled in the following pages. While the term itself is already loaded with meanings (as well as connotations both positive and negative), I wish to encumber it with another definition. The subject of this work is the modeling of humanities’ data (more on that in the first chapter), and thus the models will be created with the intent of harboring the goals of humanities scholarship. Those goals vary from field to field and even individual to individual, but, as we will see, humanities data modeling infers some other qualities not typically considered in more historically mathematical fields of study. A “literary model” is therefore something imbued with a high quality, but not necessarily one just of statistical rigor. Rather, just as “literary” can refer to the values both within a work and the external forces that elevate that work to a high status, so too will that extend to a humanities model of cultural objects  – in this case of text and images. A “literary model” is still a model that quantifies and reduces in representation of its underlying objects, but it is more aesthetically rich, and one that is more sound because of that richness.</Text>
         </Document>
+        <Document ID="D2595764-DDC7-4286-AB49-A542123A151A">
+            <Title>Body (w/ outline)</Title>
+            <Text>1.	 Mark Twain autobiography description - popular response
+
+In fits and starts over the course of his life, Mark Twain attempted to write an autobiography of his adventure-filled life. Toward the end, he dictated much of it to a stenographer. He also came to a peculiar agreement with his publisher and estate in which the work would not be published until 100 years after his death. He reasoned that this would grant him freedom to talk openly about the people in his life as well as public figures and subjects of the time. By the time that anniversary came, the Mark Twain Papers &amp; Project at University of California, Berekely had been preparing the autobiography for years for its eventual publication. As a celebrated and legendary American author, it was met with great commercial success. However, much to the initial confusion of readers, the entire autobiography would not be fully published until five years later, meted out every two years. The final product was three volumes in length, each of which, including editorial apparatuses, contained almost 800 pages. In effect, it was a book popularly bought but not as widely read.
+
+2. This sets up the problem of a large, opaque work
+
+The presentation of an unwieldy and thus opaque work for reading and interpretation is not a new kind of problem for humanities scholars, and certainly not for digital humanities scholars. On either end of the analytical spectrum, it is approached with similar divide and conquer heuristics. One might look to previous scholarship, lightly read the whole work while concentrating on a few sections, or, via computation, attempt to model the work(s) with an algorithm that can describe the entirety of the collection/object while giving insight on mathematically notable sections. These are but a few possible, general approaches. 
+
+3. The problem of model selection for computational modeling of literature
+
+For the computational approach there are a few significant decision points. There is the choice of models, sometimes driven by state of the field and sometimes driven by state of the art. And then there is the type of model output analysis. How do we comprehend the model and how do we account for how well it represents the underlying textual data? These questions of model selection and estimation of quality are not under-theorized in the field of statistics. The question of which model might be most appropriate to understand or discover new insights about Mark Twain’s autobiography and works like it, is though. 
+
+4.	Project proposition on model selection via model quality assessment for project/humanities
+5. Description of previous chapter on data quality and overall dissertation
+
+My dissertation, ‘The Art of Literary Modeling’ , describes and demonstrates several new scholarly activities that provide context-sensitive, evidentiary bases for making interpretive claims from computational models of literature. Its first chapter attempts to answer the question, "What does it mean to read literature as data?" That chapter's discussion of "literary" data quality looked to Emily Dickinson's poetry and its complex publication history. My proposed project for the summer fellowship is the followup chapter on new means of qualitative and quantitative assessment of model quality specifically for humanities researchers and their application towards uncovering new insights about Twain’s sizable autobiography. The digital version of this work, in TEI form, has been supplied to me via the Mark Twain Project Online at University of California, Berkeley. 
+
+6. Discussion of adaptation of information science methods for humanities purposes (dq metrics, dq assessment, new “literary” data quality valuation)
+
+That first chapter of my dissertation adapts a series of data quality metrics from information science scholar and career practitioner, Laura Sebastian Coleman, that are more typically employed in environments where data sets are dynamic and have external concerns – legal, technical, financial, and otherwise. Newly derived metrics from Coleman’s examples concerning the textual consistency and lexical and thematic qualities across Dickinson's multiple, posthumous publications are brought about by analyzing and modeling those publications, ultimately filling out an overall quality assessment of those (digital) works.  When taken into account alongside historical and bibliographic knowledge of the books, this produces a new, amalgam Dickinson poetry collection from which to conduct future readings, modeling, and analysis.
+
+7. “Information criteria” for selected model as means of quality estimation of model output
+
+Moving forward from that sensibility for data quality as foundation for modeling literature, this chapter attempts to answer the followup question: "What does it mean to model literature as data?" Whereas the previous work adapted data quality concepts from information science, this one looks to standards for model selection and quality analysis from statistics known as "information criterion." For instance, a set of information criteria measurements based on and related to one initially developed by Japanese statistician Hirotugu Akaike in the early 1970s, can provide a sense of the relative quality of models by reflecting the amount of information loss between a model and the original data set. While a mathematical description of data generation – in the case of literature, authorship – remains out of reach, Akaike’s information criterion measure (and other criteria produced by successive statisticians) allows us to at least understand the difference between the statistical distributions of a work’s words (e.g. their likelihood of being used together) according to various kinds of modeling techniques such as frequency analysis, topic models, regression analyses, matrix factorization methods, etc. In turn, the comparison made by information criteria presents a new qualitative decision point for the use of literary study.
+
+	8.	Combining IC with proofing via humanities qualitative assessment
+	⁃	close reading sections highlighted by the model and producing valuation kind of like an annotated bibliography for these highlighted sections of the model/underlying text
+	9.	Prospects for new insights about the Twain autobiography and new notion of sound evidentiary basis for the highlighting/selection of sections for analysis/comparison/contrast/etc.
+	10.	Prospects for other researchers to use these model metrics and heuristic to make assessments of their own models and use of those assessments as (part) basis for the interpretive claims made
+
+Of course, in the case of literary scholars the quantitative outputs of such measurement can provide a befuddling endpoint. What to do with these numbers? The process of adaptation of such a measurement requires the incorporation of qualitative assessment of sections of a work as deemed notable (or perhaps very unnotable, e.g. hapax legomena) according to the various models being compared. A direct comparison must be made between the highest quality model’s highlights of Twain’s autobiography and scholarly knowledge of Twain’s life and writings. Such comparisons are essentially close readings supported by qualified computation modeling as well by the epistemological and subject matter concerns of more traditional humanities approaches to textual scholarship. 
+
+These readings/measures of model quality can be also thought of as a new form of annotated scholarship for readers and scholars of Twain’s autobiography. As such, they are also generalizable examples of how to engage in a thoughtful discourse between reading and the modeling of literature as data.
+
+
+
+</Text>
+        </Document>
         <Document ID="C96AF56F-82EE-4920-9D6A-DE2DFE9B79CB">
             <Title>January 14, 2021</Title>
             <Text>Introduction prose
@@ -2138,46 +2168,6 @@ Person 2: Now you’ve just gone too far.
 That shaky question, as it turns out, is not just whether or not there is a difference between a quality and quantity, it’s if the notion quality arises from cursory attention to detail.
 
 Why is this important? It goes to the heart of the current questions before many different types of researchers considering how to use computational tools to accurately extract meaning from passages of text, and for literary scholars, whether or not they’re usable at all for the questions that have traditionally been asked by their field(s). And if quality is more indicative of inattention than not, or at least of the comforting “good enough” soup in which we navigate our everyday lives, then quality must be revisited, redefined, and reconfigured for the purposes of digital literary study.</Text>
-        </Document>
-        <Document ID="D2595764-DDC7-4286-AB49-A542123A151A">
-            <Title>Body (w/ outline)</Title>
-            <Text>1.	 Mark Twain autobiography description - popular response
-
-In fits and starts over the course of his life, Mark Twain attempted to write an autobiography of his adventure-filled life. Toward the end, he dictated much of it to a stenographer. He also came to a peculiar agreement with his publisher and estate in which the work would not be published until 100 years after his death. He reasoned that this would grant him freedom to talk openly about the people in his life as well as public figures and subjects of the time. By the time that anniversary came, the Mark Twain Papers &amp; Project at University of California, Berekely had been preparing the autobiography for years for its eventual publication. As a celebrated and legendary American author, it was met with great commercial success. However, much to the initial confusion of readers, the entire autobiography would not be fully published until five years later, meted out every two years. The final product was three volumes in length, each of which, including editorial apparatuses, contained almost 800 pages. In effect, it was a book popularly bought but not as widely read.
-
-2. This sets up the problem of a large, opaque work
-
-The presentation of an unwieldy and thus opaque work for reading and interpretation is not a new kind of problem for humanities scholars, and certainly not for digital humanities scholars. On either end of the analytical spectrum, it is approached with similar divide and conquer heuristics. One might look to previous scholarship, lightly read the whole work while concentrating on a few sections, or, via computation, attempt to model the work(s) with an algorithm that can describe the entirety of the collection/object while giving insight on mathematically notable sections. These are but a few possible, general approaches. 
-
-3. The problem of model selection for computational modeling of literature
-
-For the computational approach there are a few significant decision points. There is the choice of models, sometimes driven by state of the field and sometimes driven by state of the art. And then there is the type of model output analysis. How do we comprehend the model and how do we account for how well it represents the underlying textual data? These questions of model selection and estimation of quality are not under-theorized in the field of statistics. The question of which model might be most appropriate to understand or discover new insights about Mark Twain’s autobiography and works like it, is though. 
-
-4.	Project proposition on model selection via model quality assessment for project/humanities
-5. Description of previous chapter on data quality and overall dissertation
-
-My dissertation, ‘The Art of Literary Modeling’ , describes and demonstrates several new scholarly activities that provide context-sensitive, evidentiary bases for making interpretive claims from computational models of literature. Its first chapter attempts to answer the question, "What does it mean to read literature as data?" That chapter's discussion of "literary" data quality looked to Emily Dickinson's poetry and its complex publication history. My proposed project for the summer fellowship is the followup chapter on new means of qualitative and quantitative assessment of model quality specifically for humanities researchers and their application towards uncovering new insights about Twain’s sizable autobiography. The digital version of this work, in TEI form, has been supplied to me via the Mark Twain Project Online at University of California, Berkeley. 
-
-6. Discussion of adaptation of information science methods for humanities purposes (dq metrics, dq assessment, new “literary” data quality valuation)
-
-That first chapter of my dissertation adapts a series of data quality metrics from information science scholar and career practitioner, Laura Sebastian Coleman, that are more typically employed in environments where data sets are dynamic and have external concerns – legal, technical, financial, and otherwise. Newly derived metrics from Coleman’s examples concerning the textual consistency and lexical and thematic qualities across Dickinson's multiple, posthumous publications are brought about by analyzing and modeling those publications, ultimately filling out an overall quality assessment of those (digital) works.  When taken into account alongside historical and bibliographic knowledge of the books, this produces a new, amalgam Dickinson poetry collection from which to conduct future readings, modeling, and analysis.
-
-7. “Information criteria” for selected model as means of quality estimation of model output
-
-Moving forward from that sensibility for data quality as foundation for modeling literature, this chapter attempts to answer the followup question: "What does it mean to model literature as data?" Whereas the previous work adapted data quality concepts from information science, this one looks to standards for model selection and quality analysis from statistics known as "information criterion." For instance, a set of information criteria measurements based on and related to one initially developed by Japanese statistician Hirotugu Akaike in the early 1970s, can provide a sense of the relative quality of models by reflecting the amount of information loss between a model and the original data set. While a mathematical description of data generation – in the case of literature, authorship – remains out of reach, Akaike’s information criterion measure (and other criteria produced by successive statisticians) allows us to at least understand the difference between the statistical distributions of a work’s words (e.g. their likelihood of being used together) according to various kinds of modeling techniques such as frequency analysis, topic models, regression analyses, matrix factorization methods, etc. In turn, the comparison made by information criteria presents a new qualitative decision point for the use of literary study.
-
-	8.	Combining IC with proofing via humanities qualitative assessment
-	⁃	close reading sections highlighted by the model and producing valuation kind of like an annotated bibliography for these highlighted sections of the model/underlying text
-	9.	Prospects for new insights about the Twain autobiography and new notion of sound evidentiary basis for the highlighting/selection of sections for analysis/comparison/contrast/etc.
-	10.	Prospects for other researchers to use these model metrics and heuristic to make assessments of their own models and use of those assessments as (part) basis for the interpretive claims made
-
-Of course, in the case of literary scholars the quantitative outputs of such measurement can provide a befuddling endpoint. What to do with these numbers? The process of adaptation of such a measurement requires the incorporation of qualitative assessment of sections of a work as deemed notable (or perhaps very unnotable, e.g. hapax legomena) according to the various models being compared. A direct comparison must be made between the highest quality model’s highlights of Twain’s autobiography and scholarly knowledge of Twain’s life and writings. Such comparisons are essentially close readings supported by qualified computation modeling as well by the epistemological and subject matter concerns of more traditional humanities approaches to textual scholarship. 
-
-These readings/measures of model quality can be also thought of as a new form of annotated scholarship for readers and scholars of Twain’s autobiography. As such, they are also generalizable examples of how to engage in a thoughtful discourse between reading and the modeling of literature as data.
-
-
-
-</Text>
         </Document>
         <Document ID="D7846FA2-8777-43FA-8CDB-06320642D819">
             <Title>January 9, 2025</Title>
@@ -2361,8 +2351,8 @@ Continued Dickinson corpus curation work/XML analysis script
 
 Continued work on plotting date ranges of Dickinson correspondences letters (see scripts/dc_regress.py and scripts/dc_edctext.py)</Text>
         </Document>
-        <Document ID="B738603E-CE2E-4700-A0AB-92F6EA7954B5">
-            <Title>Introduction</Title>
+        <Document ID="2C498126-22DA-4F2B-B071-2E4A1AF24521">
+            <Title>Chapter 1 Draft (Conflicts)</Title>
         </Document>
         <Document ID="E5F18ABC-7620-4E6D-B28B-D1696E909D69">
             <Title>August 14, 2020</Title>
@@ -2384,8 +2374,8 @@ Sketching out the reasoning behind the Chapter 1 - Dickinson, Publications, and 
 	13.	And that is why implementing and utilizing metrics for data quality (and later on, as we will see model and visualization quality) become key to establishing more justifiable and authoritative interpretations of literary models.
 </Text>
         </Document>
-        <Document ID="2C498126-22DA-4F2B-B071-2E4A1AF24521">
-            <Title>Chapter 1 Draft (Conflicts)</Title>
+        <Document ID="B738603E-CE2E-4700-A0AB-92F6EA7954B5">
+            <Title>Introduction</Title>
         </Document>
         <Document ID="6FFB7995-75C3-4919-88DA-687F48DC2CF3">
             <Title>Outline Fleshing</Title>
@@ -2723,6 +2713,9 @@ The following tasks are yet to be done to achieve those 3 components:
         <Document ID="006C1C4A-133E-4CCD-8FF7-6E63A65FE10C">
             <Title>Daily Notes</Title>
         </Document>
+        <Document ID="3B116937-F8ED-4618-9C42-921840D97210">
+            <Title>Project Organization</Title>
+        </Document>
         <Document ID="14669E50-5A01-48A6-91F8-AD7DFB44BBEA">
             <Text>Q: Can you compare your abilities to that of an LDA topic model?
 
@@ -2896,9 +2889,6 @@ So the goal isn’t just auditability — it’s cognitive legibility.
 You're thinking along precisely the right lines. Auditability may eventually be one of the defining criteria for trustworthy AI — especially in sensitive fields like law, science, and public policy.
 </Text>
         </Document>
-        <Document ID="3B116937-F8ED-4618-9C42-921840D97210">
-            <Title>Project Organization</Title>
-        </Document>
         <Document ID="02F0DB45-339B-49C1-9E87-FD047385D293">
             <Title>January 30 2025</Title>
             <Text>Next steps will to write about the two data quality metrics used over Internet Archive, Project Gutenberg, and Mark Twain Project Online editions of Adventures of Huckleberry Finn, and to discuss how the first parts of the Data Quality Assessment Machine (DQAM) (alternate title, ‘Workflow’?). This will include the production of graphs to speak about the raw and evaluatory outputs of each metric and then the calculation of their combined metric values.
@@ -2964,6 +2954,49 @@ Vol 3. 792 pages
 	⁃	close reading sections highlighted by the model and producing valuation kind of like an annotated bibliography for these highlighted sections of the model/underlying text
 	9.	Prospects for new insights about the Twain autobiography and new notion of sound evidentiary basis for the highlighting/selection of sections for analysis/comparison/contrast/etc.
 	10.	Prospects for other researchers to use these model metrics and heuristic to make assessments of their own models and use of those assessments as (part) basis for the interpretive claims made
+</Text>
+        </Document>
+        <Document ID="BF8D1EF3-16EC-4395-B331-6724F9EE5123">
+            <Title>Schöch - Big? Smart? Clean? Messy? Data in the Humanities</Title>
+            <Text>Author: Schöch, Christof
+Title: Big? Smart? Clean? Messy? Data in the Humanities
+Source: http://journalofdigitalhumanities.org/2-3/big-smart-clean-messy-data-in-the-humanities/#to-big-smart-clean-messy-data-in-the-humanities-n-3
+
+Notes:
+
+Questions Schöch addresses
+
+	◆	What is the relation between the data we have and our objects of study? – Does data replace books, paintings and movies? In what way can data be said to be representations of them?
+	◆	What difference does it make to analyze the digital representation or version of a novel or a painting instead of the printed book, the manuscript, or the original painting?
+	◆	What types of data are there in the humanities, and what difference does it make? – I will argue that one can distinguish two types of data, “big” data and “smart” data. What, then, does it mean to deal with big data, or smart data, in the humanities?
+	◆	What new ways of dealing with data do we need to adopt in the humanities? – How is big data and smart data being dealt with in the process of scholarly knowledge generation, that is when data is being created, enriched, analyzed and interpreted?
+
+Some distinctions for digital ‘data’
+
+	◆	“discrete rather than continuous”
+	◆	in structures
+	◆	structured types
+	⁃	structured (e.g. databases)
+	⁃	unstructured (e.g. plain text - has implicit relations)
+	⁃	semi-structured (e.g. xml)
+
+On data as representation
+
+“Data is not the object of study itself, but “stands in” for it in some way. Also, data is always a partial representation of the object of study. In some cases, however, it is our only window into the object of study. Still, this “disadvantage” of partial representation is small compared to the the fact that digital data can be transformed, analyzed, and acted upon computationally.”
+
+On criticism of the term “data”
+
+“Criticism has come from mainstream scholars who see “data” and quantitative methods of analyzing them with suspicion, because the apparent empiricism of data-driven research in the humanities seems at odds with principles of humanistic inquiry, such as context-dependent interpretation and the inevitable “situated-ness” of the researchers and their aims."
+
+Drucker prefers the term “capta” - “that which has been captured or gathered” to data “that which is given.” (and therefore ‘objectively’/‘independently’ observed)
+
+“…underlining the idea that even the very act of capturing data in the first place is oriented by certain goals, done with specific instruments, and driven by a specific attention to a small part of what could have been captured given different goals and instruments. In other words, capturing data is not passively accepting what is given, but actively constructing what one is interested in.”
+
+****Schöch’s Definition of ‘Data in the Humanities”****
+
+“Data in the humanities could be considered a digital, selectively constructed, machine-actionable abstraction representing some aspects of a given object of humanistic inquiry.”
+
+“…digital data add another layer of mediation into the equation. Data (as well as the tools with which we manipulate them) add complexity to the relation between researchers and their objects of study.”
 </Text>
         </Document>
         <Document ID="697CB465-7225-4321-90A7-18267994B15A">
@@ -3074,49 +3107,6 @@ Total unique words: 8
 Total words: 139
 Total unique words: 82
 {'way': 1, 'silas': 1, 'mornin': 1, 'first-rate': 1, "couldn't": 5, 'doan': 1, 'finn': 1, 'you': 2, 'jim': 4, 'second': 1, 'him': 1, 'lovely': 1, 'that': 1, "he'll": 2, 'how': 1, 'cowards': 1, 'thout': 1, 'striped': 1, 'where': 1, "that's": 1, 'please': 1, 'newrleans': 1, 'these': 1, 'we': 1, 'very': 1, 'cat': 1, 'border': 1, 'jack': 1, "he's": 2, 'forty': 1, 'year': 2, 'said': 1, 'one': 2, "you'll": 1, 'live': 1, 'had': 4, 'baths': 1, 'rights': 1, "didn't": 5, 'me': 3, "'s": 3, 'everything': 1, 'will': 1, "ain't": 7, 'lantern': 1, 'rob': 1, 'may': 1, 'leave': 1, "can't": 5, 'piles': 1, "don't": 1, 'reverend': 1, 'war': 2, 'den': 1, 'which': 2, 'husband': 1, 'what': 1, "they're": 2, 'a-a-men': 1, 'has': 1, 'duke': 1, 'tis': 1, "wouldn't": 8, 'good-bye': 1, 'any': 1, "le's": 1, 'soldier': 1, 'maim': 1, 'gentlemen': 1, 'ourn': 1, 'people': 1, 'i': 5, 'us': 1, 'given': 1, "'d": 5, 'bill': 1, 'all': 1, "'m": 2, "tom's": 1, 'sword': 1, 'up': 1, 'it': 6}</Text>
-        </Document>
-        <Document ID="BF8D1EF3-16EC-4395-B331-6724F9EE5123">
-            <Title>Schöch - Big? Smart? Clean? Messy? Data in the Humanities</Title>
-            <Text>Author: Schöch, Christof
-Title: Big? Smart? Clean? Messy? Data in the Humanities
-Source: http://journalofdigitalhumanities.org/2-3/big-smart-clean-messy-data-in-the-humanities/#to-big-smart-clean-messy-data-in-the-humanities-n-3
-
-Notes:
-
-Questions Schöch addresses
-
-	◆	What is the relation between the data we have and our objects of study? – Does data replace books, paintings and movies? In what way can data be said to be representations of them?
-	◆	What difference does it make to analyze the digital representation or version of a novel or a painting instead of the printed book, the manuscript, or the original painting?
-	◆	What types of data are there in the humanities, and what difference does it make? – I will argue that one can distinguish two types of data, “big” data and “smart” data. What, then, does it mean to deal with big data, or smart data, in the humanities?
-	◆	What new ways of dealing with data do we need to adopt in the humanities? – How is big data and smart data being dealt with in the process of scholarly knowledge generation, that is when data is being created, enriched, analyzed and interpreted?
-
-Some distinctions for digital ‘data’
-
-	◆	“discrete rather than continuous”
-	◆	in structures
-	◆	structured types
-	⁃	structured (e.g. databases)
-	⁃	unstructured (e.g. plain text - has implicit relations)
-	⁃	semi-structured (e.g. xml)
-
-On data as representation
-
-“Data is not the object of study itself, but “stands in” for it in some way. Also, data is always a partial representation of the object of study. In some cases, however, it is our only window into the object of study. Still, this “disadvantage” of partial representation is small compared to the the fact that digital data can be transformed, analyzed, and acted upon computationally.”
-
-On criticism of the term “data”
-
-“Criticism has come from mainstream scholars who see “data” and quantitative methods of analyzing them with suspicion, because the apparent empiricism of data-driven research in the humanities seems at odds with principles of humanistic inquiry, such as context-dependent interpretation and the inevitable “situated-ness” of the researchers and their aims."
-
-Drucker prefers the term “capta” - “that which has been captured or gathered” to data “that which is given.” (and therefore ‘objectively’/‘independently’ observed)
-
-“…underlining the idea that even the very act of capturing data in the first place is oriented by certain goals, done with specific instruments, and driven by a specific attention to a small part of what could have been captured given different goals and instruments. In other words, capturing data is not passively accepting what is given, but actively constructing what one is interested in.”
-
-****Schöch’s Definition of ‘Data in the Humanities”****
-
-“Data in the humanities could be considered a digital, selectively constructed, machine-actionable abstraction representing some aspects of a given object of humanistic inquiry.”
-
-“…digital data add another layer of mediation into the equation. Data (as well as the tools with which we manipulate them) add complexity to the relation between researchers and their objects of study.”
-</Text>
         </Document>
         <Document ID="80C84352-CF49-4974-A8E6-FE6DBCA1D2EB">
             <Title>May 16, 2019 - Tanya Clement interview</Title>
@@ -3981,20 +3971,30 @@ Some processing/cleanup from the raw Project Gutenberg text files is necessary. 
             <Title>Abstract - Working Draft</Title>
             <Text>The publication of Mark Twain’s autobiography 100 years after his death presents a difficult proposition for the reading public with an unwieldy size of over 2000 pages. The work also presents an opportunity for computational text analysis to provide insights where more traditional close readings of it might prove difficult. My dissertation, “The Art of Literary Modeling”, demonstrates new scholarly activities that provide context-sensitive, evidentiary bases for making interpretive claims from computational models of literature. Its first chapter answers the question, "What does it mean to read literature as data?" That chapter's discussion of "literary" data quality looks to versions of Emily Dickinson's poetry amid her multiple, posthumous publications. It adapts data quality metrics from information science to provide an overall assessment of those digital versions, and produces a new collection of poems that reflect their data quality with respect to her oeuvre. This next chapter will answer the followup question: "What does it mean to model literature as data?" Applying standards for model selection and quality analysis from statistics known as "information criterion" reveals differences between various models of a work. That comparison made possible by information criteria presents a new, qualitative decision point for the study of literature as data. By looking to passages of Twain’s autobiography noted by high quality models of it and then further assessing them with scholarly understandings of those passages, it becomes possible to produce new findings on the autobiography and sound methodology for model quality generalizable to humanities research beyond this project.</Text>
         </Document>
-        <Document ID="BF0B4750-DD1C-4E97-8900-3CADEF87F334">
-            <Title>February 12, 2019</Title>
-            <Text>Done
-	1.	Implementing data quality profile script and testing on 19cAm volumes from New York Public Library
-	2.	dq_initial_assessment.py - data quality profile script
-	⁃	dq_initial_assessment_nyp.py - nyp metadata schema
-	⁃	htrc_ef_metadata_lens_nyp.py - Adapts HTRC feature reader to pull metadata for dq assessment
-	⁃	nyp_dq_profile.json - profile of 22,796 19cAm volumes from New York Public library
-To do
-	1.	Refine script and data profiling
-	2.	Test on smaller data set
-	3.	Implement the difference between profiling and assessment
-	4.	Refine the profiling schema for issues addresses in Coleman book like granularity
+        <Document ID="61C6E575-5D78-4D89-AFFC-A06DD6CB9328">
+            <Title>Draft/Ch1DQ/Prose/On frequency analysis</Title>
+            <Text>Next Steps/Prose
 
+	1.	Prose explaining Bolts of Melody vs Emily Dickinson Archive 
+	⁃	Token frequency comparison as component of data quality
+	⁃	Unitary frequency analysis quality(ies) vs quality from comparative frequency analysis
+	2.	Code up comparisons
+	⁃	Explain the work and the thought process behind the work
+	⁃	What’s are its goal(s)?
+	3.	Prose and examples of more advanced frequency measures
+	⁃	Mendenhall’s Characteristic Curves of Composition
+	⁃	Kilgariff’s Chi-Squared Method
+	⁃	John Burrows’ Delta Method
+	⁃	See Laramee’s stylometry intro for details
+	⁃	Why use them and how they are related to data quality in this context
+
+
+Fuzzy string matching techniques
+
+	1.	Character overlap
+	⁃	Jaccard measure
+	⁃	"the percentage of unique characters that two strings share when compared to the total number of unique characters in both strings” (Taming Text, FSM, 4.1.1.)
+	⁃	Jaro-Winkler distance
 </Text>
         </Document>
     </Documents>

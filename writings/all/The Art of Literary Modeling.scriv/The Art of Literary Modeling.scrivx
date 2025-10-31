@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ScrivenerProject Identifier="9D1E41B9-1E5B-4BD0-A880-FE062B9FE6E8" Version="2.0" Creator="SCRMAC-3.5-17311" Device="SturgeonHome" Author="" Modified="2025-10-23 09:39:54 -0400" ModID="8B83DF73-6A0B-4E94-9062-CCC0F7BA76B9">
+<ScrivenerProject Identifier="9D1E41B9-1E5B-4BD0-A880-FE062B9FE6E8" Version="2.0" Creator="SCRMAC-3.5-17311" Device="SturgeonHome" Author="" Modified="2025-10-29 10:58:27 -0400" ModID="582FA9DA-4452-4048-859F-E35E1CFEB40D">
     <Binder>
         <BinderItem UUID="006C1C4A-133E-4CCD-8FF7-6E63A65FE10C" Type="Folder" Created="2021-01-22 16:13:57 -0500" Modified="2021-01-22 16:29:55 -0500">
             <Title>Daily Notes</Title>
@@ -2421,7 +2421,7 @@ Process for producing initial data quality assessment
                                 <IncludeInCompile>Yes</IncludeInCompile>
                             </MetaData>
                             <TextSettings>
-                                <TextSelection>152,0</TextSelection>
+                                <TextSelection>154,0</TextSelection>
                             </TextSettings>
                         </BinderItem>
                     </Children>
@@ -3197,10 +3197,10 @@ Process for producing initial data quality assessment
     </CustomMetaDataSettings>
     <ProjectTargets Notify="No">
         <DraftTarget Type="Words" CountIncludedOnly="Yes" CurrentCompileGroupOnly="No" Deadline="2019-01-03 11:33:22 -0500" IgnoreDeadline="Yes">0</DraftTarget>
-        <SessionTarget Type="Words" CountDraftOnly="Yes" AllowNegatives="Yes" NextResetDate="2025-10-24 01:00:00 -0400" ResetType="Time" ResetTime="00:00" DeterminedFromDeadline="No" WritingDays="" CanWriteOnDeadlineDate="No">0</SessionTarget>
-        <PreviousSession Words="0" Characters="0" Date="2025-10-23 09:39:52 -0400"/>
+        <SessionTarget Type="Words" CountDraftOnly="Yes" AllowNegatives="Yes" NextResetDate="2025-10-30 01:00:00 -0400" ResetType="Time" ResetTime="00:00" DeterminedFromDeadline="No" WritingDays="" CanWriteOnDeadlineDate="No">0</SessionTarget>
+        <PreviousSession Words="0" Characters="0" Date="2025-10-29 10:58:25 -0400"/>
     </ProjectTargets>
-    <RecentWritingHistory Date="2025-10-23 00:00:00 -0400">
+    <RecentWritingHistory Date="2025-10-29 00:00:00 -0400">
         <DraftWordCount>0</DraftWordCount>
         <DraftCharCount>0</DraftCharCount>
         <OtherWordCount>0</OtherWordCount>
