@@ -43,7 +43,8 @@ WORK_TITLE = "Adventures of Huckleberry Finn"
 paths = {
 
     "edition_metadata_json": "/Users/weirdbeard/Documents/school/aolm_full/experiments/chapter1/huckfinneditions_filenames2fullnames.json",
-    "results": "/Users/weirdbeard/Documents/school/aolm_full/experiments/outputs/huckfinn_dq_experiment2_full_results_29082025_192728.csv"
+    "results": "/Users/weirdbeard/Documents/school/aolm_full/experiments/outputs/huckfinn_dq_experiment2_full_results_29082025_192728.csv",
+    "new_results": "/Users/weirdbeard/Documents/school/aolm_full/experiments/outputs/huckfinn_dq_experiment2_full_results_31102025_194107.csv"
 }
 
 # Variables
@@ -325,7 +326,7 @@ def output_record_count_chapter_results(p_output_filepath):
 def plot_heatmap(p_chart_title, p_metric_name, p_data):
 
     import numpy as np
-    import matplotlib.pyplot as plt    
+    import matplotlib.pyplot as plt
 
     # Editions of the novel (sorted by publication year)
     editions = list(p_data.keys())
@@ -333,17 +334,27 @@ def plot_heatmap(p_chart_title, p_metric_name, p_data):
     editions.sort(key=lambda x: x[0])
     editions = [edition_tuple[1] for edition_tuple in editions]
     n_editions = len(editions)
-    n_chapters = len(p_data[editions[0]])
+    
+    # Determine the maximum number of chapters across all editions
+    n_chapters = max(len(chapter_list) for chapter_list in p_data.values())
 
-    # Fill in data
-    data = np.zeros((n_editions, n_chapters))
-    for index in range(n_editions):
-        for index2 in range(n_chapters):
-            data[index, index2] = p_data[editions[index]][index2]
+    # Construct data array (floats) with NaN for missing chapters
+    data = np.full((n_editions, n_chapters), np.nan, dtype=float)
+    for index, edition in enumerate(editions):
+        for index2, val in enumerate(p_data[edition]):
+            data[index, index2] = val
+
+    # Mask NaN or 0 values
+    mask = np.isnan(data) | (data == 0.0)
+    data_masked = np.ma.array(data, mask=mask)
+
+    # Create colormap: numeric values → e.g., viridis; masked → black
+    cmap = plt.cm.viridis
+    cmap.set_bad(color="black")
 
     # Plot heatmap
     fig, ax = plt.subplots(figsize=(12, 6))
-    im = ax.imshow(data, aspect='auto')
+    im = ax.imshow(data_masked, aspect="auto", cmap=cmap)
 
     # Set axis labels
     ax.set_xticks(np.arange(n_chapters))
@@ -356,7 +367,7 @@ def plot_heatmap(p_chart_title, p_metric_name, p_data):
 
     # Add colorbar
     cbar = plt.colorbar(im, ax=ax)
-    cbar.set_label(p_metric_name)
+    cbar.set_label(p_metric_name)   
 
     ax.set_title(p_chart_title)
     ax.set_xlabel("Chapter")
@@ -366,6 +377,8 @@ def plot_heatmap(p_chart_title, p_metric_name, p_data):
     plt.show()
 
 def plot_results(p_results_filepath, p_ur_chapter_count):
+
+    import numpy as np
 
     # 1. Store all edition record count to control records results for sentences and words by chapter
     editions = {}
@@ -381,30 +394,31 @@ def plot_results(p_results_filepath, p_ur_chapter_count):
 
             # edition_name,chapter_name,count_type,count
             edition_name = get_edition_shortname_from_metadata(row["edition_name"])
-            chapter_name = row["chapter_name"]
+            chapter_index = int(row["chapter_name"]) - 1
             count_type = row["count_type"]
             count = float(row["count"])
 
             if edition_name not in editions:
                 editions[edition_name] = {
-                    "sentences": [0] * p_ur_chapter_count,
-                    "words": [0] * p_ur_chapter_count
+                    "sentences": [np.nan] * p_ur_chapter_count,
+                    "words": [np.nan] * p_ur_chapter_count
                 }
 
-            editions[edition_name][count_type][int(chapter_name) - 1] = count
+            if row["count"] not in (None, "", "NA"):   # or whatever indicates a missing chapter
+                editions[edition_name][count_type][chapter_index] = float(row["count"])
 
         # 2. Plot a 2D heatmap of the chapters of each edition by sentence data quality
-        plot_heatmap(
-            "Sentence Quality by Chapter in Editions of 'Adventures of Huckleberry Finn'",
-            "Record counts to control records data quality",
-            { edition_name: editions[edition_name]["sentences"] for edition_name in editions }
-        )
-            
         # plot_heatmap(
-        #     "Word Quality by Chapter in Editions of 'Adventures of Huckleberry Finn'",
+        #     "Sentence Quality by Chapter in Editions of 'Adventures of Huckleberry Finn'",
         #     "Record counts to control records data quality",
-        #     { edition_name: editions[edition_name]["words"] for edition_name in editions }
+        #     { edition_name: editions[edition_name]["sentences"] for edition_name in editions }
         # )
+            
+        plot_heatmap(
+            "Word Quality by Chapter in Editions of 'Adventures of Huckleberry Finn'",
+            "Record counts to control records data quality",
+            { edition_name: editions[edition_name]["words"] for edition_name in editions }
+        )
 
 
 def main():
@@ -421,13 +435,13 @@ def main():
     # (A) Record Counts to Control Records (recordcounts_to_controlrecords.py)
 
     process_results = False
-    graph = False
+    graph = True
     
     if graph:
-        plot_results(paths["results"], ur_chapter_count)
+        plot_results(paths["new_results"], ur_chapter_count)
         return True
     elif process_results:
-        output_amalgamated_edition(paths["results"], ur_chapter_count)
+        output_amalgamated_edition(paths["new_results"], ur_chapter_count)
         return True
 
     # 0. Setup
