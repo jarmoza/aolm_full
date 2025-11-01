@@ -59,8 +59,13 @@ class DatasetConsistency_RecordConsensus(DataQualityMetric):
         header = "edition_name,chapter,variance_from_sentence_consensus__by_chapter,variance_from_word_consensus__by_chapter"
         output_lines = [f"{header}\n"]
 
+        max_chapter_count = 0
         for reader_name in self.m_input:
-            for index in range(1, self.m_input[reader_name].chapter_count + 1):
+            if self.m_input[reader_name].chapter_count > max_chapter_count:
+                max_chapter_count = self.m_input[reader_name].chapter_count        
+
+        for reader_name in self.m_input:
+            for index in range(1, max_chapter_count + 1):
                 
                 edition_name = reader_name
                 chapter = str(index)
@@ -131,6 +136,8 @@ class DatasetConsistency_RecordConsensus(DataQualityMetric):
         # (5) Tallies word counts by chapter
         # (6) Calculates consensus for unique words per chapter (existence and mean frequency)
 
+        import numpy as np
+
         # 0. Setup
 
         # A. Calculate most number of chapters in all editions
@@ -143,7 +150,8 @@ class DatasetConsistency_RecordConsensus(DataQualityMetric):
         # NOTE: If self.m_consistency_threshold == 0.5 this is equivalent to consensus of
         # if sentence_or_word_presence_counter[sentence_or_word] > floor(self.edition_count/2)]
         # Or, in other words present in at least 50% of input editions
-        consensus_threshold = int(self.edition_count * self.m_consistency_threshold)
+        # New NOTE: Threshold is dynamically calculated below now based on active edition count
+        # consensus_threshold = int(self.edition_count * self.m_consistency_threshold)
 
         # B. Reset results
         self.m_results = {
@@ -152,10 +160,10 @@ class DatasetConsistency_RecordConsensus(DataQualityMetric):
 
                 "chapter_count": 0,
                 "sentence_count": {
-                    "by_chapter": {}
+                    "by_chapter": { str(i): np.nan for i in range(1, max_chapter_count + 1) }
                 },
                 "word_count": {
-                    "by_chapter": {}
+                    "by_chapter": { str(i): np.nan for i in range(1, max_chapter_count + 1) }
                 }
             } for reader_name in self.m_input
         }
@@ -174,88 +182,118 @@ class DatasetConsistency_RecordConsensus(DataQualityMetric):
 
         # B. Measure consensus chapter count for compute() purposes - Most common chapter count as consensus
         self.m_results["consensus_chapter_count"] = Counter([self.m_results[reader_name]["chapter_count"] for reader_name in self.m_input]).most_common(1)[0][0]
+        print("===========================")
+        print(f"CONSENSUS CHAPTER COUNT: {self.m_results['consensus_chapter_count']}")
+        cons_chapt_dict = { reader_name: self.m_results[reader_name]["chapter_count"] for reader_name in self.m_input }
+        print(f"Chapter counts: {cons_chapt_dict}")
+        print("===========================")
 
         # 2. Unique sentence consensus (using spaCy's sentence model)
-
-        # A. Gather a set of sentence dictionaries for unique sentences of each chapter of each edition
         for index in range(1, self.m_results["consensus_chapter_count"] + 1):
 
-            for reader_name in self.m_input:
+            # A. Missing chapter safeguards
+
+            # Determine active editions for this chapter
+            active_editions = [reader_name for reader_name in self.m_input if self.m_input[reader_name].get_chapter(index)]
+            if not active_editions:
+                
+                # No edition has this chapter; mark consensus as None and skip
+                self.m_results["consensus_sentence_counts"][str(index)] = None
+                self.m_results["consensus_word_counts"][str(index)] = None
+                continue
+
+            # Adjust threshold to active editions only
+            effective_threshold = ceil(len(active_editions) * self.m_consistency_threshold)            
+
+            # B. Gather a set of sentence dictionaries for unique sentences of each active edition
+            for reader_name in self.m_input:             
 
                 # Get sentences from chapter strings via spaCy
-                compared_spacy_chapter = self.m_spacymodel("\n".join(self.m_input[reader_name].get_chapter(index)))
+                compared_chapter = self.m_input[reader_name].get_chapter(index)
+                compared_spacy_chapter = self.m_spacymodel("\n".join(compared_chapter))
                 compared_sentence_dict = AOLMTextUtilities.get_sentence_dict_from_spacy_doc(compared_spacy_chapter)
 
                 self.m_results[reader_name]["sentence_count"]["by_chapter"][str(index)] = compared_sentence_dict
 
-        # B. Determine a consensus count of the unique sentences per chapter across the editions
-        for index in range(1, self.m_results["consensus_chapter_count"] + 1):
+            # C. Determine a consensus count of the unique sentences for this chapter
 
             # I. Add unique sentences to a chapter sentence set
             chapter_sentence_sets = {} 
-            for reader_name in self.m_input:
+            for reader_name in active_editions:
                 chapter_sentence_sets[reader_name] = set(list(self.m_results[reader_name]["sentence_count"]["by_chapter"][str(index)].keys()))
 
             # II. Get a relaxed intersection of all sentence sets - sentences that appear in at least half of the editions' chapter
             all_sentence_set = set([sentence for sentence_set in chapter_sentence_sets.values() for sentence in sentence_set])
             sentence_presence_counter = { sentence: 0 for sentence in all_sentence_set }
             for sentence in sentence_presence_counter:
-                for reader_name in self.m_input:
+                for reader_name in active_editions:
                     if sentence in chapter_sentence_sets[reader_name]:
                         sentence_presence_counter[sentence] += 1
-            consensus_sentence_set = [sentence for sentence in sentence_presence_counter if sentence_presence_counter[sentence] > consensus_threshold]
+            consensus_sentence_set = [sentence for sentence in sentence_presence_counter if sentence_presence_counter[sentence] >= effective_threshold]
             
             # Strict intersection for consensus set
             # consensus_sentence_set = set.intersection(*list(chapter_sentence_sets.values()))
 
-            # III. Determine the median frequency of each unique sentence in the chapter (typically should be 1)
+            # D. Determine the median frequency of each unique sentence in the chapter (typically should be 1)
             for sentence in consensus_sentence_set:
-                frequency_list = []
-                for reader_name in self.m_input:
-                    if sentence in self.m_results[reader_name]["sentence_count"]["by_chapter"][str(index)]:
-                        frequency_list.append(self.m_results[reader_name]["sentence_count"]["by_chapter"][str(index)][sentence])
-                self.m_results["consensus_sentence_counts"][str(index)][sentence] = median(frequency_list)
+                frequency_list = [self.m_results[reader_name]["sentence_count"]["by_chapter"][str(index)][sentence]
+                          for reader_name in active_editions if sentence in self.m_results[reader_name]["sentence_count"]["by_chapter"][str(index)]]
+                if frequency_list:
+                    self.m_results["consensus_sentence_counts"][str(index)][sentence] = float(median(frequency_list))
+                else:
+                    # This should not happen, but mark as None for safety
+                    self.m_results["consensus_sentence_counts"][str(index)][sentence] = np.nan
 
-        # C. Gather a set of word dictionaries for unique words of each chapter of each edition
+        # 3. Unique word consensus
         for index in range(1, self.m_results["consensus_chapter_count"] + 1):
 
-            for reader_name in self.m_input:
+            # A. Missing chapter safeguards
+
+            # Determine active editions for this chapter
+            active_editions = [reader_name for reader_name in self.m_input if self.m_input[reader_name].get_chapter(index)]
+            if not active_editions:
+                continue
+
+            # Adjust threshold to active editions only
+            effective_threshold = ceil(len(active_editions) * self.m_consistency_threshold)            
+
+            # B. Gather a set of word dictionaries for unique words of each chapter of each edition
+            for reader_name in active_editions:
 
                 compared_chapter = self.m_input[reader_name].get_chapter(index)
                 compared_words = AOLMTextUtilities.get_words_from_string(AOLMTextUtilities.create_string_from_lines(compared_chapter))
                 compared_words = [AOLMTextUtilities.clean_string(word) for word in compared_words]
-                compared_words = Counter(compared_words)
 
-                self.m_results[reader_name]["word_count"]["by_chapter"][str(index)] = compared_words
+                self.m_results[reader_name]["word_count"]["by_chapter"][str(index)] = Counter(compared_words)
 
-        # D. Determine a consensus count of the unique words per chapter across the editions
-        for index in range(1, self.m_results["consensus_chapter_count"] + 1):
+            # C. Determine a consensus count of the unique words per chapter across the editions
 
             # I. Add unique words to a chapter word set
             chapter_word_sets = {} 
-            for reader_name in self.m_input:
+            for reader_name in active_editions:
                 chapter_word_sets[reader_name] = set(list(self.m_results[reader_name]["word_count"]["by_chapter"][str(index)].keys()))
 
             # II. Get a relaxed intersection of all word sets - words that appear in at least half of the editions' chapter
             all_word_set = set([word for word_set in chapter_word_sets.values() for word in word_set])
             word_presence_counter = { word: 0 for word in all_word_set }
             for word in word_presence_counter:
-                for reader_name in self.m_input:
+                for reader_name in active_editions:
                     if word in chapter_word_sets[reader_name]:
                         word_presence_counter[word] += 1
-            consensus_word_set = [word for word in word_presence_counter if word_presence_counter[word] > consensus_threshold]
+            consensus_word_set = [word for word in word_presence_counter if word_presence_counter[word] >= effective_threshold]
 
             # Strict interesection for consensus set
             # consensus_word_set = set.intersection(*list(chapter_word_sets.values()))
 
             # III. Determine the median frequency of each unique word in the chapter
             for word in consensus_word_set:
-                frequency_list = []
-                for reader_name in self.m_input:
-                    if word in self.m_results[reader_name]["word_count"]["by_chapter"][str(index)]:
-                        frequency_list.append(self.m_results[reader_name]["word_count"]["by_chapter"][str(index)][word])
-                self.m_results["consensus_word_counts"][str(index)][word] = median(frequency_list)
-                
+                frequency_list = [self.m_results[reader_name]["word_count"]["by_chapter"][str(index)][word]
+                    for reader_name in active_editions if word in self.m_results[reader_name]["word_count"]["by_chapter"][str(index)]]
+                if frequency_list:
+                    self.m_results["consensus_word_counts"][str(index)][word] = float(median(frequency_list))
+                else:
+                    self.m_results["consensus_word_counts"][str(index)][word] = np.nan
+       
         return self.m_results    
 
     def evaluate(self):
@@ -269,6 +307,8 @@ class DatasetConsistency_RecordConsensus(DataQualityMetric):
         # (4) Calculates mean variance of each edition
         # Metric
         # (5) Calculates mean of all edition variances
+
+        import numpy as np
 
         # 0. Setup
 
@@ -293,26 +333,51 @@ class DatasetConsistency_RecordConsensus(DataQualityMetric):
             for reader_name in self.m_input
         }
         for reader_name in self.m_input:
-            for index in range(1, self.m_results[reader_name]["chapter_count"] + 1):
-                for sentence in self.m_results["consensus_sentence_counts"][str(index)]:
-                    if sentence in self.m_results[reader_name]["sentence_count"]["by_chapter"][str(index)]:
-                        self.m_evaluations["subsubsubsubmetric"][reader_name]["variance_from_sentence_consensus__by_chapter"][str(index)][sentence] = \
-                            self.m_results[reader_name]["sentence_count"]["by_chapter"][str(index)][sentence] - self.m_results["consensus_sentence_counts"][str(index)][sentence]  
-                    # actual_count = self.m_results[reader_name]["sentence_count"]["by_chapter"][str(index)].get(sentence, 0)
-                    # If you want to penalize missing sentences, use -median instead of 0:
-                    # actual_count = self.m_results[reader_name]["sentence_count"]["by_chapter"][str(index)].get(sentence, -self.m_results["consensus_sentence_counts"][str(index)][sentence])
-                    # self.m_evaluations["subsubsubsubmetric"][reader_name]["variance_from_sentence_consensus__by_chapter"][str(index)][sentence] = \
-                    #     actual_count - self.m_results["consensus_sentence_counts"][str(index)][sentence]                        
-                for word in self.m_results["consensus_word_counts"][str(index)]:
-                    if word in self.m_results[reader_name]["word_count"]["by_chapter"][str(index)]:
-                        self.m_evaluations["subsubsubsubmetric"][reader_name]["variance_from_word_consensus__by_chapter"][str(index)][word] = \
-                            self.m_results[reader_name]["word_count"]["by_chapter"][str(index)][word] - self.m_results["consensus_word_counts"][str(index)][word]
-                    # actual_count = self.m_results[reader_name]["word_count"]["by_chapter"][str(index)].get(word, 0)
-                    # or penalize missing word with -median:
-                    # actual_count = self.m_results[reader_name]["word_count"]["by_chapter"][str(index)].get(word, -self.m_results["consensus_word_counts"][str(index)][word])
 
-                    # self.m_evaluations["subsubsubsubmetric"][reader_name]["variance_from_word_consensus__by_chapter"][str(index)][word] = \
-                    #     actual_count - self.m_results["consensus_word_counts"][str(index)][word]
+            if "dli.ernet.235649-HuckFinn" in reader_name:
+                x = 0
+            
+            for index in range(1, max_chapter_count + 1):
+
+                consensus_sentences = self.m_results["consensus_sentence_counts"].get(str(index))
+                consensus_words = self.m_results["consensus_word_counts"].get(str(index))
+
+                # Skip missing chapters entirely
+                if consensus_sentences is None and consensus_words is None:
+                    continue
+
+                # Sentence variance
+                if consensus_sentences is not None:
+                    chapter_dict = self.m_results[reader_name]["sentence_count"]["by_chapter"].get(str(index))
+                    if isinstance(chapter_dict, dict):
+                        for sentence, consensus_count in consensus_sentences.items():
+                            actual_count = chapter_dict.get(sentence)
+                            if actual_count is not None:
+                                self.m_evaluations["subsubsubsubmetric"][reader_name]["variance_from_sentence_consensus__by_chapter"][str(index)][sentence] = \
+                                    actual_count - consensus_count
+                            else:
+                                self.m_evaluations["subsubsubsubmetric"][reader_name]["variance_from_sentence_consensus__by_chapter"][str(index)][sentence] = np.nan
+                else:
+                    # Chapter is missing (np.nan), mark all consensus sentences as NaN
+                    for sentence in consensus_sentences:
+                        self.m_evaluations["subsubsubsubmetric"][reader_name]["variance_from_sentence_consensus__by_chapter"][str(index)][sentence] = np.nan
+
+                # Word variance
+                if consensus_words is not None:
+                    chapter_dict = self.m_results[reader_name]["word_count"]["by_chapter"].get(str(index))
+                    if isinstance(chapter_dict, dict):
+                        for word, consensus_count in consensus_words.items():
+                            actual_count = chapter_dict.get(word)
+                            if actual_count is not None:
+                                self.m_evaluations["subsubsubsubmetric"][reader_name]["variance_from_word_consensus__by_chapter"][str(index)][word] = \
+                                    actual_count - consensus_count
+                            else:
+                                self.m_evaluations["subsubsubsubmetric"][reader_name]["variance_from_word_consensus__by_chapter"][str(index)][word] = np.nan
+                else:
+                    # Chapter is missing (np.nan), mark all consensus words as NaN
+                    for word in consensus_words:
+                        self.m_evaluations["subsubsubsubmetric"][reader_name]["variance_from_word_consensus__by_chapter"][str(index)][word] = np.nan
+
 
                     
         # 2. Subsubsubmetrics - Mean of variances of sentences/words for each chapter in each edition
@@ -320,14 +385,14 @@ class DatasetConsistency_RecordConsensus(DataQualityMetric):
 
             "mean_variance_from_sentence_consensus__by_chapter": {
                 reader_name: {
-                    str(index): mean(list(self.m_evaluations["subsubsubsubmetric"][reader_name]["variance_from_sentence_consensus__by_chapter"][str(index)].values())) if len(list(self.m_evaluations["subsubsubsubmetric"][reader_name]["variance_from_sentence_consensus__by_chapter"][str(index)].values())) else 0
+                    str(index): np.nanmean(list(self.m_evaluations["subsubsubsubmetric"][reader_name]["variance_from_sentence_consensus__by_chapter"][str(index)].values()))
                         for index in range(1, max_chapter_count + 1)
                 } for reader_name in self.m_input
             },
 
             "mean_variance_from_word_consensus__by_chapter": {
                 reader_name: {
-                    str(index): mean(list(self.m_evaluations["subsubsubsubmetric"][reader_name]["variance_from_word_consensus__by_chapter"][str(index)].values()))  if len(list(self.m_evaluations["subsubsubsubmetric"][reader_name]["variance_from_word_consensus__by_chapter"][str(index)].values())) else 0
+                    str(index): np.nanmean(list(self.m_evaluations["subsubsubsubmetric"][reader_name]["variance_from_word_consensus__by_chapter"][str(index)].values()))
                         for index in range(1, max_chapter_count + 1)
                 } for reader_name in self.m_input
             }
@@ -339,8 +404,8 @@ class DatasetConsistency_RecordConsensus(DataQualityMetric):
             reader_name: {
 
                 "variance_from_chapter_consensus__by_edition": self.m_input[reader_name].chapter_count - self.m_results["consensus_chapter_count"],
-                "mean_variance_from_sentence_consensus__by_edition": mean(list(self.m_evaluations["subsubsubmetric"]["mean_variance_from_sentence_consensus__by_chapter"][reader_name].values())),
-                "mean_variance_from_word_consensus__by_edition": mean(list(self.m_evaluations["subsubsubmetric"]["mean_variance_from_word_consensus__by_chapter"][reader_name].values()))
+                "mean_variance_from_sentence_consensus__by_edition": np.nanmean(list(self.m_evaluations["subsubsubmetric"]["mean_variance_from_sentence_consensus__by_chapter"][reader_name].values())),
+                "mean_variance_from_word_consensus__by_edition": np.nanmean(list(self.m_evaluations["subsubsubmetric"]["mean_variance_from_word_consensus__by_chapter"][reader_name].values()))
             }
             for reader_name in self.m_input
         }
@@ -348,16 +413,30 @@ class DatasetConsistency_RecordConsensus(DataQualityMetric):
         # 4. Submetric - Mean of chapter variance of all editions, Mean of mean unit variances of all editions
         self.m_evaluations["submetric"] = {
 
-            "mean_of_variance_from_chapter_consensus__by_edition": mean([self.m_evaluations["subsubmetric"][reader_name]["variance_from_chapter_consensus__by_edition"] for reader_name in self.m_input]),
-            "mean_of_mean_variance_from_sentence_consensus__by_edition": mean([self.m_evaluations["subsubmetric"][reader_name]["mean_variance_from_sentence_consensus__by_edition"] for reader_name in self.m_input]),
-            "mean_of_mean_variance_from_word_consensus__by_edition": mean([self.m_evaluations["subsubmetric"][reader_name]["mean_variance_from_word_consensus__by_edition"] for reader_name in self.m_input])
+            "mean_of_variance_from_chapter_consensus__by_edition": np.nanmean([self.m_evaluations["subsubmetric"][reader_name]["variance_from_chapter_consensus__by_edition"] for reader_name in self.m_input]),
+            "mean_of_mean_variance_from_sentence_consensus__by_edition": np.nanmean([self.m_evaluations["subsubmetric"][reader_name]["mean_variance_from_sentence_consensus__by_edition"] for reader_name in self.m_input]),
+            "mean_of_mean_variance_from_word_consensus__by_edition": np.nanmean([self.m_evaluations["subsubmetric"][reader_name]["mean_variance_from_word_consensus__by_edition"] for reader_name in self.m_input]),
+
+            # NOTE: Chapter coverage is more about completeness than consensus. It remains a separate submetric
+            "coverage": { reader_name: self.m_input[reader_name].chapter_count / self.m_results["consensus_chapter_count"] for reader_name in self.m_input }            
         }
+
+        # A. Calculate the average chapter coverage
+        self.m_evaluations["submetric"]["mean_coverage"] = np.nanmean(
+            list(self.m_evaluations["submetric"]["coverage"].values())
+        )
 
         # 5. Metric - Mean of all three submetrics (mostly to derive a single data quality percentage, each submetric is evenly weighted here)
         # NOTE: Absolute value because variances can be negative
-        self.m_evaluations["metric"] = abs(mean(list(self.m_evaluations["submetric"].values())))
+        self.m_evaluations["metric"] = abs(np.nanmean([
+            
+            self.m_evaluations["submetric"]["mean_of_variance_from_chapter_consensus__by_edition"],
+            self.m_evaluations["submetric"]["mean_of_mean_variance_from_sentence_consensus__by_edition"],
+            self.m_evaluations["submetric"]["mean_of_mean_variance_from_word_consensus__by_edition"]
+            
+        ]))
 
-        return self.metric_evaluation
+        return self.metric_evaluation   
     
     # Static fields and methods
     
