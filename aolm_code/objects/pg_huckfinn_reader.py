@@ -41,8 +41,8 @@ class PGHuckFinnReader(AOLMTextReader):
         body_id = f"{self.m_json["keys"]["output"]["body"]}CHAPTER {roman_numeral}."
 
         # Exception for the last chapter (43) of Huckleberry Finn which is "THE LAST"
-        if 43 == p_chapter_number:
-            body_id =   f"{self.m_json["keys"]["output"]["body"]}CHAPTER THE LAST"        
+        # if 43 == p_chapter_number and body_id not in self.m_json["components"]["body"]:
+        #     body_id =   f"{self.m_json["keys"]["output"]["body"]}CHAPTER THE LAST"        
 
         return self.m_json["components"]["body"][body_id] if body_id in self.m_json["components"]["body"] else []
     
