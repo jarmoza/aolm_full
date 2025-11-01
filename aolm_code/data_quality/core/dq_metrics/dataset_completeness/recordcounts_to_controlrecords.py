@@ -145,15 +145,16 @@ class DatasetCompleteness_RecordCountsToControlRecords(DataQualityMetric):
                 continue
             self.m_results[reader_name]["chapter_count"] = 100.0 * self.m_input[reader_name].chapter_count / ur_chapter_count
 
-        # 2. Sentence count (using spaCy's sentence model)
+        # 2. Sentence count (using spaCy's sentence model) and word count
 
         # Get sentences from chapter strings via spaCy
 
-        # A. Compare sentences of each chapter of Ur text with each compared edition
+        # A. Compare sentences and words of each chapter of Ur text with each compared edition
         for index in range(1, ur_chapter_count + 1):
 
             # I. Read the ur chapter
-            ur_spacy_chapter = self.m_spacymodel("\n".join(self.m_input[self.m_urtext_name].get_chapter(index)))
+            ur_chapter = self.m_input[self.m_urtext_name].get_chapter(index)
+            ur_spacy_chapter = self.m_spacymodel("\n".join(ur_chapter))
 
             # II. Create a dictionary of unique sentence counts of the ur chapter
             ur_sentence_dict = AOLMTextUtilities.get_sentence_dict_from_spacy_doc(ur_spacy_chapter)
@@ -163,29 +164,23 @@ class DatasetCompleteness_RecordCountsToControlRecords(DataQualityMetric):
                 if self.m_urtext_name == reader_name:
                     continue
 
-                compared_spacy_chapter = self.m_spacymodel("\n".join(self.m_input[reader_name].get_chapter(index)))
-                compared_sentence_dict = AOLMTextUtilities.get_sentence_dict_from_spacy_doc(compared_spacy_chapter)
+                # a. Missing chapter safeguard
+                compared_chapter = self.m_input[reader_name].get_chapter(index)
+                if not compared_chapter:
+                    # Penalize missing chapter
+                    self.m_results[reader_name]["sentence_count"]["by_chapter"][str(index)] = 0.0
+                    self.m_results[reader_name]["word_count"]["by_chapter"][str(index)] = 0.0
+                    continue
                 
+                # b. Sentence comparison
+                compared_spacy_chapter = self.m_spacymodel("\n".join(compared_chapter))
+                compared_sentence_dict = AOLMTextUtilities.get_sentence_dict_from_spacy_doc(compared_spacy_chapter)
                 self.m_results[reader_name]["sentence_count"]["by_chapter"][str(index)] = \
                     AOLMTextUtilities.dictionaries_percent_equal(ur_sentence_dict, compared_sentence_dict)
                 
-        # 3. Word count
-        for index in range(1, ur_chapter_count + 1):
-
-            # I. Read the ur chapter's words
-            ur_chapter = self.m_input[self.m_urtext_name].get_chapter(index)
-            ur_words = AOLMTextUtilities.get_words_from_string(AOLMTextUtilities.create_string_from_lines(ur_chapter))
-            ur_words = Counter(ur_words)
-
-            # II. Compare the ur chapter words to those in each compared edition
-            for reader_name in self.m_input:
-                if self.m_urtext_name == reader_name:
-                    continue
-
-                compared_chapter = self.m_input[reader_name].get_chapter(index)
-                compared_words = AOLMTextUtilities.get_words_from_string(AOLMTextUtilities.create_string_from_lines(compared_chapter))
-                compared_words = Counter(compared_words)
-                
+                # c. Word comparison
+                ur_words = Counter(AOLMTextUtilities.get_words_from_string(AOLMTextUtilities.create_string_from_lines(ur_chapter)))
+                compared_words = Counter(AOLMTextUtilities.get_words_from_string(AOLMTextUtilities.create_string_from_lines(compared_chapter)))
                 self.m_results[reader_name]["word_count"]["by_chapter"][str(index)] = \
                     AOLMTextUtilities.dictionaries_percent_equal(ur_words, compared_words)
                 
@@ -231,24 +226,25 @@ class DatasetCompleteness_RecordCountsToControlRecords(DataQualityMetric):
             ur_sentence_weights[ch_number] = ur_sentence_counts[ch_number] / ur_total_sentence_count
             ur_word_weights[ch_number] = ur_word_counts[ch_number] / ur_total_word_count        
 
-        # 2. Calculate evaluations of subsubmetrics
+        # 2. Calculate evaluations of subsubmetrics (weighted per-edition scores)
         self.m_evaluations["subsubmetric"] = {
              
             reader_name: {
                 "chapter_count": self.m_results[reader_name]["chapter_count"],
 
                 # Weighted means
-                "sentence_count": sum([ur_sentence_weights[str(index)] * self.m_results[reader_name]["sentence_count"]["by_chapter"][str(index)] \
+                "sentence_count": sum([ur_sentence_weights[str(index)] * self.m_results[reader_name]["sentence_count"]["by_chapter"].get(str(index), 0.0) \
                                         for index in range(1, ur_chapter_count + 1)]),
                 # "sentence_count": mean(self.m_results[reader_name]["sentence_count"]["by_chapter"].values()),
-                "word_count": sum([ur_word_weights[str(index)] * self.m_results[reader_name]["word_count"]["by_chapter"][str(index)] \
+
+                "word_count": sum([ur_word_weights[str(index)] * self.m_results[reader_name]["word_count"]["by_chapter"].get(str(index), 0.0) \
                                         for index in range(1, ur_chapter_count + 1)])
                 # "word_count": mean(self.m_results[reader_name]["word_count"]["by_chapter"].values())
             }
             for reader_name in self.m_results 
         }
 
-        # 3. Calculate evaluation of submetrics
+        # 3. Calculate evaluation of submetrics (average across editions)
         self.m_evaluations["submetric"] = {
 
             "chapter_count": mean([self.m_evaluations["subsubmetric"][reader_name]["chapter_count"] for reader_name in self.m_evaluations["subsubmetric"] if self.m_urtext_name != reader_name]),
@@ -256,8 +252,16 @@ class DatasetCompleteness_RecordCountsToControlRecords(DataQualityMetric):
             "word_count": mean([self.m_evaluations["subsubmetric"][reader_name]["word_count"] for reader_name in self.m_evaluations["subsubmetric"] if self.m_urtext_name != reader_name]),
         }
 
+        # 4. Coverage (proportion of ur chapters present)
+        self.m_evaluations["submetric"]["coverage"] = {
+            reader_name: sum(1 for index in range(1, ur_chapter_count + 1)
+                if self.m_results[reader_name]["sentence_count"]["by_chapter"].get(str(index), 0.0) > 0.0
+                ) / ur_chapter_count
+            for reader_name in self.m_results
+        }        
+
         # 4. Metric is weighted mean of submetrics
-        self.m_evaluations["metric"] = mean(self.m_evaluations["submetric"].values())
+        self.m_evaluations["metric"] = mean([self.m_evaluations["submetric"][key] for key in ["chapter_count", "sentence_count", "word_count"]])
 
         return self.metric_evaluation
     
