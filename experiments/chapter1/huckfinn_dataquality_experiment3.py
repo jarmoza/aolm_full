@@ -66,7 +66,8 @@ def get_publication_year(p_edition_short_name):
 def plot_heatmap(p_chart_title, p_metric_name, p_data):
 
     import numpy as np
-    import matplotlib.pyplot as plt    
+    import matplotlib.pyplot as plt
+    from matplotlib import colors  
 
     # Editions of the novel (sorted by publication year)
     editions = list(p_data.keys())
@@ -74,17 +75,33 @@ def plot_heatmap(p_chart_title, p_metric_name, p_data):
     editions.sort(key=lambda x: x[0])
     editions = [edition_tuple[1] for edition_tuple in editions]
     n_editions = len(editions)
-    n_chapters = len(p_data[editions[0]])
+    
+    # Determine the maximum number of chapters across all editions
+    n_chapters = max(len(chapter_list) for chapter_list in p_data.values())
 
-    # Fill in data
+    # Fill in data and mask for missing chapters
     data = np.zeros((n_editions, n_chapters))
-    for index in range(n_editions):
+    mask = np.zeros((n_editions, n_chapters), dtype=bool)
+
+    for index, edition in enumerate(editions):
         for index2 in range(n_chapters):
-            data[index, index2] = p_data[editions[index]][index2]
+            value = p_data[edition][index2] if index2 < len(p_data[edition]) else None
+            if value is None:
+                mask[index, index2] = True
+                data[index, index2] = 0
+            else:
+                data[index, index2] = value
+
+    # Create colormap: numeric values → e.g., viridis; masked → black
+    cmap = plt.cm.viridis
+    cmap.set_bad(color="black")
+
+    # Masked array
+    data_masked = np.ma.array(data, mask=mask)    
 
     # Plot heatmap
     fig, ax = plt.subplots(figsize=(12, 6))
-    im = ax.imshow(data, aspect='auto')
+    im = ax.imshow(data_masked, aspect="auto", cmap=cmap)
 
     # Set axis labels
     ax.set_xticks(np.arange(n_chapters))
@@ -98,6 +115,116 @@ def plot_heatmap(p_chart_title, p_metric_name, p_data):
     # Add colorbar
     cbar = plt.colorbar(im, ax=ax)
     cbar.set_label(p_metric_name)
+
+    # Add a small legend patch for missing chapters (black rectangles)
+    # import matplotlib.patches as mpatches
+    # missing_patch = mpatches.Patch(color="black", label="Missing chapter")
+    # cbar.ax.legend(
+    #     handles=[missing_patch],
+    #     loc="lower right",
+    #     frameon=False,
+    #     fontsize=8
+    # )   
+
+    ax.set_title(p_chart_title)
+    ax.set_xlabel("Chapter")
+    ax.set_ylabel("Edition")
+
+    plt.tight_layout()
+    plt.show()
+
+def plot_heatmap_version2(p_chart_title, p_metric_name, p_data):
+    
+    import numpy as np
+    import matplotlib.pyplot as plt
+    import math
+    from matplotlib import colors
+    import matplotlib.patches as mpatches
+
+    # Editions of the novel (sorted by publication year)
+    editions = list(p_data.keys())
+    editions = [(get_publication_year(edition_short_name), edition_short_name) for edition_short_name in editions]
+    editions.sort(key=lambda x: x[0])
+    editions = [edition_tuple[1] for edition_tuple in editions]
+    n_editions = len(editions)
+
+    # Determine the maximum number of chapters across all editions (handles lists of unequal length)
+    # p_data[edition] is assumed to be a list-like of length = number of chapters present
+    n_chapters = max(len(v) for v in p_data.values()) if p_data else 0
+    if n_chapters == 0:
+        raise ValueError("p_data appears empty or contains no chapters.")
+
+    # Prepare arrays
+    data = np.zeros((n_editions, n_chapters), dtype=float)
+    mask = np.zeros((n_editions, n_chapters), dtype=bool)
+
+    # Fill arrays and build mask. Treat as missing if:
+    #  - the edition list is shorter than the chapter index
+    #  - the value is None
+    #  - the value is NaN
+    for i, edition in enumerate(editions):
+        edition_list = p_data.get(edition, [])
+        for j in range(n_chapters):
+            if j >= len(edition_list):
+                # absent because the list is too short
+                mask[i, j] = True
+                data[i, j] = 0.0
+            else:
+                val = edition_list[j]
+                # treat None or NaN as missing
+                if val is None or (isinstance(val, float) and math.isnan(val)):
+                    mask[i, j] = True
+                    data[i, j] = 0.0
+                else:
+                    try:
+                        data[i, j] = float(val)
+                    except Exception:
+                        # if conversion fails, mark as missing
+                        mask[i, j] = True
+                        data[i, j] = 0.0
+
+    # Diagnostic printouts to help debugging
+    total_masked = int(mask.sum())
+    print(f"Heatmap diagnostic: {total_masked} masked cells out of {n_editions * n_chapters} total.")
+    if total_masked:
+        # show up to first 10 masked coordinates
+        coords = list(zip(*np.where(mask)))
+        shown = coords[:10]
+        print("Sample masked coordinates (edition_index, chapter_index):", shown)
+        # map edition indices to names for the sample
+        print("Sample masked (edition_name, chapter_number):",
+              [(editions[r], c + 1) for (r, c) in shown])
+
+    # Create colormap and ensure masked (bad) color is black
+    cmap = plt.cm.viridis
+    # Make a copy of the colormap to avoid modifying the global colormap unexpectedly
+    cmap = cmap.copy()
+    cmap.set_bad(color='black')
+
+    # Create masked array
+    data_masked = np.ma.array(data, mask=mask)
+
+    # Plot heatmap
+    fig, ax = plt.subplots(figsize=(12, 6))
+    im = ax.imshow(data_masked, aspect='auto', cmap=cmap)
+
+    # Set axis labels
+    ax.set_xticks(np.arange(n_chapters))
+    ax.set_xticklabels(np.arange(1, n_chapters + 1))
+    ax.set_yticks(np.arange(n_editions))
+    ax.set_yticklabels(editions)
+
+    # Rotate x-axis labels for readability
+    plt.setp(ax.get_xticklabels(), rotation=90, ha="center")
+
+    # Add colorbar and label
+    cbar = plt.colorbar(im, ax=ax)
+    cbar.set_label(p_metric_name)
+
+    # Add a small legend patch for missing chapters (black rectangles) inside the colorbar
+    missing_patch = mpatches.Patch(color="black", label="Missing chapter")
+    # Put the legend just under the colorbar ticks, inside the colorbar axis
+    cbar.ax.legend(handles=[missing_patch], loc='upper right', frameon=False, fontsize=8)
 
     ax.set_title(p_chart_title)
     ax.set_xlabel("Chapter")
@@ -130,8 +257,8 @@ def plot_results(p_results_filepath, p_ur_chapter_count, p_count_type, p_count_c
 
             if edition_name not in editions:
                 editions[edition_name] = {
-                    "sentences": [0] * p_ur_chapter_count,
-                    "words": [0] * p_ur_chapter_count
+                    "sentences": [None] * p_ur_chapter_count,
+                    "words": [None] * p_ur_chapter_count
                 }
 
             editions[edition_name][count_type][int(chapter_name) - 1] = count
@@ -140,13 +267,13 @@ def plot_results(p_results_filepath, p_ur_chapter_count, p_count_type, p_count_c
         if "sentences" == p_count_type:
             plot_heatmap(
                 "Mean Sentence Variance by Chapter in Internet Archive Editions of 'Adventures of Huckleberry Finn'",
-                "Record Consistency data quality",
+                "Record Consensus data quality",
                 { edition_name: editions[edition_name]["sentences"] for edition_name in editions }
             )
         elif "words" == p_count_type:  
             plot_heatmap(
-                "Mean Word Varianbce by Chapter in Internet Archive Editions of 'Adventures of Huckleberry Finn'",
-                "Record consistency data quality",
+                "Mean Word Variance by Chapter in Internet Archive Editions of 'Adventures of Huckleberry Finn'",
+                "Record Consensus data quality",
                 { edition_name: editions[edition_name]["words"] for edition_name in editions }
             )
 
@@ -155,10 +282,13 @@ def plot_results(p_results_filepath, p_ur_chapter_count, p_count_type, p_count_c
 
 def main():
 
-    plot_data = False
+    plot_data = True
     if plot_data:
 
-        plot_results(EXPERIMENT_PATH + "huckfinn_pgiamtpo_subx4metric.csv", 43, "words", "variance_from_word_consensus__by_chapter")
+        # plot_results(EXPERIMENT_PATH + "huckfinn_pgiamtpo_subx4metric_variancetest.csv", 43, "sentences", "variance_from_sentence_consensus__by_chapter")
+        plot_results(EXPERIMENT_PATH + "huckfinn_pgiamtpo_subx4metric_variancetest.csv", 43, "words", "variance_from_word_consensus__by_chapter")
+
+        # plot_results(EXPERIMENT_PATH + "huckfinn_pgiamtpo_subx4metric.csv", 43, "words", "variance_from_word_consensus__by_chapter")
         # plot_results(EXPERIMENT_PATH + "huckfinn_pgiamtpo_subx4metric.csv", 43, "sentences", "variance_from_sentence_consensus__by_chapter")
 
         return
@@ -196,10 +326,14 @@ def main():
     print(f"Metric: {100 * huckfinn_recordconsensus.metric_evaluation}%")
     print(f"Submetrics: {huckfinn_recordconsensus.m_evaluations["submetric"]}")
 
-    output_lines = huckfinn_recordconsensus.__build_eval_output_line__()
-    with open(EXPERIMENT_PATH + "huckfinn_pgiamtpo_subx4metric.csv", "w") as output_file:
-        for line in output_lines:
-            output_file.write(line)    
+    output_csv_toggle = True
+    # csv_filename = "huckfinn_pgiamtpo_subx4metric.csv"
+    csv_filename = "huckfinn_pgiamtpo_subx4metric_variancetest.csv"
+    if output_csv_toggle:
+        output_lines = huckfinn_recordconsensus.__build_eval_output_line__()
+        with open(EXPERIMENT_PATH + csv_filename, "w") as output_file:
+            for line in output_lines:
+                output_file.write(line)    
 
 
 if "__main__" == __name__:
