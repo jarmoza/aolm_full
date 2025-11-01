@@ -182,14 +182,15 @@ class AOLMTextUtilities:
         if p_spacy_doc:
             for sent in p_spacy_doc.sents:
                 cleaned_sent = AOLMTextUtilities.clean_string(sent.text, p_remove_internal_punctuation=True)
-                if cleaned_sent not in unique_sentences:
-                    unique_sentences[cleaned_sent] = 0
-                unique_sentences[cleaned_sent] += 1
+                if len(cleaned_sent.strip()) > 0:
+                    if cleaned_sent not in unique_sentences:
+                        unique_sentences[cleaned_sent] = 0
+                    unique_sentences[cleaned_sent] += 1
         return unique_sentences
 
     @staticmethod
     def get_words_from_string(p_string):
-        return p_string.strip().split()
+        return [word for word in p_string.strip().split() if len(word.strip()) > 0]
     
     @staticmethod
     def get_valueset(p_dictionary_list):
