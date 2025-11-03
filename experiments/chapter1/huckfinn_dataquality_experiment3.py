@@ -282,7 +282,7 @@ def plot_results(p_results_filepath, p_ur_chapter_count, p_count_type, p_count_c
 
 def main():
 
-    plot_data = True
+    plot_data = False
     if plot_data:
 
         # plot_results(EXPERIMENT_PATH + "huckfinn_pgiamtpo_subx4metric_variancetest.csv", 43, "sentences", "variance_from_sentence_consensus__by_chapter")
