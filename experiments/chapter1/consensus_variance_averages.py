@@ -26,7 +26,7 @@ def get_edition_shortname_from_metadata(p_text_json_filename):
     return short_name
 
 # Path to your CSV file
-csv_file = f"{os.getcwd()}{os.sep}experiments{os.sep}outputs{os.sep}huckfinn_pgiamtpo_subx4metric.csv"
+csv_file = f"{os.getcwd()}{os.sep}experiments{os.sep}outputs{os.sep}huckfinn_pgiamtpo_subx4metric_variancetest.csv"
 
 # Read the CSV into a DataFrame
 df = pd.read_csv(csv_file)
