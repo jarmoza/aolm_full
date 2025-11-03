@@ -1,0 +1,498 @@
+{
+    "ia": {
+        "individual_editions": {
+            "adventureshuckle00twaiiala": {
+                "source": "ia",
+                "work_title": "Adventures of Huckleberry Finn",
+                "edition_title": "adventureshuckle00twaiiala-HuckFinn",
+                "metric": "record_counts_to_control",
+                "value": 67.1841842223469,
+                "compared_against": "mtpo",
+                "filename": "adventureshuckle00twaiiala-HuckFinn.json",
+                "filepath": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/json/adventureshuckle00twaiiala-HuckFinn.json",
+                "subsubmetric": {
+                    "adventureshuckle00twaiiala-HuckFinn.json": {
+                        "chapter_count": 100.0,
+                        "sentence_count": 28.551408008402213,
+                        "word_count": 73.00114465863848
+                    }
+                },
+                "submetric": {
+                    "chapter_count": 100.0,
+                    "sentence_count": 28.551408008402213,
+                    "word_count": 73.00114465863848,
+                    "coverage": {
+                        "adventureshuckle00twaiiala-HuckFinn.json": 1.0
+                    }
+                },
+                "path": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/json/adventureshuckle00twaiiala-HuckFinn.json",
+                "collection_title": "Internet Archive"
+            },
+            "adventuresofhuc00twai": {
+                "source": "ia",
+                "work_title": "Adventures of Huckleberry Finn",
+                "edition_title": "adventuresofhuc00twai-HuckFinn",
+                "metric": "record_counts_to_control",
+                "value": 69.47530882148739,
+                "compared_against": "mtpo",
+                "filename": "adventuresofhuc00twai-HuckFinn.json",
+                "filepath": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/json/adventuresofhuc00twai-HuckFinn.json",
+                "subsubmetric": {
+                    "adventuresofhuc00twai-HuckFinn.json": {
+                        "chapter_count": 100.0,
+                        "sentence_count": 34.93214696422033,
+                        "word_count": 73.49377950024183
+                    }
+                },
+                "submetric": {
+                    "chapter_count": 100.0,
+                    "sentence_count": 34.93214696422033,
+                    "word_count": 73.49377950024183,
+                    "coverage": {
+                        "adventuresofhuc00twai-HuckFinn.json": 1.0
+                    }
+                },
+                "path": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/json/adventuresofhuc00twai-HuckFinn.json",
+                "collection_title": "Internet Archive"
+            },
+            "adventuresofhuck00twai_9": {
+                "source": "ia",
+                "work_title": "Adventures of Huckleberry Finn",
+                "edition_title": "adventuresofhuck00twai_9-HuckFinn",
+                "metric": "record_counts_to_control",
+                "value": 68.36352858999844,
+                "compared_against": "mtpo",
+                "filename": "adventuresofhuck00twai_9-HuckFinn.json",
+                "filepath": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/json/adventuresofhuck00twai_9-HuckFinn.json",
+                "subsubmetric": {
+                    "adventuresofhuck00twai_9-HuckFinn.json": {
+                        "chapter_count": 100.0,
+                        "sentence_count": 32.377936347293414,
+                        "word_count": 72.71264942270192
+                    }
+                },
+                "submetric": {
+                    "chapter_count": 100.0,
+                    "sentence_count": 32.377936347293414,
+                    "word_count": 72.71264942270192,
+                    "coverage": {
+                        "adventuresofhuck00twai_9-HuckFinn.json": 1.0
+                    }
+                },
+                "path": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/json/adventuresofhuck00twai_9-HuckFinn.json",
+                "collection_title": "Internet Archive"
+            },
+            "adventuresofhuck00twaiiala": {
+                "source": "ia",
+                "work_title": "Adventures of Huckleberry Finn",
+                "edition_title": "adventuresofhuck00twaiiala-HuckFinn",
+                "metric": "record_counts_to_control",
+                "value": 34.83688233703567,
+                "compared_against": "mtpo",
+                "filename": "adventuresofhuck00twaiiala-HuckFinn.json",
+                "filepath": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/json/adventuresofhuck00twaiiala-HuckFinn.json",
+                "subsubmetric": {
+                    "adventuresofhuck00twaiiala-HuckFinn.json": {
+                        "chapter_count": 51.16279069767442,
+                        "sentence_count": 16.99120319396107,
+                        "word_count": 36.35665311947152
+                    }
+                },
+                "submetric": {
+                    "chapter_count": 51.16279069767442,
+                    "sentence_count": 16.99120319396107,
+                    "word_count": 36.35665311947152,
+                    "coverage": {
+                        "adventuresofhuck00twaiiala-HuckFinn.json": 0.5116279069767442
+                    }
+                },
+                "path": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/json/adventuresofhuck00twaiiala-HuckFinn.json",
+                "collection_title": "Internet Archive"
+            },
+            "adventuresofhuck00twaiuoft": {
+                "source": "ia",
+                "work_title": "Adventures of Huckleberry Finn",
+                "edition_title": "adventuresofhuck00twaiuoft-HuckFinn",
+                "metric": "record_counts_to_control",
+                "value": 66.58840665933347,
+                "compared_against": "mtpo",
+                "filename": "adventuresofhuck00twaiuoft-HuckFinn.json",
+                "filepath": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/json/adventuresofhuck00twaiuoft-HuckFinn.json",
+                "subsubmetric": {
+                    "adventuresofhuck00twaiuoft-HuckFinn.json": {
+                        "chapter_count": 97.67441860465117,
+                        "sentence_count": 31.922110799874666,
+                        "word_count": 70.16869057347459
+                    }
+                },
+                "submetric": {
+                    "chapter_count": 97.67441860465117,
+                    "sentence_count": 31.922110799874666,
+                    "word_count": 70.16869057347459,
+                    "coverage": {
+                        "adventuresofhuck00twaiuoft-HuckFinn.json": 0.9767441860465116
+                    }
+                },
+                "path": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/json/adventuresofhuck00twaiuoft-HuckFinn.json",
+                "collection_title": "Internet Archive"
+            },
+            "adventuresofhuck1904twai": {
+                "source": "ia",
+                "work_title": "Adventures of Huckleberry Finn",
+                "edition_title": "adventuresofhuck1904twai-HuckFinn",
+                "metric": "record_counts_to_control",
+                "value": 67.32198449490821,
+                "compared_against": "mtpo",
+                "filename": "adventuresofhuck1904twai-HuckFinn.json",
+                "filepath": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/json/adventuresofhuck1904twai-HuckFinn.json",
+                "subsubmetric": {
+                    "adventuresofhuck1904twai-HuckFinn.json": {
+                        "chapter_count": 100.0,
+                        "sentence_count": 30.79825036880399,
+                        "word_count": 71.16770311592063
+                    }
+                },
+                "submetric": {
+                    "chapter_count": 100.0,
+                    "sentence_count": 30.79825036880399,
+                    "word_count": 71.16770311592063,
+                    "coverage": {
+                        "adventuresofhuck1904twai-HuckFinn.json": 1.0
+                    }
+                },
+                "path": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/json/adventuresofhuck1904twai-HuckFinn.json",
+                "collection_title": "Internet Archive"
+            },
+            "cihm_50160": {
+                "source": "ia",
+                "work_title": "Adventures of Huckleberry Finn",
+                "edition_title": "cihm_50160-HuckFinn",
+                "metric": "record_counts_to_control",
+                "value": 61.94996166515635,
+                "compared_against": "mtpo",
+                "filename": "cihm_50160-HuckFinn.json",
+                "filepath": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/json/cihm_50160-HuckFinn.json",
+                "subsubmetric": {
+                    "cihm_50160-HuckFinn.json": {
+                        "chapter_count": 100.0,
+                        "sentence_count": 18.589256844581886,
+                        "word_count": 67.26062815088717
+                    }
+                },
+                "submetric": {
+                    "chapter_count": 100.0,
+                    "sentence_count": 18.589256844581886,
+                    "word_count": 67.26062815088717,
+                    "coverage": {
+                        "cihm_50160-HuckFinn.json": 1.0
+                    }
+                },
+                "path": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/json/cihm_50160-HuckFinn.json",
+                "collection_title": "Internet Archive"
+            },
+            "dli.ernet.14052": {
+                "source": "ia",
+                "work_title": "Adventures of Huckleberry Finn",
+                "edition_title": "dli.ernet.14052-HuckFinn",
+                "metric": "record_counts_to_control",
+                "value": 67.97078696188673,
+                "compared_against": "mtpo",
+                "filename": "dli.ernet.14052-HuckFinn.json",
+                "filepath": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/json/dli.ernet.14052-HuckFinn.json",
+                "subsubmetric": {
+                    "dli.ernet.14052-HuckFinn.json": {
+                        "chapter_count": 97.67441860465117,
+                        "sentence_count": 27.930480858759136,
+                        "word_count": 78.30746142224989
+                    }
+                },
+                "submetric": {
+                    "chapter_count": 97.67441860465117,
+                    "sentence_count": 27.930480858759136,
+                    "word_count": 78.30746142224989,
+                    "coverage": {
+                        "dli.ernet.14052-HuckFinn.json": 0.9767441860465116
+                    }
+                },
+                "path": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/json/dli.ernet.14052-HuckFinn.json",
+                "collection_title": "Internet Archive"
+            },
+            "dli.ernet.235649": {
+                "source": "ia",
+                "work_title": "Adventures of Huckleberry Finn",
+                "edition_title": "dli.ernet.235649-HuckFinn",
+                "metric": "record_counts_to_control",
+                "value": 46.806614476627615,
+                "compared_against": "mtpo",
+                "filename": "dli.ernet.235649-HuckFinn.json",
+                "filepath": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/json/dli.ernet.235649-HuckFinn.json",
+                "subsubmetric": {
+                    "dli.ernet.235649-HuckFinn.json": {
+                        "chapter_count": 65.11627906976744,
+                        "sentence_count": 19.127322036652764,
+                        "word_count": 56.17624232346263
+                    }
+                },
+                "submetric": {
+                    "chapter_count": 65.11627906976744,
+                    "sentence_count": 19.127322036652764,
+                    "word_count": 56.17624232346263,
+                    "coverage": {
+                        "dli.ernet.235649-HuckFinn.json": 0.6511627906976745
+                    }
+                },
+                "path": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/json/dli.ernet.235649-HuckFinn.json",
+                "collection_title": "Internet Archive"
+            },
+            "dli.ernet.470159": {
+                "source": "ia",
+                "work_title": "Adventures of Huckleberry Finn",
+                "edition_title": "dli.ernet.470159-HuckFinn",
+                "metric": "record_counts_to_control",
+                "value": 69.21844448221384,
+                "compared_against": "mtpo",
+                "filename": "dli.ernet.470159-HuckFinn.json",
+                "filepath": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/json/dli.ernet.470159-HuckFinn.json",
+                "subsubmetric": {
+                    "dli.ernet.470159-HuckFinn.json": {
+                        "chapter_count": 100.0,
+                        "sentence_count": 27.234884080179434,
+                        "word_count": 80.42044936646207
+                    }
+                },
+                "submetric": {
+                    "chapter_count": 100.0,
+                    "sentence_count": 27.234884080179434,
+                    "word_count": 80.42044936646207,
+                    "coverage": {
+                        "dli.ernet.470159-HuckFinn.json": 1.0
+                    }
+                },
+                "path": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/json/dli.ernet.470159-HuckFinn.json",
+                "collection_title": "Internet Archive"
+            }
+        },
+        "overall": {
+            "source": "ia",
+            "work_title": "Adventures of Huckleberry Finn",
+            "edition_title": "ia",
+            "metric": "record_counts_to_control",
+            "value": 61.971610271099465,
+            "compared_against": "mtpo",
+            "filename": "",
+            "filepath": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/json/",
+            "subsubmetric": {
+                "adventureshuckle00twaiiala-HuckFinn.json": {
+                    "chapter_count": 100.0,
+                    "sentence_count": 28.551408008402213,
+                    "word_count": 73.00114465863848
+                },
+                "adventuresofhuc00twai-HuckFinn.json": {
+                    "chapter_count": 100.0,
+                    "sentence_count": 34.93214696422033,
+                    "word_count": 73.49377950024183
+                },
+                "adventuresofhuck00twai_9-HuckFinn.json": {
+                    "chapter_count": 100.0,
+                    "sentence_count": 32.377936347293414,
+                    "word_count": 72.71264942270192
+                },
+                "adventuresofhuck00twaiiala-HuckFinn.json": {
+                    "chapter_count": 51.16279069767442,
+                    "sentence_count": 16.99120319396107,
+                    "word_count": 36.35665311947152
+                },
+                "adventuresofhuck00twaiuoft-HuckFinn.json": {
+                    "chapter_count": 97.67441860465117,
+                    "sentence_count": 31.922110799874666,
+                    "word_count": 70.16869057347459
+                },
+                "adventuresofhuck1904twai-HuckFinn.json": {
+                    "chapter_count": 100.0,
+                    "sentence_count": 30.79825036880399,
+                    "word_count": 71.16770311592063
+                },
+                "cihm_50160-HuckFinn.json": {
+                    "chapter_count": 100.0,
+                    "sentence_count": 18.589256844581886,
+                    "word_count": 67.26062815088717
+                },
+                "dli.ernet.14052-HuckFinn.json": {
+                    "chapter_count": 97.67441860465117,
+                    "sentence_count": 27.930480858759136,
+                    "word_count": 78.30746142224989
+                },
+                "dli.ernet.235649-HuckFinn.json": {
+                    "chapter_count": 65.11627906976744,
+                    "sentence_count": 19.127322036652764,
+                    "word_count": 56.17624232346263
+                },
+                "dli.ernet.470159-HuckFinn.json": {
+                    "chapter_count": 100.0,
+                    "sentence_count": 27.234884080179434,
+                    "word_count": 80.42044936646207
+                }
+            },
+            "submetric": {
+                "chapter_count": 91.16279069767442,
+                "sentence_count": 26.84549995027289,
+                "word_count": 67.90654016535107,
+                "coverage": {
+                    "adventureshuckle00twaiiala-HuckFinn.json": 1.0,
+                    "adventuresofhuc00twai-HuckFinn.json": 1.0,
+                    "adventuresofhuck00twai_9-HuckFinn.json": 1.0,
+                    "adventuresofhuck00twaiiala-HuckFinn.json": 0.5116279069767442,
+                    "adventuresofhuck00twaiuoft-HuckFinn.json": 0.9767441860465116,
+                    "adventuresofhuck1904twai-HuckFinn.json": 1.0,
+                    "cihm_50160-HuckFinn.json": 1.0,
+                    "dli.ernet.14052-HuckFinn.json": 0.9767441860465116,
+                    "dli.ernet.235649-HuckFinn.json": 0.6511627906976745,
+                    "dli.ernet.470159-HuckFinn.json": 1.0
+                }
+            },
+            "path": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/json/",
+            "collection_title": "Internet Archive"
+        }
+    },
+    "pg": {
+        "individual_editions": {
+            "2011-05-03": {
+                "source": "pg",
+                "work_title": "Adventures of Huckleberry Finn",
+                "edition_title": "2011-05-03-HuckFinn",
+                "metric": "record_counts_to_control",
+                "value": 72.39998303019163,
+                "compared_against": "mtpo",
+                "filename": "2011-05-03-HuckFinn.json",
+                "filepath": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/project_gutenberg/json/2011-05-03-HuckFinn.json",
+                "subsubmetric": {
+                    "2011-05-03-HuckFinn.json": {
+                        "chapter_count": 100.0,
+                        "sentence_count": 43.529272568627526,
+                        "word_count": 73.67067652194737
+                    }
+                },
+                "submetric": {
+                    "chapter_count": 100.0,
+                    "sentence_count": 43.529272568627526,
+                    "word_count": 73.67067652194737,
+                    "coverage": {
+                        "2011-05-03-HuckFinn.json": 1.0
+                    }
+                },
+                "path": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/project_gutenberg/json/2011-05-03-HuckFinn.json",
+                "collection_title": "Project Gutenberg"
+            },
+            "2016-08-17": {
+                "source": "pg",
+                "work_title": "Adventures of Huckleberry Finn",
+                "edition_title": "2016-08-17-HuckFinn",
+                "metric": "record_counts_to_control",
+                "value": 75.16209679522002,
+                "compared_against": "mtpo",
+                "filename": "2016-08-17-HuckFinn.json",
+                "filepath": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/project_gutenberg/json/2016-08-17-HuckFinn.json",
+                "subsubmetric": {
+                    "2016-08-17-HuckFinn.json": {
+                        "chapter_count": 100.0,
+                        "sentence_count": 47.39506893101705,
+                        "word_count": 78.09122145464302
+                    }
+                },
+                "submetric": {
+                    "chapter_count": 100.0,
+                    "sentence_count": 47.39506893101705,
+                    "word_count": 78.09122145464302,
+                    "coverage": {
+                        "2016-08-17-HuckFinn.json": 1.0
+                    }
+                },
+                "path": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/project_gutenberg/json/2016-08-17-HuckFinn.json",
+                "collection_title": "Project Gutenberg"
+            },
+            "2021-02-21": {
+                "source": "pg",
+                "work_title": "Adventures of Huckleberry Finn",
+                "edition_title": "2021-02-21-HuckFinn",
+                "metric": "record_counts_to_control",
+                "value": 75.33323695848433,
+                "compared_against": "mtpo",
+                "filename": "2021-02-21-HuckFinn.json",
+                "filepath": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/project_gutenberg/json/2021-02-21-HuckFinn.json",
+                "subsubmetric": {
+                    "2021-02-21-HuckFinn.json": {
+                        "chapter_count": 100.0,
+                        "sentence_count": 47.91809962415379,
+                        "word_count": 78.08161125129922
+                    }
+                },
+                "submetric": {
+                    "chapter_count": 100.0,
+                    "sentence_count": 47.91809962415379,
+                    "word_count": 78.08161125129922,
+                    "coverage": {
+                        "2021-02-21-HuckFinn.json": 1.0
+                    }
+                },
+                "path": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/project_gutenberg/json/2021-02-21-HuckFinn.json",
+                "collection_title": "Project Gutenberg"
+            }
+        },
+        "overall": {
+            "source": "pg",
+            "work_title": "Adventures of Huckleberry Finn",
+            "edition_title": "pg",
+            "metric": "record_counts_to_control",
+            "value": 74.29843892796532,
+            "compared_against": "mtpo",
+            "filename": "",
+            "filepath": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/project_gutenberg/json/",
+            "subsubmetric": {
+                "2011-05-03-HuckFinn.json": {
+                    "chapter_count": 100.0,
+                    "sentence_count": 43.529272568627526,
+                    "word_count": 73.67067652194737
+                },
+                "2016-08-17-HuckFinn.json": {
+                    "chapter_count": 100.0,
+                    "sentence_count": 47.39506893101705,
+                    "word_count": 78.09122145464302
+                },
+                "2021-02-21-HuckFinn.json": {
+                    "chapter_count": 100.0,
+                    "sentence_count": 47.91809962415379,
+                    "word_count": 78.08161125129922
+                }
+            },
+            "submetric": {
+                "chapter_count": 100.0,
+                "sentence_count": 46.280813707932786,
+                "word_count": 76.6145030759632,
+                "coverage": {
+                    "2011-05-03-HuckFinn.json": 1.0,
+                    "2016-08-17-HuckFinn.json": 1.0,
+                    "2021-02-21-HuckFinn.json": 1.0
+                }
+            },
+            "path": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/project_gutenberg/json/",
+            "collection_title": "Project Gutenberg"
+        }
+    },
+    "mtpo": {
+        "individual_editions": {},
+        "overall": {
+            "source": "mtpo",
+            "work_title": "Adventures of Huckleberry Finn",
+            "edition_title": "mtpo",
+            "metric": "record_counts_to_control",
+            "value": 100.0,
+            "compared_against": "mtpo",
+            "filename": "",
+            "filepath": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/mtpo/",
+            "subsubmetric": {},
+            "submetric": {},
+            "path": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/mtpo/",
+            "collection_title": "Mark Twain Project Online"
+        }
+    }
+}

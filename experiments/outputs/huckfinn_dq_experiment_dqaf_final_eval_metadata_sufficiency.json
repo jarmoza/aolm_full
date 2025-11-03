@@ -1,0 +1,63 @@
+{
+    "ia": {
+        "source": "ia",
+        "work_title": "Adventures of Huckleberry Finn",
+        "edition_title": "ia",
+        "metric": "metadata_sufficiency",
+        "value": 91.19496855345912,
+        "compared_against": "N/A",
+        "filename": null,
+        "filepath": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/internet_archive/metadata/",
+        "subsubmetric": {
+            "existence_and_completeness": {
+                "percent_tables_defined": 100.0,
+                "percent_key_coverage": 47.16981132075472
+            },
+            "clarity_and_quality": 100.0,
+            "consistency_of_representation": 100.0
+        },
+        "submetric": {
+            "existence_and_completeness": 73.58490566037736,
+            "clarity_and_quality": 100.0,
+            "consistency_of_representation": 100.0
+        },
+        "collection_title": "Internet Archive"
+    },
+    "pg": {
+        "source": "pg",
+        "work_title": "Adventures of Huckleberry Finn",
+        "edition_title": "pg",
+        "metric": "metadata_sufficiency",
+        "value": 83.33333333333333,
+        "compared_against": "N/A",
+        "filename": null,
+        "filepath": "/Users/weirdbeard/Documents/school/aolm_full/data/twain/huckleberry_finn/project_gutenberg/metadata/",
+        "subsubmetric": {
+            "existence_and_completeness": {
+                "percent_tables_defined": 100.0,
+                "percent_key_coverage": 75.0
+            },
+            "clarity_and_quality": 62.5,
+            "consistency_of_representation": 100.0
+        },
+        "submetric": {
+            "existence_and_completeness": 87.5,
+            "clarity_and_quality": 62.5,
+            "consistency_of_representation": 100.0
+        },
+        "collection_title": "Project Gutenberg"
+    },
+    "mtpo": {
+        "source": "mtpo",
+        "work_title": "Adventures of Huckleberry Finn",
+        "edition_title": "mtpo",
+        "metric": "metadata_sufficiency",
+        "value": 100.0,
+        "compared_against": "N/A",
+        "filename": null,
+        "filepath": "",
+        "subsubmetric": {},
+        "submetric": {},
+        "collection_title": "Mark Twain Project Online"
+    }
+}
