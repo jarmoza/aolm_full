@@ -396,7 +396,7 @@ def plot_results(p_results_filepath, p_ur_chapter_count):
             edition_name = get_edition_shortname_from_metadata(row["edition_name"])
             chapter_index = int(row["chapter_name"]) - 1
             count_type = row["count_type"]
-            count = float(row["count"])
+            percent = float(row["percent"])
 
             if edition_name not in editions:
                 editions[edition_name] = {
@@ -404,19 +404,19 @@ def plot_results(p_results_filepath, p_ur_chapter_count):
                     "words": [np.nan] * p_ur_chapter_count
                 }
 
-            if row["count"] not in (None, "", "NA"):   # or whatever indicates a missing chapter
-                editions[edition_name][count_type][chapter_index] = float(row["count"])
+            if row["percent"] not in (None, "", "NA"):   # or whatever indicates a missing chapter
+                editions[edition_name][count_type][chapter_index] = float(row["percent"])
 
         # 2. Plot a 2D heatmap of the chapters of each edition by sentence data quality
         # plot_heatmap(
-        #     "Sentence Quality by Chapter in Editions of 'Adventures of Huckleberry Finn'",
-        #     "Record counts to control records data quality",
+        #     "Sentence Match with Chapters of the MTPO Edition of 'Adventures of Huckleberry Finn'",
+        #     "Percent match to MTPO edition",
         #     { edition_name: editions[edition_name]["sentences"] for edition_name in editions }
         # )
             
         plot_heatmap(
-            "Word Quality by Chapter in Editions of 'Adventures of Huckleberry Finn'",
-            "Record counts to control records data quality",
+            "Word Match with Chapters of the MTPO Edition of 'Adventures of Huckleberry Finn'",
+            "Percent match to MTPO edition",
             { edition_name: editions[edition_name]["words"] for edition_name in editions }
         )
 
