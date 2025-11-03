@@ -68,7 +68,7 @@ class DatasetCompleteness_RecordCountsToControlRecords(DataQualityMetric):
     
     def __build_results_full_count_lines__(self, p_include_header):
 
-        results_header = ",".join(["edition_name", "chapter_name",  "count_type", "count"])
+        results_header = ",".join(["edition_name", "chapter_name",  "count_type", "percent"])
         results_lines = [results_header] if p_include_header else []        
 
         # Results chapter by chapter here for sentences and words
@@ -166,6 +166,11 @@ class DatasetCompleteness_RecordCountsToControlRecords(DataQualityMetric):
 
                 # a. Missing chapter safeguard
                 compared_chapter = self.m_input[reader_name].get_chapter(index)
+
+                # if 16 == index:
+                #     self.output_chapter_comp_to_file(ur_chapter, self.m_urtext_name,
+                #                                      compared_chapter, reader_name)
+
                 if not compared_chapter:
                     # Penalize missing chapter
                     self.m_results[reader_name]["sentence_count"]["by_chapter"][str(index)] = 0.0
@@ -265,6 +270,19 @@ class DatasetCompleteness_RecordCountsToControlRecords(DataQualityMetric):
 
         return self.metric_evaluation
     
+    def output_chapter_comp_to_file(self, p_first_chapter, p_first_chapter_name, p_second_chapter, p_second_chapter_name):
+
+        import json 
+
+        json_data = {
+            p_first_chapter_name: p_first_chapter,
+            p_second_chapter_name: p_second_chapter
+        }
+        output_filepath = "/Users/weirdbeard/Documents/school/aolm_full/experiments/outputs/ch16_mtpo_ia_comparison.json"
+    
+        with open(output_filepath, "w") as output_file:
+            json.dump(json_data, output_file, indent=4, ensure_ascii=False)
+
     # Static fields and methods
 
     s_eval_output_line_keys = [
