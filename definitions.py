@@ -1,6 +1,6 @@
 # Author: Jonathan Armoza
 # Created: January 12, 2025
-# Purpose: Contains variables accessible throughout project
+# Purpose: Contains variables and functions accessible throughout project
 
 # Imports
 
