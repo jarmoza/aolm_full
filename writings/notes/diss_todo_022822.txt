@@ -1,6 +1,0 @@
-- download all data and organize
-- make class containing all intrinsic dq dimensions and thus
-intrinsic data quality summary method for HuckFinn
-- Look over Tom notes and consider/write up on the results from intrinsic dq + Tom's suggestions
-
-- Monogame video part 2 fixed time step

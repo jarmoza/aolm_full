@@ -1,3 +1,0 @@
-Python Package: http://pythonhosted.org/Markdown/
-
-Markdown implementation differences: http://johnmacfarlane.net/babelmark2/faq.html#what-are-some-examples-of-interesting-divergences-between-implementations

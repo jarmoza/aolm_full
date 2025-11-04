@@ -1,1 +1,0 @@
-The statistical and realtime efficacy of taking data quality samples at random points (or maybe metrically determined points) in a large corpus to represent the corpus' overall data quality
