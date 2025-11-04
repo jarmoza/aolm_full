@@ -1,8 +1,10 @@
 # MacOS files
 .DS_Store
+/data/lexicon/coha/lexicon.txt
 /experiments/outputs/old/
 /new_readings/
 /presentations/
+/unused/
 /writings/
 /zips/
 
