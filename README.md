@@ -1,2 +1,2 @@
 # aolm_full
-Code, data, media, and writing for AOLM dissertation
+Code, data, and media for AOLM dissertation
