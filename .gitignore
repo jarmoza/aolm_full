@@ -1,10 +1,14 @@
 # MacOS files
 .DS_Store
 data/twain/huckleberry_finn/.DS_Store
-experiments/outputs/*
+/experiments/outputs/old/*
 new_readings/.DS_Store
 writings/.DS_Store
 writings/all/.DS_Store
+new_readings/
+writings/
+zips/
+presentations/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
