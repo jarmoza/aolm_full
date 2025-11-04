@@ -1,7 +1,7 @@
 # Author: Jonathan Armoza
 # Creation date: November 7, 2019
 # Purpose: Object for K-means clustering and cluster silhouette analysis
-# 		   for 'Art of Literary Modeling'
+#            for 'Art of Literary Modeling'
 
 # Based on sample code from https://scikit-learn.org/stable/auto_examples/cluster/plot_kmeans_silhouette_analysis.html
 
@@ -19,183 +19,183 @@ import numpy
 
 class AOLM_KMeans:
 
-	def __init__(self, p_data=None, p_data_name=""):
+    def __init__(self, p_data=None, p_data_name=""):
 
-		self.m_data = p_data
-		self.m_data_name = p_data_name
+        self.m_data = p_data
+        self.m_data_name = p_data_name
 
-		# Default values for unset fields
-		self.m_cluster_count = 1
-		self.m_random_seed = 10
-		self.m_clusterer = None
-		self.m_cluster_labels = None
-
-
-	# Properties
-	@property
-	def clusterer(self):
-		return self.m_clusterer
-
-	@property
-	def cluster_labels(self):
-		return self.m_cluster_labels
-	
-	@property
-	def data(self):
-		return self.m_data
-	@data.setter
-	def data(self, p_data):
-		self.m_data = p_data
-
-	@property
-	def data_name(self):
-		return self.m_data_name
-	
-	@property
-	def silhouette_avg(self):
-		return self.m_silhouette_avg
-	
-	@property
-	def sample_silhouette_values(self):
-		return self.m_sample_silhouette_values
-	
-
-	# Primary methods
-
-	def compute_clusters(self, p_cluster_count, p_random_seed=10):
-
-		# Save cluster count as most recent used
-		self.m_cluster_count = p_cluster_count
-
-		# Save random seed as record of clustering
-		self.m_random_seed = p_random_seed
-
-		# Initialize the clusterer with m_cluster_count value and a random generator 
-		# seed of m_random_seed for reproducibility.
-		self.m_clusterer = KMeans(n_clusters=self.m_cluster_count, random_state=self.m_random_seed)
-		self.m_cluster_labels = self.m_clusterer.fit_predict(self.m_data)
-
-	def compute_silhouettes(self):
-
-	    # The silhouette_score gives the average value for all the samples.
-	    # This gives a perspective into the density and separation of the formed clusters.
-	    self.m_silhouette_avg = silhouette_score(self.m_data, self.m_cluster_labels)
-
-	    # Compute the silhouette scores for each sample
-	    self.m_sample_silhouette_values = silhouette_samples(self.m_data, self.m_cluster_labels)
-
-	def plot(self, p_show=True, p_labels=True):
-
-	    # Create a subplot with 1 row and 2 columns
-	    figure, (subplot1, subplot2) = plot.subplots(1, 2)
-	    figure.set_size_inches(18, 7)
-
-	    # The 1st subplot is the silhouette plot.
-	    # The silhouette coefficient can range from -1, 1
-	    subplot1.set_xlim([-1, 1])
-	    # The (m_cluster_count + 1) * 10 is for inserting blank space between silhouette
-	    # plots of individual clusters, to demarcate them clearly.
-	    subplot1.set_ylim([0, len(self.m_data) + (self.m_cluster_count + 1) * 10])
-
-	    y_lower = 10
-	    for i in range(self.m_cluster_count):
-
-	        # Aggregate the silhouette scores for samples belonging to cluster i, and sort them
-	        ith_cluster_silhouette_values = \
-	            self.m_sample_silhouette_values[self.m_cluster_labels == i]
-
-	        ith_cluster_silhouette_values.sort()
-
-	        size_cluster_i = ith_cluster_silhouette_values.shape[0]
-	        y_upper = y_lower + size_cluster_i
-
-	        color = cm.nipy_spectral(float(i) / self.m_cluster_count)
-	        subplot1.fill_betweenx(numpy.arange(y_lower, y_upper),
-	                          0, ith_cluster_silhouette_values,
-	                          facecolor=color, edgecolor=color, alpha=0.7)
-
-	        # Label the silhouette plots with their cluster numbers at the middle
-	        if p_labels:
-	        	subplot1.text(-0.05, y_lower + 0.5 * size_cluster_i, str(i))
-
-	        # Compute the new y_lower for next plot
-	        y_lower = y_upper + 10  # 10 for the 0 samples
-
-	    # Silhouette score subplot title and axes labels
-	    subplot1.set_title("Silhouette Plot for the Clusters")
-	    subplot1.set_xlabel("silhouette coefficient values")
-	    subplot1.set_ylabel("cluster label")
-
-	    # The vertical line for average silhouette score of all the values
-	    subplot1.axvline(x=self.m_silhouette_avg, color="red", linestyle="--")
-
-	    subplot1.set_yticks([])  # Clear the yaxis labels / ticks
-	    subplot1.set_xticks([-1, -0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8, 1])
-
-	    # Second plot showing the actual clusters formed
-	    # NOTE: Needs to do a dimension reduction technique prior to this step in order to determine most significant
-	    # dimensions (below defaulted to 0 and 1 in self.m_data[:,] - code example presumed a 2D data set)
-	    # J. Armoza - 11/9/2019
-	    colors = cm.nipy_spectral(self.m_cluster_labels.astype(float) / self.m_cluster_count)
-	    subplot2.scatter(self.m_data[:, 0], self.m_data[:, 1], marker=".", s=30, lw=0, alpha=0.7,
-	                     c=colors, edgecolor="k")
-
-	    # Labeling the clusters
-	    centers = self.m_clusterer.cluster_centers_
-	    # Draw white circles at cluster centers
-	    subplot2.scatter(centers[:, 0], centers[:, 1], marker="o",
-	                     c="white", alpha=1, s=200, edgecolor="k")
-
-	    for i, c in enumerate(centers):
-	        subplot2.scatter(c[0], c[1], marker="$%d$" % i, alpha=1,
-	                         s=50, edgecolor="k")
-
-	    # Cluster subplot title and axes labels
-	    subplot2.set_title("Visualization of the Clustered Data")
-	    subplot2.set_xlabel("feature space for the 1st feature")
-	    subplot2.set_ylabel("feature space for the 2nd feature")
-
-	    # Overall plot title
-	    plot.suptitle("Silhouette Analysis for K-Means Clustering on " + \
-	    			  "{0} with {1} Clusters".format(self.m_data_name, self.m_cluster_count),
-	    			  fontsize=14, fontweight="bold")
-
-	    if p_show:
-	    	plot.show()         
+        # Default values for unset fields
+        self.m_cluster_count = 1
+        self.m_random_seed = 10
+        self.m_clusterer = None
+        self.m_cluster_labels = None
 
 
-	# Static methods
+    # Properties
+    @property
+    def clusterer(self):
+        return self.m_clusterer
 
-	@staticmethod
-	def compute_cluster_range():
+    @property
+    def cluster_labels(self):
+        return self.m_cluster_labels
+    
+    @property
+    def data(self):
+        return self.m_data
+    @data.setter
+    def data(self, p_data):
+        self.m_data = p_data
 
-		pass
+    @property
+    def data_name(self):
+        return self.m_data_name
+    
+    @property
+    def silhouette_avg(self):
+        return self.m_silhouette_avg
+    
+    @property
+    def sample_silhouette_values(self):
+        return self.m_sample_silhouette_values
+    
 
-	@staticmethod
-	def plot_cluster_range():
+    # Primary methods
 
-		pass
+    def compute_clusters(self, p_cluster_count, p_random_seed=10):
 
-	@staticmethod
-	def plot_bar(p_values, p_bins):
+        # Save cluster count as most recent used
+        self.m_cluster_count = p_cluster_count
 
-		plot.bar(p_bins, p_values)
-		plot.show()		
+        # Save random seed as record of clustering
+        self.m_random_seed = p_random_seed
 
-	@staticmethod
-	def plot_silhouette_avg(p_x, p_y, p_x_label="", p_y_label="", p_title=""):
+        # Initialize the clusterer with m_cluster_count value and a random generator 
+        # seed of m_random_seed for reproducibility.
+        self.m_clusterer = KMeans(n_clusters=self.m_cluster_count, random_state=self.m_random_seed)
+        self.m_cluster_labels = self.m_clusterer.fit_predict(self.m_data)
 
-		# 1. Set up the figure and axes
-		figure, axes = plot.subplots()
-		axes.plot(p_x, p_y)
+    def compute_silhouettes(self):
 
-		# 2. Set styles
-		axes.set(xlabel=p_x_label, ylabel=p_y_label, title=p_title)
-		axes.grid()
+        # The silhouette_score gives the average value for all the samples.
+        # This gives a perspective into the density and separation of the formed clusters.
+        self.m_silhouette_avg = silhouette_score(self.m_data, self.m_cluster_labels)
 
-		# Plot the graph
-		# figure.savefig("test.png")
-		plot.show()		
+        # Compute the silhouette scores for each sample
+        self.m_sample_silhouette_values = silhouette_samples(self.m_data, self.m_cluster_labels)
+
+    def plot(self, p_show=True, p_labels=True):
+
+        # Create a subplot with 1 row and 2 columns
+        figure, (subplot1, subplot2) = plot.subplots(1, 2)
+        figure.set_size_inches(18, 7)
+
+        # The 1st subplot is the silhouette plot.
+        # The silhouette coefficient can range from -1, 1
+        subplot1.set_xlim([-1, 1])
+        # The (m_cluster_count + 1) * 10 is for inserting blank space between silhouette
+        # plots of individual clusters, to demarcate them clearly.
+        subplot1.set_ylim([0, len(self.m_data) + (self.m_cluster_count + 1) * 10])
+
+        y_lower = 10
+        for i in range(self.m_cluster_count):
+
+            # Aggregate the silhouette scores for samples belonging to cluster i, and sort them
+            ith_cluster_silhouette_values = \
+                self.m_sample_silhouette_values[self.m_cluster_labels == i]
+
+            ith_cluster_silhouette_values.sort()
+
+            size_cluster_i = ith_cluster_silhouette_values.shape[0]
+            y_upper = y_lower + size_cluster_i
+
+            color = cm.nipy_spectral(float(i) / self.m_cluster_count)
+            subplot1.fill_betweenx(numpy.arange(y_lower, y_upper),
+                              0, ith_cluster_silhouette_values,
+                              facecolor=color, edgecolor=color, alpha=0.7)
+
+            # Label the silhouette plots with their cluster numbers at the middle
+            if p_labels:
+                subplot1.text(-0.05, y_lower + 0.5 * size_cluster_i, str(i))
+
+            # Compute the new y_lower for next plot
+            y_lower = y_upper + 10  # 10 for the 0 samples
+
+        # Silhouette score subplot title and axes labels
+        subplot1.set_title("Silhouette Plot for the Clusters")
+        subplot1.set_xlabel("silhouette coefficient values")
+        subplot1.set_ylabel("cluster label")
+
+        # The vertical line for average silhouette score of all the values
+        subplot1.axvline(x=self.m_silhouette_avg, color="red", linestyle="--")
+
+        subplot1.set_yticks([])  # Clear the yaxis labels / ticks
+        subplot1.set_xticks([-1, -0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8, 1])
+
+        # Second plot showing the actual clusters formed
+        # NOTE: Needs to do a dimension reduction technique prior to this step in order to determine most significant
+        # dimensions (below defaulted to 0 and 1 in self.m_data[:,] - code example presumed a 2D data set)
+        # J. Armoza - 11/9/2019
+        colors = cm.nipy_spectral(self.m_cluster_labels.astype(float) / self.m_cluster_count)
+        subplot2.scatter(self.m_data[:, 0], self.m_data[:, 1], marker=".", s=30, lw=0, alpha=0.7,
+                         c=colors, edgecolor="k")
+
+        # Labeling the clusters
+        centers = self.m_clusterer.cluster_centers_
+        # Draw white circles at cluster centers
+        subplot2.scatter(centers[:, 0], centers[:, 1], marker="o",
+                         c="white", alpha=1, s=200, edgecolor="k")
+
+        for i, c in enumerate(centers):
+            subplot2.scatter(c[0], c[1], marker="$%d$" % i, alpha=1,
+                             s=50, edgecolor="k")
+
+        # Cluster subplot title and axes labels
+        subplot2.set_title("Visualization of the Clustered Data")
+        subplot2.set_xlabel("feature space for the 1st feature")
+        subplot2.set_ylabel("feature space for the 2nd feature")
+
+        # Overall plot title
+        plot.suptitle("Silhouette Analysis for K-Means Clustering on " + \
+                      "{0} with {1} Clusters".format(self.m_data_name, self.m_cluster_count),
+                      fontsize=14, fontweight="bold")
+
+        if p_show:
+            plot.show()         
+
+
+    # Static methods
+
+    @staticmethod
+    def compute_cluster_range():
+
+        pass
+
+    @staticmethod
+    def plot_cluster_range():
+
+        pass
+
+    @staticmethod
+    def plot_bar(p_values, p_bins):
+
+        plot.bar(p_bins, p_values)
+        plot.show()        
+
+    @staticmethod
+    def plot_silhouette_avg(p_x, p_y, p_x_label="", p_y_label="", p_title=""):
+
+        # 1. Set up the figure and axes
+        figure, axes = plot.subplots()
+        axes.plot(p_x, p_y)
+
+        # 2. Set styles
+        axes.set(xlabel=p_x_label, ylabel=p_y_label, title=p_title)
+        axes.grid()
+
+        # Plot the graph
+        # figure.savefig("test.png")
+        plot.show()        
 
 
 
