@@ -94,7 +94,7 @@ class AOLMTextCleaner(object):
 
 		# 0. Set stopwords filepath based on the stopwords type
 		self.m_stopwords_filepath = \
-			AoLM_TextCleaner.s_stopword_files[self.m_stopwords_type]
+			AOLMTextCleaner.s_stopword_files[self.m_stopwords_type]
 
 		# 1. Read in stop words from given file
 		with open(self.m_stopwords_filepath, "r") as stopwords_file:
