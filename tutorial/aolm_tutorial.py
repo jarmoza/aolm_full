@@ -2,7 +2,7 @@
 # Created: December 2, 2025
 # Purpose: A brief guide showing to how to use the data quality metrics of 'Art of Literary Modeling'
 
-# NOTE: Tutorial with instructions can be found in the "main" function at the bottom of this script file
+# NOTE: Tutorial code can be placed in the 'tutorial_workspace' function near the bottom of this script file
 
 # Imports
 
@@ -18,15 +18,19 @@ add_lib_paths(sys)
 
 # Custom
 
-# Tutorial values and functions
-from tutorial_lib import parse_args, read_json_files_by_subfolder
+# Tutorial convenience functions
 from tutorial_lib import (
-    METRIC_FLAG_AUTHORIAL_SIGNATURE,
-    METRIC_FLAG_CONSISTENCY_RECORDCONSENSUS,
-    METRIC_FLAG_LEGOMENA,
-    METRIC_FLAG_METADATA_SUFFICIENCY,
-    METRIC_FLAG_RECORDCOUNT_TO_CONTROLRECORD,
-    METRIC_FLAG_LEXICAL_VALIDITY
+    output_metric_tallies,
+    output_metric_values,
+    read_huckfinn_dataset_files_by_source,
+    read_metadata_files_by_source
+)
+
+# Digital edition source IDs (subfolder names in the 'data' folder)
+from tutorial_lib import (
+    SOURCE_ID_IA,
+    SOURCE_ID_MTPO,
+    SOURCE_ID_PG
 )
 
 # Data quality metrics
@@ -37,39 +41,27 @@ from dq_metrics.dataset_signature.authorial_signature import DatasetSignature_Au
 from dq_metrics.dataset_signature.legomena import DatasetSignature_Legomena
 from dq_metrics.dataset_validity.lexical_validity import DatasetValidity_LexicalValidity
 
+# Tutorial script can use the 'Art of Literary Modeling' CLI tool
+from aolm_cli import run_command_line_tool
+
 
 # Globals
 
-TUTORIAL_DIRECTORY = ROOT_DIR[0:ROOT_DIR.rfind(os.sep)]
-TUTORIAL_SOURCE_ID = "IA"
-TUTORIAL_BASELINE_SOURCE_ID = "MTPO"
-TUTORIAL_COLLECTION_TITLE = "Internet Archive"
-TUTORIAL_WORK_TITLE = "Adventures of Huckleberry Finn"
-
-# Metric flags
-# NOTE: Setting to 'True' will run the metric; setting to 'False' will not
-
-METRIC_AUTHORIAL_SIGNATURE = True
-METRIC_CONSISTENCY_RECORD_CONSENSUS = True
-METRIC_LEGOMENA = True
-METRIC_LEXICAL_VALIDITY = True
-METRIC_METADATA_SUFFICIENCY = True
-METRIC_RECORDCOUNTS_TO_CONTROLRECORDS = True
+# Pre-defined values for tutorial paths/IDs - for convenience
+TUTORIAL_DIRECTORY = f"{ROOT_DIR}{os.sep}tutorial{os.sep}"
+TUTORIAL_DATASET_LOCATION = f"{TUTORIAL_DIRECTORY}data{os.sep}editions{os.sep}"
+TUTORIAL_METADATA_LOCATION = f"{TUTORIAL_DIRECTORY}data{os.sep}metadata{os.sep}"
+TUTORIAL_OUTPUT_LOCATION = f"{TUTORIAL_DIRECTORY}output{os.sep}"
+LEXICON_LOCATION = f"{ROOT_DIR}data{os.sep}lexicon{os.sep}coha{os.sep}lexicon.txt"
 
 
 # Main script
 
-def main():
+def tutorial_workspace():
 
-    # 0. Handle command line arguments
-
-    # Retrieve command line arguments and check they are valid
-    args, validation_error = parse_args()
-    if validation_error:
-        print(validation_error)
-        return
-
-    # Tutorial Instructions
+    # =========================================================================
+    # =========================================================================
+    # Tutorial Instructions and Pseudocode
 
     # =========================================================================
     # 0. Environment setup
@@ -80,65 +72,62 @@ def main():
     # below in the aolm_full root folder
     # > conda env create -f environment.yml
 
-    # C. Activate the 'conda' environment by running the command
+    # C. Before running this script, activate the 'conda' environment by running the command
     # > conda activate aolm
 
+
     # =========================================================================
-    # 1. Set the location of your JSON dataset file(s) on the drive
-    # (a 'TUTORIAL_DIRECTORY' global variable exists for convenience)
+    # 1. Parameters for the data quality metric (optional)
 
-    # ex. DATASET_LOCATION = f"{TUTORIAL_DIRECTORY}{os.sep}data{os.sep}"
-    EDITIONS_LOCATION = args.input_folder
-    METADATA_LOCATION = args.metadata_folder
+    # A. The locations of your JSON dataset and/or metadata file(s) on your hard drive
 
-    # 2. Read editions and metadata into reader objects
-    edition_readers = read_json_files_by_subfolder(EDITIONS_LOCATION)
-    metadata = read_json_files_by_subfolder(METADATA_LOCATION)
+    # B. String ID variable definition
 
 
-    metric_list = {}
-    for metric_flag in args.metrics:
-        if METRIC_FLAG_METADATA_SUFFICIENCY == metric_flag:
-            metric_list[metric_flag] = DatasetCompleteness_MetadataSufficiency(
-                f"HuckFinn_{TUTORIAL_SOURCE_ID}_MetadataSufficiency",
-                metadata,
-                TUTORIAL_SOURCE_ID,
-                TUTORIAL_WORK_TITLE,
-                TUTORIAL_COLLECTION_TITLE,
-                METADATA_LOCATION
-            )
-            # p_name, p_input, p_source_id, p_work_title, p_collection_title, p_metadata_directory
-        elif METRIC_RECORDCOUNTS_TO_CONTROLRECORDS == metric_flag:
+    # =========================================================================
+    # 2. Read editions and/or metadata into reader objects, depending on what inputs your metric needs
 
-            metric_list[metric_flag] = DatasetCompleteness_RecordCountsToControlRecords(
-                f"HuckFinn_MTPOv{TUTORIAL_SOURCE_ID}_TextRecordCounts",
-                edition_readers,
-                TUTORIAL_SOURCE_ID,
-                TUTORIAL_WORK_TITLE,
-                TUTORIAL_COLLECTION_TITLE,
-                EDITIONS_LOCATION,
-                TUTORIAL_BASELINE_SOURCE_ID)
-        elif DatasetConsistency_RecordConsensus == metric_flag:
+    # A. Read compared editions and baseline edition
 
-            metric_list[metric_flag] = DatasetConsistency_RecordConsensus(
-                f"HuckFinn_PG_IA_MTPO_Consistency_RecordConsensus",
-                { reader_name: huckfinn_textdata[id][reader_name] for id in huckfinn_textdata for reader_name in huckfinn_textdata[id] },
-        "PG_IA_MTPO",
-        WORK_TITLE,
-        "_".join([aolm_data_reading.huckfinn_source_fullnames[id] for id in COLLECTION_IDS]),
-        EDITION_PATHS)
+    # B. Read metadata (not for this tutorial, but this is where you would do it)
 
-            # Consensus
-            # p_name, p_input, p_source_id, p_work_title, p_collection_title, p_text_json_filepath
 
-    # Metadata Sufficiency
-    huckfinn_metadata_sufficiency = 
+    # =========================================================================
+    # 3. Run a data quality metric over the editions and/or metadata
+    # NOTE: In this case, the choice is to run the 'record counts to control records' metric,
+    # comparing editions of 'Adventures of Huckleberry Finn' from the 'Internet Archive'
+    # against an edition of the book from 'Mark Twain Project Online' as a baseline    
 
+    # A. Create an instance of the 'record counts to control' metric
+
+    # B. Run the metric's 'compute'
+
+    # C. Run the metric's 'evaluate'
+
+
+    # =========================================================================
+    # 4. Output results for further inspection, analysis, and visualization
+    
+    # A. Output the metric tallies
+    
+    # B. Output the metric values
 
     pass
 
+
+def main():
+
+    # 0. Run command line tool if command line arguments given to script
+    if len(sys.argv) > 1:
+        run_command_line_tool()
+        return
+    
+    # 1. Otherwise, run tutorial code
+    tutorial_workspace()
+
+
 if "__main__" == __name__:
-    main(sys.argv)
+    main()
 
 
 
