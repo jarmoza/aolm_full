@@ -48,7 +48,7 @@ class DataQualityMetric:
         self.m_spacymodel = None
         self.m_results = {}
         self.m_spacymodel_name = "en_core_web_sm"
-        self.m_urtext_name = ""
+        self.m_urtext_name = self.m_baseline_source_id
 
         self.m_evaluations = {
             "subsubmetric": {},
