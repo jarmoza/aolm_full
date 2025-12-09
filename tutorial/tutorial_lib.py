@@ -25,6 +25,7 @@ from mtpo_huckfinn_reader import MTPOHuckFinnReader
 from pg_huckfinn_reader import PGHuckFinnReader
 
 # Data quality metrics
+from aolm_code.data_quality.core.dq_metric import DataQualityMetric
 from dq_metrics.dataset_completeness.metadata_sufficiency import DatasetCompleteness_MetadataSufficiency
 from dq_metrics.dataset_completeness.recordcounts_to_controlrecords import DatasetCompleteness_RecordCountsToControlRecords
 from dq_metrics.dataset_consistency.consistency_recordconsensus import DatasetConsistency_RecordConsensus
@@ -41,7 +42,7 @@ METRIC_FLAG_AUTHORIAL_SIGNATURE = "a"
 METRIC_FLAG_CONSISTENCY_RECORDCONSENSUS = "c"
 METRIC_FLAG_LEGOMENA = "l"
 METRIC_FLAG_METADATA_SUFFICIENCY = "m"
-METRIC_FLAG_RECORDCOUNT_TO_CONTROLRECORD = "r"
+METRIC_FLAG_RECORDCOUNTS_TO_CONTROLRECORD = "r"
 METRIC_FLAG_LEXICAL_VALIDITY = "v"
 
 METRIC_FLAG_TO_OBJECT_DICT = {
@@ -50,7 +51,7 @@ METRIC_FLAG_TO_OBJECT_DICT = {
     METRIC_FLAG_CONSISTENCY_RECORDCONSENSUS: DatasetConsistency_RecordConsensus,
     METRIC_FLAG_LEGOMENA: DatasetSignature_Legomena,
     METRIC_FLAG_METADATA_SUFFICIENCY: DatasetCompleteness_MetadataSufficiency,
-    METRIC_FLAG_RECORDCOUNT_TO_CONTROLRECORD: DatasetCompleteness_RecordCountsToControlRecords,
+    METRIC_FLAG_RECORDCOUNTS_TO_CONTROLRECORD: DatasetCompleteness_RecordCountsToControlRecords,
     METRIC_FLAG_LEXICAL_VALIDITY: DatasetValidity_LexicalValidity
 }
 VALID_METRICS = set(METRIC_FLAG_TO_OBJECT_DICT.keys())
@@ -106,35 +107,31 @@ def parse_args():
 
     return parsed_args, validation_error
 
-def read_huckfinn_dataset_files_by_source(p_dataset_location, p_source_ids):
+def read_huckfinn_dataset_files_by_source(p_dataset_location, p_source_id):
     
     # 1. Get all JSON filepaths in p_dataset_location's subfolder for p_source_id
-    json_filepaths = {}
-    for folder_name in os.listdir(p_dataset_location):
-        
-        folder_path = os.path.join(p_dataset_location, folder_name)
-        if os.path.isdir(folder_path):
+    edition_filepaths = []
+    if SOURCE_ID_MTPO == p_source_id:
+        edition_filepaths = glob.glob(os.path.join(p_dataset_location + p_source_id, f"*.xml"))
+    else:
+        edition_filepaths = glob.glob(os.path.join(p_dataset_location + p_source_id, "*.json"))
 
-            # A. Save all JSON filepaths for this folder
-            json_filepaths[folder_name] = glob.glob(os.path.join(folder_path, "*.json"))
+    # 2. Create collection-specific reader objects for each edition and read/process each edition
+    if SOURCE_ID_IA == p_source_id:
+        huckfinn_text_readers = { filepath: IAHuckFinnReader(filepath) for filepath in edition_filepaths }
+        for filepath in edition_filepaths:
+            huckfinn_text_readers[filepath].read()        
+    elif SOURCE_ID_PG == p_source_id:
+        huckfinn_text_readers = { filepath: PGHuckFinnReader(filepath) for filepath in edition_filepaths }
+        for filepath in edition_filepaths:
+            huckfinn_text_readers[filepath].read()        
+    elif SOURCE_ID_MTPO == p_source_id:
+        huckfinn_text_readers = { SOURCE_ID_MTPO:  MTPOHuckFinnReader(edition_filepaths[0]) }
+        huckfinn_text_readers[SOURCE_ID_MTPO].read()
 
-    # 2. Create collection-specific reader objects for each edition
-    huckfinn_text_readers = {}
-    for source_id in p_source_ids:
-        for filepath in json_filepaths[source_id]:
-            if SOURCE_ID_MTPO in p_source_ids:
-                huckfinn_text_readers[SOURCE_ID_MTPO] = MTPOHuckFinnReader(json_filepaths[SOURCE_ID_MTPO][0])
-                huckfinn_text_readers[SOURCE_ID_MTPO].read()
-            elif SOURCE_ID_IA == source_id:
-                huckfinn_text_readers[os.path.basename(filepath)] = IAHuckFinnReader(filepath)
-                huckfinn_text_readers[os.path.basename(filepath)].read()
-            elif SOURCE_ID_PG == source_id:
-                huckfinn_text_readers[os.path.basename(filepath)] = PGHuckFinnReader(filepath)
-                huckfinn_text_readers[os.path.basename(filepath)].read()
-                    
     return huckfinn_text_readers
     
-def read_json_files_by_subfolder(p_json_folder):
+def read_metadata_files_by_source(p_json_folder):
 
     # 0. Ensure folder ends with a separator
     json_folder = p_json_folder
@@ -208,7 +205,7 @@ def output_metric_values(p_metric, p_output_filepath):
     if p_metric.s_metric_name == DatasetCompleteness_MetadataSufficiency.s_metric_name:
         pass
     elif p_metric.s_metric_name == DatasetCompleteness_RecordCountsToControlRecords.s_metric_name:
-        pass
+        output_recordcounts_to_controlrecord_values(p_metric, p_output_filepath)
     elif p_metric.s_metric_name == DatasetConsistency_RecordConsensus.s_metric_name:
         pass
     elif p_metric.s_metric_name == DatasetSignature_AuthorialSignature.s_metric_name:
@@ -223,10 +220,12 @@ def output_recordcounts_to_controlrecord_tallies(p_metric, p_output_filepath):
     results_lines = p_metric.results_full_counts(p_include_header=True)
 
     with open(p_output_filepath, "w") as output_file:
-        for line_set in results_lines:
-            output_file.write(f"{"\n".join(line_set)}\n")
+        output_file.write("\n".join(results_lines))
 
 def output_recordcounts_to_controlrecord_values(p_metric, p_output_filepath):
 
-    with open(p_output_filepath, "w") as eval_output_file:
-        json.dump(p_metric.eval_output, eval_output_file, indent=4)    
+    with open(p_output_filepath, "w") as output_file:
+
+        DataQualityMetric.write_output_header(output_file)
+        metric_values = p_metric.output
+        output_file.write(metric_values)
