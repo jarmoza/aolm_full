@@ -1,43 +1,113 @@
 # The Art of Literary Modeling
-**Python Package and Repository**
 
-Code, data, and media for AOLM dissertation
+Welcome to the repository for 'The Art of Literary Modeling' (AoLM), a project by [Jonathan Armoza](https://jonathanarmoza.com/) that measures the data quality of collections of digital literature.
 
-## Environment Setup
+'Art of Literary Modeling' is installable as a Python package. This repo contains code for processing and reading digital texts and metadata of digital texts as well as text processing utilities for doing so. The core functionality of AoLM are its data quality metrics, of which there are a set of six examples. The repo's code also includes a set of 'experiments' that run these data quality metrics on a set of sample digital texts and metadata and visualize and assess the metrics' output values. The repo thus also contains several public domain datasets of literature that have been downloaded from their digital sources and processed to a minimal degree to aid their use by the AoLM's data quality metrics. 
 
-### Installing Anaconda (OS-specific Instructions)
+
+## Data Quality Metric Tutorial
+
+Comments and pseudocode for this tutorial are found in `aolm_tutorial.py` in the `tutorial` folder. Follow along the steps outlined below and place your code in that script file. Once you have run the script and are satisfied with the results, you may choose to perform your own exercises with running different data quality metrics in the `aolm_code/data_quality/core/dq_metrics` folder – and with different data sets. Note that you will need some beginner-level Python proficiency to follow along with the tutorial. The full tutorial solution along with some extra commentary on it can be found in `tutorial_solution.py`.
+
+### Environment Setup
+
+#### 1. Installing Anaconda (OS-specific Instructions)
 
 If you do not yet have Anaconda ('conda') installed on your system, run the following
-commands in your terminal
+commands in your terminal:
 
 **Windows**
-- curl -LO https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Windows-x86_64.exe
-- start "" /wait Miniforge3-Windows-x86_64.exe /InstallationType=JustMe /AddToPath=1 /S
-- conda --version
+- `curl -LO https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Windows-x86_64.exe`
+- `start "" /wait Miniforge3-Windows-x86_64.exe /InstallationType=JustMe /AddToPath=1 /S`
+- `conda --version`
     
 **macOS, Apple silicon**
-- curl -LO https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-arm64.sh
-- bash Miniforge3-MacOSX-arm64.sh -b
-- source ~/miniforge3/bin/activate
-- conda --version
+- `curl -LO https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-arm64.sh`
+- `bash Miniforge3-MacOSX-arm64.sh -b`
+- `source ~/miniforge3/bin/activate`
+- `conda --version`
 
 **macOS, Intel**
-- curl -LO https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-x86_64.sh
-- bash Miniforge3-MacOSX-x86_64.sh -b
-- source ~/miniforge3/bin/activate
-- conda --version
+- `curl -LO https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-x86_64.sh`
+- `bash Miniforge3-MacOSX-x86_64.sh -b`
+- `source ~/miniforge3/bin/activate`
+- `conda --version`
 
 **Linux**
-- curl -LO https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh
-- bash Miniforge3-Linux-x86_64.sh -b
-- source ~/miniforge3/bin/activate
-- conda --version
+- `curl -LO https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh`
+- `bash Miniforge3-Linux-x86_64.sh -b`
+- `source ~/miniforge3/bin/activate`
+- `conda --version`
 
-### Install the 'conda' environment for 'Art of Literary Modeling' 
+#### 2. Install the 'conda' environment for 'Art of Literary Modeling' 
 
-In the aolm_full root folder in your terminal, run *conda env create -f environment.yml*
+In the *aolm_full* root folder in your terminal, run `conda env create -f environment.yml`
 
-### Activate the 'conda' environment
+#### 3. Activate the 'conda' environment
 
-Next, run *conda activate aolm*. Repeat *only* this last command when you want to re-run
-the tutorial script again after exiting your terminal (or after deactivating the 'conda' environment via *conda deactivate*).
+Next, run `conda activate aolm`. Repeat *only* this last command when you want to re-run
+the tutorial script in the terminal. (To exit the 'aolm' conda environment, run `conda deactivate`.)
+
+### Tutorial
+
+#### 1. Parameters for reading data and running a metric (optional)
+
+The first thing you will do is define string variables for IDs and folder paths that will be used for reading digital texts/metadata and then later, running a data quality metric(s) over those texts/metadata. (This step can be skipped if you don't mind entering raw parameter values into function/constructor calls.) These are used by AoLM's reader objects and data quality metric objects. A set of pre-defined values for these parameters have been placed at the top of the tutorial script for your convenience.
+
+##### A. File Locations
+
+Define one (or two) variables for the locations of your digital editions. Pre-defined dataset and metadata location values have been placed at the top of the tutorial file.
+
+    EDITIONS_LOCATION = 'mypath/to/digital_edition/files'
+    METADATA_LOCATION = 'mypath/to/metadata/files'
+
+##### B. Unique String IDs
+
+Define variables for IDs for the digital source of the compared editions and any baseline edition (e.g. metrics like 'record counts to control records' that use a baseline edition). Some metrics will not require either ID if they are not comparing across digital sources. 
+
+    TUTORIAL_BASELINE_SOURCE_ID = 'mark_twain_project'
+    TUTORIAL_SOURCE_ID = 'internet_archive'
+    TUTORIAL_METRIC_ID = 'my_unique_metric_id'
+    TUTORIAL_COLLECTION_TITLE = 'Internet Archive'
+    TUTORIAL_WORK_TITLE = 'Adventures of Huckleberry Finn'å
+
+#### 2. Read editions and/or metadata
+
+The next step is to read in the digital edition files and/or metadata files you wish to use for your metric(s). AoLM uses custom JSON file formats for both editions and metadata. (How to build these from raw digital texts/metadata will be explained in another tutorial.) For this tutorial, two convenience functions `read_huckfinn_dataset_files_by_source` and `read_metadata_files_by_source` have been provided for your use. You only need to specify the editions/metadata location and the string ID you wish them to be denoted by.
+
+    edition_readers = read_huckfinn_dataset_files_by_source(
+        EDITIONS_LOCATION, TUTORIAL_SOURCE_ID)
+    edition_readers.update(read_huckfinn_dataset_files_by_source(
+        EDITIONS_LOCATION, TUTORIAL_BASELINE_SOURCE_ID))
+
+    metadata_files = read_metadata_files_by_source(METADATA_LOCATION)
+
+#### 3. Run a data quality metric over the editions and/or metadata
+
+This next step is where you get to choose which data quality metric(s) you wish to run on your editions or metadata. The available AoLM metrics include: 'record consensus', 'record counts to control records', 'lexical validity', 'metadata suffiency', 'authorial signature', and 'legomena'. Each class name you will need for these metrics can be found at the top of the tutorial script file in the section that lists all of the imports. This tutorial uses the 'record counts to control records' metric since it uses both compared editions and a baseline editions. (Its class name is `DatasetCompleteness_RecordCountsToControlRecords`.)
+
+First create the metric object and give it the parameters its constructor requires. (See the python files where these metric classes are defined in *aolm_code/data_quality/core/dq_metrics*. In the `class` section you will see a constructor definition that begins with `def __init__(...):`. This is where you will find the class object's required parameters.)
+
+    metric = DatasetCompleteness_RecordCountsToControlRecords(
+        TUTORIAL_METRIC_ID,
+        edition_readers,
+        TUTORIAL_SOURCE_ID,
+        TUTORIAL_WORK_TITLE,
+        TUTORIAL_COLLECTION_TITLE,
+        EDITIONS_LOCATION,
+        TUTORIAL_BASELINE_SOURCE_ID
+    )
+
+Each metric object performs two steps to produce its metric and submetric values. The metric object's `compute` function tallies the values of the editions or metadata it needs for producing the final metric values. Then the metric object's `evaluate` function calculates statistics based on those tallies to produce the metric and submetric values.
+
+    metric.compute()
+
+    metric.evaluate()
+
+#### 4. Output results (for inspection, analysis, and visualization)
+
+In this final step, you will output both the tallies and the metric and submetric values of the data quality metric you just ran. Since the implementation of outputting these values has yet to be standardized across AoLM metrics, two convenience functions, `output_metric_tallies` and `output_metric_values` have been provided for your use. The former outputs a CSV file and the latter, a JSON file.
+    
+    output_metric_tallies(metric, 'my/output/path/metric_tallies.csv')
+
+    output_metric_values(metric, 'my/output/path/metric_values.json')
