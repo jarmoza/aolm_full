@@ -7,7 +7,11 @@ Welcome to the repository for 'The Art of Literary Modeling' (AoLM), a project b
 
 ## Data Quality Metric Tutorial
 
-Comments and pseudocode for this tutorial are found in `aolm_tutorial.py` in the `tutorial` folder. Follow along the steps outlined below and place your code in that script file. Once you have run the script and are satisfied with the results, you may choose to perform your own exercises with running different data quality metrics in the `aolm_code/data_quality/core/dq_metrics` folder – and with different data sets. Note that you will need some beginner-level Python proficiency to follow along with the tutorial. The full tutorial solution along with some extra commentary on it can be found in `tutorial_solution.py`.
+This tutorial will guide you through a sample exercise in reading a dataset of digital texts, running a data quality metric over them, and producing output files from the metric. The example dataset for the exercises will be a set of 10 editions of Mark Twain's 'Adventures of Huckleberry' sourced from the 'Internet Archive'. 
+
+Comments and pseudocode for this tutorial are found in `aolm_tutorial.py` in the `tutorial` folder. Follow along the steps outlined below and place your code in that script file in the `tutorial_workspace` function. Once you have run the script and are satisfied with the results, you may choose to perform your own exercises with running different data quality metrics in the `aolm_code/data_quality/core/dq_metrics` folder – and with different data sets. Note that you will need some beginner-level Python proficiency to follow along with the tutorial. The full tutorial solution along with some extra commentary on it can be found in `tutorial_solution.py`.
+
+Functionality to enable further exercises and explorations of AoLM's metrics and datasets can be found in `cli_lib.py` as well as via a script to run AoLM's data quality metrics at the command line in `aolm_cli.py`.
 
 ### Environment Setup
 
@@ -56,7 +60,7 @@ The first thing you will do is define string variables for IDs and folder paths 
 
 ##### A. File Locations
 
-Define one (or two) variables for the locations of your digital editions. Pre-defined dataset and metadata location values have been placed at the top of the tutorial file.
+Define one (or two) variables for the locations of your digital editions. As mentioned, pre-defined dataset and metadata location paths have been placed at the top of the tutorial file, including a `TUTORIAL_DATASET_LOCATION`.
 
     EDITIONS_LOCATION = 'mypath/to/digital_edition/files'
     METADATA_LOCATION = 'mypath/to/metadata/files'
@@ -80,7 +84,7 @@ The next step is to read in the digital edition files and/or metadata files you 
     edition_readers.update(read_huckfinn_dataset_files_by_source(
         EDITIONS_LOCATION, TUTORIAL_BASELINE_SOURCE_ID))
 
-    metadata_files = read_metadata_files_by_source(METADATA_LOCATION)
+    metadata_files = read_metadata_files_by_source(METADATA_LOCATION, TUTORIAL_SOURCE_ID)
 
 #### 3. Run a data quality metric over the editions and/or metadata
 
@@ -106,7 +110,7 @@ Each metric object performs two steps to produce its metric and submetric values
 
 #### 4. Output results (for inspection, analysis, and visualization)
 
-In this final step, you will output both the tallies and the metric and submetric values of the data quality metric you just ran. Since the implementation of outputting these values has yet to be standardized across AoLM metrics, two convenience functions, `output_metric_tallies` and `output_metric_values` have been provided for your use. The former outputs a CSV file and the latter, a JSON file.
+In this final step, you will output both the tallies and the metric and submetric values of the data quality metric you just ran. Since the implementation of outputting these values has yet to be standardized across AoLM metrics, two convenience functions, `output_metric_tallies` and `output_metric_values` have been provided for your use. The former outputs a CSV file and the latter, a JSON file. A `script_run_time` variable has been set in the `tutorial_workspace` function if useful for timestamping your outputs.
     
     output_metric_tallies(metric, 'my/output/path/metric_tallies.csv')
 
