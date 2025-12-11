@@ -35,6 +35,7 @@ from cli_lib import (
     CLI_FLAG_INPUT_FOLDER,
     CLI_FLAG_METADATA_FOLDER,
     CLI_FLAG_METRICS,
+    CLI_FLAG_OUTPUT_FOLDER,
     CLI_FLAG_SOURCE_ID,
     CLI_FLAG_WORK_TITLE,
     METRIC_FLAG_AUTHORIAL_SIGNATURE,
@@ -136,6 +137,13 @@ def parse_args():
         )
     )
 
+    # H. Where to place the metric outputs
+    parser.add_argument(
+        CLI_FLAG_OUTPUT_FOLDER,
+        type=str,
+        help="Folder path to where you would like output files to be placed"
+    )
+
     # 2. Parse arguments from command line
     parsed_args = parser.parse_args()
 
@@ -193,6 +201,9 @@ def run_command_line_tool():
     CLI_SOURCE_ID = args.source_id if args.source_id else SOURCE_ID_IA  # 'internet_archive'
     CLI_COLLECTION_TITLE = args.collection_title if args.collection_title else "Internet Archive"
     CLI_WORK_TITLE = args.work_title if args.work_title else "Adventures of Huckleberry Finn"
+
+    # C. Location for the metric output files
+    OUTPUT_LOCATION = args.output_folder if args.output_folder else CLI_OUTPUT_LOCATION    
 
     # 2. Read editions and metadata into reader objects
     edition_readers = None
@@ -285,7 +296,7 @@ def run_command_line_tool():
 
     # C. Output the metric values
     for metric in metric_list.values():
-        evaluation_output_filepath = f"{CLI_OUTPUT_LOCATION}{metric.s_metric_name}_metric_values_{script_run_time}.json"
+        evaluation_output_filepath = f"{OUTPUT_LOCATION}{metric.s_metric_name}_metric_values_{script_run_time}.json"
         output_metric_values(metric, evaluation_output_filepath)
 
 
