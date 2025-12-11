@@ -17,6 +17,16 @@ from dq_metric import DataQualityMetric
 
 class DatasetCompleteness_MetadataSufficiency(DataQualityMetric):
 
+    """
+    Parameters description:
+        p_name - Metric name (optional)
+        p_input - Dictionary with metadata filename as key and its json data as value
+        p_source_id - Unique alphanumeric ID for original source of input, i.e. "IA" for "Internet Archive" (optional) 
+        p_work_title - If all input metadata files represent one "work" (optional)
+        p_collection_title - Full name of original source of input (optional)
+        p_metadata_directory - Full path to folder with all input metadata files
+    p_source_id:
+    """
     def __init__(self, p_name, p_input, p_source_id, p_work_title, p_collection_title, p_metadata_directory):
 
         super().__init__(p_name, p_input,
@@ -229,6 +239,9 @@ class DatasetCompleteness_MetadataSufficiency(DataQualityMetric):
         self.m_evaluations["metric"] = mean(self.m_evaluations["submetric"].values())
 
         return self.m_evaluations["metric"]
+    
+    def output_results(self):
+        return self.m_results
     
     # Static fields and methods
 

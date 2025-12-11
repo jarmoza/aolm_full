@@ -190,7 +190,10 @@ class DatasetValidity_LexicalValidity(DataQualityMetric):
         print(f"Outputting results to: {p_output_filepath}")
 
         with open(p_output_filepath, "w") as eval_output_file:
-            json.dump(self.eval_output, eval_output_file, indent=4)            
+            json.dump(self.eval_output, eval_output_file, indent=4)
+
+    def output_results_cli(self):
+        return self.m_results
 
 
     # Static fields and methods
@@ -239,7 +242,62 @@ class DatasetValidity_LexicalValidity(DataQualityMetric):
         # B. Lexical validity is percent of unique words that are in-vocabulary
         lexical_validity = 100 * (1.0 - percent_oov)
 
-        return lexical_validity        
+        return lexical_validity
+    
+    # COHA lexicon restricted to 19th century
+    @staticmethod
+    def lexical_validity_improved(p_original_text, p_lexicon_19c, p_check_wordnet=True, p_allow_proper_nouns=True):
+
+        # 1. Tokenize and process the text with spaCy
+        global spacy_nlp
+        doc = spacy_nlp(p_original_text)
+
+        # Normalize lexicon to lowercase
+        # For 19th century analysis, this lexicon should include only 1800s COHA lemmas
+        lexicon = { w.lower() for w in p_lexicon_19c }
+
+        # 2. Extract alphabetic tokens
+        tokens = [ token for token in doc if token.is_alpha ]
+        
+        # No lexical content
+        if not tokens:
+            return 100.0
+
+        # Lemmatize and lowercase for comparison
+        lemmas = [ token.lemma_.lower() for token in tokens ]
+        unique_lemmas = set(lemmas)
+
+        # 3. Identify OOV lemmas based on spaCy
+        #    spaCy OOV is only a preliminary heuristic
+        spacy_oov_lemmas = { token.lemma_.lower() for token in tokens if token.is_oov }
+
+        # Optionally allow proper nouns (important for historical writing)
+        if p_allow_proper_nouns:
+            proper_lemmas = { token.lemma_.lower() for token in tokens if "PROPN" == token.pos_ }
+            spacy_oov_lemmas -= proper_lemmas
+
+        # Candidate lemmas to check
+        candidate_lemmas = spacy_oov_lemmas
+
+        # 4. Validate against COHA 19th century lexicon
+        candidate_lemmas = { lemma for lemma in candidate_lemmas if lemma not in lexicon }
+
+        # 5. Validate remaining lemmas against WordNet
+        #    WordNet is only a fallback: checks classical / standard English
+        if p_check_wordnet:
+            from nltk.corpus import wordnet
+            candidate_lemmas = { lemma for lemma in candidate_lemmas if not wordnet.synsets(lemma) }
+
+        # 6. Compute lexical validity
+        num_unique = len(unique_lemmas)
+        if 0 == num_unique:
+            return 100.0
+
+        percent_oov = len(candidate_lemmas) / num_unique
+        lexical_validity = 100.0 * (1.0 - percent_oov)
+
+        return lexical_validity
+
 
 
 # Utility functions

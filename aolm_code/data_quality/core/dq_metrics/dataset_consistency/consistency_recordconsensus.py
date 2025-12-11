@@ -436,7 +436,10 @@ class DatasetConsistency_RecordConsensus(DataQualityMetric):
             
         ]))
 
-        return self.metric_evaluation   
+        return self.metric_evaluation
+
+    def output_results(self):
+        return self.m_results  
     
     # Static fields and methods
     

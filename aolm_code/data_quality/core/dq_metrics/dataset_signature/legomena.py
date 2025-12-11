@@ -76,6 +76,15 @@ class DatasetSignature_Legomena(DataQualityMetric):
     def legomena_total_for_work(self, filepath):
         return self.m_evaluations["submetric"]["legomena_totals_by_work"][filepath]
     
+    @property
+    def output(self):
+        return {
+            "legomena": self.m_results["legomena"],
+            "legomena_by_chapter": self.m_results["legomena_by_chapter"]
+        }
+    @property
+    def eval_output(self):
+        return self.m_evaluations
 
     # Public methods
 

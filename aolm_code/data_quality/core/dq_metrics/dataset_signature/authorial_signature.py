@@ -82,6 +82,13 @@ class DatasetSignature_AuthorialSignature(DataQualityMetric):
     def signature_distances(self):
         return self.m_evaluations["submetric"]["signature_distances"]
     
+    @property
+    def output(self):
+        return self.m_results["authorial_signature"]
+    @property
+    def eval_output(self):
+        return self.m_evaluations
+    
     # Members
     def toggle_signature_distance_sort(self, p_sort_value):
         self.m_sort_signature_distances = p_sort_value
