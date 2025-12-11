@@ -1,6 +1,6 @@
 # Author: Jonathan Armoza
 # Created: October 31, 2025
-# Purpose: Plot metadata sufficiency metric values for editions
+# Purpose: Plot metadata sufficiency metric values for editions of Adventures of Huckleberry Finn
 
 # Imports
 
