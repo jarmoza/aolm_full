@@ -7,6 +7,7 @@
 # Imports
 
 # Built-ins
+from datetime import datetime
 import os
 import sys
 
@@ -19,7 +20,7 @@ add_lib_paths(sys)
 # Custom
 
 # Tutorial convenience functions
-from tutorial_lib import (
+from cli_lib import (
     output_metric_tallies,
     output_metric_values,
     read_huckfinn_dataset_files_by_source,
@@ -27,7 +28,7 @@ from tutorial_lib import (
 )
 
 # Digital edition source IDs (subfolder names in the 'data' folder)
-from tutorial_lib import (
+from cli_lib import (
     SOURCE_ID_IA,
     SOURCE_ID_MTPO,
     SOURCE_ID_PG
@@ -58,6 +59,9 @@ LEXICON_LOCATION = f"{ROOT_DIR}data{os.sep}lexicon{os.sep}coha{os.sep}lexicon.tx
 # Main script
 
 def tutorial_workspace():
+
+    # 0. Runtime saved for output file
+    script_run_time = datetime.now().strftime("%d%m%Y_%H%M%S")
 
     # =========================================================================
     # =========================================================================
