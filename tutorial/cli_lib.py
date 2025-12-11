@@ -46,6 +46,7 @@ CLI_FLAG_COLLECTION_TITLE = "--collection-title"
 CLI_FLAG_INPUT_FOLDER = "--input-folder"
 CLI_FLAG_METADATA_FOLDER = "--metadata_folder"
 CLI_FLAG_METRICS = "--metrics"
+CLI_FLAG_OUTPUT_FOLDER = "--output-folder"
 CLI_FLAG_SOURCE_ID = "--source-id"
 CLI_FLAG_WORK_TITLE = "--work-title"
 
@@ -119,10 +120,19 @@ def read_metadata_files_by_source(p_json_folder, p_source_id):
 # For this reason, the 'output_metric_tallies' and 'output_metric_values' functions
 # have been provided for tutorial users
 
+def swap_extension(p_filepath, p_new_extension="json"):
+
+    filename, extension = os.path.splitext(p_filepath)
+    return f"{filename}.{p_new_extension}"
+
+
 def output_metric_tallies(p_metric, p_output_filepath):
     
     if p_metric.s_metric_name == DatasetCompleteness_MetadataSufficiency.s_metric_name:
-        pass
+        
+        with open(swap_extension(p_output_filepath), "w") as output_file:
+            json.dump(p_metric.output_results, output_file, indent=4)
+
     elif p_metric.s_metric_name == DatasetCompleteness_RecordCountsToControlRecords.s_metric_name:
         
         results_lines = p_metric.results_full_counts(p_include_header=True)
@@ -130,30 +140,55 @@ def output_metric_tallies(p_metric, p_output_filepath):
             output_file.write("\n".join(results_lines))
 
     elif p_metric.s_metric_name == DatasetConsistency_RecordConsensus.s_metric_name:
-        pass
+        
+        with open(swap_extension(p_output_filepath), "w") as output_file:
+            json.dump(p_metric.output_results, output_file, indent=4)
+
     elif p_metric.s_metric_name == DatasetSignature_AuthorialSignature.s_metric_name:
-        pass
+        
+        with open(swap_extension(p_output_filepath), "w") as output_file:
+            json.dump(p_metric.output, output_file, indent=4)
+
     elif p_metric.s_metric_name == DatasetSignature_Legomena.s_metric_name:
-        pass
+        
+        with open(swap_extension(p_output_filepath), "w") as output_file:
+            json.dump(p_metric.output, output_file, indent=4)
+
     elif p_metric.s_metric_name == DatasetValidity_LexicalValidity.s_metric_name:
-        pass
+        
+        with open(swap_extension(p_output_filepath), "w") as output_file:
+            json.dump(p_metric.output_results_cli(), output_file, indent=4)
+
 
 def output_metric_values(p_metric, p_output_filepath):
 
     if p_metric.s_metric_name == DatasetCompleteness_MetadataSufficiency.s_metric_name:
-        pass
+
+        with open(p_output_filepath, "w") as output_file:
+            json.dump(p_metric.eval_output, output_file, indent=4)
+
     elif p_metric.s_metric_name == DatasetCompleteness_RecordCountsToControlRecords.s_metric_name:
 
         with open(p_output_filepath, "w") as output_file:
             json.dump(p_metric.eval_output, output_file, indent=4)
     elif p_metric.s_metric_name == DatasetConsistency_RecordConsensus.s_metric_name:
-        pass
+
+        with open(p_output_filepath, "w") as output_file:
+            json.dump(p_metric.eval_output, output_file, indent=4)
     elif p_metric.s_metric_name == DatasetSignature_AuthorialSignature.s_metric_name:
-        pass
+        
+        with open(p_output_filepath, "w") as output_file:
+            json.dump(p_metric.eval_output, output_file, indent=4)
+
     elif p_metric.s_metric_name == DatasetSignature_Legomena.s_metric_name:
-        pass
+
+        with open(p_output_filepath, "w") as output_file:
+            json.dump(p_metric.eval_output, output_file, indent=4)
+
     elif p_metric.s_metric_name == DatasetValidity_LexicalValidity.s_metric_name:
-        pass
+        
+        with open(p_output_filepath, "w") as output_file:
+            json.dump(p_metric.eval_output, output_file, indent=4)        
 
 
 # Metric Creation Helper Functions
