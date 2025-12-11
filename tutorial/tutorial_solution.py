@@ -155,7 +155,6 @@ def tutorial_solution():
     output_metric_tallies(metric, tally_output_filepath)
 
     # B. Output metric and submetric values (calculated during 'evaluate' call) to a JSON file
-    evaluation_output_filepath = f"{TUTORIAL_OUTPUT_LOCATION}metric_values.json"
     evaluation_output_filepath = f"{TUTORIAL_OUTPUT_LOCATION}{metric.s_metric_name}_metric_values_{script_run_time}.json"
     output_metric_values(metric, evaluation_output_filepath)
 
