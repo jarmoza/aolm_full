@@ -296,6 +296,8 @@ def run_command_line_tool():
 
     # C. Output the metric values
     for metric in metric_list.values():
+        tally_output_filepath = f"{OUTPUT_LOCATION}{metric.s_metric_name}_metric_tallies_{script_run_time}.csv" 
+        output_metric_tallies(metric, tally_output_filepath)
         evaluation_output_filepath = f"{OUTPUT_LOCATION}{metric.s_metric_name}_metric_values_{script_run_time}.json"
         output_metric_values(metric, evaluation_output_filepath)
 
