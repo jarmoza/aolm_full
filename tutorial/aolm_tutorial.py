@@ -111,6 +111,7 @@ def tutorial_workspace():
 
     # =========================================================================
     # 4. Output results for further inspection, analysis, and visualization
+    # NOTE: The 'script_run_time' variable has been set above if useful for timestamping your outputs
     
     # A. Output the metric tallies
     
