@@ -2,7 +2,7 @@
 
 Welcome to the repository for 'The Art of Literary Modeling' (AoLM), a project by [Jonathan Armoza](https://jonathanarmoza.com/) that measures the data quality of collections of digital literature.
 
-'Art of Literary Modeling' is installable as a Python package. This repo contains code for processing and reading digital texts and metadata of digital texts as well as text processing utilities for doing so. The core functionality of AoLM are its data quality metrics, of which there are a set of six examples. The repo's code also includes a set of 'experiments' that run these data quality metrics on a set of sample digital texts and metadata and visualize and assess the metrics' output values. The repo thus also contains several public domain datasets of literature that have been downloaded from their digital sources and processed to a minimal degree to aid their use by the AoLM's data quality metrics. 
+This repo contains code for processing and reading digital texts and metadata of digital texts as well as text processing utilities for doing so. The core functionality of AoLM are its data quality metrics, of which there are a set of six examples. The repo's code also includes a set of 'experiments' that run these data quality metrics on a set of sample digital texts and metadata and visualize and assess the metrics' output values. Several public domain datasets of literature are also in the repo, including Mark Twain's 'Adventures of Huckleberry Finn', Twain's autobiography, the novels of Herman Melville, and the poems of Emily Dickinson. Each have been downloaded from their digital sources and processed to a minimal degree to aid their use by the AoLM's data quality metrics. 
 
 
 ## Data Quality Metric Tutorial
