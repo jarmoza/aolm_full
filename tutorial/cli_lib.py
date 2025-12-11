@@ -1,11 +1,10 @@
 # Author: Jonathan Armoza
 # Created: December 2, 2025
-# Purpose: Store helper functions for the 'Art of Literary Modeling' tutorial script
+# Purpose: Store helper functions and values for the 'Art of Literary Modeling' CLI script
 
 # Imports
 
 # Built-ins
-import argparse
 import glob
 import json
 import os
@@ -36,76 +35,39 @@ from dq_metrics.dataset_validity.lexical_validity import DatasetValidity_Lexical
 
 # Globals
 
-# Values for command line script
+# Edition folder names
+SOURCE_ID_IA = "internet_archive"
+SOURCE_ID_MTPO = "mark_twain_project"
+SOURCE_ID_PG = "project_gutenberg"
+
+# CLI flag values and variables
+CLI_FLAG_BASELINE_SOURCE_ID = "--baseline-source-id"
+CLI_FLAG_COLLECTION_TITLE = "--collection-title"
+CLI_FLAG_INPUT_FOLDER = "--input-folder"
+CLI_FLAG_METADATA_FOLDER = "--metadata_folder"
+CLI_FLAG_METRICS = "--metrics"
+CLI_FLAG_SOURCE_ID = "--source-id"
+CLI_FLAG_WORK_TITLE = "--work-title"
 
 METRIC_FLAG_AUTHORIAL_SIGNATURE = "a"
-METRIC_FLAG_CONSISTENCY_RECORDCONSENSUS = "c"
+METRIC_FLAG_RECORD_CONSENSUS = "c"
 METRIC_FLAG_LEGOMENA = "l"
 METRIC_FLAG_METADATA_SUFFICIENCY = "m"
-METRIC_FLAG_RECORDCOUNTS_TO_CONTROLRECORD = "r"
+METRIC_FLAG_RECORDCOUNTS_TO_CONTROLRECORDS = "r"
 METRIC_FLAG_LEXICAL_VALIDITY = "v"
 
 METRIC_FLAG_TO_OBJECT_DICT = {
 
     METRIC_FLAG_AUTHORIAL_SIGNATURE: DatasetSignature_AuthorialSignature,
-    METRIC_FLAG_CONSISTENCY_RECORDCONSENSUS: DatasetConsistency_RecordConsensus,
+    METRIC_FLAG_RECORD_CONSENSUS: DatasetConsistency_RecordConsensus,
     METRIC_FLAG_LEGOMENA: DatasetSignature_Legomena,
     METRIC_FLAG_METADATA_SUFFICIENCY: DatasetCompleteness_MetadataSufficiency,
-    METRIC_FLAG_RECORDCOUNTS_TO_CONTROLRECORD: DatasetCompleteness_RecordCountsToControlRecords,
+    METRIC_FLAG_RECORDCOUNTS_TO_CONTROLRECORDS: DatasetCompleteness_RecordCountsToControlRecords,
     METRIC_FLAG_LEXICAL_VALIDITY: DatasetValidity_LexicalValidity
 }
 VALID_METRICS = set(METRIC_FLAG_TO_OBJECT_DICT.keys())
 
-# Edition folder names
-
-SOURCE_ID_IA = "internet_archive"
-SOURCE_ID_MTPO = "mark_twain_project"
-SOURCE_ID_PG = "project_gutenberg"
-
-# Helper functions
-
-def parse_args():
-
-    # 1. Set up argument parser
-    parser = argparse.ArgumentParser(description="Tutorial for 'Art of Literary Modeling'")
-
-    # A. Dataset file folder for metrics (other than metadata sufficiency)
-    parser.add_argument(
-        "--input-folder",
-        type=str,
-        help="Path to folder containing input records"
-    )
-
-    # B. Metadata file folder (for metadata sufficiency metric)
-    parser.add_argument(
-        "--metadata-folder",
-        type=str,
-        help="Path to folder containing metadata files"
-    )
-
-    # C. Which metrics to run (e.g. read files and run metric (compute() then evaluate())
-    parser.add_argument(
-        "-m", "--metrics",
-        type=str,
-        help=(
-            "String of metric codes to run. "
-            "Available: "
-            "m=metadata sufficiency, "
-            "v=lexical validity, "
-            "c=record consensus, "
-            "a=authorial signature, "
-            "l=legomena, "
-            "r=record counts"
-        )
-    )
-
-    # 2. Parse arguments from command line
-    parsed_args = parser.parse_args()
-
-    # 3. Validate argument values
-    validation_error = validate_args(parsed_args)
-
-    return parsed_args, validation_error
+# Text Reading Helper Functions
 
 def read_huckfinn_dataset_files_by_source(p_dataset_location, p_source_id):
     
@@ -131,7 +93,7 @@ def read_huckfinn_dataset_files_by_source(p_dataset_location, p_source_id):
 
     return huckfinn_text_readers
     
-def read_metadata_files_by_source(p_json_folder):
+def read_metadata_files_by_source(p_json_folder, p_source_id):
 
     # 0. Ensure folder ends with a separator
     json_folder = p_json_folder
@@ -141,45 +103,17 @@ def read_metadata_files_by_source(p_json_folder):
     # 0. Dictionary to hold data keyed by folder name
     json_data = {}
 
-    # 1. Read all JSON files in json_folder's top level subfolders
-    for folder_name in os.listdir(json_folder):
-        
-        folder_path = os.path.join(json_folder, folder_name)
-
-        if os.path.isdir(folder_path):
-            
-            # A. Find all JSON files in this subfolder
-            json_filepaths = glob.glob(os.path.join(folder_path, "*.json"))
-
-            # B. Read and store JSON files for this folder
-            json_data[folder_name] = {}
-            for filepath in json_filepaths:
-                with open(filepath, "r") as json_file:
-                    json_data[folder_name][os.path.basename(filepath)] = json.load(json_file)
+    # 1. Read all JSON files in the subfolder for the given source ID
+    folder_path = os.path.join(json_folder, p_source_id)
+    json_filepaths = glob.glob(os.path.join(folder_path, "*.json"))
+    for filepath in json_filepaths:
+        with open(filepath, "r") as json_file:
+            json_data[os.path.basename(filepath)] = json.load(json_file)
 
     return json_data
 
-def validate_args(p_parsed_args):
 
-    # If no error, string will be blank
-    validation_error = ""
-
-    # Input folder
-    if p_parsed_args.input_folder and not os.path.isdir(p_parsed_args.input_folder):
-        validation_error = f"Invalid input folder: {p_parsed_args.input_folder}"
-    # Metadata folder
-    elif p_parsed_args.metadata_folder and not os.path.isdir(p_parsed_args.metadata_folder):
-        validation_error = f"Invalid metadata folder: {p_parsed_args.metadata_folder}"
-    # Metric flags
-    elif p_parsed_args.metrics:
-        metrics = set(p_parsed_args.metrics or "")
-        invalid_metric_flags = metrics - VALID_METRICS
-        if invalid_metric_flags:
-            validation_error = f"Invalid metrics given: {invalid_metric_flags}"
-
-    return validation_error
-
-# Output functions for metric tallies
+# Output Helper Functions
 
 # NOTE: Output has yet to be standardized across AoLM metric and assessment implementations
 # For this reason, the 'output_metric_tallies' and 'output_metric_values' functions
@@ -190,7 +124,11 @@ def output_metric_tallies(p_metric, p_output_filepath):
     if p_metric.s_metric_name == DatasetCompleteness_MetadataSufficiency.s_metric_name:
         pass
     elif p_metric.s_metric_name == DatasetCompleteness_RecordCountsToControlRecords.s_metric_name:
-        output_recordcounts_to_controlrecord_tallies(p_metric, p_output_filepath)
+        
+        results_lines = p_metric.results_full_counts(p_include_header=True)
+        with open(p_output_filepath, "w") as output_file:
+            output_file.write("\n".join(results_lines))
+
     elif p_metric.s_metric_name == DatasetConsistency_RecordConsensus.s_metric_name:
         pass
     elif p_metric.s_metric_name == DatasetSignature_AuthorialSignature.s_metric_name:
@@ -205,7 +143,9 @@ def output_metric_values(p_metric, p_output_filepath):
     if p_metric.s_metric_name == DatasetCompleteness_MetadataSufficiency.s_metric_name:
         pass
     elif p_metric.s_metric_name == DatasetCompleteness_RecordCountsToControlRecords.s_metric_name:
-        output_recordcounts_to_controlrecord_values(p_metric, p_output_filepath)
+
+        with open(p_output_filepath, "w") as output_file:
+            json.dump(p_metric.eval_output, output_file, indent=4)
     elif p_metric.s_metric_name == DatasetConsistency_RecordConsensus.s_metric_name:
         pass
     elif p_metric.s_metric_name == DatasetSignature_AuthorialSignature.s_metric_name:
@@ -215,17 +155,67 @@ def output_metric_values(p_metric, p_output_filepath):
     elif p_metric.s_metric_name == DatasetValidity_LexicalValidity.s_metric_name:
         pass
 
-def output_recordcounts_to_controlrecord_tallies(p_metric, p_output_filepath):
 
-    results_lines = p_metric.results_full_counts(p_include_header=True)
+# Metric Creation Helper Functions
 
-    with open(p_output_filepath, "w") as output_file:
-        output_file.write("\n".join(results_lines))
+# Factory function for the data quality metrics of 'Art of Literary Modeling'
+def create_metric(
+        p_metric_flag,
+        p_input,
+        p_auxiliary_data="",
+        p_baseline_source_id="",
+        p_collection_title="",
+        p_input_location="",
+        p_metric_id="",
+        p_source_id="",
+        p_work_title=""
+):
+    
+    if METRIC_FLAG_AUTHORIAL_SIGNATURE == p_metric_flag:
+        
+        return DatasetSignature_AuthorialSignature(p_input)
+    elif METRIC_FLAG_RECORD_CONSENSUS == p_metric_flag:
+        
+        return DatasetConsistency_RecordConsensus(
+            p_metric_id,
+            p_input,
+            p_source_id,
+            p_work_title,
+            p_collection_title,
+            p_input_location
+        )
+    elif METRIC_FLAG_LEGOMENA == p_metric_flag:
+        
+        return DatasetSignature_Legomena(p_input)
+    elif METRIC_FLAG_METADATA_SUFFICIENCY == p_metric_flag:
+        
+        return DatasetCompleteness_MetadataSufficiency(
+                p_metric_id,
+                p_input,
+                p_source_id,
+                p_work_title,
+                p_collection_title,
+                p_input_location
+            )
+    elif METRIC_FLAG_RECORDCOUNTS_TO_CONTROLRECORDS == p_metric_flag:
 
-def output_recordcounts_to_controlrecord_values(p_metric, p_output_filepath):
+        return DatasetCompleteness_RecordCountsToControlRecords(
+            p_metric_id,
+            p_input,
+            p_source_id,
+            p_work_title,
+            p_collection_title,
+            p_input_location,
+            p_baseline_source_id
+        )
+    elif METRIC_FLAG_LEXICAL_VALIDITY == p_metric_flag:
 
-    with open(p_output_filepath, "w") as output_file:
-
-        DataQualityMetric.write_output_header(output_file)
-        metric_values = p_metric.output
-        output_file.write(metric_values)
+        return DatasetValidity_LexicalValidity(
+            p_metric_id,
+            p_input,
+            p_source_id,
+            p_work_title,
+            p_collection_title,
+            p_input_location,
+            p_auxiliary_data
+        )            
