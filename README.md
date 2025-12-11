@@ -110,7 +110,7 @@ Each metric object performs two steps to produce its metric and submetric values
 
 #### 4. Output results (for inspection, analysis, and visualization)
 
-In this final step, you will output both the tallies and the metric and submetric values of the data quality metric you just ran. Since the implementation of outputting these values has yet to be standardized across AoLM metrics, two convenience functions, `output_metric_tallies` and `output_metric_values` have been provided for your use. The former outputs a CSV file and the latter, a JSON file. A `script_run_time` variable has been set in the `tutorial_workspace` function if useful for timestamping your outputs.
+In this final step, you will output both the tallies and the metric and submetric values of the data quality metric you just ran. Since the implementation of outputting these values has yet to be standardized across AoLM metrics, two convenience functions, `output_metric_tallies` and `output_metric_values` have been provided for your use. The former outputs a CSV file and the latter, a JSON file for the 'record counts' metric. (NOTE: Most other metrics produce JSON file for their 'tallies'.) A `script_run_time` variable has also been provided in the `tutorial_workspace` function if useful for timestamping your outputs.
     
     output_metric_tallies(metric, 'my/output/path/metric_tallies.csv')
 
