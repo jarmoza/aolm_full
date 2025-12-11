@@ -7,9 +7,9 @@ Welcome to the repository for 'The Art of Literary Modeling' (AoLM), a project b
 
 ## Data Quality Metric Tutorial
 
-This tutorial will guide you through a sample exercise in reading a dataset of digital texts, running a data quality metric over them, and producing output files from the metric. The example dataset for the exercises will be a set of 10 editions of Mark Twain's 'Adventures of Huckleberry' sourced from the 'Internet Archive'. 
+This tutorial will guide you through a sample exercise in reading a dataset of digital texts, running a data quality metric over them, and producing output files from the metric. The example dataset for the tutorial will be a set of 10 editions of Mark Twain's 'Adventures of Huckleberry' sourced from the 'Internet Archive'. 
 
-Comments and pseudocode for this tutorial are found in `aolm_tutorial.py` in the `tutorial` folder. Follow along the steps outlined below and place your code in that script file in the `tutorial_workspace` function. Once you have run the script and are satisfied with the results, you may choose to perform your own exercises with running different data quality metrics in the `aolm_code/data_quality/core/dq_metrics` folder – and with different data sets. Note that you will need some beginner-level Python proficiency to follow along with the tutorial. The full tutorial solution along with some extra commentary on it can be found in `tutorial_solution.py`.
+Comments and pseudocode for this tutorial are found in `aolm_tutorial.py` in the `tutorial` folder. Follow along the steps outlined below and place your code in that script file in the `tutorial_workspace` function. Once you have run the script and are satisfied with the results, you may choose to perform your own exercises with running different data quality metrics in the `aolm_code/data_quality/core/dq_metrics` folder. Note that you will need some beginner-level Python proficiency to follow along with the tutorial. The full tutorial solution along with some extra commentary on it can be found in `tutorial_solution.py`.
 
 Functionality to enable further exercises and explorations of AoLM's metrics and datasets can be found in `cli_lib.py` as well as via a script to run AoLM's data quality metrics at the command line in `aolm_cli.py`.
 
@@ -77,7 +77,7 @@ Define variables for IDs for the digital source of the compared editions and any
 
 #### 2. Read editions and/or metadata
 
-The next step is to read in the digital edition files and/or metadata files you wish to use for your metric(s). AoLM uses custom JSON file formats for both editions and metadata. (How to build these from raw digital texts/metadata will be explained in another tutorial.) For this tutorial, two convenience functions `read_huckfinn_dataset_files_by_source` and `read_metadata_files_by_source` have been provided for your use. You only need to specify the editions/metadata location and the string ID you wish them to be denoted by.
+The next step is to read in the digital edition files and/or metadata files you wish to use for your metric(s). AoLM uses custom JSON file formats for both editions and metadata. (How to build these from raw digital texts/metadata will be explained in a future tutorial, but you may examine the edition and metadata files in the `tutorial/data` folder.) For this tutorial, two convenience functions `read_huckfinn_dataset_files_by_source` and `read_metadata_files_by_source` have been provided for your use. You only need to specify the editions/metadata location and the string ID that represents the subfolder they are stored in (i.e. 'internet_archive').
 
     edition_readers = read_huckfinn_dataset_files_by_source(
         EDITIONS_LOCATION, TUTORIAL_SOURCE_ID)
@@ -88,9 +88,9 @@ The next step is to read in the digital edition files and/or metadata files you 
 
 #### 3. Run a data quality metric over the editions and/or metadata
 
-This next step is where you get to choose which data quality metric(s) you wish to run on your editions or metadata. The available AoLM metrics include: 'record consensus', 'record counts to control records', 'lexical validity', 'metadata suffiency', 'authorial signature', and 'legomena'. Each class name you will need for these metrics can be found at the top of the tutorial script file in the section that lists all of the imports. This tutorial uses the 'record counts to control records' metric since it uses both compared editions and a baseline editions. (Its class name is `DatasetCompleteness_RecordCountsToControlRecords`.)
+This next step is where you get to choose which data quality metric(s) you wish to run on your editions or metadata. The available AoLM metrics include: 'record consensus', 'record counts to control records', 'lexical validity', 'metadata suffiency', 'authorial signature', and 'legomena'. Each class name you will need for these metrics can be found at the top of the tutorial script file in the section that lists all of the imports. This tutorial uses the 'record counts to control records' metric. (Its class name is `DatasetCompleteness_RecordCountsToControlRecords`.)
 
-First create the metric object and give it the parameters its constructor requires. (See the python files where these metric classes are defined in *aolm_code/data_quality/core/dq_metrics*. In the `class` section you will see a constructor definition that begins with `def __init__(...):`. This is where you will find the class object's required parameters.)
+First, create the metric object and give it the parameters its constructor requires. (To see where these metric class constructors are defined look at the Python files in *aolm_code/data_quality/core/dq_metrics*. In the `class` section you will see a constructor definition that begins with `def __init__(...):`. This is where you will find the class object's required parameters. However, there is also a general `create_metric` function in `cli_lib.py` that is also used by AoLM's command line script to create metric objects.)
 
     metric = DatasetCompleteness_RecordCountsToControlRecords(
         TUTORIAL_METRIC_ID,
@@ -102,7 +102,9 @@ First create the metric object and give it the parameters its constructor requir
         TUTORIAL_BASELINE_SOURCE_ID
     )
 
-Each metric object performs two steps to produce its metric and submetric values. The metric object's `compute` function tallies the values of the editions or metadata it needs for producing the final metric values. Then the metric object's `evaluate` function calculates statistics based on those tallies to produce the metric and submetric values.
+Congratulations! You have just created your first data quality metric object.
+
+Each metric object performs two steps to produce its metric and submetric values. The metric object's `compute` function tallies the values of the editions or metadata it uses for producing the final metric values. Then the metric object's `evaluate` function calculates statistics based on those tallies to produce the metric and submetric values.
 
     metric.compute()
 
@@ -112,6 +114,6 @@ Each metric object performs two steps to produce its metric and submetric values
 
 In this final step, you will output both the tallies and the metric and submetric values of the data quality metric you just ran. Since the implementation of outputting these values has yet to be standardized across AoLM metrics, two convenience functions, `output_metric_tallies` and `output_metric_values` have been provided for your use. The former outputs a CSV file and the latter, a JSON file for the 'record counts' metric. (NOTE: Most other metrics produce JSON file for their 'tallies'.) A `script_run_time` variable has also been provided in the `tutorial_workspace` function if useful for timestamping your outputs.
     
-    output_metric_tallies(metric, 'my/output/path/metric_tallies.csv')
+    output_metric_tallies(metric, 'my/output/path/metric_tallies_' + script_run_time + '.csv')
 
-    output_metric_values(metric, 'my/output/path/metric_values.json')
+    output_metric_values(metric, 'my/output/path/metric_values_'  + script_run_time + '.json')
