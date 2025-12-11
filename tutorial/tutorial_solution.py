@@ -7,6 +7,7 @@
 # Imports
 
 # Built-ins
+from datetime import datetime
 import os
 import sys
 
@@ -19,7 +20,7 @@ add_lib_paths(sys)
 # Custom
 
 # Tutorial convenience functions
-from tutorial_lib import (
+from cli_lib import (
     output_metric_tallies,
     output_metric_values,
     read_huckfinn_dataset_files_by_source,
@@ -27,7 +28,7 @@ from tutorial_lib import (
 )
 
 # Digital edition source IDs (subfolder names in the 'data' folder)
-from tutorial_lib import (
+from cli_lib import (
     SOURCE_ID_IA,
     SOURCE_ID_MTPO,
     SOURCE_ID_PG
@@ -58,6 +59,9 @@ LEXICON_LOCATION = f"{ROOT_DIR}data{os.sep}lexicon{os.sep}coha{os.sep}lexicon.tx
 # Main script
 
 def tutorial_solution():
+
+    # 0. Runtime saved for output file
+    script_run_time = datetime.now().strftime("%d%m%Y_%H%M%S")    
 
     # =========================================================================
     # =========================================================================
@@ -103,8 +107,8 @@ def tutorial_solution():
     edition_readers.update(read_huckfinn_dataset_files_by_source(
         EDITIONS_LOCATION, TUTORIAL_BASELINE_SOURCE_ID))
     
-    # B. Read metadata for a particular collection of editions
-    # metadata = read_metadata_files_by_subfolder(METADATA_LOCATION)
+    # B. Read metadata for a particular collection of editions (not for this tutorial)
+    # metadata = read_metadata_files_by_source(METADATA_LOCATION, TUTORIAL_SOURCE_ID)
 
 
     # =========================================================================
@@ -147,11 +151,12 @@ def tutorial_solution():
     # have been provided for tutorial users
 
     # A. Output tallies for editions and baseline edition to a CSV file
-    tally_output_filepath = f"{TUTORIAL_OUTPUT_LOCATION}metric_tallies.csv" 
+    tally_output_filepath = f"{TUTORIAL_OUTPUT_LOCATION}{metric.s_metric_name}_metric_tallies_{script_run_time}.csv" 
     output_metric_tallies(metric, tally_output_filepath)
 
     # B. Output metric and submetric values (calculated during 'evaluate' call) to a JSON file
-    evaluation_output_filepath = f"{TUTORIAL_OUTPUT_LOCATION}metric_values.json" 
+    evaluation_output_filepath = f"{TUTORIAL_OUTPUT_LOCATION}metric_values.json"
+    evaluation_output_filepath = f"{TUTORIAL_OUTPUT_LOCATION}{metric.s_metric_name}_metric_values_{script_run_time}.json"
     output_metric_values(metric, evaluation_output_filepath)
 
 
