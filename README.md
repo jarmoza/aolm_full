@@ -45,7 +45,7 @@ commands in your terminal:
 
 #### 2. Install the 'conda' environment for 'Art of Literary Modeling' 
 
-In the *aolm_full* root folder in your terminal, run `conda env create -f environment.yml`
+In the *aolm_full* folder in your terminal, run `conda env create -f environment.yml`
 
 #### 3. Activate the 'conda' environment
 
