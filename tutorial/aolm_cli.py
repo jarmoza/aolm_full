@@ -205,6 +205,7 @@ def run_command_line_tool():
     # C. Location for the metric output files
     OUTPUT_LOCATION = args.output_folder if args.output_folder else CLI_OUTPUT_LOCATION    
 
+    # =========================================================================
     # 2. Read editions and metadata into reader objects
     edition_readers = None
     metadata = None
@@ -219,6 +220,7 @@ def run_command_line_tool():
                 EDITIONS_LOCATION, CLI_BASELINE_SOURCE_ID))
     
 
+    # =========================================================================
     # 3. Run data quality metrics over the editions and/or metadata
 
     # A. Create the metric object(s)
@@ -294,7 +296,8 @@ def run_command_line_tool():
         metric.compute()
         metric.evaluate()
 
-    # C. Output the metric values
+    # =========================================================================
+    # 4. Output the metric values
     for metric in metric_list.values():
         tally_output_filepath = f"{OUTPUT_LOCATION}{metric.s_metric_name}_metric_tallies_{script_run_time}.csv" 
         output_metric_tallies(metric, tally_output_filepath)
