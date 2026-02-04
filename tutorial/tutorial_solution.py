@@ -48,10 +48,17 @@ from aolm_cli import run_command_line_tool
 
 # Globals
 
+# Tutorial code can use either a small version of the 'Huckleberry Finn' dataset or the full one
+# NOTE: To switch to the full dataset, set USE_FULL_DATASET to 'True'
+USE_FULL_DATASET = False
+DATASET_BYSIZE_SUBDIR = "small_set"
+if USE_FULL_DATASET:
+    DATASET_BYSIZE_SUBDIR = "full_set"
+
 # Pre-defined values for tutorial paths/IDs - for convenience
 TUTORIAL_DIRECTORY = f"{ROOT_DIR}{os.sep}tutorial{os.sep}"
-TUTORIAL_DATASET_LOCATION = f"{TUTORIAL_DIRECTORY}data{os.sep}editions{os.sep}"
-TUTORIAL_METADATA_LOCATION = f"{TUTORIAL_DIRECTORY}data{os.sep}metadata{os.sep}"
+TUTORIAL_DATASET_LOCATION = f"{TUTORIAL_DIRECTORY}data{os.sep}{DATASET_BYSIZE_SUBDIR}{os.sep}editions{os.sep}"
+TUTORIAL_METADATA_LOCATION = f"{TUTORIAL_DIRECTORY}data{os.sep}{DATASET_BYSIZE_SUBDIR}{os.sep}metadata{os.sep}"
 TUTORIAL_OUTPUT_LOCATION = f"{TUTORIAL_DIRECTORY}output{os.sep}"
 LEXICON_LOCATION = f"{ROOT_DIR}data{os.sep}lexicon{os.sep}coha{os.sep}lexicon.txt"
 
