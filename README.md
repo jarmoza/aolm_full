@@ -4,18 +4,20 @@ Welcome to the repository for 'The Art of Literary Modeling' (AoLM), a PhD proje
 
 AoLM's code can be divided into three functional parts: reading in digital texts and metadata, making data quality measurements on those inputs, and assessing those measurements. There also exists a small library of utility scripts for text processing and data visualization.
 
-The core of AoLM is its data quality metrics, of which there are six working examples. The repository's assessment code consists of a set of 'experiments' that run these data quality metrics over sample digital texts and metadata and then visualize, analyze, and output the metrics' measurements. Several public domain datasets of literature are also in the repository, including 14 digital editions of Mark Twain's 'Adventures of Huckleberry Finn', all 3 volumens of Twain's autobiography, 9 digital editions of novels by Herman Melville, and digital copies of all of Emily Dickinson's poems and their variants (over 4800 files). Each digital edition (novel/autobiography/poem) has been downloaded directly from their source archive online and processed to a minimal degree to aid their use by the AoLM's data quality metrics. Each digital edition also is complemented by a set of metadata about it provided by those online sources.
+The core of AoLM is its data quality metrics, of which there are six working examples. The repository's assessment code consists of a set of 'experiments' that run these data quality metrics over sample digital texts and metadata and then visualize, analyze, and output the metrics' measurements. Several public domain datasets of literature are also in the repository, including 14 digital editions of Mark Twain's 'Adventures of Huckleberry Finn', all 3 volumes of Twain's autobiography, 9 digital editions of novels by Herman Melville, and digital editions of all of Emily Dickinson's poems and their variants (over 4800 files). Each digital edition (novel/autobiography/poem) has been downloaded directly from their source archive online and processed to a minimal degree to aid their use by the AoLM's data quality metrics. Each digital edition also is complemented by a set of metadata about it provided by those online sources.
 
 Below, is documentation on all three functional parts of AoLM beginning with a tutorial demonstrating how to work with data quality metrics. Additional, file by file documentation for code used in the final version of AoLM – as well as prototypical code that went unused for it – can be found in the 'Appendix' section of the written portion of 'The Art of Literary Modeling'. (Watch this space for a link to that writing once it is made public.)
 
 
 ## Data Quality Metric Tutorial
 
-This tutorial will guide you through a sample exercise in reading a dataset of digital texts, running a data quality metric over them, and producing output files from the metric. The example dataset for the tutorial will be a set of 10 editions of Mark Twain's 'Adventures of Huckleberry' sourced from the 'Internet Archive'. 
+This tutorial will guide you through a sample exercise in reading a dataset of digital texts, running a data quality metric over them, and producing output files from the metric. The example dataset for the tutorial will be a set of editions of Mark Twain's 'Adventures of Huckleberry' sourced from the 'Internet Archive', 'Project Gutenberg', and 'Mark Twain Project Online' at University of California, Berkeley. 
 
-Comments and pseudocode for this tutorial are found in `aolm_tutorial.py` in the `tutorial` folder. Follow along the steps outlined below and place your code in that script file in the `tutorial_workspace` function. Once you have run the script and are satisfied with the results, you may choose to perform your own exercises with running different data quality metrics in the `aolm_code/data_quality/core/dq_metrics` folder. Note that you will need some beginner-level Python proficiency to follow along with the tutorial. The full tutorial solution along with some extra commentary on it can be found in `tutorial_solution.py`.
+Comments and pseudocode for this tutorial are found in `aolm_tutorial.py` in the `tutorial` folder which acts as a workspace for you to add code to as you follow along with the tutorial. Follow along with the steps outlined below and place your code in that script file in the `tutorial_workspace` function. Once you have run the script, the output files for this tutorial will be found in the `tutorial/output` folder. If you are satisfied with the results, you may choose to perform your own exercises with running different data quality metrics in the `aolm_code/data_quality/core/dq_metrics` folder. Note that you will need some beginner-level Python proficiency to follow along with the tutorial. The full tutorial solution along with some extra commentary on it can be found in `tutorial_solution.py`.
 
 Functionality to enable further exercises and explorations of AoLM's metrics and datasets can be found in `cli_lib.py` as well as via a script to run AoLM's data quality metrics at the command line in `aolm_cli.py`.
+
+Instructions on how to read digital texts into memory for use by data quality metric objects and how to create assessment code for their outputs can be found [here]().
 
 ### Environment Setup
 
@@ -132,3 +134,6 @@ In this final step, you will output both the tallies and the metric and submetri
     output_metric_tallies(metric, 'my/output/path/metric_tallies_' + script_run_time + '.csv')
 
     output_metric_values(metric, 'my/output/path/metric_values_'  + script_run_time + '.json')
+
+#### 5. How to interpret the results in the output files
+
