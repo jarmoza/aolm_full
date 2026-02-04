@@ -1,8 +1,12 @@
 # The Art of Literary Modeling
 
-Welcome to the repository for 'The Art of Literary Modeling' (AoLM), a project by [Jonathan Armoza](https://jonathanarmoza.com/) that measures the data quality of collections of digital literature.
+Welcome to the repository for 'The Art of Literary Modeling' (AoLM), a PhD project and dissertation by [Jonathan Armoza](https://jonathanarmoza.com/) that conceptualizes a framework for and measures the data quality of collections of digital literature for the digital humanities.
 
-This repo contains code for processing and reading digital texts and metadata of digital texts as well as text processing utilities for doing so. The core functionality of AoLM are its data quality metrics, of which there are a set of six examples. The repo's code also includes a set of 'experiments' that run these data quality metrics on a set of sample digital texts and metadata and visualize and assess the metrics' output values. Several public domain datasets of literature are also in the repo, including Mark Twain's 'Adventures of Huckleberry Finn', Twain's autobiography, the novels of Herman Melville, and the poems of Emily Dickinson. Each have been downloaded from their digital sources and processed to a minimal degree to aid their use by the AoLM's data quality metrics. 
+AoLM's code can be divided into three functional parts: reading in digital texts and metadata, making data quality measurements on those inputs, and assessing those measurements. There also exists a small library of utility scripts for text processing and data visualization.
+
+The core of AoLM is its data quality metrics, of which there are six working examples. The repository's assessment code consists of a set of 'experiments' that run these data quality metrics over sample digital texts and metadata and then visualize, analyze, and output the metrics' measurements. Several public domain datasets of literature are also in the repository, including 14 digital editions of Mark Twain's 'Adventures of Huckleberry Finn', all 3 volumens of Twain's autobiography, 9 digital editions of novels by Herman Melville, and digital copies of all of Emily Dickinson's poems and their variants (over 4800 files). Each digital edition (novel/autobiography/poem) has been downloaded directly from their source archive online and processed to a minimal degree to aid their use by the AoLM's data quality metrics. Each digital edition also is complemented by a set of metadata about it provided by those online sources.
+
+Below, is documentation on all three functional parts of AoLM beginning with a tutorial demonstrating how to work with data quality metrics. Additional, file by file documentation for code used in the final version of AoLM – as well as prototypical code that went unused for it – can be found in the 'Appendix' section of the written portion of 'The Art of Literary Modeling'. (Watch this space for a link to that writing once it is made public.)
 
 
 ## Data Quality Metric Tutorial
@@ -15,7 +19,13 @@ Functionality to enable further exercises and explorations of AoLM's metrics and
 
 ### Environment Setup
 
-#### 1. Installing Anaconda (OS-specific Instructions)
+#### 1. Copy the 'Art of Literary Modeling' GitHub repository to your computer
+
+In your terminal, run `git clone https://github.com/jarmoza/aolm_full` in a location on your hard drive where you would like the 'Art of Literary Modeling' code repository to live.
+
+#### 2. Installing Anaconda (OS-specific Instructions)
+
+Check to see if 'conda' is installed on your system already by running `conda --version`.
 
 If you do not yet have Anaconda ('conda') installed on your system, run the following
 commands in your terminal:
@@ -43,14 +53,19 @@ commands in your terminal:
 - `source ~/miniforge3/bin/activate`
 - `conda --version`
 
-#### 2. Install the 'conda' environment for 'Art of Literary Modeling' 
+#### 3. Install the 'conda' environment for 'Art of Literary Modeling' 
 
-In the *aolm_full* folder in your terminal, run `conda env create -f environment.yml`
+In the *aolm_full*  folder in your terminal, run `conda env create -f environment.yml`
 
-#### 3. Activate the 'conda' environment
+#### 4. Activate the 'conda' environment
 
 Next, run `conda activate aolm`. Repeat *only* this last command when you want to re-run
 the tutorial script in the terminal. (To exit the 'aolm' conda environment, run `conda deactivate`.)
+
+#### 5. Install the required spaCy models
+
+`python3 -m spacy download en_core_web_lg`
+`python3 -m spacy download en_core_web_sm`
 
 ### Tutorial
 
