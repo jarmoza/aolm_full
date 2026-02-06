@@ -1,12 +1,73 @@
 # The Art of Literary Modeling
 
-Welcome to the repository for 'The Art of Literary Modeling' (AoLM), a PhD project and dissertation by [Jonathan Armoza](https://jonathanarmoza.com/) that conceptualizes a framework for and measures the data quality of collections of digital literature for the digital humanities.
+## Overview
 
-AoLM's code can be divided into three functional parts: reading in digital texts and metadata, making data quality measurements on those inputs, and assessing those measurements. There also exists a small library of utility scripts for text processing and data visualization.
+Welcome to the repository for 'The Art of Literary Modeling' (AoLM), a PhD project and dissertation by [Jonathan Armoza](https://jonathanarmoza.com/) that develops a framework for measuring and assessing the data quality of corpora of digital literature in digital humanities research.
 
-The core of AoLM is its data quality metrics, of which there are six working examples. The repository's assessment code consists of a set of 'experiments' that run these data quality metrics over sample digital texts and metadata and then visualize, analyze, and output the metrics' measurements. Several public domain datasets of literature are also in the repository, including 14 digital editions of Mark Twain's 'Adventures of Huckleberry Finn', all 3 volumes of Twain's autobiography, 9 digital editions of novels by Herman Melville, and digital editions of all of Emily Dickinson's poems and their variants (over 4800 files). Each digital edition (novel/autobiography/poem) has been downloaded directly from their source archive online and processed to a minimal degree to aid their use by the AoLM's data quality metrics. Each digital edition also is complemented by a set of metadata about it provided by those online sources.
+AoLM's code can be divided into three functional parts: reading in and processing digital texts and metadata into comparable components, making data quality measurements on those inputs, and assessing those measurement outputs together to determine the overall quality of the dataset. Accompanying and aiding this code is a small library of utility scripts for text processing and data visualization.
 
-Below, is documentation on all three functional parts of AoLM beginning with a tutorial demonstrating how to work with data quality metrics. Additional, file by file documentation for code used in the final version of AoLM – as well as prototypical code that went unused for it – can be found in the 'Appendix' section of the written portion of 'The Art of Literary Modeling'. (Watch this space for a link to that writing once it is made public.)
+The core of AoLM is its data quality metrics, of which there are [six working examples](aolm_code/data_quality/core/dq_metrics). The repository's assessment code consists of a set of ['experiments'](experiments/chapter1) that run these data quality metrics over sample digital texts and metadata and then visualize, analyze, and output the metrics' measurements. Several public domain datasets of literature are also in the repository, including [14 digital editions of Mark Twain's 'Adventures of Huckleberry Finn'](data/twain/huckleberry_finn), [all 3 volumes of Twain's autobiography](data/twain/autobiography), [9 digital editions of novels by Herman Melville](data/melville/collected), and [digital editions of all of Emily Dickinson's poems and their variants (over 4800 files)](data/dickinson/eda). Each digital edition (novel/autobiography/poem) has been downloaded directly from their source archive online and processed to a minimal degree to aid their use by the AoLM's data quality metrics while maintaining a much of their rawness as possible. Each digital edition also is supplemented by a set of metadata about it provided by those source archives.
+
+Below you will find documentation on all three functional parts of AoLM including a tutorial demonstrating how to work with data quality metrics. Additional, file by file documentation for code used in the final version of AoLM – as well as prototypical code that went unused for it – can be found in the 'Appendix' section of the written portion of 'The Art of Literary Modeling'. (Watch this space for a link to that writing once it is made public.)
+
+## Table of Contents
+
+[1. Text and Metadata Ingestion](#text-and-metadata-ingestion)
+[2. Data Quality Metrics](#data-quality-metrics)
+[3. Data Quality Metric Tutorial](#data-quality-metric-tutorial)
+[4. Overall Data Quality Assessment](#overall-data-quality-assessment)
+
+
+## Text and Metadata Ingestion
+
+In order to measure the data quality of digital text files and metadata about them, AoLM processes those files into generalized components in order to compare them. AoLM's archive-specific reader objects make this possible. Below is a description of the JSON file formats for text and metadata as well as a description of those reader objects – which may be extended and modified using class inheritance for your own projects.
+
+### Digital Text Processing
+
+With AoLM's ethos of only using minimal intervention during the processing of digital texts in order to read them into computer memory for data quality measurement, the suggestion is to locate beginning and ends of the primary components of your raw digital source text. If there are subcomponents of the body text that you wish to isolate a consistent marker (i.e. `"CHAPTER <roman numeral>."`) is recommended and the [reader objects](aolm_code/objects) and text JSON format have implementations that accommodate both begin and end lines as well as text component prefixes. You can observe an example of chapter markers in this ['raw' text edition of _Adventures of Huckleberry Finn_](data/twain/huckleberry_finn/internet_archive/txt/demarcated/complete/txt/adventuresofhuc00twai_demarcated.txt).
+
+
+### Text JSON File Format Description
+
+The text JSON file format has two sections: `keys` and `component`. `keys` are mostly to help external scripts navigate the raw input `txt` file of the work and to describe the output from text processing that will appear in the `components` section. For an example file to see how this is laid out look at [the February 2021 edition of _Adventures of Huckleberry Finn_ on Project Gutenberg](data/twain/huckleberry_finn/project_gutenberg/json/2021-02-21-HuckFinn.json).
+
+The `keys` section contains `order`, `input`, and `output` subsections. `order` defines the order of the primary components of the text (i.e. `[header, frontmatter, body, footer]`). A `startline` and `endline` are defined for each of those text components in the `input` subsection. The `output` subsection specifies the key that will be used in the file's `component` section. As you will see in the example file, `body` is a special case in that in contains subcomponents (e.g. chapters for a novel). NOTE: The prefix to be used to find those subcomponents in the raw text is specified in the `body` input subsection, and a prefix for the chapters as they will appear in the `component` section is specified in the `output` subsection.
+
+### Metadata JSON File Format Description
+
+The metadata JSON files used by the metadata sufficiency metric (AoLM's only metadata metric) is somewhat straightforward. As can be seen in [this example of metadata from the Internet Archive](data/twain/huckleberry_finn/internet_archive/metadata/adventureshuckle00twaiiala-HuckFinn_metadata.json), key-value pairs from the source archive's metadata are simply listed in the file. However, in cases where metadata must be manually extracted, AoLM's metadata file format (and metadata metric) also includes an `unkeyed_fields` key where such key-value pairs can be placed. See [this metadata file from the February 2021 edition of _Adventures of Huckleberry Finn_](data/twain/huckleberry_finn/project_gutenberg/metadata/2021-02-21-HuckFinn_metadata.json) for example.
+
+### Reading in Text JSON Files Using Reader Objects`
+
+AoLM uses reader objects to ingest texts from the format of its text JSON file into memory as a set of generalized components that its metric objects can use to make tallies and evaluative measurements from.
+
+AoLM's scheme for doing this uses object-oriented programming class inheritance beginning with a [`AOLMText` object](aolm_code/objects/aolm_text.py) which is used [the base reader class, `AOLMTextReader`](aolm_code/objects/aolm_textreader.py). Child classes that derive from `AOLMTextReader` are created for texts coming from specific source archives so that the reading/ingestion functionality can be tailored to inputs coming from those sources. See for example, [the Internet Archive reader for _Huckleberry Finn_ editions](aolm_code/objects/ia_huckfinn_reader.py) as opposed to [the Mark Twain Project Online reader for _Huckleberry Finn_ editions](aolm_code/objects/mtpo_huckfinn_reader.py).
+
+## Data Quality Metrics
+
+Each data quality metric is part of what is called a "data quality assessment framework in Information Science. AoLM uses as foundation many of the concepts concerning data quality from the field and specifically from information scientist Laura Sebastian-Coleman in her book, "Measuring Data Quality for Ongoing Improvement (2012).
+
+The metrics implemented for the project reflect several core categories for data quality that Sebastian-Coleman listed in the table below.
+
+| name                             | category         | dimensions                     | function                                               |
+|----------------------------------|------------------|--------------------------------|--------------------------------------------------------|
+| lexical validity                 | intrinsic        | - accuracy                     | comparing data against external objects                |
+|                                  |                  | - objectivity                  |                                                        |
+|                                  |                  | - believability                |                                                        |
+|                                  |                  | - reputation                   |                                                        |
+| record consensus                 | representational | - interpretability             | the intelligibility of data                            |
+|                                  |                  | - ease of understanding        |                                                        |
+|                                  |                  | - representational             |                                                        |
+|                                  |                  | - consistency                  |                                                        |
+|                                  |                  | - representational conciseness |                                                        |
+| metadata sufficiency             | contextual       | - amount of value-added        | measurements based on the task or use case(s) for data |
+|                                  |                  | - relevancy                    |                                                        |
+|                                  |                  | - timeliness                   |                                                        |
+|                                  |                  | - completeness                 |                                                        |
+|                                  |                  | - appropriate amount of data   |                                                        |
+| record counts to control records | contextual       | “                              |                                                        |
+| authorial signature              | representational | “                              |                                                        |
+| legomena                         | representational | “                              |                                                        |
 
 
 ## Data Quality Metric Tutorial
@@ -136,4 +197,6 @@ In this final step, you will output both the tallies and the metric and submetri
     output_metric_values(metric, 'my/output/path/metric_values_'  + script_run_time + '.json')
 
 #### 5. How to interpret the results in the output files
+
+## Overall Data Quality Assessment
 
