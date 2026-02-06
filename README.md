@@ -12,10 +12,10 @@ Below you will find documentation on all three functional parts of AoLM includin
 
 ## Table of Contents
 
-[1. Text and Metadata Ingestion](#text-and-metadata-ingestion)
-[2. Data Quality Metrics](#data-quality-metrics)
-[3. Data Quality Metric Tutorial](#data-quality-metric-tutorial)
-[4. Overall Data Quality Assessment](#overall-data-quality-assessment)
+1. [Text and Metadata Ingestion](#text-and-metadata-ingestion)
+2. [Data Quality Metrics](#data-quality-metrics)
+3. [Data Quality Metric Tutorial](#data-quality-metric-tutorial)
+4. [Overall Data Quality Assessment](#overall-data-quality-assessment)
 
 
 ## Text and Metadata Ingestion
