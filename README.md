@@ -51,23 +51,23 @@ The metrics implemented for the project reflect several core categories for data
 
 | name                             | category         | dimensions                     | function                                               |
 |----------------------------------|------------------|--------------------------------|--------------------------------------------------------|
-| lexical validity                 | intrinsic        | - accuracy                     | comparing data against external objects                |
+| [lexical validity](aolm_code/data_quality/core/dq_metrics/dataset_validity/lexical_validity.py)                 | intrinsic        | - accuracy                     | comparing data against external objects                |
 |                                  |                  | - objectivity                  |                                                        |
 |                                  |                  | - believability                |                                                        |
 |                                  |                  | - reputation                   |                                                        |
-| record consensus                 | representational | - interpretability             | the intelligibility of data                            |
+| [record consensus](aolm_code/data_quality/core/dq_metrics/dataset_consistency/consistency_recordconsensus.py)                 | representational | - interpretability             | the intelligibility of data                            |
 |                                  |                  | - ease of understanding        |                                                        |
 |                                  |                  | - representational             |                                                        |
 |                                  |                  | - consistency                  |                                                        |
 |                                  |                  | - representational conciseness |                                                        |
-| metadata sufficiency             | contextual       | - amount of value-added        | measurements based on the task or use case(s) for data |
+| [metadata sufficiency](aolm_code/data_quality/core/dq_metrics/dataset_completeness/metadata_sufficiency.py)             | contextual       | - amount of value-added        | measurements based on the task or use case(s) for data |
 |                                  |                  | - relevancy                    |                                                        |
 |                                  |                  | - timeliness                   |                                                        |
 |                                  |                  | - completeness                 |                                                        |
 |                                  |                  | - appropriate amount of data   |                                                        |
-| record counts to control records | contextual       | “                              |                                                        |
-| authorial signature              | representational | “                              |                                                        |
-| legomena                         | representational | “                              |                                                        |
+| [record counts to control records](aolm_code/data_quality/core/dq_metrics/dataset_completeness/recordcounts_to_controlrecords.py) | contextual       | “                              |                                                        |
+| [authorial signature](aolm_code/data_quality/core/dq_metrics/dataset_signature/authorial_signature.py)              | representational | “                              |                                                        |
+| [legomena](aolm_code/data_quality/core/dq_metrics/dataset_signature/legomena.py)                         | representational | “                              |                                                        |
 
 ### Lexical Validity
 
