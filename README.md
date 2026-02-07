@@ -47,7 +47,7 @@ AoLM's scheme for doing this uses object-oriented programming class inheritance 
 
 Each data quality metric is part of what is called a "data quality assessment framework in Information Science. AoLM uses as foundation many of the concepts concerning data quality from the field and specifically from information scientist Laura Sebastian-Coleman in her book, "Measuring Data Quality for Ongoing Improvement (2012).
 
-The metrics implemented for the project reflect several core categories for data quality that Sebastian-Coleman listed in the table below.
+The metrics implemented for the project reflect several core categories for data quality that Sebastian-Coleman listed in the table below. However, metrics themselves are relatively straightforward to create on your own. In order to begin creating your own metrics, have a look at [`dq_metric.py](aolm_code/data_quality/core/dq_metric.py). This acts as the base class to derive from for metrics. It contains the core functionality needed. Its core functions include the constructor, `compute`, `evaluate`, and output methods. Your derived child class can and likely will include more helper functionality. Take a look at the code for my own metrics in the [aolm_code/data_quality/core/dq_metrics](aolm_code/data_quality/core/dq_metrics) folder to see examples of expanded metric functionality.
 
 | name                             | category         | dimensions                     | function                                               |
 |----------------------------------|------------------|--------------------------------|--------------------------------------------------------|
@@ -69,10 +69,33 @@ The metrics implemented for the project reflect several core categories for data
 | authorial signature              | representational | “                              |                                                        |
 | legomena                         | representational | “                              |                                                        |
 
+### Lexical Validity
+
+The lexical validity metric utilizes three external dictionaries ([spaCy](https://spacy.io/), [the Corpus of Historical American English](https://www.english-corpora.org/coha/), and [WordNet](https://wordnet.princeton.edu/)) to check if a token in a digital text is a valid/known English word. It evaluates this measurement at the chapter, edition, and corpus level.
+
+### Record Consensus
+
+The record consensus metric takes a set of digital editions and sees how much of a works words and sentences match above a given percent match threshold across all editions. It does this at the chapter, edition, and corpus level.
+
+### Metadata Sufficiency
+
+The metadata sufficiency metric looks at metadata of digital editions that source from the same digital archive and considers the percent coverage of metadata keys as well as the percent of mismatch between (potentially) differently keyed values for those metadata keys.
+
+### Record Counts to Control Record
+
+The record counts to control record metric compares a set of editions against a (presumed) master edition to understand how much each of those compared editions' words and sentences and chapters match with those of the master edition. It evaluates these measures at the chapter, edition, and corpus level.
+
+### Authorial Signature
+
+The authorial signature metric determines the average (document-length normalized) term frequency vector for a collection of digital texts and then measures the distance between each edition's term frequency vector (also normalized) to determine the distance each digital edition is that "authorial signature" average vector.
+
+### Legomena
+
+The legmona metric works similarly to the authorial signature except in this case it looks to the n-legomena (i.e. hapax legomena are words used just once in a body of text, dis legemona are words used twice, etc.) featured in a set of digital texts ('n' is specified by the user of the metric). An average, normalized legomena vector is determined for the whole set of digital texts, but this measurement also occurs at the chapter and edition level.
 
 ## Data Quality Metric Tutorial
 
-This tutorial will guide you through a sample exercise in reading a dataset of digital texts, running a data quality metric over them, and producing output files from the metric. The example dataset for the tutorial will be a set of editions of Mark Twain's 'Adventures of Huckleberry' sourced from the 'Internet Archive', 'Project Gutenberg', and 'Mark Twain Project Online' at University of California, Berkeley. 
+This tutorial will guide you through a sample exercise in _reading a dataset of digital texts_, _running the record counts to control records data quality metric_ over them, and _producing output files_ from the metric. The example dataset for the tutorial will be a set of editions of Mark Twain's 'Adventures of Huckleberry' sourced from the 'Internet Archive', 'Project Gutenberg', and 'Mark Twain Project Online' at University of California, Berkeley. 
 
 Comments and pseudocode for this tutorial are found in `aolm_tutorial.py` in the `tutorial` folder which acts as a workspace for you to add code to as you follow along with the tutorial. Follow along with the steps outlined below and place your code in that script file in the `tutorial_workspace` function. Once you have run the script, the output files for this tutorial will be found in the `tutorial/output` folder. If you are satisfied with the results, you may choose to perform your own exercises with running different data quality metrics in the `aolm_code/data_quality/core/dq_metrics` folder. Note that you will need some beginner-level Python proficiency to follow along with the tutorial. The full tutorial solution along with some extra commentary on it can be found in `tutorial_solution.py`.
 
@@ -82,11 +105,11 @@ Instructions on how to read digital texts into memory for use by data quality me
 
 ### Environment Setup
 
-#### 1. Copy the 'Art of Literary Modeling' GitHub repository to your computer
+#### 1. _Copy the 'Art of Literary Modeling' GitHub repository to your computer_
 
 In your terminal, run `git clone https://github.com/jarmoza/aolm_full` in a location on your hard drive where you would like the 'Art of Literary Modeling' code repository to live.
 
-#### 2. Installing Anaconda (OS-specific Instructions)
+#### 2. _Installing Anaconda_ (OS-specific Instructions)
 
 Check to see if 'conda' is installed on your system already by running `conda --version`.
 
@@ -116,23 +139,23 @@ commands in your terminal:
 - `source ~/miniforge3/bin/activate`
 - `conda --version`
 
-#### 3. Install the 'conda' environment for 'Art of Literary Modeling' 
+#### 3. _Install the 'conda' environment_ for 'Art of Literary Modeling' 
 
 In the *aolm_full*  folder in your terminal, run `conda env create -f environment.yml`
 
-#### 4. Activate the 'conda' environment
+#### 4. _Activate the 'conda' environment_
 
 Next, run `conda activate aolm`. Repeat *only* this last command when you want to re-run
 the tutorial script in the terminal. (To exit the 'aolm' conda environment, run `conda deactivate`.)
 
-#### 5. Install the required spaCy models
+#### 5. _Install the required spaCy models_
 
 `python3 -m spacy download en_core_web_lg`
 `python3 -m spacy download en_core_web_sm`
 
 ### Tutorial
 
-#### 1. Parameters for reading data and running a metric (optional)
+#### 1. _Define parameters_ for reading data and running a metric (optional)
 
 The first thing you will do is define string variables for IDs and folder paths that will be used for reading digital texts/metadata and then later, running a data quality metric(s) over those texts/metadata. (This step can be skipped if you don't mind entering raw parameter values into function/constructor calls.) These are used by AoLM's reader objects and data quality metric objects. A set of pre-defined values for these parameters have been placed at the top of the tutorial script for your convenience.
 
@@ -153,7 +176,7 @@ Define variables for IDs for the digital source of the compared editions and any
     TUTORIAL_COLLECTION_TITLE = 'Internet Archive'
     TUTORIAL_WORK_TITLE = 'Adventures of Huckleberry Finn'å
 
-#### 2. Read editions and/or metadata
+#### 2. _Read editions and/or metadata_
 
 The next step is to read in the digital edition files and/or metadata files you wish to use for your metric(s). AoLM uses custom JSON file formats for both editions and metadata. (How to build these from raw digital texts/metadata will be explained in a future tutorial, but you may examine the edition and metadata files in the `tutorial/data` folder.) For this tutorial, two convenience functions `read_huckfinn_dataset_files_by_source` and `read_metadata_files_by_source` have been provided for your use. You only need to specify the editions/metadata location and the string ID that represents the subfolder they are stored in (i.e. 'internet_archive').
 
@@ -164,7 +187,7 @@ The next step is to read in the digital edition files and/or metadata files you 
 
     metadata_files = read_metadata_files_by_source(METADATA_LOCATION, TUTORIAL_SOURCE_ID)
 
-#### 3. Run a data quality metric over the editions and/or metadata
+#### 3. _Run a data quality metric_ over the editions and/or metadata
 
 This next step is where you get to choose which data quality metric(s) you wish to run on your editions or metadata. The available AoLM metrics include: 'record consensus', 'record counts to control records', 'lexical validity', 'metadata suffiency', 'authorial signature', and 'legomena'. Each class name you will need for these metrics can be found at the top of the tutorial script file in the section that lists all of the imports. This tutorial uses the 'record counts to control records' metric. (Its class name is `DatasetCompleteness_RecordCountsToControlRecords`.)
 
@@ -188,15 +211,32 @@ Each metric object performs two steps to produce its metric and submetric values
 
     metric.evaluate()
 
-#### 4. Output results (for inspection, analysis, and visualization)
+#### 4. _Output results_ (for inspection, analysis, and visualization)
 
-In this final step, you will output both the tallies and the metric and submetric values of the data quality metric you just ran. Since the implementation of outputting these values has yet to be standardized across AoLM metrics, two convenience functions, `output_metric_tallies` and `output_metric_values` have been provided for your use. The former outputs a CSV file and the latter, a JSON file for the 'record counts' metric. (NOTE: Most other metrics produce JSON file for their 'tallies'.) A `script_run_time` variable has also been provided in the `tutorial_workspace` function if useful for timestamping your outputs.
+In this final step, you will output both the tallies and the metric and submetric values of the data quality metric you just ran. Since the implementation of outputting these values has yet to be standardized across AoLM metrics, two convenience functions, `output_metric_tallies` and `output_metric_values` have been provided for your use. The former outputs a CSV file and the latter, a JSON file for the 'record counts' metric. There has been an [`output`](tutorial/output) folder provided in the [`tutorial`](tutorial) folder for your convenience. (NOTE: Most other metrics produce JSON file for their 'tallies'.) A `script_run_time` variable has also been provided in the `tutorial_workspace` function of `aolm_tutorial.py` if useful for timestamping your outputs.
     
     output_metric_tallies(metric, 'my/output/path/metric_tallies_' + script_run_time + '.csv')
 
     output_metric_values(metric, 'my/output/path/metric_values_'  + script_run_time + '.json')
 
-#### 5. How to interpret the results in the output files
+#### 5. _Interpret the results_ in the output files
+
+**Metric Tallies File**
+
+The first stage of a metric (called `compute`) tallies the components of a corpus of digital texts it intends to evaluate for data quality. In this case with the record counts to control record metric, the tallies output CSV file will contain percent match of the words and sentences of each chapter of each edition.
+
+The column headers include: `edition_name`, `chapter_name`, `count_type`, and `percent`.
+
+**Metric Values File**
+
+The second stage of a metric (called `evaluate`) takes the tallies from the first stage and performs some light statistical calculations over them in order to determine the 'data quality' of the corpus. This includes multiple levels of sub-metrics that eventually are all used to calculate the final overall metric data quality value. All of this information is output in hiearchical JSON form with descriptive key names. Output values include the overall metric value, the percent match for the corpus for chapter count, word count, and sentence count, the total percent coverage calculation concerning chapters/words/sentences for each edition, and the sub-sub-metric values of the percent matches of those items for each edition.
 
 ## Overall Data Quality Assessment
 
+The concept of a data quality assessment framework (DQAF) includes the notion that all of the metrics one performs over a dataset should then be used in concert to help determine an overall data quality measurement for that dataset.
+
+An assessment sums up all of the data quality work you have been performing with a timestamp attached that states, "This was the determined quality of the dataset using these measures at this day/time." Data quality assessment is meant to be iterative work that is performed at intervals, depending on how often a dataset is updated.
+
+One simple form of assessment calculation could simply be a weighted average of overall data metric values – with weights determined according to your own judgment of the importance of a particular metric in determining a dataset's quality rating. (Although assessment calculations can be as complicated as one deems.)
+
+The script [`huckfinn_dataquality.py`](experiments/chapter1/huckfinn_dataquality.py) in the [`experiments` folder](experiments/chapter1) provides a good example of multiple data metrics being used together. The assessment calculation can then be made via script or manually based on the metric outputs.
