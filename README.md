@@ -101,8 +101,6 @@ Comments and pseudocode for this tutorial are found in `aolm_tutorial.py` in the
 
 Functionality to enable further exercises and explorations of AoLM's metrics and datasets can be found in `cli_lib.py` as well as via a script to run AoLM's data quality metrics at the command line in `aolm_cli.py`.
 
-Instructions on how to read digital texts into memory for use by data quality metric objects and how to create assessment code for their outputs can be found [here]().
-
 ### Environment Setup
 
 #### 1. _Copy the 'Art of Literary Modeling' GitHub repository to your computer_
