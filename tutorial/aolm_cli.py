@@ -186,6 +186,11 @@ def run_command_line_tool():
         print(validation_error)
         return
     
+    metrics = args.metrics or ""
+    if not metrics:
+        print("No metrics specified.")
+        return    
+    
     # 0. Lexicon will only be stored in memory if lexical validity metric is used
     coha_lexicon = None
     
@@ -209,8 +214,8 @@ def run_command_line_tool():
     # 2. Read editions and metadata into reader objects
     edition_readers = None
     metadata = None
-    only_metadata_metrics = METRIC_FLAG_METADATA_SUFFICIENCY == args.metrics
-    if METRIC_FLAG_METADATA_SUFFICIENCY in args.metrics:
+    only_metadata_metrics = METRIC_FLAG_METADATA_SUFFICIENCY == metrics
+    if METRIC_FLAG_METADATA_SUFFICIENCY in metrics:
         metadata = read_metadata_files_by_source(METADATA_LOCATION, CLI_SOURCE_ID)
     if not only_metadata_metrics:
         edition_readers = read_huckfinn_dataset_files_by_source(
@@ -225,7 +230,7 @@ def run_command_line_tool():
 
     # A. Create the metric object(s)
     metric_list = {}
-    for metric_flag in args.metrics:
+    for metric_flag in metrics:
 
         if METRIC_FLAG_AUTHORIAL_SIGNATURE == metric_flag:
             
@@ -258,7 +263,7 @@ def run_command_line_tool():
         elif METRIC_FLAG_LEGOMENA == metric_flag:
         
             metric_list[metric_flag] = create_metric(
-                "",
+                metric_flag,
                 edition_readers,
                 p_metric_id=f"{CLI_SOURCE_ID}_Legomena"
             )
@@ -272,7 +277,7 @@ def run_command_line_tool():
                 metric_flag,
                 edition_readers,
                 p_auxiliary_data=coha_lexicon,
-                p_collectiont_title=CLI_COLLECTION_TITLE,
+                p_collection_title=CLI_COLLECTION_TITLE,
                 p_input_location=EDITIONS_LOCATION,
                 p_metric_id=f"{CLI_WORK_TITLE}_{CLI_SOURCE_ID}_LexicalValidity",
                 p_source_id=CLI_SOURCE_ID,
