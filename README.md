@@ -12,12 +12,15 @@ Several public domain datasets of literature are also in the repository, includi
 
 Below you will find documentation on all three functional parts of AoLM including a tutorial demonstrating how to work with data quality metrics. Additional, file-by-file documentation for code used in the final version of AoLM – as well as prototypical code that went unused for it – can be found in the 'Appendix' section of the written portion of 'The Art of Literary Modeling'. (Watch this space for a link to that writing once it is made public.)
 
+NOTE: Any script in the AoLM repository requires the installation of the 'aolm' conda environemnt. See the setup section of the [data quality metric tutorial](#data-quality-metric-tutorial) for installing this environment on your system from the command line.
+
 ## Table of Contents
 
 1. [Text and Metadata Ingestion](#text-and-metadata-ingestion)
 2. [Data Quality Metrics](#data-quality-metrics)
 3. [Data Quality Metric Tutorial](#data-quality-metric-tutorial)
 4. [Overall Data Quality Assessment](#overall-data-quality-assessment)
+5. [Command Line Tool](#command-line-tool)
 
 
 ## Text and Metadata Ingestion
@@ -39,7 +42,7 @@ The `keys` section contains `order`, `input`, and `output` subsections. `order` 
 
 The metadata JSON files used by the metadata sufficiency metric (AoLM's only metadata metric) is more straightforward. See this example of [metadata from the Internet Archive](data/twain/huckleberry_finn/internet_archive/metadata/adventureshuckle00twaiiala-HuckFinn_metadata.json). Here key-value pairs from the source archive's metadata are simply listed in the file. However, in cases where metadata must be manually extracted (i.e. from within the provided raw text), AoLM's metadata file format (and metadata metric) also allows for an `unkeyed_fields` key where such key-value pairs can be placed separately from metadata that was specifically provided by the source. See [this metadata file from the February 2021 edition of _Adventures of Huckleberry Finn_](data/twain/huckleberry_finn/project_gutenberg/metadata/2021-02-21-HuckFinn_metadata.json) for an example of that scenario.
 
-### Reading in Text JSON Files Using Reader Objects`
+### Reading in Text JSON Files Using Reader Objects
 
 AoLM uses reader objects to ingest texts from the format of its text JSON file into memory as a set of generalized components that its metric objects can use to make tallies and evaluative measurements from.
 
@@ -176,7 +179,7 @@ Define variables for IDs for the digital source of the compared editions and any
     TUTORIAL_SOURCE_ID = 'internet_archive'
     TUTORIAL_METRIC_ID = 'my_unique_metric_id'
     TUTORIAL_COLLECTION_TITLE = 'Internet Archive'
-    TUTORIAL_WORK_TITLE = 'Adventures of Huckleberry Finn'å
+    TUTORIAL_WORK_TITLE = 'Adventures of Huckleberry Finn'
 
 #### 2. _Read editions and/or metadata_
 
@@ -244,3 +247,57 @@ One simple form of assessment calculation could simply be a weighted average of 
 The data quality workflow scripts [`huckfinn_dataquality.py`](experiments/chapter1/huckfinn_dataquality.py) and [`huckfinn_dataquality_experiment2.py`](experiments/chapter1/huckfinn_dataquality_experiment2.py) in the [`experiments/chapter1` folder](experiments/chapter1) provide good examples of data metrics being applied individually (`huckfinn_dataquality_experiment2.py`) or in combination (`huckfinn_dataquality.py`) over a dataset. Measurement tallies and evaluative data quality ratings are output via the metrics' `output` and `eval_output` class methods. `huckfinn_dataquality.py` provides a good example of this in its `output_results` function. With those metric outputs (typically CSV or JSON file form) a full data quality assessment calculation can then be made programmatically via script or manually calculated.
 
 Those two script files – along with several others in the [`experiments`](experiments) folder – also contain examples of visualizing the metric outputs, particularly the bar and heatmap plots featured in the dissertation draft (see the `plot_results`, `plot_results2`, and `plot_heatmap` functions in either script file).
+
+## Command Line Tool
+
+A command line tool for AoLM that mimics the functionality of the tutorial above – in that it allows users to run selected metrics from the project on the project's datasets – exists at [`tutorial/aolm_cli.py`](tutorial/aolm_cli.py). Running `python3 aolm_cli.py` in the 
+
+## Command Line Tool
+
+The Art of Literary Modeling (AoLM) provides a command-line tool for running data quality metrics on digital texts and their associated metadata. The tool supports evaluating the data quality of the multiple digital editions of _Adventures of Huckleberry Finn_ found in the project's datasets (e.g. from the Internet Archive, Project Gutenberg, and Mark Twain Project Online) by running any of the project's 6 data quality metrics. The tool produces tallies of aspects of the edition (i.e. words, sentences, chapters) and produces data quality scores from the respective metric(s). Metrics can be executed individually or in combination, and results are exported as CSV and JSON files for downstream analysis and visualization.
+
+### Usage
+
+The command-line tool, [`tutorial/aolm_cli.py`](tutorial/aolm_cli.py), can be run via the Python interpreter in your terminal.
+
+`python aolm_cli.py [FLAGS]` OR `python3 aolm_cli.py [FLAGS]`
+
+#### Primary Flags
+
+| Flag | Description |
+|--------|-------------|
+| `--input-folder` | Path to the folder containing edition dataset files used by most text-based metrics. |
+| `--metadata-folder` | Path to the folder containing metadata files used by the Metadata Sufficiency metric. |
+| `--source-id` | Identifier for the primary edition source being evaluated (e.g., `internet_archive`, `project_gutenberg`). |
+| `--baseline-source-id` | Identifier for a baseline edition source used in comparative metrics (default: `mark_twain_project`). |
+| `--work-title` | Full title of the literary work being analyzed. |
+| `--collection-title` | Name of the collection of editions being evaluated. |
+| `--metrics` | String of metric codes to execute. Multiple metrics can be combined (e.g., `mv`, `acr`). |
+| `--output-folder` | Destination folder for generated metric output files. |
+
+Some primary flags also utilize their own set of arguments to help the tool understand exactly what is being requested to run. For example, the arguments for `--metrics` would be placed to the right of it and include the following:
+
+#### Metric Arguments
+
+| Code | Metric |
+|--------|-------------|
+| `m` | Metadata Sufficiency |
+| `v` | Lexical Validity |
+| `c` | Record Consensus |
+| `a` | Authorial Signature |
+| `l` | Legomena |
+| `r` | Record Counts to Control Records |
+
+#### Source ID Arguments
+
+| Source ID | Description |
+|------------|------------------------------|
+| `internet_archive` | Editions sourced from the Internet Archive JSON datasets |
+| `project_gutenberg` | Editions sourced from Project Gutenberg JSON datasets |
+| `mark_twain_project` | Scholarly XML edition from the Mark Twain Project (used as the baseline/master edition) |
+
+#### Example Usage with Flags and Arguments
+
+The following command runs the metadata sufficiency and lexical validity metrics over the editions of _Huckleberry Finn_ from the Internet Archive. (Recall that it would be `python3` if that's your interpreter.)
+
+`python aolm_cli.py --metrics mv --source-id internet_archive`
