@@ -250,10 +250,6 @@ Those two script files – along with several others in the [`experiments`](expe
 
 ## Command Line Tool
 
-A command line tool for AoLM that mimics the functionality of the tutorial above – in that it allows users to run selected metrics from the project on the project's datasets – exists at [`tutorial/aolm_cli.py`](tutorial/aolm_cli.py). Running `python3 aolm_cli.py` in the 
-
-## Command Line Tool
-
 The Art of Literary Modeling (AoLM) provides a command-line tool for running data quality metrics on digital texts and their associated metadata. The tool supports evaluating the data quality of the multiple digital editions of _Adventures of Huckleberry Finn_ found in the project's datasets (e.g. from the Internet Archive, Project Gutenberg, and Mark Twain Project Online) by running any of the project's 6 data quality metrics. The tool produces tallies of aspects of the edition (i.e. words, sentences, chapters) and produces data quality scores from the respective metric(s). Metrics can be executed individually or in combination, and results are exported as CSV and JSON files for downstream analysis and visualization.
 
 ### Usage
