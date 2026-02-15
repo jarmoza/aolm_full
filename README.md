@@ -250,7 +250,9 @@ Those two script files – along with several others in the [`experiments`](expe
 
 ## Command Line Tool
 
-The Art of Literary Modeling (AoLM) provides a command-line tool for running data quality metrics on digital texts and their associated metadata. The tool supports evaluating the data quality of the multiple digital editions of _Adventures of Huckleberry Finn_ found in the project's datasets (e.g. from the Internet Archive, Project Gutenberg, and Mark Twain Project Online) by running any of the project's 6 data quality metrics. The tool produces tallies of aspects of the edition (i.e. words, sentences, chapters) and produces data quality scores from the respective metric(s). Metrics can be executed individually or in combination, and results are exported as CSV and JSON files for downstream analysis and visualization.
+The Art of Literary Modeling (AoLM) provides a command-line tool for running data quality metrics on digital texts and their associated metadata. The tool currently only supports evaluating the data quality of the multiple digital editions of _Adventures of Huckleberry Finn_ found in the project's datasets (e.g. from the Internet Archive, Project Gutenberg, and Mark Twain Project Online) by running any of the project's 6 data quality metrics. The tool produces tallies of aspects of the edition (i.e. words, sentences, chapters) and produces data quality scores from the respective metric(s). Metrics can be executed individually or in combination, and results are exported as CSV and JSON files for downstream analysis and visualization.
+
+NOTE: The command line tool is a work-in-progress and as of early 2026 is undergoing debugging and testing.
 
 ### Usage
 
