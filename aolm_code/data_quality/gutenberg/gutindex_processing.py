@@ -99,7 +99,7 @@ def gather_metadata():
     for listing in listings:
 
         for key in listing:
-            print "{0}: {1}".format(key, listing[key])
+            print("{0}: {1}".format(key, listing[key]))
         break
 
 
