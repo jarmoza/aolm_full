@@ -60,7 +60,7 @@ TUTORIAL_DIRECTORY = f"{ROOT_DIR}{os.sep}tutorial{os.sep}"
 TUTORIAL_DATASET_LOCATION = f"{TUTORIAL_DIRECTORY}data{os.sep}{DATASET_BYSIZE_SUBDIR}{os.sep}editions{os.sep}"
 TUTORIAL_METADATA_LOCATION = f"{TUTORIAL_DIRECTORY}data{os.sep}{DATASET_BYSIZE_SUBDIR}{os.sep}metadata{os.sep}"
 TUTORIAL_OUTPUT_LOCATION = f"{TUTORIAL_DIRECTORY}output{os.sep}"
-LEXICON_LOCATION = f"{ROOT_DIR}data{os.sep}lexicon{os.sep}coha{os.sep}lexicon.txt"
+LEXICON_LOCATION = f"{ROOT_DIR}{os.sep}..{os.sep}data{os.sep}lexicon{os.sep}coha{os.sep}lexicon.txt"
 
 
 # Main script
