@@ -86,6 +86,11 @@ def tutorial_workspace():
     # C. Before running this script, activate the 'conda' environment by running the command
     # > conda activate aolm
 
+    # D. Install the required spaCy models
+
+    # > python3 -m spacy download en_core_web_lg
+    # > python3 -m spacy download en_core_web_sm
+
 
     # =========================================================================
     # 1. Parameters for the data quality metric (optional)
