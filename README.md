@@ -162,6 +162,7 @@ the tutorial script in the terminal. (To exit the 'aolm' conda environment, run 
 AoLM's metrics require the use two of spaCy's language models. Run the following commands in your terminal to download them:
 
 `python3 -m spacy download en_core_web_lg`
+
 `python3 -m spacy download en_core_web_sm`
 
 ### Tutorial
