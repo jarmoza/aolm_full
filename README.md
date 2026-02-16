@@ -25,7 +25,7 @@ Several public domain datasets of literature are also in the repository, includi
 1. [Text and Metadata Ingestion](#text-and-metadata-ingestion)
 2. [Data Quality Metrics](#data-quality-metrics)
 3. [Data Quality Metric Tutorial](#data-quality-metric-tutorial)
-4. [Overall Data Quality Assessment](#overall-data-quality-assessment)
+4. [Workflow Scripts and Overall Data Quality Assessment](#workflow-scripts-and-overall-data-quality-assessment)
 5. [Command Line Tool](#command-line-tool)
 
 
@@ -242,7 +242,7 @@ The CSV's column headers include: `edition_name`, `chapter_name`, `count_type`, 
 
 The second stage of a metric (called `evaluate`) takes the tallies from the first stage and performs some light statistical calculations over them in order to determine the data quality of the corpus. This includes multiple levels of sub-metrics that are all used to calculate the final metric's overall data quality value. All of this information is output in hierarchical JSON form with descriptive key names. Output values include the overall metric value, the percent match for the corpus for chapter count, word count, and sentence count, the total percent coverage calculation concerning chapters/words/sentences for each edition, and the sub-sub-metric values of the percent matches of those items for each edition.
 
-## Overall Data Quality Assessment
+## Workflow Scripts and Overall Data Quality Assessment
 
 The concept of a data quality assessment framework (DQAF) includes the notion that all of the metrics one performs over a dataset should then somehow be used in concert to help determine an overall data quality measurement for that dataset.
 
@@ -250,13 +250,13 @@ An assessment sums up all of the data quality work you have been performing with
 
 One simple form of assessment calculation could simply be a weighted average of overall data metric values – with weights assigned according to your own judgment of the importance of a particular metric in determining a dataset's quality rating. (Though such assessment calculations can be as complicated as one deems.)
 
-The data quality workflow scripts [`huckfinn_dataquality.py`](experiments/chapter1/huckfinn_dataquality.py) and [`huckfinn_dataquality_experiment2.py`](experiments/chapter1/huckfinn_dataquality_experiment2.py) in the [`experiments/chapter1` folder](experiments/chapter1) provide illustrative examples of data metrics being applied individually (`huckfinn_dataquality_experiment2.py`) or in combination (`huckfinn_dataquality.py`) over a dataset. Measurement tallies and evaluative data quality ratings are output via the metrics' `output` and `eval_output` class methods. `huckfinn_dataquality.py` provides a good example of this in its `output_results` function. With those metric outputs (typically CSV or JSON file form) a full data quality assessment calculation can then be made programmatically via script or manually calculated by a user.
+AoLM's data quality measuring workflow scripts in the [`experiments/chapter1`](experiments/chapter1) folder apply one or more data quality metrics to a selected corpus of digital texts. For instance, [`huckfinn_dataquality.py`](experiments/chapter1/huckfinn_dataquality.py) and [`huckfinn_dataquality_experiment2.py`](experiments/chapter1/huckfinn_dataquality_experiment2.py) in that folder provide illustrative examples of data metrics being applied individually (`huckfinn_dataquality_experiment2.py`) or in combination (`huckfinn_dataquality.py`) over a dataset. Measurement tallies and evaluative data quality ratings are output via the metrics' `output` and `eval_output` class methods. `huckfinn_dataquality.py` provides a good example of this in its `output_results` function. With those metric outputs (typically CSV or JSON file form) a full data quality assessment calculation can then be made programmatically via script or manually calculated by a user.
 
 Those two workflow script files – along with several others in the [`experiments/chapter1`](experiments/chapter1) folder – also contain examples of visualizing the metric outputs, particularly the bar and heatmap plots featured in the dissertation draft (see the `plot_results`, `plot_results2`, and `plot_heatmap` functions in either script file).
 
 ## Command Line Tool
 
-The Art of Literary Modeling (AoLM) provides a command-line tool for running data quality metrics on digital texts and their associated metadata. The tool currently only supports evaluating the data quality of the multiple digital editions of _Adventures of Huckleberry Finn_ found in the project's datasets (e.g. from the Internet Archive, Project Gutenberg, and Mark Twain Project Online) by running any of the project's 6 data quality metrics. The tool produces tallies of aspects of the edition (i.e. words, sentences, chapters) and produces data quality scores from the respective metric(s). Metrics can be executed individually or in combination, and results are exported as CSV and JSON files for downstream analysis and visualization.
+The Art of Literary Modeling (AoLM) provides a command-line tool for running data quality metrics on digital texts and their associated metadata. The tool currently only supports evaluating the data quality of the multiple digital editions of _Adventures of Huckleberry Finn_ found in the project's datasets (e.g. from the Internet Archive, Project Gutenberg, and Mark Twain Project Online) by running any of the project's 6 data quality metrics over them. The tool produces tallies of aspects of the edition (i.e. words, sentences, chapters) and produces data quality scores from the respective metric(s). Metrics can be executed individually or in combination, and results are exported as CSV and JSON files for downstream analysis and visualization.
 
 NOTE: The command line tool is a work-in-progress and as of early 2026 is undergoing debugging and testing.
 
@@ -272,8 +272,8 @@ The command-line tool, [`tutorial/aolm_cli.py`](tutorial/aolm_cli.py), can be ru
 |--------|-------------|
 | `--input-folder` | Path to the folder containing edition dataset files used by most text-based metrics. |
 | `--metadata-folder` | Path to the folder containing metadata files used by the Metadata Sufficiency metric. |
-| `--source-id` | Identifier for the primary edition source being evaluated (e.g., `internet_archive`, `project_gutenberg`). |
-| `--baseline-source-id` | Identifier for a baseline edition source used in comparative metrics (default: `mark_twain_project`). |
+| `--source-id` | Identifier for the primary edition source being evaluated (e.g., `internet_archive`, `project_gutenberg`). Defaults to the "small_set" dataset but can be adjusted in `aolm_cli.py` |
+| `--baseline-source-id` | Identifier for a baseline edition source used in metrics that compare against a baseline, (e.g. 'master' edition) [default value: `mark_twain_project`]. |
 | `--work-title` | Full title of the literary work being analyzed. |
 | `--collection-title` | Name of the collection of editions being evaluated. |
 | `--metrics` | String of metric codes to execute. Multiple metrics can be combined (e.g., `mv`, `acr`). |
