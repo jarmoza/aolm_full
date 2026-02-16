@@ -64,12 +64,19 @@ from dq_metrics.dataset_validity.lexical_validity import DatasetValidity_Lexical
 
 # Globals
 
-# Pre-defined values for tutorial paths/IDs
-CLI_DIRECTORY = ROOT_DIR[0:ROOT_DIR.rfind(os.sep)]
-CLI_DATASET_LOCATION = f"{CLI_DIRECTORY}data{os.sep}editions{os.sep}"
-CLI_METADATA_LOCATION = f"{CLI_DIRECTORY}data{os.sep}metadata{os.sep}"
+# Command line interface code can use either a small version of the 'Huckleberry Finn' dataset or the full one
+# NOTE: To switch to the full dataset, set USE_FULL_DATASET to 'True'
+USE_FULL_DATASET = False
+DATASET_BYSIZE_SUBDIR = "small_set"
+if USE_FULL_DATASET:
+    DATASET_BYSIZE_SUBDIR = "full_set"
+
+# Pre-defined values for command line interface paths/IDs - for convenience
+CLI_DIRECTORY = f"{ROOT_DIR}{os.sep}tutorial{os.sep}"
+CLI_DATASET_LOCATION = f"{CLI_DIRECTORY}data{os.sep}{DATASET_BYSIZE_SUBDIR}{os.sep}editions{os.sep}"
+CLI_METADATA_LOCATION = f"{CLI_DIRECTORY}data{os.sep}{DATASET_BYSIZE_SUBDIR}{os.sep}metadata{os.sep}"
 CLI_OUTPUT_LOCATION = f"{CLI_DIRECTORY}output{os.sep}"
-LEXICON_LOCATION = f"{ROOT_DIR}data{os.sep}lexicon{os.sep}coha{os.sep}lexicon.txt"
+LEXICON_LOCATION = f"{ROOT_DIR}{os.sep}..{os.sep}data{os.sep}lexicon{os.sep}coha{os.sep}lexicon.txt"
 
 
 # Helper functions
