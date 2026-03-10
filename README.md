@@ -399,5 +399,5 @@ python -m pip install en_core_web_lg==3.8.0
 python -m pip install en_core_web_sm==3.8.0
 ```
 
-These models were used for all NLP processing in the tutorial and dissertation analyses.
+These models were used for all NLP processing in the tutorial during its design and final dissertation analyses.
 
