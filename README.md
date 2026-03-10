@@ -4,6 +4,8 @@
 
 Welcome to the repository for 'The Art of Literary Modeling' (AoLM), a PhD project and dissertation by [Jonathan Armoza](https://jonathanarmoza.com/) that develops a framework for measuring and assessing the data quality of corpora of digital literature in digital humanities research.
 
+This repository accompanies the dissertation *The Art of Literary Modeling* and contains the code used for the experiments and tutorial demonstrations described in the text.
+
 ### Functionality and Code
 
 AoLM's code can be divided into three functional parts: (1) reading in and processing digital texts and metadata into comparable components, (2) making data quality measurements on those inputs, and (3) assessing those measurement outputs together to determine the overall quality of the dataset.
@@ -14,7 +16,7 @@ Accompanying and aiding that reading/measurement/assessment code is a small libr
 
 Below, you will find documentation on all three functional parts of AoLM including a tutorial demonstrating how to work with data quality metrics. Additional, file-by-file documentation for code used in the final version of AoLM – as well as prototypical code that went unused for it – can be found in the 'Appendix' section of the written portion of 'The Art of Literary Modeling'. (Watch this space for a link to that writing once it is made public.)
 
-NOTE: Any script in the AoLM repository requires the installation and activation of the 'aolm' conda environemnt. See the setup section of the [data quality metric tutorial](#data-quality-metric-tutorial) for installing this environment on your system from the command line.
+NOTE: Any script in the AoLM repository requires the installation and activation of the 'aolm' conda environment. See the setup section of the [data quality metric tutorial](#data-quality-metric-tutorial) for installing this environment on your system from the command line.
 
 ### Accompanying Datasets
 
@@ -22,12 +24,38 @@ Several public domain datasets of literature are also in the repository, includi
 
 ## Table of Contents
 
-1. [Text and Metadata Ingestion](#text-and-metadata-ingestion)
-2. [Data Quality Metrics](#data-quality-metrics)
-3. [Data Quality Metric Tutorial](#data-quality-metric-tutorial)
-4. [Workflow Scripts and Overall Data Quality Assessment](#workflow-scripts-and-overall-data-quality-assessment)
-5. [Command Line Tool](#command-line-tool)
+1. [Quickstart](#quickstart)
+2. [Text and Metadata Ingestion](#text-and-metadata-ingestion)
+3. [Data Quality Metrics](#data-quality-metrics)
+4. [Data Quality Metric Tutorial](#data-quality-metric-tutorial)
+5. [Workflow Scripts and Overall Data Quality Assessment](#workflow-scripts-and-overall-data-quality-assessment)
+6. [Command Line Tool](#command-line-tool)
+7. [Reproducibility](#reproducibility)
 
+## Quick Start
+
+1. Clone the repository and create the environment:
+
+```bash
+git clone https://github.com/jarmoza/aolm_full
+cd aolm_full
+conda config --set channel_priority strict
+conda env create -f environment.yml
+conda activate aolm
+```
+
+2. Install spaCy models:
+
+```bash
+python -m spacy download en_core_web_lg
+python -m spacy download en_core_web_sm
+```
+
+3. Run the (solved) tutorial:
+
+```bash
+python tutorial/tutorial_solution.py
+```
 
 ## Text and Metadata Ingestion
 
@@ -150,7 +178,12 @@ commands in your terminal:
 
 #### 3. _Install the 'conda' environment_ for 'Art of Literary Modeling' 
 
-In the *aolm_full* folder in your terminal, run `conda env create -f environment.yml`
+In the *aolm_full* folder in your terminal, create the conda environment by running:
+
+```bash
+conda config --set channel_priority strict
+conda env create -f environment.yml
+```
 
 #### 4. _Activate the 'conda' environment_
 
@@ -161,9 +194,16 @@ the tutorial script in the terminal. (To exit the 'aolm' conda environment, run 
 
 AoLM's metrics require the use two of spaCy's language models. Run the following commands in your terminal to download them:
 
-`python3 -m spacy download en_core_web_lg`
+```bash
+python -m spacy download en_core_web_lg
+python -m spacy download en_core_web_sm
+```
 
-`python3 -m spacy download en_core_web_sm`
+Run the following command to ensure the models installed successfully:
+
+```bash
+python -c "import spacy; spacy.load('en_core_web_lg'); print('spaCy model installed correctly')"
+```
 
 ### Tutorial
 
@@ -265,7 +305,9 @@ NOTE: The command line tool is a work-in-progress and as of early 2026 is underg
 
 The command-line tool, [`tutorial/aolm_cli.py`](tutorial/aolm_cli.py), can be run via the Python interpreter in your terminal.
 
-`python aolm_cli.py [FLAGS]` OR `python3 aolm_cli.py [FLAGS]`
+```bash
+python aolm_cli.py [FLAGS]` OR `python3 aolm_cli.py [FLAGS]
+```
 
 #### Primary Flags
 
@@ -305,4 +347,57 @@ Some primary flags also utilize their own set of arguments to help the tool unde
 
 The following command runs the metadata sufficiency and lexical validity metrics over the editions of _Huckleberry Finn_ from the Internet Archive. (Recall that it would be `python3` if that's your interpreter.)
 
-`python aolm_cli.py --metrics mv --source-id internet_archive`
+```bash
+python aolm_cli.py --metrics mv --source-id internet_archive
+```
+
+## Reproducibility
+
+The conda environment, package versions, and spaCy model versions used for this project have been frozen to support reproducibility.
+
+Two methods of environment creation are provided.
+
+### Method 1: Exact environment reproduction
+
+The file `conda_spec.txt` contains an explicit list of packages and build hashes exported from the original working environment. This allows the environment used during the project work for 'Art of Literary Modeling' to be reproduced as closely as possible.
+
+```bash
+conda create --name aolm --file conda_spec.txt
+conda activate aolm
+```
+
+### Method 2: Environment creation from environment.yml
+
+Alternatively, the environment can be created using the provided `environment.yml` file:
+
+```bash
+conda env create -f environment.yml
+conda activate aolm
+```
+
+If dependency resolution fails on some systems, the libmamba solver may help:
+
+```bash
+conda env create -f environment.yml --solver=libmamba
+```
+
+### Exact spaCy model versions
+
+The dissertation analyses were run using the following spaCy model versions:
+
+    en_core_web_lg==3.8.0
+    en_core_web_sm==3.8.0
+
+When using the tutorial instructions above, spaCy will automatically install the latest compatible model for the installed spaCy version. For exact reproduction of the research environment, ensure that these model versions are installed.
+
+### Installing spaCy models
+
+The spaCy language models used in the project are installed separately:
+
+```bash
+python -m pip install en_core_web_lg==3.8.0
+python -m pip install en_core_web_sm==3.8.0
+```
+
+These models were used for all NLP processing in the tutorial and dissertation analyses.
+
