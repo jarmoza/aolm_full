@@ -134,7 +134,14 @@ The [legomena](aolm_code/data_quality/core/dq_metrics/dataset_signature/legomena
 
 ## Data Quality Metric Tutorial
 
-This tutorial will guide you through a sample exercise in (1) _reading a dataset of digital texts_, (2) _running the record counts to control records data quality metric_ over them, and (3) _producing output files_ from the metric. The example dataset for the tutorial will be a set of editions of Mark Twain's _Adventures of Huckleberry_ sourced from the [Internet Archive](https://archive.org/), [Project Gutenberg](https://www.gutenberg.org/), and [Mark Twain Project Online](https://legacy.mtpo2.org/landing_writings.shtml) at University of California, Berkeley. 
+This tutorial will guide you through a sample exercise in (1) _reading a dataset of digital texts_, (2) _running the record counts to control records data quality metric_ over them, and (3) _producing output files_ from the metric. The example dataset for the tutorial will be a set of editions of Mark Twain's _Adventures of Huckleberry_ sourced from the [Internet Archive](https://archive.org/), [Project Gutenberg](https://www.gutenberg.org/), and [Mark Twain Project Online](https://legacy.mtpo2.org/landing_writings.shtml) at University of California, Berkeley.
+
+NOTE: All files and folders necessary for this tutorial exist in the project's `tutorial` folder. You will need to use your operating system's terminal/command prompt program as well as your favorite text editor program. Keep in mind that this will need to be an editor capable of editing plain text like 'Notepad', 'TextEdit', or a software development environment like 'Visual Studio Code' rather than a word processor like 'Microsoft Word'. This is because the AoLM's code is in Python, a programming language which requires the use of tab characters to create code block hierarchy (a.k.a. 'scope'). Here are the files and folders you will make use of for the tutorial:
+
+1. `tutorial/aolm_tutorial.py` - The script file you will edit for the tutorial
+2. `tutorial/tutorial_solution.py` - The script file containing the tutorial solution
+3. `tutorial/data` - The `small_set` and `full_set` folders in here are where digital editions for the tutorial exist. Note the `editions` and `metadata` subfolders in each. You will point your code to the `editions` folder within `small_set` or `fullset.
+4. `tutorial/output` - A folder that has been provided for you to point the tutorial script to place your output files
 
 Comments and pseudocode for this tutorial are found in [`aolm_tutorial.py`](tutorial/aolm_tutorial.py) in the [`tutorial`](tutorial) folder which acts as a workspace for you to add code to as you follow along with the tutorial. Follow along with the steps outlined below and place your code in that script file in the `tutorial_workspace` function. Once you have run the script, the output files for this tutorial will be found in the [`tutorial/output`](tutorial/output) folder. If you are satisfied with the results, you may choose to perform your own exercises by running different data quality metrics from the [`aolm_code/data_quality/core/dq_metrics`](aolm_code/data_quality/core/dq_metrics) folder. Note that you will need some beginner-level Python proficiency to follow along with the tutorial. The full tutorial solution along with some extra commentary on it can be found in [`tutorial_solution.py`](tutorial/tutorial_solution.py).
 
@@ -150,31 +157,48 @@ In your terminal, run `git clone https://github.com/jarmoza/aolm_full` in a loca
 
 Check to see if 'conda' is installed on your system already by running `conda --version`.
 
-If you do not yet have Anaconda ('conda') installed on your system, run the following
-commands in your terminal:
+If you do not yet have Anaconda ('conda') installed on your system, perform the following steps/commands in your terminal program:
 
 **Windows**
-- `curl -LO https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Windows-x86_64.exe`
-- `start "" /wait Miniforge3-Windows-x86_64.exe /InstallationType=JustMe /AddToPath=1 /S`
-- `conda --version`
+1. `curl -LO https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Windows-x86_64.exe`
+2. `start "" /wait Miniforge3-Windows-x86_64.exe /InstallationType=JustMe /AddToPath=1 /S`
+3. Open a new Command Prompt or PowerShell
+4. `conda --version`
     
 **macOS, Apple silicon**
-- `curl -LO https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-arm64.sh`
-- `bash Miniforge3-MacOSX-arm64.sh -b`
-- `source ~/miniforge3/bin/activate`
-- `conda --version`
+1. `curl -LO https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-arm64.sh`
+2. `bash Miniforge3-MacOSX-arm64.sh -b`
+3. `conda init`
+4. Restart your terminal
+5. `conda --version`
 
 **macOS, Intel**
-- `curl -LO https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-x86_64.sh`
-- `bash Miniforge3-MacOSX-x86_64.sh -b`
-- `source ~/miniforge3/bin/activate`
-- `conda --version`
+1. `curl -LO https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-x86_64.sh`
+2. `bash Miniforge3-MacOSX-x86_64.sh -b`
+3. `conda init`
+4. Restart your terminal
+5. `conda --version`
 
 **Linux**
-- `curl -LO https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh`
-- `bash Miniforge3-Linux-x86_64.sh -b`
-- `source ~/miniforge3/bin/activate`
-- `conda --version`
+1. `curl -LO https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh`
+2. `bash Miniforge3-Linux-x86_64.sh -b`
+3. `conda init`
+4. Restart your terminal
+5. `conda --version`
+
+NOTE: If `conda --version` fails to show produce output like `conda <version number, i.e. 24.11.0>` after installation, try the following with your terminal/command prompt program:
+
+**Windows**
+
+1. Close and reopen your command prompt/power shell program
+2. `%USERPROFILE%\miniforge3\Scripts\activate`
+3. `conda --version`
+
+**macOS/Linux**
+
+1. `source ~/miniforge3/bin/activate`
+2. `conda init`
+3. Restart your terminal and try `conda --version` again
 
 #### 3. _Install the 'conda' environment_ for 'Art of Literary Modeling' 
 
@@ -207,9 +231,16 @@ python -c "import spacy; spacy.load('en_core_web_lg'); print('spaCy model instal
 
 ### Tutorial
 
+**Places to put code corresponding to the numbered and lettered steps below can be found in the `tutorial_workspace` function found in `tutorial/aolm_tutorial.py`.**
+
 #### 1. _Define parameters_ for reading data and running a metric (optional)
 
 The first thing you will do is define string variables for IDs and folder paths that will be used for reading digital texts/metadata and then later, running a data quality metric(s) over those texts/metadata. (This step can be skipped if you don't mind repeatedly entering raw string values into function/constructor calls.) These are used by AoLM's reader objects and data quality metric objects. A set of pre-defined values for these parameters have been placed at the top of the tutorial script for your convenience.
+
+**Helpful Notes:**
+- The `pwd` command in your terminal/power shell program will show you the current, full directory path you are located in. (`cd` is the command in the Windows command prompt.)
+- Copy and paste the output into a string variable definition
+- The path must end in a folder separator character - `/` for macOS and Linux, `\` for Windows
 
 ##### A. File Locations
 
@@ -232,16 +263,22 @@ Define variables for IDs for the digital source of the compared editions and any
 
 The next step is to read in the digital edition files and/or metadata files you wish to use for your metric(s). AoLM uses custom JSON file formats for both editions and metadata. (The composition of these files are mentioned above in the 'Text and Metadata Ingestion' section.) For this tutorial, two convenience functions `read_huckfinn_dataset_files_by_source` and `read_metadata_files_by_source` have been provided for your use. You only need to specify the editions/metadata location and the string ID that represents the subfolder they are stored in (i.e. 'internet_archive'). Two differently-sized datasets have been provided for your use in the [`tutorial/data`](tutorial/data) folder. The tutorial script defaults to using a dataset with just a few editions for comparison via the ['small_set'](tutorial/data/small_set) folder, but a ['full_set'](tutorial/data/full_set) folder also exists. (NOTE: `metadata_files` is defined below as an example, but is not used for this tutorial.)
 
+##### A. Reading Editions into Memory
+
     edition_readers = read_huckfinn_dataset_files_by_source(
         EDITIONS_LOCATION, TUTORIAL_SOURCE_ID)
     edition_readers.update(read_huckfinn_dataset_files_by_source(
         EDITIONS_LOCATION, TUTORIAL_BASELINE_SOURCE_ID))
+
+##### B. Reading Metadata into Memory (not for this tutorial; shown here for your future experimentation with the metadata metric)
 
     metadata_files = read_metadata_files_by_source(METADATA_LOCATION, TUTORIAL_SOURCE_ID)
 
 #### 3. _Run a data quality metric_ over the editions and/or metadata
 
 This next step is where you will run a data quality metric on your editions or metadata. The [available AoLM metrics](aolm_code/data_quality/core/dq_metrics) include: 'record consensus', 'record counts to control records', 'lexical validity', 'metadata suffiency', 'authorial signature', and 'legomena'. Each class name you will need for these metrics can be found at the top of the tutorial script file in the section that lists all of the imports. This tutorial uses the 'record counts to control records' metric. (Its class name is `DatasetCompleteness_RecordCountsToControlRecords`.)
+
+##### A. Create the data quality metric object
 
 First, create the metric object and give it the parameters its constructor requires. (To see where these metric class constructors are defined look at the Python files in [`aolm_code/data_quality/core/dq_metrics`](aolm_code/data_quality/core/dq_metrics). In the `class` section you will see a constructor definition that begins with `def __init__(...):`. This is where you will find the class object's required parameters. However, there is also a helper `create_metric` function in `cli_lib.py` you may utilize.)
 
@@ -255,33 +292,73 @@ First, create the metric object and give it the parameters its constructor requi
         TUTORIAL_BASELINE_SOURCE_ID
     )
 
-Congratulations! You have just created your first data quality metric object.
+This line creates a data quality metric object.
 
-Each metric object performs two steps to produce its metric and sub-metric values. The metric object's `compute` function tallies the values of the editions or metadata it uses for producing the final metric values. Then the metric object's `evaluate` function calculates statistics based on those tallies to produce the metric and sub-metric values.
+##### B. Compute the metric's tallies over the editions
+
+Each metric object performs two steps to produce its metric and sub-metric values. The metric object's `compute` function tallies the values of the editions or metadata it uses for producing the final metric values.
 
     metric.compute()
+
+##### C. Calculate about the metric and sub-metric values
+
+Then the metric object's `evaluate` function calculates statistics based on those tallies to produce the metric and sub-metric values.
 
     metric.evaluate()
 
 #### 4. _Output results_ (for inspection, analysis, and visualization)
 
-In this final step, you will output both the tallies and the metric and sub-metric values of the data quality metric you just ran. Since the implementation of outputting these values has yet to be standardized across AoLM metrics, two convenience functions, `output_metric_tallies` and `output_metric_values` have been provided for your use. The former outputs a CSV file and the latter, a JSON file for the 'record counts to control records' metric. There has been an [`output`](tutorial/output) folder provided in the [`tutorial`](tutorial) folder for your convenience. (NOTE: Most other metrics produce JSON file for their tallies.) A `script_run_time` variable has also been provided in the `tutorial_workspace` function of `aolm_tutorial.py` if useful for timestamping your outputs.
+In this final step, you will output both the tallies and the metric and sub-metric values of the data quality metric you just ran. Since the implementation of outputting these values has yet to be standardized across AoLM metrics, two convenience functions, `output_metric_tallies` and `output_metric_values` have been provided for your use. The former outputs a CSV file and the latter, a JSON file for the 'record counts to control records' metric. There has been an [`output`](tutorial/output) folder provided in the [`tutorial`](tutorial) folder for your convenience. (NOTE: Most other metrics produce JSON file for their tallies.) The path for the output files below can once again by using the `pwd` command to find the current directory path and adding the `output` folder name to its end. A `script_run_time` variable has also been provided in the `tutorial_workspace` function of `aolm_tutorial.py` if useful for timestamping your outputs.
+
+##### A. Output the tallies
     
-    output_metric_tallies(metric, 'my/output/path/metric_tallies_' + script_run_time + '.csv')
+    output_metric_tallies(metric, "/UserDirectory/code/aolm_full/tutorial/output/" + "metric_tallies_" + script_run_time + '.csv')
 
-    output_metric_values(metric, 'my/output/path/metric_values_'  + script_run_time + '.json')
+##### B. Output the metric and sub-metric values
 
-#### 5. _Interpreting the results_ in the output files
+    output_metric_values(metric, "/UserDirectory/code/aolm_full/tutorial/output/" + "metric_values_"  + script_run_time + '.json')
+
+#### 5. Run the finished Python script
+
+Once your edits are made in `aolm_tutorial.py`,
+
+1. Make sure you are located in the tutorial directory in your terminal program (i.e. using `cd /UserDirectory/code/aolm_full/tutorial/`if that is the path where you placed the `aolm_full` project directory)
+2. Run the following command:
+
+    python aolm_tutorial.py
+
+**Congratulations! You have just run a data quality metric over a number of editions of _Adventures of Huckleberry Finn_ and output its measurements.**
+
+#### 6. _Interpreting the results_ in the output files
 
 **Metric Tallies File**
 
-The first stage of a metric (called `compute`) tallies the components of a corpus of digital texts it intends to evaluate for data quality. In this case with the 'record counts to control records' metric, the tallies output CSV file will contain percent match of the words and sentences of each chapter of each edition.
+The first stage of a metric (called `compute`) tallies the components of a corpus of digital texts it intends to evaluate for data quality. In this case with the 'record counts to control records' metric, the tallies output CSV file will contain percent match of the words and sentences of each chapter of each _Huckleberry Finn_ edition against the Mark Twain Project Online's (MTPO) edition of the novel.
 
-The CSV's column headers include: `edition_name`, `chapter_name`, `count_type`, and `percent`.
+The CSV's column headers include: `edition_name`, `chapter_name`, `count_type`, and `percent`. Each row of values found in the CSV file depict the amount of words or amount of sentences that match when comparing a particular chapter in an edition against the same chapter in the MTPO edition.
+
+**Helpful Note:**
+CSV files are best viewed in your preferred spreadsheet program (e.g. 'Microsoft Excel').
 
 **Metric Values File**
 
-The second stage of a metric (called `evaluate`) takes the tallies from the first stage and performs some light statistical calculations over them in order to determine the data quality of the corpus. This includes multiple levels of sub-metrics that are all used to calculate the final metric's overall data quality value. All of this information is output in hierarchical JSON form with descriptive key names. Output values include the overall metric value, the percent match for the corpus for chapter count, word count, and sentence count, the total percent coverage calculation concerning chapters/words/sentences for each edition, and the sub-sub-metric values of the percent matches of those items for each edition.
+The second stage of a metric (called `evaluate`) takes the tallies from the first stage and performs some light statistical calculations over them in order to determine the data quality of the corpus. This includes multiple levels of sub-metrics that are all used to calculate the final metric's overall data quality value. All of this information is output in hierarchical JSON form with descriptive key names.
+
+Output values include:
+
+1. the overall metric `value` (the mean of the corpus' percent match for chapter, word, and sentence counts)
+2. `sub-metric` values for the corpus
+    - the percent match for the corpus for chapter count
+    - the percent match for the corpus for word count
+    - the percent match for the corpus for sentence count
+    - the total percent coverage concerning the presence of chapters in each edition (currently unusued in the overall metric value calculation)
+3. `sub-sub-metric` values for each edition
+    - the percent matches of chapters
+    - the percent matches of words
+    - the percent matches of sentences
+
+**Helpful Note:**
+JSON files are best viewed in the plain text editor you used to edit the tutorial code.
 
 ## Workflow Scripts and Overall Data Quality Assessment
 

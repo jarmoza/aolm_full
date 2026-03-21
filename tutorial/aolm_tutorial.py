@@ -3,6 +3,9 @@
 # Purpose: A brief guide showing to how to use the data quality metrics of 'Art of Literary Modeling'
 
 # NOTE: Tutorial code can be placed in the 'tutorial_workspace' function near the bottom of this script file
+# For further clarification look to the step-by-step tutorial instructions located in README.md,
+# also viewable at: https://github.com/jarmoza/aolm_full
+# The numbered and lettered steps below correspond to the tutorial steps found in the README
 
 # Imports
 
@@ -67,6 +70,10 @@ LEXICON_LOCATION = f"{ROOT_DIR}{os.sep}..{os.sep}data{os.sep}lexicon{os.sep}coha
 
 def tutorial_workspace():
 
+    # NOTE: For further clarification look to the step-by-step tutorial instructions located in README.md,
+    # also viewable at: https://github.com/jarmoza/aolm_full
+    # The numbered and lettered steps below correspond to the tutorial steps found in the README
+
     # 0. Runtime saved for output file
     script_run_time = datetime.now().strftime("%d%m%Y_%H%M%S")
 
@@ -96,6 +103,12 @@ def tutorial_workspace():
     # 1. Parameters for the data quality metric (optional)
 
     # A. The locations of your JSON dataset and/or metadata file(s) on your hard drive
+    # NOTE:
+    # - Using the 'pwd' command in your terminal/power shell program will show you the
+    # current, full directory path you are located in.
+    # - Copy and paste the output into a string variable definition below.
+    # - The path must end in a folder separator character - / for macOS and Linux, \ for Windows
+    # ex. EDITIONS_LOCATION = "/UserDirectory/code/aolm_full/tutorial/data/small_set/editions/"
 
     # B. String ID variable definition
 
@@ -116,18 +129,18 @@ def tutorial_workspace():
 
     # A. Create an instance of the 'record counts to control' metric
 
-    # B. Run the metric's 'compute'
+    # B. Run the metric's 'compute' function
 
-    # C. Run the metric's 'evaluate'
+    # C. Run the metric's 'evaluate' function
 
 
     # =========================================================================
     # 4. Output results for further inspection, analysis, and visualization
     # NOTE: The 'script_run_time' variable has been set above if useful for timestamping your outputs
     
-    # A. Output the metric tallies
+    # A. Output the metric tallies to a CSV file
     
-    # B. Output the metric values
+    # B. Output the metric values to a JSON file
 
     pass
 
