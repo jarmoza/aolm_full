@@ -138,12 +138,12 @@ This tutorial will guide you through a sample exercise in (1) _reading a dataset
 
 NOTE: All files and folders necessary for this tutorial exist in the project's `tutorial` folder. You will need to use your operating system's terminal/command prompt program as well as your favorite text editor program. Keep in mind that this will need to be an editor capable of editing plain text like 'Notepad', 'TextEdit', or a software development environment like 'Visual Studio Code' rather than a word processor like 'Microsoft Word'. This is because the AoLM's code is in Python, a programming language which requires the use of tab characters to create code block hierarchy (a.k.a. 'scope'). Here are the files and folders you will make use of for the tutorial:
 
-1. `tutorial/aolm_tutorial.py` - The script file you will edit for the tutorial
-2. `tutorial/tutorial_solution.py` - The script file containing the tutorial solution
-3. `tutorial/data` - The `small_set` and `full_set` folders in here are where digital editions for the tutorial exist. Note the `editions` and `metadata` subfolders in each. You will point your code to the `editions` folder within `small_set` or `fullset.
-4. `tutorial/output` - A folder that has been provided for you to point the tutorial script to place your output files
+1. [`tutorial/aolm_tutorial.py`](tutorial/aolm_tutorial.py) - The script file you will edit for the tutorial. Contains comments and pseudocode to help your work.
+2. [`tutorial/tutorial_solution.py`](tutorial/tutorial_solution.py) - The script file containing the tutorial solution
+3. [`tutorial/data`](tutorial/data) - The `small_set` and `full_set` folders in here are where digital editions for the tutorial exist. Note the `editions` and `metadata` subfolders in each. You will point your code in the tutorial script to the `editions` folder within `small_set` or `fullset`.
+4. [`tutorial/output`](tutorial/output) - A folder that has been provided for you to point your code in the tutorial script to place your output files
 
-Comments and pseudocode for this tutorial are found in [`aolm_tutorial.py`](tutorial/aolm_tutorial.py) in the [`tutorial`](tutorial) folder which acts as a workspace for you to add code to as you follow along with the tutorial. Follow along with the steps outlined below and place your code in that script file in the `tutorial_workspace` function. Once you have run the script, the output files for this tutorial will be found in the [`tutorial/output`](tutorial/output) folder. If you are satisfied with the results, you may choose to perform your own exercises by running different data quality metrics from the [`aolm_code/data_quality/core/dq_metrics`](aolm_code/data_quality/core/dq_metrics) folder. Note that you will need some beginner-level Python proficiency to follow along with the tutorial. The full tutorial solution along with some extra commentary on it can be found in [`tutorial_solution.py`](tutorial/tutorial_solution.py).
+The [`aolm_tutorial.py`](tutorial/aolm_tutorial.py) in the [`tutorial`](tutorial) folder acts as a workspace for you to add code to as you follow along with the tutorial. Follow along with the steps outlined below and place your code in that script file in the `tutorial_workspace` function. Once you have run the script, the output files for this tutorial will be found in the [`tutorial/output`](tutorial/output) folder. If you are satisfied with the results, you may choose to perform your own exercises by running different data quality metrics from the [`aolm_code/data_quality/core/dq_metrics`](aolm_code/data_quality/core/dq_metrics) folder. Note that you will need some beginner-level Python proficiency to follow along with the tutorial. The full tutorial solution along with some extra commentary on it can be found in [`tutorial_solution.py`](tutorial/tutorial_solution.py).
 
 Functionality to enable further exercises and explorations of AoLM's metrics and datasets can be found in [`cli_lib.py`](tutorial/cli_lib.py) as well as via a script to run AoLM's data quality metrics at the command line in [`aolm_cli.py`](tutorial/aolm_cli.py). (NOTE: `aolm_cli.py` functions as a **command-line tool for AoLM** and has still to be fully tested. See the [command line tool](#command-line-tool) section below.)
 
@@ -151,61 +151,81 @@ Functionality to enable further exercises and explorations of AoLM's metrics and
 
 #### 1. _Copy the 'Art of Literary Modeling' GitHub repository to your computer_
 
-In your terminal, run `git clone https://github.com/jarmoza/aolm_full` in a location on your hard drive where you would like the 'Art of Literary Modeling' code repository to live.
+In your terminal, run `git clone https://github.com/jarmoza/aolm_full` in a location on your hard drive where you would like the 'Art of Literary Modeling' code repository to live. (You can use the `cd` command to do this, e.g. `cd /UserDirectory/code` if such a folder exists. `mkdir` can be used to create new folders in your present directory as well, e.g. `mkdir code`.)
 
-#### 2. _Installing Anaconda_ (OS-specific Instructions)
+#### 2. _Installing Conda_ (OS-specific Instructions)
 
-Check to see if 'conda' is installed on your system already by running `conda --version`.
+First, check whether `conda` is already installed. Open your terminal (Command Prompt, PowerShell, or Terminal) and run:
 
-If you do not yet have Anaconda ('conda') installed on your system, perform the following steps/commands in your terminal program:
+`conda --version`
+
+If you see a version number (for example, `conda 24.11.0`), you can skip this step.
+
+If not, follow the instructions for your operating system below.
+
+---
 
 **Windows**
-1. `curl -LO https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Windows-x86_64.exe`
-2. `start "" /wait Miniforge3-Windows-x86_64.exe /InstallationType=JustMe /AddToPath=1 /S`
-3. Open a new Command Prompt or PowerShell
+1. Open Command Prompt or PowerShell
+2. `curl -LO https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Windows-x86_64.exe`
+3. `start "" /wait Miniforge3-Windows-x86_64.exe /InstallationType=JustMe /AddToPath=1 /S`
+3. Close your terminal, then open a new one
 4. `conda --version`
+
+---
     
 **macOS, Apple silicon**
-1. `curl -LO https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-arm64.sh`
-2. `bash Miniforge3-MacOSX-arm64.sh -b`
-3. `conda init`
-4. Restart your terminal
-5. `conda --version`
+1. Open Terminal
+2. `curl -LO https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-arm64.sh`
+3. `bash Miniforge3-MacOSX-arm64.sh -b`
+4. `conda init`
+5. Close your Terminal, then open a new one
+6. `conda --version`
+
+---
 
 **macOS, Intel**
-1. `curl -LO https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-x86_64.sh`
-2. `bash Miniforge3-MacOSX-x86_64.sh -b`
-3. `conda init`
-4. Restart your terminal
-5. `conda --version`
+1. Open Terminal
+2. `curl -LO https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-x86_64.sh`
+3. `bash Miniforge3-MacOSX-x86_64.sh -b`
+4. `conda init`
+5. Close your Terminal, then open a new one
+6. `conda --version`
+
+---
 
 **Linux**
-1. `curl -LO https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh`
-2. `bash Miniforge3-Linux-x86_64.sh -b`
-3. `conda init`
-4. Restart your terminal
-5. `conda --version`
+1. Open a terminal
+2. `curl -LO https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh`
+3. `bash Miniforge3-Linux-x86_64.sh -b`
+4. `conda init`
+5. Close your terminal, then open a new one
+6. `conda --version`
 
-NOTE: If `conda --version` fails to show produce output like `conda <version number, i.e. 24.11.0>` after installation, try the following with your terminal/command prompt program:
+---
+
+**Troubleshooting: `conda` not found**
+
+If `conda --version` does not return a version number:
 
 **Windows**
 
-1. Close and reopen your command prompt/power shell program
+1. Close and reopen your terminal
 2. `%USERPROFILE%\miniforge3\Scripts\activate`
-3. `conda --version`
+3. Try `conda --version` again
 
 **macOS/Linux**
 
 1. `source ~/miniforge3/bin/activate`
 2. `conda init`
-3. Restart your terminal and try `conda --version` again
+3. Close and reopen your terminal
+4. Try `conda --version` again
 
 #### 3. _Install the 'conda' environment_ for 'Art of Literary Modeling' 
 
 In the *aolm_full* folder in your terminal, create the conda environment by running:
 
 ```bash
-conda config --set channel_priority strict
 conda env create -f environment.yml
 ```
 
@@ -261,7 +281,7 @@ Define variables for IDs for the digital source of the compared editions and any
 
 #### 2. _Read editions and/or metadata_
 
-The next step is to read in the digital edition files and/or metadata files you wish to use for your metric(s). AoLM uses custom JSON file formats for both editions and metadata. (The composition of these files are mentioned above in the 'Text and Metadata Ingestion' section.) For this tutorial, two convenience functions `read_huckfinn_dataset_files_by_source` and `read_metadata_files_by_source` have been provided for your use. You only need to specify the editions/metadata location and the string ID that represents the subfolder they are stored in (i.e. 'internet_archive'). Two differently-sized datasets have been provided for your use in the [`tutorial/data`](tutorial/data) folder. The tutorial script defaults to using a dataset with just a few editions for comparison via the ['small_set'](tutorial/data/small_set) folder, but a ['full_set'](tutorial/data/full_set) folder also exists. (NOTE: `metadata_files` is defined below as an example, but is not used for this tutorial.)
+The next step is to read in the digital edition files and/or metadata files you wish to use for your metric(s). AoLM uses custom JSON file formats for both editions and metadata. (The composition of these files are mentioned above in the 'Text and Metadata Ingestion' section.) For this tutorial, two convenience functions `read_huckfinn_dataset_files_by_source` and `read_metadata_files_by_source` have been provided for your use. You only need to specify the editions/metadata location and the string ID that represents the subfolder they are stored in (i.e. 'internet_archive'). Two differently-sized datasets have been provided for your use in the [`tutorial/data`](tutorial/data) folder. The tutorial script defaults to using a dataset with just a few editions for comparison via the [`small_set`](tutorial/data/small_set) folder, but a [`full_set`](tutorial/data/full_set) folder also exists. (NOTE: `metadata_files` is defined below as an example, but is not used for this tutorial.)
 
 ##### A. Reading Editions into Memory
 
@@ -430,22 +450,30 @@ python aolm_cli.py --metrics mv --source-id internet_archive
 
 ## Reproducibility
 
-The conda environment, package versions, and spaCy model versions used for this project have been frozen to support reproducibility.
+This repository provides multiple environment specifications for reproducibility of AoLM's work and further use of its code:
 
-Two methods of environment creation are provided.
+- `environment.yml` — recommended for most users; easier to install and sufficient for running the tutorial  
+- `environment.lock.yml` — a more tightly specified environment derived from the original development setup  
+- `conda_spec.txt` — an explicit, fully pinned environment for maximum reproducibility  
 
-### Method 1: Exact environment reproduction
+Choose the method below based on your needs.
 
-The file `conda_spec.txt` contains an explicit list of packages and build hashes exported from the original working environment. This allows the environment used during the project work for 'Art of Literary Modeling' to be reproduced as closely as possible.
+---
+
+### Method 1: Exact environment reproduction (`conda_spec.txt`)
+
+The file `conda_spec.txt` contains an explicit list of packages and build hashes exported from the original working environment. This allows the environment used during the project work for *Art of Literary Modeling* to be reproduced as closely as possible.
 
 ```bash
 conda create --name aolm --file conda_spec.txt
 conda activate aolm
 ```
 
-### Method 2: Environment creation from environment.yml
+---
 
-Alternatively, the environment can be created using the provided `environment.yml` file:
+### Method 2: Standard environment (`environment.yml`)
+
+For most users, the environment can be created using the provided `environment.yml` file:
 
 ```bash
 conda env create -f environment.yml
@@ -458,14 +486,31 @@ If dependency resolution fails on some systems, the libmamba solver may help:
 conda env create -f environment.yml --solver=libmamba
 ```
 
+---
+
+### Method 3: Reproduction using `environment.lock.yml`
+
+For a closer approximation of the original development environment:
+
+```bash
+conda env create -f environment.lock.yml
+conda activate aolm
+```
+
+---
+
 ### Exact spaCy model versions
 
 The dissertation analyses were run using the following spaCy model versions:
 
-    en_core_web_lg==3.8.0
-    en_core_web_sm==3.8.0
+```text
+en_core_web_lg==3.8.0
+en_core_web_sm==3.8.0
+```
 
-When using the tutorial instructions above, spaCy will automatically install the latest compatible model for the installed spaCy version. For exact reproduction of the research environment, ensure that these model versions are installed.
+When using the standard environment (`environment.yml`), spaCy will install the latest compatible model version. For exact reproduction of the research environment, install the versions listed above.
+
+---
 
 ### Installing spaCy models
 
@@ -476,5 +521,5 @@ python -m pip install en_core_web_lg==3.8.0
 python -m pip install en_core_web_sm==3.8.0
 ```
 
-These models were used for all NLP processing in the tutorial during its design and final dissertation analyses.
+These models were used for all NLP processing in the tutorial and dissertation analyses.
 
