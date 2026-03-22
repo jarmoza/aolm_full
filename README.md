@@ -150,7 +150,11 @@ Functionality to enable further exercises and explorations of AoLM's metrics and
 
 #### 1. _Copy the 'Art of Literary Modeling' GitHub repository to your computer_
 
-In your terminal, run `git clone https://github.com/jarmoza/aolm_full` in a location on your hard drive where you would like the 'Art of Literary Modeling' code repository to live. (You can use the `cd` command to do this, e.g. `cd /UserDirectory/code` if such a folder exists. `mkdir` can be used to create new folders in your present directory as well, e.g. `mkdir code`.)
+In your terminal, run the `git clone` command below in a location on your hard drive where you would like the 'Art of Literary Modeling' code repository to live. (You can use the `cd` command to do this, e.g. `cd /UserDirectory/code` if such a folder exists. `mkdir` can be used to create new folders in your present directory as well, e.g. `mkdir code`.)
+
+`git clone https://github.com/jarmoza/aolm_full`
+
+![Cloning the repository to your computers](tutorial/images/0.y%20git clone repository.png)
 
 #### 2. _Installing Conda_ (OS-specific Instructions)
 
