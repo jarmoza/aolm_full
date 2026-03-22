@@ -463,7 +463,7 @@ python aolm_cli.py --metrics mv --source-id internet_archive
 
 ## Reproducibility
 
-This repository provides multiple environment specifications for reproducibility of AoLM's work and further use of its code:
+This repository provides multiple environment specifications for reproducing AoLM's dissertation work and for further use of its code:
 
 - `environment.yml` — recommended for most users; easier to install and sufficient for running the tutorial  
 - `environment.lock.yml` — a more tightly specified environment derived from the original development setup  
@@ -473,18 +473,7 @@ Choose the method below based on your needs.
 
 ---
 
-### Method 1: Exact environment reproduction (`conda_spec.txt`)
-
-The file `conda_spec.txt` contains an explicit list of packages and build hashes exported from the original working environment. This allows the environment used during the project work for *Art of Literary Modeling* to be reproduced as closely as possible.
-
-```bash
-conda create --name aolm --file conda_spec.txt
-conda activate aolm
-```
-
----
-
-### Method 2: Standard environment (`environment.yml`)
+### Method 1: Standard environment (`environment.yml`)
 
 For most users, the environment can be created using the provided `environment.yml` file:
 
@@ -501,12 +490,23 @@ conda env create -f environment.yml --solver=libmamba
 
 ---
 
-### Method 3: Reproduction using `environment.lock.yml`
+### Method 2: Reproduction using `environment.lock.yml`
 
 For a closer approximation of the original development environment:
 
 ```bash
 conda env create -f environment.lock.yml
+conda activate aolm
+```
+
+---
+
+### Method 1: Exact environment reproduction (`conda_spec.txt`)
+
+The file `conda_spec.txt` contains an explicit list of packages and build hashes exported from the original working environment. This allows the environment used during the project work for *Art of Literary Modeling* to be reproduced as closely as possible.
+
+```bash
+conda create --name aolm --file conda_spec.txt
 conda activate aolm
 ```
 
