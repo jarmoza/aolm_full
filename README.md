@@ -39,7 +39,6 @@ Several public domain datasets of literature are also in the repository, includi
 ```bash
 git clone https://github.com/jarmoza/aolm_full
 cd aolm_full
-conda config --set channel_priority strict
 conda env create -f environment.yml
 conda activate aolm
 ```
