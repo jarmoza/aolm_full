@@ -207,6 +207,8 @@ If not, follow the instructions for your operating system below.
 
 ---
 
+![Installing conda](tutorial/images/1.%20conda%20installation.png)
+
 **Troubleshooting: `conda` not found**
 
 If `conda --version` does not return a version number:
@@ -232,10 +234,16 @@ In the *aolm_full* folder in your terminal, create the conda environment by runn
 conda env create -f environment.yml
 ```
 
+![Create the conda environment](tutorial/images/2.%20create%20conda%20environment.png)
+
 #### 4. _Activate the 'conda' environment_
 
-Next, run `conda activate aolm`. Repeat *only* this last command when you want to re-run
+Next, run the following command. Repeat *only* this last command when you want to re-run
 the tutorial script in the terminal. (To exit the 'aolm' conda environment, run `conda deactivate`.)
+
+`conda activate aolm`
+
+![Activate the conda environment](tutorial/images/3.%20Activate%20the%20conda%20environment.png)
 
 #### 5. _Install the required spaCy models_
 
@@ -251,6 +259,8 @@ Run the following command to ensure the models installed successfully:
 ```bash
 python -c "import spacy; spacy.load('en_core_web_lg'); print('spaCy model installed correctly')"
 ```
+
+![Install and test the spaCy models](tutorial/images/4.%20Install%20and%20test%20spaCy%20models.png)
 
 ### Tutorial
 
