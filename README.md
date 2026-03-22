@@ -473,7 +473,7 @@ Choose the method below based on your needs.
 
 ---
 
-### Method 3: Standard environment (`environment.yml`)
+### Method 1: Standard environment (`environment.yml`)
 
 For most users, the environment can be created using the provided `environment.yml` file:
 
