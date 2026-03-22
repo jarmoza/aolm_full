@@ -115,6 +115,7 @@ def tutorial_workspace():
 
     # =========================================================================
     # 2. Read editions and/or metadata into reader objects, depending on what inputs your metric needs
+    print("Reading editions...")
 
     # A. Read compared editions and baseline edition
 
@@ -128,10 +129,13 @@ def tutorial_workspace():
     # against an edition of the book from 'Mark Twain Project Online' as a baseline    
 
     # A. Create an instance of the 'record counts to control' metric
+    print("Creating the 'record counts to control' metric...")
 
     # B. Run the metric's 'compute' function
+    print("Computing metric tallies...")
 
     # C. Run the metric's 'evaluate' function
+    print("Evaluating metric tallies...")
 
 
     # =========================================================================
@@ -139,10 +143,10 @@ def tutorial_workspace():
     # NOTE: The 'script_run_time' variable has been set above if useful for timestamping your outputs
     
     # A. Output the metric tallies to a CSV file
+    print("Outputting the metric tallies csv...")
     
     # B. Output the metric values to a JSON file
-
-    pass
+    print("Outputting the metric values json...")
 
 
 def main():

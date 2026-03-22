@@ -107,6 +107,8 @@ def tutorial_solution():
     # =========================================================================
     # 2. Read editions and/or metadata into reader objects, depending on what inputs your metric needs
 
+    print("Reading editions...")
+
     # A. Read compared editions and baseline edition and producer reader objects for each
     # NOTE: Source ID corresponds to the folder name in the data directory, in this case
     edition_readers = read_huckfinn_dataset_files_by_source(
@@ -123,6 +125,8 @@ def tutorial_solution():
     # NOTE: In this case, the choice is to run the 'record counts to control records' metric,
     # comparing editions of 'Adventures of Huckleberry Finn' from the 'Internet Archive'
     # against an edition of the book from 'Mark Twain Project Online' as a baseline
+
+    print("Creating the 'record counts to control' metric...")
 
     # A. Create the metric object by calling its constructor
     metric = DatasetCompleteness_RecordCountsToControlRecords(
@@ -144,10 +148,12 @@ def tutorial_solution():
     )
 
     # B. Tally record counts on the editions being compared and the baseline edition
+    print("Computing metric tallies...")
     metric.compute()
 
     # C. Evaluate tallies by calculating statistics about them
     # This produces the metric and submetric values
+    print("Evaluating metric tallies...")
     metric.evaluate()
 
 
@@ -158,10 +164,12 @@ def tutorial_solution():
     # have been provided for tutorial users
 
     # A. Output tallies for editions and baseline edition to a CSV file
+    print("Outputting the metric tallies csv...")
     tally_output_filepath = f"{TUTORIAL_OUTPUT_LOCATION}{metric.s_metric_name}_metric_tallies_{script_run_time}.csv" 
     output_metric_tallies(metric, tally_output_filepath)
 
     # B. Output metric and submetric values (calculated during 'evaluate' call) to a JSON file
+    print("Outputting the metric values json...")
     evaluation_output_filepath = f"{TUTORIAL_OUTPUT_LOCATION}{metric.s_metric_name}_metric_values_{script_run_time}.json"
     output_metric_values(metric, evaluation_output_filepath)
 
