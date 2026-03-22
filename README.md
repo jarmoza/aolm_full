@@ -362,6 +362,10 @@ Once your edits are made in `aolm_tutorial.py`,
 
 **Congratulations! You have just run a data quality metric over a number of editions of _Adventures of Huckleberry Finn_ and output its measurements.**
 
+Look inside the `tutorial/output` folder for the `csv` and `json` files containing the `record counts to control record` metric values.
+
+![Run the tutorial script](tutorial/images/5.%20Run%20the%20tutorial%20script.png)
+
 #### 6. _Interpreting the results_ in the output files
 
 **Metric Tallies File**
