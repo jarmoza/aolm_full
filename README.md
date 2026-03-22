@@ -154,7 +154,7 @@ In your terminal, run the `git clone` command below in a location on your hard d
 
 `git clone https://github.com/jarmoza/aolm_full`
 
-![Cloning the repository to your computers](tutorial/images/0.y%20git clone repository.png)
+![Cloning the repository to your computers](tutorial/images/0.%20git clone repository.png)
 
 #### 2. _Installing Conda_ (OS-specific Instructions)
 
