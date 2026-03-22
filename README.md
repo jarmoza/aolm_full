@@ -473,7 +473,7 @@ Choose the method below based on your needs.
 
 ---
 
-### Method 1: Standard environment (`environment.yml`)
+### Method 3: Standard environment (`environment.yml`)
 
 For most users, the environment can be created using the provided `environment.yml` file:
 
@@ -501,7 +501,7 @@ conda activate aolm
 
 ---
 
-### Method 1: Exact environment reproduction (`conda_spec.txt`)
+### Method 3: Exact environment reproduction (`conda_spec.txt`)
 
 The file `conda_spec.txt` contains an explicit list of packages and build hashes exported from the original working environment. This allows the environment used during the project work for *Art of Literary Modeling* to be reproduced as closely as possible.
 
