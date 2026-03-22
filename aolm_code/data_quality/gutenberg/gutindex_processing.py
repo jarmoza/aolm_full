@@ -90,7 +90,7 @@ def is_metadataline(p_line):
 
 def print_line(p_linenumber, p_text):
     
-    print "[{0}]: {1}".format(p_linenumber, p_text.strip())
+    print(f"[{p_linenumber}]: {p_text.strip()}")
 
 
 # Primary functions
