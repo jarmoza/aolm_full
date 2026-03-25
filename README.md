@@ -24,7 +24,7 @@ Several public domain datasets of literature are also in the repository, includi
 
 ## Table of Contents
 
-1. [Quickstart](#quickstart)
+1. [Quickstart](#quick-start)
 2. [Text and Metadata Ingestion](#text-and-metadata-ingestion)
 3. [Data Quality Metrics](#data-quality-metrics)
 4. [Data Quality Metric Tutorial](#data-quality-metric-tutorial)
