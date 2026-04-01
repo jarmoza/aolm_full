@@ -541,115 +541,115 @@ python -m pip install en_core_web_sm==3.8.0
 
 These models were used for all NLP processing in the tutorial and dissertation analyses.
 
-## 📘 Glossary
+## Glossary
 
 ### Core Information Science Terms (Wang, Strong, Sebastian-Coleman)
 
 #### Data Quality
-The degree to which data meets the expectations of data consumers for a specific intended use.
+> The degree to which data meets the expectations of data consumers for a specific intended use.
 
 #### Data Quality Assessment Framework (DQAF)
-A structured, iterative system for evaluating, measuring, and improving data quality through profiling, measurement, and assessment cycles.
+> A structured, iterative system for evaluating, measuring, and improving data quality through profiling, measurement, and assessment cycles.
 
 #### Data Quality Dimension
-A specific aspect of data quality (e.g., accuracy, completeness) used to define and organize measurements.
+> A specific aspect of data quality (e.g., accuracy, completeness) used to define and organize measurements.
 
 #### Data Quality Category
-A higher-level grouping of dimensions:
-- Intrinsic
-- Contextual
-- Representational
-- Accessibility
+> A higher-level grouping of dimensions:
+> - Intrinsic
+> - Contextual
+> - Representational
+> - Accessibility
 
 ---
 
 ### Intrinsic Data Quality (Category)
 
 #### Intrinsic Data Quality
-The extent to which data correctly represents real-world values or trusted reference sources.
+> The extent to which data correctly represents real-world values or trusted reference sources.
 
 #### Accuracy (dimension)
-Correctness of data values relative to a real-world object or reference standard.
+> Correctness of data values relative to a real-world object or reference standard.
 
 #### Objectivity (dimension)
-Degree to which data is generated without bias or subjective distortion.
+> Degree to which data is generated without bias or subjective distortion.
 
 #### Believability (dimension)
-Degree to which data is regarded as credible by users.
+> Degree to which data is regarded as credible by users.
 
 #### Reputation (dimension)
-Trustworthiness of the data source or provenance.
+> Trustworthiness of the data source or provenance.
 
 ---
 
 ### Contextual Data Quality (Category)
 
 #### Contextual Data Quality
-The extent to which data is appropriate for a specific task or use case.
+> The extent to which data is appropriate for a specific task or use case.
 
 #### Relevancy (dimension)
-Applicability of data to the task at hand.
+> Applicability of data to the task at hand.
 
 #### Timeliness (dimension)
-Currency and availability of data relative to its use.
+> Currency and availability of data relative to its use.
 
 #### Completeness (dimension)
-Degree to which required data is present.
+> Degree to which required data is present.
 
 #### Appropriate Amount of Data (dimension)
-Sufficiency (not excess or deficiency) of data for a task.
+> Sufficiency (not excess or deficiency) of data for a task.
 
 #### Value-Added (dimension)
-Contribution of data to achieving a specific goal or outcome.
+> Contribution of data to achieving a specific goal or outcome.
 
 ---
 
 ### Representational Data Quality (Category)
 
 #### Representational Data Quality
-The extent to which data is presented clearly and is interpretable.
+> The extent to which data is presented clearly and is interpretable.
 
 #### Interpretability (dimension)
-Clarity of meaning, units, and definitions.
+> Clarity of meaning, units, and definitions.
 
 #### Ease of Understanding (dimension)
-Degree to which data can be readily comprehended.
+> Degree to which data can be readily comprehended.
 
 #### Representational Consistency (dimension)
-Uniformity of format and structure across data.
+> Uniformity of format and structure across data.
 
 #### Representational Conciseness (dimension)
-Compactness of representation without loss of meaning.
+> Compactness of representation without loss of meaning.
 
 ---
 
 ### Accessibility Data Quality (Category)
 
 #### Accessibility Data Quality
-The extent to which data can be obtained and used.
+> The extent to which data can be obtained and used.
 
 #### Accessibility (dimension)
-Ease and speed with which data can be retrieved.
+> Ease and speed with which data can be retrieved.
 
 #### Access Security (dimension)
-Controls governing who can access data and under what conditions.
+> Controls governing who can access data and under what conditions.
 
 ---
 
 ### Core Processes
 
 #### Profiling
-Examination of a dataset’s structure, content, and distributions to understand its condition.
+> Examination of a dataset’s structure, content, and distributions to understand its condition.
 
 #### Column Profiling
-Analysis of individual fields (type, format, range, validity).
+> Analysis of individual fields (type, format, range, validity).
 
 #### Structural Profiling
-Analysis of relationships across data (dependencies, hierarchies, cardinality).
+> Analysis of relationships across data (dependencies, hierarchies, cardinality).
 
 #### Assessment
-Interpretive comparison of measured data against expectations to determine quality.
+> Interpretive comparison of measured data against expectations to determine quality.
 
 #### Measurement (Information Science)
-A specific procedure used to evaluate a data quality dimension.
+> A specific procedure used to evaluate a data quality dimension.
 
