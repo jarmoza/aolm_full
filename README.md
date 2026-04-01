@@ -31,6 +31,7 @@ Several public domain datasets of literature are also in the repository, includi
 5. [Workflow Scripts and Overall Data Quality Assessment](#workflow-scripts-and-overall-data-quality-assessment)
 6. [Command Line Tool](#command-line-tool)
 7. [Reproducibility](#reproducibility)
+8. [Glossary](#glossary)
 
 ## Quick Start
 
@@ -87,25 +88,25 @@ Each data quality metric is part of what is called a "data quality assessment fr
 
 The metrics implemented for the project reflect several core categories for data quality provided by Sebastian-Coleman, and are listed in the table below. In order to begin creating your own metrics, have a look at [`dq_metric.py`](aolm_code/data_quality/core/dq_metric.py). This script defines the base class to derive from for your own metrics, and contains the core functionality needed for a metric object. Those core functions include the constructor, `compute`, `evaluate`, and output methods. Your derived child class can and likely will include more helper functionality. Take a look at the code for my own metrics in the [`aolm_code/data_quality/core/dq_metrics`](aolm_code/data_quality/core/dq_metrics) folder to see examples of derived/expanded metric functionality.
 
-| name                             | category         | dimensions                     | function                                               |
-|----------------------------------|------------------|--------------------------------|--------------------------------------------------------|
-| [lexical validity](aolm_code/data_quality/core/dq_metrics/dataset_validity/lexical_validity.py)                 | intrinsic        | - accuracy                     | comparing data against external objects                |
-|                                  |                  | - objectivity                  |                                                        |
-|                                  |                  | - believability                |                                                        |
-|                                  |                  | - reputation                   |                                                        |
-| [record consensus](aolm_code/data_quality/core/dq_metrics/dataset_consistency/consistency_recordconsensus.py)                 | representational | - interpretability             | the intelligibility of data                            |
-|                                  |                  | - ease of understanding        |                                                        |
-|                                  |                  | - representational             |                                                        |
-|                                  |                  | - consistency                  |                                                        |
-|                                  |                  | - representational conciseness |                                                        |
-| [metadata sufficiency](aolm_code/data_quality/core/dq_metrics/dataset_completeness/metadata_sufficiency.py)             | contextual       | - amount of value-added        | measurements based on the task or use case(s) for data |
-|                                  |                  | - relevancy                    |                                                        |
-|                                  |                  | - timeliness                   |                                                        |
-|                                  |                  | - completeness                 |                                                        |
-|                                  |                  | - appropriate amount of data   |                                                        |
-| [record counts to control records](aolm_code/data_quality/core/dq_metrics/dataset_completeness/recordcounts_to_controlrecords.py) | contextual       | “                              |                                                        |
-| [authorial signature](aolm_code/data_quality/core/dq_metrics/dataset_signature/authorial_signature.py)              | representational | “                              |                                                        |
-| [legomena](aolm_code/data_quality/core/dq_metrics/dataset_signature/legomena.py)                         | representational | “                              |                                                        |
+### Data Quality Categories and Dimensions
+
+| category | dimensions |
+|----------|------------|
+| [intrinsic](#intrinsic-data-quality) | - [accuracy](#accuracy-dimension) <br> - [objectivity](#objectivity-dimension) <br> - [believability](#believability-dimension) <br> - [reputation](#reputation-dimension) |
+| [contextual](#contextual-data-quality) | - [value-added](#value-added-dimension) <br> - [relevancy](#relevancy-dimension) <br> - [timeliness](#timeliness-dimension) <br> - [completeness](#completeness-dimension) <br> - [appropriate amount of data](#appropriate-amount-of-data-dimension) |
+| [representational](#representational-data-quality) | - [interpretability](#interpretability-dimension) <br> - [ease of understanding](#ease-of-understanding-dimension) <br> - [representational consistency](#representational-consistency-dimension) <br> - [representational conciseness](#representational-conciseness-dimension) |
+| [accessibility](#accessibility-data-quality) | - [accessibility](#accessibility-dimension) <br> - [access security](#access-security-dimension) |
+
+### Data Quality Metrics
+
+| name | category | primary dimensions | secondary / inferred dimensions | function |
+|------|----------|--------------------|----------------------------------|----------|
+| [lexical validity](aolm_code/data_quality/core/dq_metrics/dataset_validity/lexical_validity.py) | [intrinsic](#intrinsic-data-quality) | - [accuracy](#accuracy-dimension) | - [believability](#believability-dimension) | comparing data against external objects |
+| [record consensus](aolm_code/data_quality/core/dq_metrics/dataset_consistency/consistency_recordconsensus.py) | [representational](#representational-data-quality) | - [representational consistency](#representational-consistency-dimension) | - [interpretability](#interpretability-dimension) | the intelligibility of data |
+| [metadata sufficiency](aolm_code/data_quality/core/dq_metrics/dataset_completeness/metadata_sufficiency.py) | [contextual](#contextual-data-quality) | - [completeness](#completeness-dimension) <br> - [value-added](#value-added-dimension) | - [relevancy](#relevancy-dimension) | measurements based on the task or use case(s) for data |
+| [record counts to control records](aolm_code/data_quality/core/dq_metrics/dataset_completeness/recordcounts_to_controlrecords.py) | [contextual](#contextual-data-quality) | - [completeness](#completeness-dimension) | - [accuracy](#accuracy-dimension) | |
+| [authorial signature](aolm_code/data_quality/core/dq_metrics/dataset_signature/authorial_signature.py) | [representational](#representational-data-quality) | - [representational consistency](#representational-consistency-dimension) | - [interpretability](#interpretability-dimension) | |
+| [legomena](aolm_code/data_quality/core/dq_metrics/dataset_signature/legomena.py) | [representational](#representational-data-quality) | - [interpretability](#interpretability-dimension) | - [representational consistency](#representational-consistency-dimension) | |
 
 ### Lexical Validity
 
@@ -539,4 +540,116 @@ python -m pip install en_core_web_sm==3.8.0
 ```
 
 These models were used for all NLP processing in the tutorial and dissertation analyses.
+
+## 📘 Glossary
+
+### Core Information Science Terms (Wang, Strong, Sebastian-Coleman)
+
+#### Data Quality
+The degree to which data meets the expectations of data consumers for a specific intended use.
+
+#### Data Quality Assessment Framework (DQAF)
+A structured, iterative system for evaluating, measuring, and improving data quality through profiling, measurement, and assessment cycles.
+
+#### Data Quality Dimension
+A specific aspect of data quality (e.g., accuracy, completeness) used to define and organize measurements.
+
+#### Data Quality Category
+A higher-level grouping of dimensions:
+- Intrinsic
+- Contextual
+- Representational
+- Accessibility
+
+---
+
+### Intrinsic Data Quality (Category)
+
+#### Intrinsic Data Quality
+The extent to which data correctly represents real-world values or trusted reference sources.
+
+#### Accuracy (dimension)
+Correctness of data values relative to a real-world object or reference standard.
+
+#### Objectivity (dimension)
+Degree to which data is generated without bias or subjective distortion.
+
+#### Believability (dimension)
+Degree to which data is regarded as credible by users.
+
+#### Reputation (dimension)
+Trustworthiness of the data source or provenance.
+
+---
+
+### Contextual Data Quality (Category)
+
+#### Contextual Data Quality
+The extent to which data is appropriate for a specific task or use case.
+
+#### Relevancy (dimension)
+Applicability of data to the task at hand.
+
+#### Timeliness (dimension)
+Currency and availability of data relative to its use.
+
+#### Completeness (dimension)
+Degree to which required data is present.
+
+#### Appropriate Amount of Data (dimension)
+Sufficiency (not excess or deficiency) of data for a task.
+
+#### Value-Added (dimension)
+Contribution of data to achieving a specific goal or outcome.
+
+---
+
+### Representational Data Quality (Category)
+
+#### Representational Data Quality
+The extent to which data is presented clearly and is interpretable.
+
+#### Interpretability (dimension)
+Clarity of meaning, units, and definitions.
+
+#### Ease of Understanding (dimension)
+Degree to which data can be readily comprehended.
+
+#### Representational Consistency (dimension)
+Uniformity of format and structure across data.
+
+#### Representational Conciseness (dimension)
+Compactness of representation without loss of meaning.
+
+---
+
+### Accessibility Data Quality (Category)
+
+#### Accessibility Data Quality
+The extent to which data can be obtained and used.
+
+#### Accessibility (dimension)
+Ease and speed with which data can be retrieved.
+
+#### Access Security (dimension)
+Controls governing who can access data and under what conditions.
+
+---
+
+### Core Processes
+
+#### Profiling
+Examination of a dataset’s structure, content, and distributions to understand its condition.
+
+#### Column Profiling
+Analysis of individual fields (type, format, range, validity).
+
+#### Structural Profiling
+Analysis of relationships across data (dependencies, hierarchies, cardinality).
+
+#### Assessment
+Interpretive comparison of measured data against expectations to determine quality.
+
+#### Measurement (Information Science)
+A specific procedure used to evaluate a data quality dimension.
 
