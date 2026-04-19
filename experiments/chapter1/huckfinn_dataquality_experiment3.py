@@ -324,7 +324,7 @@ def main():
 
     # 4. Output the metric evaluations
     print(f"Metric: {100 * huckfinn_recordconsensus.metric_evaluation}%")
-    print(f"Submetrics: {huckfinn_recordconsensus.m_evaluations["submetric"]}")
+    print(f"Submetrics: {huckfinn_recordconsensus.m_evaluations['submetric']}")
 
     output_csv_toggle = True
     # csv_filename = "huckfinn_pgiamtpo_subx4metric.csv"

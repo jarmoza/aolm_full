@@ -323,23 +323,23 @@ def evaluate_metrics():
         # A. Lexical validity
         experiment_metrics[source_id][LV_METRIC_NAME]["evaluation"] = \
             experiment_metrics[source_id][LV_METRIC_NAME]["metric"].evaluate()
-        print(f"{source_fullname} '{LV_METRIC_NAME}' metric: {experiment_metrics[source_id][LV_METRIC_NAME]["evaluation"]}")
+        print(f"{source_fullname} '{LV_METRIC_NAME}' metric: {experiment_metrics[source_id][LV_METRIC_NAME]['evaluation']}")
 
         # B. Metadata sufficiency
         experiment_metrics[source_id][MS_METRIC_NAME]["evaluation"] = \
             experiment_metrics[source_id][MS_METRIC_NAME]["metric"].evaluate()
-        print(f"{source_fullname} '{MS_METRIC_NAME}' metric: {experiment_metrics[source_id][MS_METRIC_NAME]["evaluation"]}")
+        print(f"{source_fullname} '{MS_METRIC_NAME}' metric: {experiment_metrics[source_id][MS_METRIC_NAME]['evaluation']}")
 
         # C. Text record counts to control record by edition
         for edition_name in aolm_data_reading.huckfinn_edition_names[source_id]:
             experiment_metrics[source_id][TR_METRIC_NAME]["individual_editions"][edition_name]["evaluation"] = \
                 experiment_metrics[source_id][TR_METRIC_NAME]["individual_editions"][edition_name]["metric"].evaluate()
-            print(f"{source_fullname} '{TR_METRIC_NAME}' metric for {edition_name}: {experiment_metrics[source_id][TR_METRIC_NAME]["individual_editions"][edition_name]["evaluation"]}")
+            print(f"{source_fullname} '{TR_METRIC_NAME}' metric for {edition_name}: {experiment_metrics[source_id][TR_METRIC_NAME]['individual_editions'][edition_name]['evaluation']}")
 
         # D. Overall text record counts to control record of all editions from this source
         experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["evaluation"] = \
             experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["metric"].evaluate()
-        print(f"Overall {source_fullname} '{TR_METRIC_NAME}' metric: {experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["evaluation"]}")
+        print(f"Overall {source_fullname} '{TR_METRIC_NAME}' metric: {experiment_metrics[source_id][TR_METRIC_NAME]['overall']['evaluation']}")
 
         # E. Evaluation for lexical validity, metadata sufficiency, and text record counts to control record
         # experiment_metrics[source_id]["overall_data_quality"] = mean([
@@ -352,7 +352,7 @@ def evaluate_metrics():
             (metric_weights[LV_METRIC_NAME] * experiment_metrics[source_id][LV_METRIC_NAME]["evaluation"]) + \
             (metric_weights[MS_METRIC_NAME] * experiment_metrics[source_id][MS_METRIC_NAME]["evaluation"]) + \
             (metric_weights[TR_METRIC_NAME] * experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["evaluation"])
-        print(f"Overall {source_fullname} data quality: {experiment_metrics[source_id]["overall_data_quality"]}")
+        print(f"Overall {source_fullname} data quality: {experiment_metrics[source_id]['overall_data_quality']}")
 
 def output_results(p_script_run_time):
 
@@ -452,7 +452,7 @@ def output_results(p_script_run_time):
             output_file.write(experiment_metrics[source_id][TR_METRIC_NAME]["overall"]["metric"].output)
 
             # c. Overall data quality measurement of the source_id editions vs. ur edition
-            output_file.write(f"Overall Quality:,{experiment_metrics[source_id]["overall_data_quality"]}\n")
+            output_file.write(f"Overall Quality:,{experiment_metrics[source_id]['overall_data_quality']}\n")
 
         # C. Ur edition
 
@@ -468,7 +468,7 @@ def output_results(p_script_run_time):
         output_file.write(ur_metrics[UR_EDITION][TR_METRIC_NAME]["metric"].output)
 
         # b. Overall data quality measurement of the source_id editions vs. ur edition
-        output_file.write(f"Overall Quality:,{ur_metrics[UR_EDITION]["overall_data_quality"]}\n")
+        output_file.write(f"Overall Quality:,{ur_metrics[UR_EDITION]['overall_data_quality']}\n")
 
 def plot_results(p_output_filepath):
 
@@ -531,7 +531,7 @@ def compute_and_evaluate_ur_edition():
         (metric_weights[LV_METRIC_NAME] * ur_metrics[UR_EDITION][LV_METRIC_NAME]["evaluation"]) + \
         (metric_weights[MS_METRIC_NAME] * ur_metrics[UR_EDITION][MS_METRIC_NAME]["evaluation"]) + \
         (metric_weights[TR_METRIC_NAME] * ur_metrics[UR_EDITION][TR_METRIC_NAME]["evaluation"])
-    print(f"Overall {source_fullname} data quality for ur edition: {ur_metrics[UR_EDITION]["overall_data_quality"]}")
+    print(f"Overall {source_fullname} data quality for ur edition: {ur_metrics[UR_EDITION]['overall_data_quality']}")
 
 
 # Test

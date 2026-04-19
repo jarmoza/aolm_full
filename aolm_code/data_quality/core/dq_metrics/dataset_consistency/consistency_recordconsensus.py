@@ -618,7 +618,7 @@ def main():
 
     # 4. Output the metric evaluations
     print(f"Metric: {100 * huckfinn_recordconsensus.metric_evaluation}%")
-    print(f"Submetrics: {huckfinn_recordconsensus.m_evaluations["submetric"]}")
+    print(f"Submetrics: {huckfinn_recordconsensus.m_evaluations['submetric']}")
 
     output_lines = huckfinn_recordconsensus.__build_eval_output_line__()
     with open(EXPERIMENT_PATH + "huckfinn_ia_subx4metric.csv", "w") as output_file:
