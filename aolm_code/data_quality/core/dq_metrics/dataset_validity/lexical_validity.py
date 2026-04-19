@@ -351,9 +351,9 @@ def main():
     # 2. Output results
     
     print(f"Overall lexical Validity of PG Huck Finn editions: {lexical_validity_value}")
-    print(f"{"=" * 80}")
+    print(f"{'=' * 80}")
     print(validity_metric.output)
-    print(f"{"=" * 80}")
+    print(f"{'=' * 80}")
     print(validity_metric.eval_output)
 
     output_directory = "/Users/weirdbeard/Documents/school/aolm_full/experiments/outputs/"

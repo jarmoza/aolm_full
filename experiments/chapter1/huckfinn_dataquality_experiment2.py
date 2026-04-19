@@ -319,7 +319,7 @@ def output_record_count_chapter_results(p_output_filepath):
 
     with open(p_output_filepath, "w") as output_file:
         for line_set in results_lines:
-            output_file.write(f"{"\n".join(line_set)}\n")        
+            output_file.write(f"{'\n'.join(line_set)}\n")        
 
 # Visualization
 
