@@ -269,7 +269,7 @@ python -c "import spacy; spacy.load('en_core_web_lg'); print('spaCy model instal
 
 ### Tutorial
 
-**Places to put code corresponding to the numbered and lettered steps below can be found in the `tutorial_workspace` function found in `tutorial/aolm_tutorial.py`.**
+**Places to put code corresponding to the numbered and lettered steps below can be found in the `tutorial_workspace` function found in `tutorial/aolm_tutorial.py`.** (Recall that Python requires the use of tab indentation for code lines. In this case, since code is being defined in `tutorial_workspace`, each line requires one tab indentation.)
 
 #### 1. _Define parameters_ for reading data and running a metric (optional)
 
@@ -277,16 +277,24 @@ The first thing you will do is define string variables for IDs and folder paths 
 
 **Helpful Notes:**
 - The `pwd` command in your terminal/power shell program will show you the current, full directory path you are located in. (`cd` is the command in the Windows command prompt.)
-- Copy and paste the output into a string variable definition
+- Copy and paste the output into a string variable definition (like in step A below)
 - The path must end in a folder separator character - `/` for macOS and Linux, `\` for Windows
+
+_Building the input path via your terminal:_
+```bash
+>pwd
+/Users/myusername/aolm_full/tutorial/
+```
+Copy and add `data/small_set/editions/` or `data/small_set/metadata/` (`\` if in Windows):
+`/Users/myusername/aolm_full/tutorial/data/small_set/editions/`
 
 ##### A. File Locations
 
-Define one (or two) variables for the locations of your digital editions. As mentioned, pre-defined dataset and metadata location paths have been placed at the top of the tutorial file, including a `TUTORIAL_DATASET_LOCATION`.
+Define one (or two) variables for the locations of your digital editions. As mentioned, pre-defined dataset and metadata location variables have been placed at the top of the tutorial file, including a `TUTORIAL_DATASET_LOCATION`.
 
 ```bash
-EDITIONS_LOCATION = 'mypath/to/digital_edition/files'
-METADATA_LOCATION = 'mypath/to/metadata/files'
+EDITIONS_LOCATION = '/Users/myusername/aolm_full/tutorial/data/small_set/editions/'
+METADATA_LOCATION = '/Users/myusername/aolm_full/tutorial/data/small_set/metadata/'
 ```
 
 ##### B. Unique String IDs
@@ -360,18 +368,26 @@ metric.evaluate()
 
 #### 4. _Output results_ (for inspection, analysis, and visualization)
 
-In this final step, you will output both the tallies and the metric and sub-metric values of the data quality metric you just ran. Since the implementation of outputting these values has yet to be standardized across AoLM metrics, two convenience functions, `output_metric_tallies` and `output_metric_values` have been provided for your use. The former outputs a CSV file and the latter, a JSON file for the 'record counts to control records' metric. There has been an [`output`](tutorial/output) folder provided in the [`tutorial`](tutorial) folder for your convenience. (NOTE: Most other metrics produce JSON file for their tallies.) The path for the output files below can once again by using the `pwd` command to find the current directory path and adding the `output` folder name to its end. A `script_run_time` variable has also been provided in the `tutorial_workspace` function of `aolm_tutorial.py` if useful for timestamping your outputs.
+In this final step, you will output both the tallies and the metric and sub-metric values of the data quality metric you just ran. Since the implementation of outputting these values has yet to be standardized across AoLM metrics, two convenience functions, `output_metric_tallies` and `output_metric_values` have been provided for your use. The former outputs a CSV file and the latter, a JSON file for the 'record counts to control records' metric. There has been an [`output`](tutorial/output) folder provided in the [`tutorial`](tutorial) folder for your convenience. (NOTE: Most other metrics produce JSON file for their tallies.) You will want to replace the folder path for the output files below with one for your computer. That path can be found by using the `pwd` command in your terminal to find the current directory path and adding the `output/` folder name to its end. A `script_run_time` variable has also been provided in the `tutorial_workspace` function of `aolm_tutorial.py` if useful for timestamping your outputs.
+
+_Building the output path via your terminal:_
+```bash
+>pwd
+/Users/myusername/aolm_full/tutorial
+```
+Copy and add `output/` (`\` if in Windows):
+`/Users/myusername/aolm_full/tutorial/output/`
 
 ##### A. Output the tallies
 
 ```bash    
-output_metric_tallies(metric, "/UserDirectory/code/aolm_full/tutorial/output/" + "metric_tallies_" + script_run_time + '.csv')
+output_metric_tallies(metric, "/Users/myusername/aolm_full/tutorial/output/" + "metric_tallies_" + script_run_time + '.csv')
 ```
 
 ##### B. Output the metric and sub-metric values
 
 ```bash
-output_metric_values(metric, "/UserDirectory/code/aolm_full/tutorial/output/" + "metric_values_"  + script_run_time + '.json')
+output_metric_values(metric, "/Users/myusername/aolm_full/tutorial/output/" + "metric_values_"  + script_run_time + '.json')
 ```
 
 #### 5. Run the finished Python script
