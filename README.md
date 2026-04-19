@@ -285,7 +285,7 @@ _Building the input path via your terminal:_
 >pwd
 /Users/myusername/aolm_full/tutorial/
 ```
-Copy and add `data/small_set/editions/` or `data/small_set/metadata/` (`\` if in Windows):
+Copy and add `/data/small_set/editions/` or `/data/small_set/metadata/` (`\` if in Windows):
 `/Users/myusername/aolm_full/tutorial/data/small_set/editions/`
 
 ##### A. File Locations
@@ -375,7 +375,7 @@ _Building the output path via your terminal:_
 >pwd
 /Users/myusername/aolm_full/tutorial
 ```
-Copy and add `output/` (`\` if in Windows):
+Copy and add `/output/` (`\` if in Windows):
 `/Users/myusername/aolm_full/tutorial/output/`
 
 ##### A. Output the tallies
