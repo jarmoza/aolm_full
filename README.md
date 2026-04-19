@@ -153,7 +153,9 @@ Functionality to enable further exercises and explorations of AoLM's metrics and
 
 In your terminal, run the `git clone` command below in a location on your hard drive where you would like the 'Art of Literary Modeling' code repository to live. (You can use the `cd` command to do this, e.g. `cd /UserDirectory/code` if such a folder exists. `mkdir` can be used to create new folders in your present directory as well, e.g. `mkdir code`.)
 
-`git clone https://github.com/jarmoza/aolm_full`
+```bash
+git clone https://github.com/jarmoza/aolm_full
+```
 
 ![Cloning the repository to your computers](tutorial/images/0.%20git%20clone%20repository.png)
 
@@ -161,7 +163,9 @@ In your terminal, run the `git clone` command below in a location on your hard d
 
 First, check whether `conda` is already installed. Open your terminal (Command Prompt, PowerShell, or Terminal) and run:
 
-`conda --version`
+```bash
+conda --version
+```
 
 If you see a version number (for example, `conda 24.11.0`), you can skip this step.
 
@@ -280,18 +284,22 @@ The first thing you will do is define string variables for IDs and folder paths 
 
 Define one (or two) variables for the locations of your digital editions. As mentioned, pre-defined dataset and metadata location paths have been placed at the top of the tutorial file, including a `TUTORIAL_DATASET_LOCATION`.
 
-    EDITIONS_LOCATION = 'mypath/to/digital_edition/files'
-    METADATA_LOCATION = 'mypath/to/metadata/files'
+```bash
+EDITIONS_LOCATION = 'mypath/to/digital_edition/files'
+METADATA_LOCATION = 'mypath/to/metadata/files'
+```
 
 ##### B. Unique String IDs
 
 Define variables for IDs for the digital source of the compared editions and any baseline (e.g. 'master') edition In this case, the 'record counts to control records' metric requires a baseline edition. Other metrics will not require either ID if they are not comparing across digital text source archives like this metric does. 
 
-    TUTORIAL_BASELINE_SOURCE_ID = 'mark_twain_project'
-    TUTORIAL_SOURCE_ID = 'internet_archive'
-    TUTORIAL_METRIC_ID = 'my_unique_metric_id'
-    TUTORIAL_COLLECTION_TITLE = 'Internet Archive'
-    TUTORIAL_WORK_TITLE = 'Adventures of Huckleberry Finn'
+```bash
+TUTORIAL_BASELINE_SOURCE_ID = 'mark_twain_project'
+TUTORIAL_SOURCE_ID = 'internet_archive'
+TUTORIAL_METRIC_ID = 'my_unique_metric_id'
+TUTORIAL_COLLECTION_TITLE = 'Internet Archive'
+TUTORIAL_WORK_TITLE = 'Adventures of Huckleberry Finn'
+```
 
 #### 2. _Read editions and/or metadata_
 
@@ -299,14 +307,18 @@ The next step is to read in the digital edition files and/or metadata files you 
 
 ##### A. Reading Editions into Memory
 
-    edition_readers = read_huckfinn_dataset_files_by_source(
-        EDITIONS_LOCATION, TUTORIAL_SOURCE_ID)
-    edition_readers.update(read_huckfinn_dataset_files_by_source(
-        EDITIONS_LOCATION, TUTORIAL_BASELINE_SOURCE_ID))
+```bash
+edition_readers = read_huckfinn_dataset_files_by_source(
+    EDITIONS_LOCATION, TUTORIAL_SOURCE_ID)
+edition_readers.update(read_huckfinn_dataset_files_by_source(
+    EDITIONS_LOCATION, TUTORIAL_BASELINE_SOURCE_ID))
+```
 
 ##### B. Reading Metadata into Memory (not for this tutorial; shown here for your future experimentation with the metadata metric)
 
-    metadata_files = read_metadata_files_by_source(METADATA_LOCATION, TUTORIAL_SOURCE_ID)
+```bash
+metadata_files = read_metadata_files_by_source(METADATA_LOCATION, TUTORIAL_SOURCE_ID)
+```
 
 #### 3. _Run a data quality metric_ over the editions and/or metadata
 
@@ -316,15 +328,17 @@ This next step is where you will run a data quality metric on your editions or m
 
 First, create the metric object and give it the parameters its constructor requires. (To see where these metric class constructors are defined look at the Python files in [`aolm_code/data_quality/core/dq_metrics`](aolm_code/data_quality/core/dq_metrics). In the `class` section you will see a constructor definition that begins with `def __init__(...):`. This is where you will find the class object's required parameters. However, there is also a helper `create_metric` function in `cli_lib.py` you may utilize.)
 
-    metric = DatasetCompleteness_RecordCountsToControlRecords(
-        TUTORIAL_METRIC_ID,
-        edition_readers,
-        TUTORIAL_SOURCE_ID,
-        TUTORIAL_WORK_TITLE,
-        TUTORIAL_COLLECTION_TITLE,
-        EDITIONS_LOCATION,
-        TUTORIAL_BASELINE_SOURCE_ID
-    )
+```bash
+metric = DatasetCompleteness_RecordCountsToControlRecords(
+    TUTORIAL_METRIC_ID,
+    edition_readers,
+    TUTORIAL_SOURCE_ID,
+    TUTORIAL_WORK_TITLE,
+    TUTORIAL_COLLECTION_TITLE,
+    EDITIONS_LOCATION,
+    TUTORIAL_BASELINE_SOURCE_ID
+)
+```
 
 This line creates a data quality metric object.
 
@@ -332,25 +346,33 @@ This line creates a data quality metric object.
 
 Each metric object performs two steps to produce its metric and sub-metric values. The metric object's `compute` function tallies the values of the editions or metadata it uses for producing the final metric values.
 
-    metric.compute()
+```bash
+metric.compute()
+```
 
 ##### C. Calculate about the metric and sub-metric values
 
 Then the metric object's `evaluate` function calculates statistics based on those tallies to produce the metric and sub-metric values.
 
-    metric.evaluate()
+```bash
+metric.evaluate()
+```
 
 #### 4. _Output results_ (for inspection, analysis, and visualization)
 
 In this final step, you will output both the tallies and the metric and sub-metric values of the data quality metric you just ran. Since the implementation of outputting these values has yet to be standardized across AoLM metrics, two convenience functions, `output_metric_tallies` and `output_metric_values` have been provided for your use. The former outputs a CSV file and the latter, a JSON file for the 'record counts to control records' metric. There has been an [`output`](tutorial/output) folder provided in the [`tutorial`](tutorial) folder for your convenience. (NOTE: Most other metrics produce JSON file for their tallies.) The path for the output files below can once again by using the `pwd` command to find the current directory path and adding the `output` folder name to its end. A `script_run_time` variable has also been provided in the `tutorial_workspace` function of `aolm_tutorial.py` if useful for timestamping your outputs.
 
 ##### A. Output the tallies
-    
-    output_metric_tallies(metric, "/UserDirectory/code/aolm_full/tutorial/output/" + "metric_tallies_" + script_run_time + '.csv')
+
+```bash    
+output_metric_tallies(metric, "/UserDirectory/code/aolm_full/tutorial/output/" + "metric_tallies_" + script_run_time + '.csv')
+```
 
 ##### B. Output the metric and sub-metric values
 
-    output_metric_values(metric, "/UserDirectory/code/aolm_full/tutorial/output/" + "metric_values_"  + script_run_time + '.json')
+```bash
+output_metric_values(metric, "/UserDirectory/code/aolm_full/tutorial/output/" + "metric_values_"  + script_run_time + '.json')
+```
 
 #### 5. Run the finished Python script
 
@@ -359,7 +381,9 @@ Once your edits are made in `aolm_tutorial.py`,
 1. Make sure you are located in the tutorial directory in your terminal program (i.e. using `cd /UserDirectory/code/aolm_full/tutorial/`if that is the path where you placed the `aolm_full` project directory)
 2. Run the following command:
 
-    python aolm_tutorial.py
+```bash
+python aolm_tutorial.py
+```
 
 **Congratulations! You have just run a data quality metric over a number of editions of _Adventures of Huckleberry Finn_ and output its measurements.**
 
