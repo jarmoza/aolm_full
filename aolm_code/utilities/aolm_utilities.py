@@ -172,7 +172,7 @@ def remove_stopwords(p_tokens, p_stopwords_type="voyant"):
 
 # Visualizations
 
-def bar_plot(p_categories, p_category_label, p_values, p_value_label, p_title):
+def bar_plot(p_categories, p_category_label, p_values, p_value_label, p_title, colors=None):
             
     # Example data
     # data = {
@@ -190,6 +190,9 @@ def bar_plot(p_categories, p_category_label, p_values, p_value_label, p_title):
         x=p_category_label,
         y=p_value_label,
         title=p_title)
+
+    if colors:
+        fig.update_traces(marker_color=colors)    
     
     # Update layout for fonts
     title_font_size = 24
