@@ -36,6 +36,7 @@ class COHA(Enum):
 melville_source_directory = {
     
     "collected": "{0}{1}data{1}melville{1}collected{1}".format(ROOT_DIR, os.sep),
+    "internet_archive": "{0}{1}data{1}melville{1}internet_archive{1}".format(ROOT_DIR, os.sep),
     "moby-dick": "{0}{1}data{1}melville{1}moby-dick{1}".format(ROOT_DIR, os.sep),
     "novels_json": "{0}{1}data{1}melville{1}collected{1}demarcated{1}".format(ROOT_DIR, os.sep)
 }
@@ -202,3 +203,9 @@ def read_huckfinn_text(p_source_id, p_edition_filenames=None):
                 huckfinn_text_readers[os.path.basename(filepath)].read()
                     
         return huckfinn_text_readers
+    
+def main():
+    print("Hello")
+
+if "__main__" == __name__:
+    main()
