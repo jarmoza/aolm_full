@@ -221,6 +221,9 @@ class DatasetValidity_LexicalValidity(DataQualityMetric):
         global spacy_nlp
         doc = spacy_nlp(p_original_text)
 
+        # spacy_nlp = spacy.load("en_core_web_sm", disable=["parser", "ner", "tagger"])
+        spacy_nlp.max_length = 2_000_000
+
         # 2. Filter out out-of-vocabulary words
 
         # A. Filter out words flagged as out-of-vocabulary by spaCy
