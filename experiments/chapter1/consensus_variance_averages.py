@@ -15,7 +15,7 @@ def get_edition_shortname_from_metadata(p_text_json_filename):
 
     short_name = p_text_json_filename
 
-    with open("/Users/weirdbeard/Documents/school/aolm_full/experiments/chapter1/huckfinneditions_filenames2fullnames.json", "r") as input_file:
+    with open(f"{os.getcwd()}{os.sep}huckfinneditions_filenames2fullnames.json", "r") as input_file:
         json_data = json.load(input_file)
 
     for key in json_data:
@@ -26,7 +26,7 @@ def get_edition_shortname_from_metadata(p_text_json_filename):
     return short_name
 
 # Path to your CSV file
-csv_file = f"{os.getcwd()}{os.sep}experiments{os.sep}outputs{os.sep}huckfinn_pgiamtpo_subx4metric_variancetest.csv"
+csv_file = f"{os.getcwd()}{os.sep}..{os.sep}outputs{os.sep}huckfinn_pgiamtpo_subx4metric_variancetest.csv"
 
 # Read the CSV into a DataFrame
 df = pd.read_csv(csv_file)
@@ -66,7 +66,7 @@ fig = px.bar(
     color="Metric",
     barmode="group",
     color_discrete_sequence=color_palette,
-    title="Average Variance from Sentence and Word Consensus by Edition",
+    title="Average Chapter-Level Variance from Sentence and Word Consensus by Edition",
     labels={"short_name": "Edition Name", "Average Variance": "Average Variance"}
 )
 

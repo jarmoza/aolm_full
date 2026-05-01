@@ -125,8 +125,9 @@ fig = px.bar(
 
 # Layout adjustments
 fig.update_traces(
+    texttemplate="%{text}",
     textposition='outside',
-    textfont_size=14,
+    textfont=dict(size=18),
     cliponaxis=False
 )
 
@@ -137,10 +138,14 @@ fig.update_layout(
     template="plotly_white",
     height=700,
     font=dict(size=16),
-    xaxis=dict(tickfont=dict(size=13),
-               categoryarray=order,),
-    yaxis=dict(tickfont=dict(size=14)),
-    margin=dict(b=150)  # Prevent label clipping
+    xaxis=dict(
+        tickfont=dict(size=16),
+        tickangle=-45,
+        categoryarray=order
+    ),
+    yaxis=dict(tickfont=dict(size=16)),
+    margin=dict(b=150),  # Prevent label clipping
+    title_font=dict(size=28)
 )
 
 fig.show()

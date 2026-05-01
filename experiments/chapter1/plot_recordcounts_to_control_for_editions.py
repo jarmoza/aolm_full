@@ -3,6 +3,7 @@
 # Purpose: Plot record count to control submetric values for editions for words and sentences
 
 import json
+import os
 import pandas as pd
 import plotly.express as px
 import plotly.colors as pc
@@ -12,7 +13,7 @@ def get_edition_shortname_from_metadata(p_text_json_filename):
 
     short_name = p_text_json_filename
 
-    with open("/Users/weirdbeard/Documents/school/aolm_full/experiments/chapter1/huckfinneditions_filenames2fullnames.json", "r") as input_file:
+    with open(f"{os.getcwd()}{os.sep}huckfinneditions_filenames2fullnames.json", "r") as input_file:
         json_data = json.load(input_file)
 
     for key in json_data:
@@ -22,7 +23,8 @@ def get_edition_shortname_from_metadata(p_text_json_filename):
 
     return short_name
 
-with open("/Users/weirdbeard/Documents/school/aolm_full/experiments/outputs/huckfinn_dq_experiment_01112025_181442_eval_record_counts_to_control.json", "r") as input_file:
+# with open(f"{os.getcwd()}{os.sep}..{os.sep}outputs{os.sep}huckfinn_dq_experiment_01112025_181442_eval_record_counts_to_control.json", "r") as input_file:
+with open(f"{os.getcwd()}{os.sep}..{os.sep}outputs{os.sep}huckfinn_dq_experiment_dqaf_final_eval_record_counts_to_control.json", "r") as input_file:
     json_data = json.load(input_file)
 
 edition_order = [
@@ -67,6 +69,10 @@ df_melted = df.melt(
 df_melted['Edition'] = pd.Categorical(df_melted['Edition'],
                                       categories=edition_order,
                                       ordered=True)
+df_melted["Metric"] = df_melted["Metric"].replace({
+    "Sentence Count": "Sentence Match",
+    "Word Count": "Word Match"
+})
 
 # Colorblind-friendly palette
 color_palette = pc.qualitative.Safe
@@ -84,24 +90,62 @@ fig = px.bar(
 )
 
 # Place labels above bars and prevent clipping
-fig.update_traces(textposition='outside', cliponaxis=False)
+fig.update_traces(textposition='outside',
+                  textfont=dict(size=18),
+                  cliponaxis=False)
 
 # Layout adjustments
+# fig.update_layout(
+#     title="Sentence and Word Match Percentages by Edition (Compared against the MTPO Edition)",
+#     xaxis_title="Edition",
+#     yaxis_title="Percent Match",
+#     template="plotly_white",
+#     height=800,
+#     title_font=dict(size=24),
+#     xaxis_title_font=dict(size=18),
+#     yaxis_title_font=dict(size=18),
+#     xaxis_tickfont=dict(size=14),
+#     yaxis_tickfont=dict(size=14, family="Arial Bold"),
+#     xaxis_tickangle=-45,
+#     legend_title_font=dict(size=16),
+#     legend_font=dict(size=14)
+# )
+
 fig.update_layout(
-    title="Sentence and Word Counts per Edition",
+    title="Sentence and Word Match Percentages by Edition (Compared against the MTPO Edition)",
     xaxis_title="Edition",
-    yaxis_title="Count",
+    yaxis_title="Percent Match",
     template="plotly_white",
     height=800,
-    title_font=dict(size=24),
+
+    # Title
+    title_font=dict(size=26),
+
+    # Axis titles
     xaxis_title_font=dict(size=18),
     yaxis_title_font=dict(size=18),
-    xaxis_tickfont=dict(size=14),
-    yaxis_tickfont=dict(size=14, family="Arial Bold"),
-    xaxis_tickangle=-45,
+
+    # Tick labels
+    xaxis=dict(
+        tickfont=dict(size=15),
+        tickangle=-45,
+        categoryarray=edition_order
+    ),
+    yaxis=dict(
+        tickfont=dict(size=16)
+    ),
+
+    # Legend
     legend_title_font=dict(size=16),
-    legend_font=dict(size=14)
+    legend_font=dict(size=14),
+
+    # Prevent crowding at bottom
+    margin=dict(b=180)
 )
+
+fig.update_yaxes(tickformat=".0f")
+
+
 
 fig.show()
 
