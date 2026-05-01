@@ -163,13 +163,26 @@ def main():
     for idx, (label, value) in enumerate(zip(sorted_labels, sorted_values), start=1):
         print(f"#{idx}. {label}: {value:.4f}")
 
-    # G. Plot the sorted distances
+    # G. Steel blue for the bars
+    colors = ["steelblue"] * len(sorted_values)
+
+    # H. Plot the sorted distances
     bar_plot(
         sorted_labels,
         "Title",
         sorted_values,
         "Distance",
-        "Distance from Melville's Authorial Signature [0,1]"
+        "Distance from Melville's Authorial Signature [0,1]",
+        colors=colors,
+        title_font_size=26,
+        axis_title_font_size=18,
+        tick_font_size=16,
+        bar_text_font_size=18,
+        x_tick_angle=-45,
+        height=1080,
+        margin=dict(l=80, r=40, t=100, b=90),
+        show_text=False,
+        y_range=[0,0.04]        
     )
 
 

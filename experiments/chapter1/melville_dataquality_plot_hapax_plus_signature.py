@@ -38,7 +38,9 @@ fig.add_trace(
         name="Total Hapax",
         marker_color="indigo",
         text=hapax_counts,
-        textposition="outside"
+        textposition="outside",
+        textfont=dict(size=18),  # match bar_text_font_size
+        cliponaxis=False
     )
 )
 
@@ -51,25 +53,40 @@ fig.add_trace(
         yaxis="y2",
         mode="lines+markers",
         line=dict(color="firebrick", width=3),
-        marker=dict(size=8)
+        marker=dict(size=10)  # slightly larger to match scaling
     )
 )
 
 # Layout with dual y-axis
 fig.update_layout(
-    title="Melville Novels: Hapax Counts vs Authorial Signature Distance",
-    xaxis=dict(title="Novel", tickangle=-45, tickfont=dict(size=14)),
-    yaxis=dict(title="Total Hapax", tickfont=dict(size=14)),
+    title=dict(
+        text="Melville Novels: Hapax Counts vs Authorial Signature Distance",
+        font=dict(size=26)  # match title_font_size
+    ),
+    xaxis=dict(
+        title=dict(text="Novel", font=dict(size=18)),  # axis_title_font_size
+        tickangle=-45,
+        tickfont=dict(size=16)  # tick_font_size
+    ),
+    yaxis=dict(
+        title=dict(text="Total Hapax", font=dict(size=18)),
+        tickfont=dict(size=16)
+    ),
     yaxis2=dict(
-        title="Distance from Authorial Signature",
+        title=dict(text="Distance from Authorial Signature", font=dict(size=18)),
         overlaying="y",
         side="right",
-        tickfont=dict(size=14),
+        tickfont=dict(size=16),
         showgrid=False
     ),
-    legend=dict(x=0.05, y=0.95, font=dict(size=12)),
+    legend=dict(
+        x=0.05,
+        y=0.95,
+        font=dict(size=14)  # bump slightly for consistency
+    ),
     bargap=0.3,
-    title_font=dict(size=20)
+    height=1080,  # match your current approach
+    margin=dict(l=80, r=80, t=100, b=90)
 )
 
 fig.show()

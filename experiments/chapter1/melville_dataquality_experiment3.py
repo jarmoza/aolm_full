@@ -208,7 +208,16 @@ def plot_pg_distances_plus_pg2ia_distance(p_pg2ia_distance):
         sorted_values,
         "Distance",
         "Distance from Melville's Authorial Signature [0,1]",
-        colors=colors
+        colors=colors,
+        title_font_size=26,
+        axis_title_font_size=18,
+        tick_font_size=16,
+        bar_text_font_size=18,
+        x_tick_angle=-45,
+        height=1080,
+        margin=dict(l=80, r=40, t=100, b=90),
+        show_text=False,
+        y_range=[0,0.04]
     )
 
 def sort_novels_by_publication(labels, values):
