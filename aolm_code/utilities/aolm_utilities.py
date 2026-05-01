@@ -172,15 +172,24 @@ def remove_stopwords(p_tokens, p_stopwords_type="voyant"):
 
 # Visualizations
 
-def bar_plot(p_categories, p_category_label, p_values, p_value_label, p_title, colors=None):
-            
-    # Example data
-    # data = {
-    #       "Category": ["A", "B", "C"],
-    #       "Value": [10, 20, 15]
-    # }
+def bar_plot(
+    p_categories,
+    p_category_label,
+    p_values,
+    p_value_label,
+    p_title,
+    colors=None,
+    title_font_size=24,
+    axis_title_font_size=18,
+    tick_font_size=14,
+    bar_text_font_size=14,
+    x_tick_angle=-45,
+    height=None,
+    margin=None,
+    show_text=True,
+    y_range=None
+):
     data = {
-        
         p_category_label: p_categories,
         p_value_label: p_values
     }
@@ -189,26 +198,41 @@ def bar_plot(p_categories, p_category_label, p_values, p_value_label, p_title, c
         data,
         x=p_category_label,
         y=p_value_label,
-        title=p_title)
+        title=p_title,
+        text=p_values if show_text else None
+    )
 
     if colors:
-        fig.update_traces(marker_color=colors)    
-    
-    # Update layout for fonts
-    title_font_size = 24
-    label_font_size = 18
-    tick_font_size = 14
-    textfont_size = 12
+        fig.update_traces(marker_color=colors)
+
+    if show_text:
+        fig.update_traces(
+            textposition="outside",
+            textfont=dict(size=bar_text_font_size),
+            cliponaxis=False
+        )
+
     fig.update_layout(
         title=dict(text=p_title, font=dict(size=title_font_size)),
-        xaxis=dict(title=dict(text=p_category_label, font=dict(size=label_font_size)),
-                   tickfont=dict(size=tick_font_size)),
-        yaxis=dict(title=dict(text=p_value_label, font=dict(size=label_font_size)),
-                   tickfont=dict(size=tick_font_size))
+        xaxis=dict(
+            title=dict(text=p_category_label, font=dict(size=axis_title_font_size)),
+            tickfont=dict(size=tick_font_size),
+            tickangle=x_tick_angle
+        ),
+        yaxis=dict(
+            title=dict(text=p_value_label, font=dict(size=axis_title_font_size)),
+            tickfont=dict(size=tick_font_size)
+        )
     )
-    
-    # Optional: update text on bars
-    fig.update_traces(textfont_size=tick_font_size)
+
+    if height:
+        fig.update_layout(height=height)
+
+    if margin:
+        fig.update_layout(margin=margin)
+
+    if y_range:
+        fig.update_yaxes(range=y_range)
 
     fig.show()      
     
