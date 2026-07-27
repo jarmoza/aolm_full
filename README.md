@@ -4,7 +4,7 @@
 
 Welcome to the repository for 'The Art of Literary Modeling' (AoLM), a PhD project and dissertation by [Jonathan Armoza](https://jonathanarmoza.com/) that develops a framework for measuring and assessing the data quality of corpora of digital literature in digital humanities research.
 
-This repository accompanies the dissertation *The Art of Literary Modeling* and contains the code used for the experiments and tutorial demonstrations described in the text.
+This repository accompanies the dissertation [The Art of Literary Modeling](https://www.proquest.com/docview/3355452934) and contains the code used for the experiments and tutorial demonstrations described in the text.
 
 ### Functionality and Code
 
